@@ -1,4 +1,6 @@
-﻿public enum EMode
+﻿namespace Shared;
+
+public enum EMode
 {
     IaaS,
     PaaS,

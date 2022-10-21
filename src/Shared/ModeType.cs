@@ -1,4 +1,6 @@
-﻿public enum ModeType
+﻿namespace Shared;
+
+public enum ModeType
 {
     IAAS,
     PAAS,

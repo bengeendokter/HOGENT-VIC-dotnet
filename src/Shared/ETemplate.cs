@@ -1,4 +1,6 @@
-﻿public enum ETemplate
+﻿namespace Shared;
+
+public enum ETemplate
 {
     ArtificialIntelligence,
     Database,

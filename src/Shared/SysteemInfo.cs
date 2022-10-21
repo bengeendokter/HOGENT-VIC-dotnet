@@ -1,4 +1,6 @@
-﻿public class SysteemInfo
+﻿namespace Shared;
+
+public class SysteemInfo
 {
 
 }

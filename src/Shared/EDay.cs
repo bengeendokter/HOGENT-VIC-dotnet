@@ -1,4 +1,6 @@
-﻿[Flags]
+﻿namespace Shared;
+
+[Flags]
 public enum EDay
 {
     Monday = 0,
