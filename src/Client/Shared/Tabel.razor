@@ -1,0 +1,55 @@
+﻿
+<table>
+    <thead> 
+        <tr>
+        @foreach (var fieldInfo in mockData1.First().GetType().GetFields())
+        {
+            var Key = fieldInfo.Name;
+                <th>@Key</th>
+        }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (object Item in mockData1)
+        
+     {
+         <tr>
+    @foreach (var fieldInfo in Item.GetType().GetFields())
+    {
+        var Key = fieldInfo.Name;
+        var Value = fieldInfo.GetValue(Item);
+
+                    @if (@Key == "cell2")
+                    {
+                        <td><img src="favicon.png" /></td>
+                    }
+                    else
+                    {
+                        <td>@Value</td>
+                    }
+
+                   
+        
+    }
+            </tr>
+
+}
+    </tbody>
+
+</table>
+
+@code {
+    public class TestClss
+    {
+        public string id = "";
+        public string cell1 = "";
+        public string cell2 = "";
+    };
+
+    public ICollection<TestClss> mockData1 = new List<TestClss> {
+        new TestClss() { id = "1", cell1 = "cell 1 row 1 Data", cell2 = "cell 2 row 1 Data" },
+        new TestClss() { id = "2", cell1 = "cell 1 row 2 Data", cell2 = "cell 2 row 2 Data"},
+        new TestClss() { id = "3", cell1 = "cell 1 row 2 Data", cell2 = "cell 2 row 3 Data" }
+    };
+}
