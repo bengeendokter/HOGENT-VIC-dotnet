@@ -3,120 +3,134 @@
     color: black;
     font-weight: bold;
     font-size: 20px;
-    min-height: 115px;
-    background-color: white;
-    padding-left: 10px;
-    padding-right: 10px;
+    /*min-height: 115px;*/
+    background-color: var(--clr-secondary);
+    background-color: var(--clr-secondary);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.icon-hamburger-div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .company_logo {
-    max-height: 80px;
-    height: 50%;
+    max-height: 70px;
+    margin-left: 10px;
 }
 
 .nav_options {
-    width: max-content;
+    width: 100%;
+    flex-direction: column;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+    border-bottom: 2px solid var(--clr-primary-var3)
 }
-.nav_options ::deep a {
+
+.nav_option:nth-child(2n) {
+    background-color: var(--clr-secondary);
+}
+
+.nav_option:nth-child(2n+1) {
+    background-color: var(--clr-primary);
+}
+
+.nav_option ::deep a:hover {
+    background-color: var(--clr-primary-var2);
+    color: var(--clr-CTA)
+}
+
+.nav_option {
+    height: 50px;
+    width: 100%;
+}
+
+.nav_option ::deep a {
     text-decoration: none;
-    color: black;
+    color: var(--clr-text-color); 
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
     padding: 10px;
 }
 
-.nav_options ::deep a:hover {
-    color: #38BDF8;
-    text-decoration: underline;
+.navbar-toggler  {
+    height: min-content;
+}
+.navbar-toggler img {
+    height: 50px;
 }
 
-.nav_options ::deep a:hover img {
-    fill: #38BDF8;
+.gone {
+    display: none;
 }
 
-.nav_options ::deep a:link,
-.nav_options ::deep a:visited {
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 5px;
+.goneIfScreenBig {
+    margin-left: 10px;
 }
 
-.nav_options ::deep a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background-color: #38BDF8;
-    bottom: 0;
-    left: 0;
-    transform: scale(0);
-    transition: .2s all ease-out;
-}
-
-.nav_options ::deep a:hover::after {
-    transform: scale(1);
-}
-
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.top-row {
-    height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.navbar-brand {
-    font-size: 1.1rem;
-}
-
-.oi {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
-}
-
-.nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
-
-    .nav-item:first-of-type {
-        padding-top: 1rem;
+@media (min-width: 981px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
     }
 
-    .nav-item:last-of-type {
-        padding-bottom: 1rem;
+    .icon-hamburger-div {
+        width: max-content;
     }
 
-    .nav-item ::deep a {
-        color: #d7d7d7;
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
+    .nav_options {
+        width: max-content;
+        flex-direction: row;
+        justify-content: normal;
+        gap: 30px;
+        margin-top: 0px;
+        margin-right: 10px;
+        border:none;
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
+    .nav_option:nth-child(2n) {
+        background: none;
+    }
 
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
+    .nav_option:nth-child(2n+1) {
+        background: none;
+    }
 
-@media (min-width: 641px) {
+    .nav_option {
+        width: auto;
+    }
+
+    .nav_option ::deep a {
+        padding: 5px;
+        width: auto;
+    }
+
+    .nav_option ::deep a:hover {
+        background: none;
+        color: var(--clr-CTA);
+        border-bottom: 1px solid var(--clr-CTA);
+    }
+
     .navbar-toggler {
         display: none;
     }
 
-    .collapse {
+    .gone {
         /* Never collapse the sidebar for wide screens */
-        display: block;
+        display: flex;
+    }
+
+    .goneIfScreenBig {
+        display: none;
     }
 }
