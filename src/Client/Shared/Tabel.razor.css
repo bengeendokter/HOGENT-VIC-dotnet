@@ -6,6 +6,14 @@
     /*border: 1px solid #ddd;*/
 }
 
+th {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+td {
+    font-family: 'Roboto', sans-serif;
+}
+
 thead {
     border: 3px;
     border-color: #E0E0E0;
