@@ -1,0 +1,84 @@
+﻿
+<table>
+    <thead> 
+        <tr>
+        @foreach (var fieldInfo in mockData1.First().GetType().GetFields())
+        {
+            var Key = fieldInfo.Name;
+                Console.WriteLine(Key);
+                <th>@Key</th>
+        }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (object Item in mockData1)
+        
+     {
+         <tr>
+    @foreach (var fieldInfo in Item.GetType().GetFields())
+    {
+        var Value = fieldInfo.GetValue(Item);
+        <td>@Value</td>
+    }
+            </tr>
+
+}
+    </tbody>
+
+</table>
+
+<br />
+
+@foreach (object Item in mockData2)
+{
+    @foreach (var props in Item.GetType().GetProperties())
+    {
+        var Key = props.Name;
+        var Value = props.GetMethod.Invoke(Item, null).ToString();
+        <li>@Value</li>
+    }
+}
+<br />
+
+@foreach (object Item in mockData1)
+
+{
+    @foreach (var fieldInfo in Item.GetType().GetFields())
+        {
+            var Key = fieldInfo.Name;
+            var Value = fieldInfo.GetValue(Item);
+            <li>@Value</li>
+        }
+
+}
+
+@if (true)
+{
+    Console.WriteLine(@mockData1.First().GetType().GetFields().Count());
+}
+
+
+@code {
+    public class TestClss
+    {
+        public string id = "";
+        public string cell1 = "";
+        public string cell2 = "";
+    };
+
+    public ICollection<TestClss> mockData1 = new List<TestClss> {
+        new TestClss() { id = "1", cell1 = "cell 1 row 1 Data", cell2 = "cell 2 row 1 Data" },
+        new TestClss() { id = "2", cell1 = "cell 1 row 2 Data", cell2 = "cell 2 row 2 Data"},
+        new TestClss() { id = "3", cell1 = "cell 1 row 2 Data", cell2 = "cell 2 row 3 Data" }
+    };
+
+
+    public Object[] mockData2 = new[] {
+        new { id = "1", cell1 = "cell 1 row 1 Data", cell2 = "cell 2 row 1 Data" },
+        new { id = "2", cell1 = "cell 1 row 2 Data", cell2 = "cell 2 row 2 Data" },
+        new { id = "3", cell1 = "cell 1 row 2 Data", cell2 = "cell 2 row 3 Data" }
+    };
+
+    
+}
