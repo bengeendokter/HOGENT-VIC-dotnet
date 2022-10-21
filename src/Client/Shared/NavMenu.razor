@@ -1,4 +1,21 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿<div class="navbar">
+    <img class="company_logo" src="images/hogent_logo.png"/>
+    <div class="nav_options">
+        <NavLink href="/" class="nav_link">Gebruikers</NavLink>
+        <NavLink href="/" class="nav_link">Klanten</NavLink>
+        <NavLink href="/" class="nav_link">Virtuele Machines</NavLink>
+        <NavLink href="/" class="nav_link">Aanvragen</NavLink>
+        <NavLink href="/" class="nav_link">Historiek</NavLink>
+        <NavLink href="/" class="nav_link icon_link">
+            <img src="images/user--avatar.svg"/>
+        </NavLink>
+        <NavLink href="/" class="nav_link icon_link">
+            <img src="images/logout.svg"/>
+        </NavLink>
+    </div>
+</div>
+
+@*<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">VIC</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -25,7 +42,7 @@
             </NavLink>
         </div>
     </nav>
-</div>
+</div>*@
 
 @code {
     private bool collapseNavMenu = true;
