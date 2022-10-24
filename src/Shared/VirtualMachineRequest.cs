@@ -1,6 +1,6 @@
 ﻿namespace Shared;
 
-public class Activiteit
+public class VirtualMachineRequest
 {
     public DateTime Date { get; set; }
 }
