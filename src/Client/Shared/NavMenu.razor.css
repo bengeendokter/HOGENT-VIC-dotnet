@@ -4,12 +4,12 @@
     font-weight: bold;
     font-size: 20px;
     /*min-height: 115px;*/
-    background-color: var(--clr-secondary);
-    background-color: var(--clr-secondary);
+    background-color: var(--clr-primary);
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-bottom: 15px;
+    padding-bottom: 0;
 }
 
 .icon-hamburger-div {
@@ -22,7 +22,7 @@
 
 .company_logo {
     max-height: 70px;
-    margin-left: 10px;
+    margin: 10px;
 }
 
 .nav_options {
@@ -32,15 +32,15 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 10px;
-    border-bottom: 2px solid var(--clr-primary-var3)
+    border-bottom: 2px solid var(--clr-secondary);
 }
 
 .nav_option:nth-child(2n) {
-    background-color: var(--clr-secondary);
+    background-color: var(--clr-primary);
 }
 
 .nav_option:nth-child(2n+1) {
-    background-color: var(--clr-primary);
+    background-color: var(--clr-background-blue);
 }
 
 .nav_option ::deep a:hover {
