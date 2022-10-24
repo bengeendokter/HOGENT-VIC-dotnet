@@ -26,22 +26,20 @@
 
         private void SetDummyVirtualMachineList()
         {
-            var vm1 = new VirtualMachine();
-            vm1.Name = "VM-IT-2";
-            vm1.Hostname = "VM_JN58CE_2354";
-            vm1.FQDN = "TBD";
-            vm1.IsHighlyAvailable = true;
-            vm1.StartDate = new DateTime(2022, 01, 15);
-            vm1.EndDate = new DateTime(2023, 02, 14);
-            vm1.IsCreated = true;
-            vm1.IsActive = true;
-            vm1.Cpu = 6;
-            vm1.Ram = 32;
-            vm1.Storage = 50;
-            vm1.Template = ETemplate.ArtificialIntelligence;
-            vm1.Mode = EMode.IaaS;
-            vm1.AvailableDays = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday);
-            vm1.BackupFrequency = EBackupFrequency.Daily;
+            var vm1 = new VirtualMachine
+            {
+                Name = "VM-IT-2",
+                Hostname = "VM_JN58CE_2354",
+                FQDN = "TBD",
+                IsHighlyAvailable = true,
+                StartDate = new DateTime(2022, 01, 15),
+                EndDate = new DateTime(2023, 02, 14),
+                IsCreated = true,
+                IsActive = true,
+                Template = Template.TEMPLATES[ETemplate.ArtificialIntelligence],
+                AvailableDays = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
+                BackupFrequency = EBackupFrequency.Daily
+            };
 
             _vms.Add(vm1);
 

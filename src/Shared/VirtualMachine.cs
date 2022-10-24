@@ -12,7 +12,6 @@ public class VirtualMachine
     public bool IsCreated { get; set; }
     public bool IsActive { get; set; }
     public Template? Template { get; set; }
-    public EMode Mode { get; set; }
     public EDay AvailableDays { get; set; }
     public EBackupFrequency BackupFrequency { get; set; }
 }
