@@ -1,20 +1,30 @@
 ﻿namespace Shared
 {
-    public class VirtualMachineService
+    public class VirtualMachineService : IVirtualMachineService
     {
-        private List<VirtualMachine> _vms = new List<VirtualMachine>();
+        private readonly List<VirtualMachine> _vms = new List<VirtualMachine>();
 
         public VirtualMachineService()
         {
-            setDummyVirtualMachineList();
+            SetDummyVirtualMachineList();
         }
 
-        public List<VirtualMachine> getAll()
+        public List<VirtualMachine> GetAll()
         {
             return _vms;
         }
 
-        private void setDummyVirtualMachineList()
+        // TODO: Dto
+        public VirtualMachine? Update(int id, VirtualMachine updatedVm)
+        {
+            var vm = _vms.FirstOrDefault(v => v.Id == id);
+            if (vm == null) return null;
+            // TODO: enkel de mogelijke properties
+            vm = updatedVm;
+            return vm;
+        }
+
+        private void SetDummyVirtualMachineList()
         {
             var vm1 = new VirtualMachine();
             vm1.Name = "VM-IT-2";
@@ -30,7 +40,7 @@
             vm1.Storage = 50;
             vm1.Template = ETemplate.ArtificialIntelligence;
             vm1.Mode = EMode.IaaS;
-            vm1.AvailableDays = (EDay)((int) EDay.Monday + (int) EDay.Tuesday + (int) EDay.Wednesday + (int) EDay.Thursday + (int) EDay.Friday);
+            vm1.AvailableDays = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday);
             vm1.BackupFrequency = EBackupFrequency.Daily;
 
             _vms.Add(vm1);
