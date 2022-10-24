@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Shared;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class MaakVMForm
 {
-
     [Required]
     [StringLength(40, ErrorMessage = "Naam is te lang")]
     public string? VMNaam { get; set; }
@@ -21,10 +16,11 @@ public class MaakVMForm
     public string? FQDN { get; set; }
 
     [Required]
-    public TemplateType TemplateType { get; set; }
+    public ETemplate TemplateType { get; set; }
 
     [Required]
-    public ModeType ModeType { get; set; }
+    public EMode ModeType { get; set; }
+
     [Required]
     public int CPUCores { get; set; }
 
@@ -57,7 +53,4 @@ public class MaakVMForm
 
     [Required]
     public string? host { get; set; }
-
-
-
 }

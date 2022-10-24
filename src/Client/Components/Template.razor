@@ -1,16 +1,6 @@
-﻿
-@if(type == ){
-
-}
-@if(type == TemplateType.DATABASE){
-
-}
-@if(type == TemplateType.MACHINE_LEARNING){
-
-}
-@switch(type)
+﻿@switch(type)
 {
-    case TemplateType.MACHINE_LEARNING:
+    case ETemplate.MachineLearning:
         <div class="template">
             <p class="title">Machine Learning</p>
             <p>Specs: ddfgjdlkg</p>
@@ -18,7 +8,7 @@
             <p>Specs: ddfgjdlkg</p>
         </div>
         break;
-    case TemplateType.AI:
+    case ETemplate.ArtificialIntelligence:
         <div class="template">
             <p class="title">AI</p>
             <p>Specs: ddfgjdlkg</p>
@@ -26,7 +16,7 @@
             <p>Specs: ddfgjdlkg</p>
         </div>
         break;
-    case TemplateType.DATABASE:
+    case ETemplate.Database:
         <div class="template">
             <p class="title">Database</p>
             <p>Specs: ddfgjdlkg</p>
@@ -42,5 +32,5 @@
 }
 
 @code {
-    [Parameter] public TemplateType type { get; set; }
+    [Parameter] public ETemplate type { get; set; }
 }

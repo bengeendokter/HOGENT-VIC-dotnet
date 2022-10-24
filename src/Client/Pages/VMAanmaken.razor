@@ -9,9 +9,9 @@
 <div class="input-group">
     <h2>Selecteer template</h2>
     <div class="templates">
-        <Template type="@TemplateType.AI"></Template>
-        <Template type="@TemplateType.DATABASE"></Template>
-        <Template type="@TemplateType.MACHINE_LEARNING"></Template>
+        <Template type="@ETemplate.ArtificialIntelligence"></Template>
+        <Template type="@ETemplate.Database"></Template>
+        <Template type="@ETemplate.MachineLearning"></Template>
     </div>
     <h2>Globale info</h2>
         <label>
@@ -29,8 +29,8 @@
         <label>
             ModeType
             <InputSelect @bind-Value="vmForm.ModeType">
-                <option value="@ModeType.PAAS"> PAAS</option>
-                <option value="@ModeType.IAAS"> IAAS</option>
+                <option value="@EMode.PaaS"> PaaS</option>
+                <option value="@EMode.IaaS"> IaaS</option>
             </InputSelect>
         </label>
         <label>
