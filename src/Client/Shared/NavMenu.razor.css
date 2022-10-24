@@ -44,7 +44,7 @@
 }
 
 .nav_option ::deep a:hover {
-    background-color: var(--clr-primary-var2);
+    background-color: var(--clr-secondary);
     color: var(--clr-CTA)
 }
 
