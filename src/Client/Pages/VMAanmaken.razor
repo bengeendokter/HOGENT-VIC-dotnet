@@ -1,5 +1,6 @@
 ﻿@page "/maakVM"
 @using Microsoft.Extensions.Logging
+@using global::Shared
 @inject ILogger<VMAanmaken> Logger
 
 <EditForm Model="@vmForm" OnInvalidSubmit="@HandleSubmit">
