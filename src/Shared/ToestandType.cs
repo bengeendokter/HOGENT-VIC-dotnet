@@ -1,4 +1,6 @@
-﻿public enum ToestandType
+﻿namespace Shared;
+
+public enum ToestandType
 {
     AANVAARD,
     GEWEIGERD,

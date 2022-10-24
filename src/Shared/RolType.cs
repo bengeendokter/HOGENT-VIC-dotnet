@@ -1,4 +1,6 @@
-﻿public enum RolType
+﻿namespace Shared;
+
+public enum RolType
 {
     GEBRUIKER,
     BEHEERDER,

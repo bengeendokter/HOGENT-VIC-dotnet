@@ -1,4 +1,6 @@
-﻿public enum ActiviteitType
+﻿namespace Shared;
+
+public enum ActiviteitType
 {
     VERWIJDERD,
     TOEGEVOEGD,
