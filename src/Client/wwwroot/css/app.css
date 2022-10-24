@@ -3,15 +3,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 :root {
-    --clr-primary: #F2F5FA;
-    --clr-secondary: #FFFFFF;
+    --clr-primary: #FFFFFF;
+    --clr-secondary: #d3e2f3;
+    --clr-secondary-var1: #e6f0f9;
+    --clr-secondary-var2: #eff5fb;
+    --clr-secondary-var3: #f3f5fa;
+
     --clr-CTA: #38BDF8;
     --clr-text-color: #504F4F;
     --clr-red: #E63462;
     --clr-green: #36BD7C;
-    --clr-primary-var1: #DBEBF6;
-    --clr-primary-var2: #C6E3F2;
-    --clr-primary-var3: #BAD7EF;
+}
+
+h1{
+   color: var(--clr-text-color);
+   font-weight: bold;
+   font-size: 32px;
+   margin: 0;
+   padding: 0;
+}
+
+h2 {
+    color: var(--clr-text-color);
+    font-weight: 500;
+    font-size: 24px;
+}
+article{
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 html, body {

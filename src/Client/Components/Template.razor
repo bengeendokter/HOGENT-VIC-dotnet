@@ -1,0 +1,46 @@
+﻿
+@if(type == ){
+
+}
+@if(type == TemplateType.DATABASE){
+
+}
+@if(type == TemplateType.MACHINE_LEARNING){
+
+}
+@switch(type)
+{
+    case TemplateType.MACHINE_LEARNING:
+        <div class="template">
+            <p class="title">Machine Learning</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+        </div>
+        break;
+    case TemplateType.AI:
+        <div class="template">
+            <p class="title">AI</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+        </div>
+        break;
+    case TemplateType.DATABASE:
+        <div class="template">
+            <p class="title">Database</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+        </div>
+        break;
+    default:
+        <div class="template">
+
+        </div>
+        break;
+}
+
+@code {
+    [Parameter] public TemplateType type { get; set; }
+}

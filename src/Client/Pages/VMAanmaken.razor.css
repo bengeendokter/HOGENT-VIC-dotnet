@@ -1,0 +1,23 @@
+﻿
+body{
+    padding: 0;
+}
+.headerRow {
+    width: 100%;
+    padding: 5px 20px;  
+    background-color: var(--clr-secondary-var1);
+}
+.submit{
+    width: 100px;
+    height: 30px;
+}
+.input-group {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.templates{
+    display: flex;
+    flex-direction: row;
+}
