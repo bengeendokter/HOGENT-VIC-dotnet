@@ -11,10 +11,7 @@ public class VirtualMachine
     public DateTime EndDate { get; set; }
     public bool IsCreated { get; set; }
     public bool IsActive { get; set; }
-    public int Cpu { get; set; }
-    public int Ram { get; set; }
-    public int Storage { get; set; }
-    public ETemplate Template { get; set; }
+    public Template? Template { get; set; }
     public EMode Mode { get; set; }
     public EDay AvailableDays { get; set; }
     public EBackupFrequency BackupFrequency { get; set; }
