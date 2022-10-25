@@ -1,8 +1,18 @@
 ﻿@page "/virtualmachines/{id:int}"
+@using global::Shared
+@inject IVirtualMachineService VMService
 
 <h3>DetailsVirtualMachines</h3>
-<p>Id: @Id</p>
+<p>@vm.Id</p>
+<p>@vm.Name</p>
 
 @code {
     [Parameter] public int Id { get; set; }
+    private VirtualMachine vm;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        vm = VMService.Get(Id);
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace Shared
+﻿using System.Collections.Generic;
+
+namespace Shared
 {
     public class VirtualMachineService : IVirtualMachineService
     {
@@ -7,6 +9,11 @@
         public VirtualMachineService()
         {
             SetDummyVirtualMachineList();
+        }
+
+        public VirtualMachine? Get(int id)
+        {
+            return _vms.FirstOrDefault(v => v.Id == id);
         }
 
         public List<VirtualMachine> GetAll()
