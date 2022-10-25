@@ -2,12 +2,21 @@
 @using global::Shared
 @inject IVirtualMachineService VMService
 
-<h3>VirtualMachines</h3>
+<h1 id="vm-title">Virtuele Machines</h1>
 
+<section aria-labelledby="vm-title" class="vm_list">
 @foreach(VirtualMachine vm in list)
 {
-    <a href=@($"/virtualmachines/{@vm.Id}")>@vm.Name</a><br/>
+        <a class="link" href=@($"/virtualmachines/{@vm.Id}")>
+            <div class="vm_container" >
+                <p class="vm_name">@vm.Name</p>
+                <p class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit")</p>
+            </div>
+        </a>
 }
+</section>
+
+
 
 @code {
     private List<VirtualMachine> list;

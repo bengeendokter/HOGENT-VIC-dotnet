@@ -1,10 +1,10 @@
 ﻿<div class="navbar">
     <div class="icon-hamburger-div">
         <NavLink href="/">
-            <img class="company_logo" src="images/hogent_logo.png"/>
+            <HoGentLogo></HoGentLogo>
         </NavLink>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <img src="images/hamburger.svg"/>
+            <HamburgerIcon></HamburgerIcon>
         </button>
     </div>
     <div class="nav_options @NavVisibleCss" @onclick="ToggleNavMenu">
@@ -17,10 +17,10 @@
             <div class="nav_option"><NavLink href="/" class="nav_link">Aanvragen</NavLink></div>
             <div class="nav_option"><NavLink href="/" class="nav_link">Historiek</NavLink></div>
             <div class="nav_option"><NavLink href="/" class="nav_link icon_link">
-                <img src="images/user--avatar.svg"/> <span class="goneIfScreenBig">Account</span>
+                <UserIcon></UserIcon> <span class="goneIfScreenBig">Account</span>
             </NavLink></div>
             <div class="nav_option"><NavLink href="/" class="nav_link icon_link">
-                <img src="images/logout.svg"/> <span class="goneIfScreenBig">Log uit</span>
+                <LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span>
             </NavLink></div>
     </div>
 </div>
