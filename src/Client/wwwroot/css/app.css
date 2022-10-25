@@ -10,9 +10,23 @@
     --clr-secondary-var3: #f3f5fa;
     --clr-background-blue: #f2f5fa;
 
-    --clr-CTA: #38BDF8;
+    --clr-CTA: #309FCF;
     --clr-text-color: #504F4F;
-    --clr-red: #E63462;
+    --clr-red: #DB305E;
+    --clr-green: #36BD7C;
+}
+
+:root.dark_mode {
+    --clr-primary: #232F4A;
+    --clr-secondary: #0b1b41;
+    --clr-secondary-var1: #e6f0f9;
+    --clr-secondary-var2: #eff5fb;
+    --clr-secondary-var3: #f3f5fa;
+    --clr-background-blue: #0F1729;
+
+    --clr-CTA: #38BDF8;
+    --clr-text-color: #FFFFFF;
+    --clr-red: #FA738C;
     --clr-green: #36BD7C;
 }
 
@@ -21,6 +35,7 @@ h1{
    font-weight: bold;
    font-size: 32px;
    margin: 0;
+   margin-block-end: 0.7em;
    padding: 0;
 }
 

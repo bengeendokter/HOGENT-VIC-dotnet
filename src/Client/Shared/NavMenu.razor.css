@@ -20,9 +20,10 @@
     align-items: center;
 }
 
-.company_logo {
-    max-height: 70px;
+::deep .company_logo {
+    height: 70px;
     margin: 10px;
+    fill: var(--clr-text-color);
 }
 
 .nav_options {
@@ -43,9 +44,10 @@
     background-color: var(--clr-background-blue);
 }
 
-.nav_option ::deep a:hover {
+.nav_option ::deep a:hover, .nav_option ::deep a:hover svg{
     background-color: var(--clr-secondary);
-    color: var(--clr-CTA)
+    color: var(--clr-CTA);
+    fill: var(--clr-CTA);
 }
 
 .nav_option {
@@ -63,8 +65,9 @@
     padding: 10px;
 }
 
-.navbar-toggler  {
+.navbar-toggler {
     height: min-content;
+    color: var(--clr-text-color);
 }
 .navbar-toggler img {
     height: 50px;
