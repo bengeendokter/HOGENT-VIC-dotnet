@@ -31,7 +31,7 @@ thead tr th:last-child {
 }
 
 tr {
-    background-color: white;
+    background-color: var(--clr-primary); /*secondary*/
 }
 
 th, td {
@@ -46,6 +46,6 @@ thead:after {
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: var(--clr-background-blue); /*primary*/
 }
 

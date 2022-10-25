@@ -1,5 +1,15 @@
 .page {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     height: 100%;
     background-color: var(--clr-background-blue);
+}
+
+.main {
+    flex: 1 1 auto;
+    background-image: url('images/waves.png');
+    background-size: 100% 33%;
+    background-position: center bottom;
+    background-repeat: no-repeat;
 }
