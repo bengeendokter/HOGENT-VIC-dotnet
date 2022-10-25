@@ -28,6 +28,7 @@
         {
             var vm1 = new VirtualMachine
             {
+                Id = 1,
                 Name = "VM-IT-1",
                 Hostname = "VM_JN58CE_2354",
                 FQDN = "TBD",
@@ -43,6 +44,7 @@
             
             var vm2 = new VirtualMachine
             {
+                Id = 2,
                 Name = "VM-IT-2",
                 Hostname = "VM_GH35ZR_5436",
                 FQDN = "TBD",
