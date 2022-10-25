@@ -3,11 +3,11 @@
 [Flags]
 public enum EDay
 {
-    Monday = 0,
-    Tuesday = 1,
-    Wednesday = 2,
-    Thursday = 4,
-    Friday = 8,
-    Saturday = 16,
-    Sunday = 32
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 4,
+    Thursday = 8,
+    Friday = 16,
+    Saturday = 32,
+    Sunday = 64
 }
