@@ -2,9 +2,73 @@
 @using global::Shared
 @inject IVirtualMachineService VMService
 
-<h3>DetailsVirtualMachines</h3>
-<p>@vm.Id</p>
-<p>@vm.Name</p>
+<h1>Virtuele Machine (@vm.Name)</h1>
+
+<h2>Algemeen</h2>
+<table class="table">
+    <tr>
+        <th>Naam</th>
+        <td>@vm.Name</td>
+    </tr>
+    <tr>
+        <th>Hostname</th>
+        <td>@vm.Hostname</td>
+    </tr>
+    <tr>
+        <th>Startdatum gebruik</th>
+        <td>@vm.StartDate</td>
+    </tr>
+    <tr>
+        <th>Einddatum gebruik</th>
+        <td>@vm.EndDate</td>
+    </tr>
+    <tr>
+        <th>FQDN</th>
+        <td>@vm.FQDN</td>
+    </tr>
+    <tr>
+        <th>Hoge beschikbaarheid</th>
+        <td>@(vm.IsHighlyAvailable ? "Ja" : "Nee")</td>
+    </tr>
+    <tr>
+        <th>Template</th>
+        <td>@vm.Template.Name</td>
+    </tr>
+    <tr>
+        <th>Backup</th>
+        <td>@(vm.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
+    </tr>
+    <tr>
+        <th>Modus</th>
+        <td>@vm.Template.Mode</td>
+    </tr>
+    <tr>
+        <th>Dagen besschikbaar</th>
+        <td>...</td>
+    </tr>
+</table>
+
+<h2>Status</h2>
+<table class="table">
+    <tr>
+        <th>Status</th>
+        <td>@(vm.IsActive ? "Aan" : "Uit")</td>
+    </tr>
+    <tr>
+        <th>CPU cores</th>
+        <td>@vm.Template.Stats.Cpu</td>
+    </tr>
+    <tr>
+        <th>Geheugen</th>
+        <td>@vm.Template.Stats.Ram</td>
+    </tr>
+    <tr>
+        <th>Opslag</th>
+        <td>@vm.Template.Stats.Storage</td>
+    </tr>
+</table>
+
+<a>Wijzigen</a>
 
 @code {
     [Parameter] public int Id { get; set; }

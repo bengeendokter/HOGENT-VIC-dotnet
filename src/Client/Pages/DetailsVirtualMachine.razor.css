@@ -1,2 +1,4 @@
-﻿body {
+﻿.table
+{
+    color: var(--clr-text-color);
 }
