@@ -6,7 +6,7 @@
 
 @foreach(VirtualMachine vm in list)
 {
-    <p>@vm.Name</p>
+    <a href=@($"/virtualmachines/{@vm.Id}")>@vm.Name</a><br/>
 }
 
 @code {

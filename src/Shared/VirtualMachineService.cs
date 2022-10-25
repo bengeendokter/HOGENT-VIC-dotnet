@@ -1,4 +1,6 @@
-﻿namespace Shared
+﻿using System.Collections.Generic;
+
+namespace Shared
 {
     public class VirtualMachineService : IVirtualMachineService
     {
@@ -7,6 +9,11 @@
         public VirtualMachineService()
         {
             SetDummyVirtualMachineList();
+        }
+
+        public VirtualMachine? Get(int id)
+        {
+            return _vms.FirstOrDefault(v => v.Id == id);
         }
 
         public List<VirtualMachine> GetAll()
@@ -28,7 +35,8 @@
         {
             var vm1 = new VirtualMachine
             {
-                Name = "VM-IT-2",
+                Id = 1,
+                Name = "VM-IT-1",
                 Hostname = "VM_JN58CE_2354",
                 FQDN = "TBD",
                 IsHighlyAvailable = true,
@@ -40,10 +48,27 @@
                 AvailableDays = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
                 BackupFrequency = EBackupFrequency.Daily
             };
+            
+            var vm2 = new VirtualMachine
+            {
+                Id = 2,
+                Name = "VM-IT-2",
+                Hostname = "VM_GH35ZR_5436",
+                FQDN = "TBD",
+                IsHighlyAvailable = false,
+                StartDate = new DateTime(2022, 02, 16),
+                EndDate = new DateTime(2023, 03, 17),
+                IsCreated = true,
+                IsActive = false,
+                Template = Template.TEMPLATES[ETemplate.Database],
+                AvailableDays = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday + (int)EDay.Saturday + (int)EDay.Sunday),
+                BackupFrequency = EBackupFrequency.Weekly
+            };
+
+            // TODO more vms
 
             _vms.Add(vm1);
-
-            // TODO vm2
+            _vms.Add(vm2);
         }
     }
 }
