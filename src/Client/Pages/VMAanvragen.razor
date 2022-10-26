@@ -1,0 +1,36 @@
+﻿@page "/aanvraag"
+@using Microsoft.Extensions.Logging
+@inject ILogger<VMAanmaken> Logger
+@using global::Shared
+
+<EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
+    <div class="headerRow">
+        <h1>Maak een nieuwe VM aan</h1>
+    </div>
+    <div class="input-group">
+        <label>Naam van de VM
+            <InputText id="reason" @bind-Value="vmRequest.Reason"></InputText>
+        </label>
+@*        <label>
+            Hos`name
+            <InputText @bind-Value="vmInfo.HostName"></InputText>
+        </label>*@
+
+        <button type="submit">Submit</button>
+
+    </div>
+</EditForm>
+
+
+
+
+
+@code {
+    private VirtualMachineRequest vmRequest = new();
+    private VMInfo vmInfo = new();
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("submit");
+    }
+}
