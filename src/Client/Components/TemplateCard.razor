@@ -1,38 +1,27 @@
-﻿@using global::Shared
-
-@switch(type)
-{
-    case ETemplate.ArtificialIntelligence:
-        <div class="template">
+﻿<div class="template">
+    @switch(Template?.Type)
+    {
+        case ETemplate.ArtificialIntelligence:
             <p class="title">Machine Learning</p>
             <p>Specs: ddfgjdlkg</p>
             <p>Specs: ddfgjdlkg</p>
             <p>Specs: ddfgjdlkg</p>
-        </div>
-        break;
-    case ETemplate.MachineLearning:
-        <div class="template">
+            break;
+        case ETemplate.MachineLearning:
             <p class="title">AI</p>
             <p>Specs: ddfgjdlkg</p>
             <p>Specs: ddfgjdlkg</p>
             <p>Specs: ddfgjdlkg</p>
-        </div>
-        break;
-    case ETemplate.Database:
-        <div class="template">
+            break;
+        case ETemplate.Database:
             <p class="title">Database</p>
             <p>Specs: ddfgjdlkg</p>
             <p>Specs: ddfgjdlkg</p>
             <p>Specs: ddfgjdlkg</p>
-        </div>
-        break;
-    default:
-        <div class="template">
-
-        </div>
-        break;
-}
+            break;
+    }
+</div>
 
 @code {
-    [Parameter] public ETemplate type { get; set; }
+    [Parameter] public Template? Template { get; set; }
 }

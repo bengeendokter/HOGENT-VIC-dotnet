@@ -1,19 +1,17 @@
 ﻿@page "/virtualmachines"
-@using global::Shared
 @inject IVirtualMachineService VMService
 
 <h3>VirtualMachines</h3>
 
-@foreach(VirtualMachine vm in list)
+@foreach(VirtualMachine vm in List)
 {
     <p>@vm.Name</p>
 }
 
 @code {
-    private List<VirtualMachine> list;
+    private List<VirtualMachine> List = new();
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-        list = VMService.GetAll();
+        List = VMService.GetAll();
     }
 }
