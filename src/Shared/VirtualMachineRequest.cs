@@ -4,13 +4,13 @@ namespace Shared;
 
 public class VirtualMachineRequest
 {
-    //[Required]
-    //public DateTime Date { get; set; }
     [Required]
-    [StringLength(10, ErrorMessage = "Naam is te lang")]
-    [MinLength(10, ErrorMessage = "Te klein")]
+    public DateTime Date { get; set; }
+
+    [StringLength(100, ErrorMessage = "Het veld reden is te lang")]
     public string? Reason { get; set; }
 
-    //    [Required]
-    //    public VMInfo? VMInfo { get; set; }
+    [Required]
+    [ValidateComplexType]
+    public VMInfo VMInfo { get; set; } = new();
 }
