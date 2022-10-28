@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shared;
 
 public class VMInfo
-
 {
     private ValidationMessageStore? messageStore;
 
@@ -35,6 +28,6 @@ public class VMInfo
     public EBackupFrequency EBackupFrequency { get; set; }
     [Required]
     public EDay? Availability { get; set; }
-
-
+    [Required]
+    public Template? Template { get; set; }
 }

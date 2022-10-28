@@ -1,9 +1,8 @@
-﻿@page "/aanvraag"
+﻿@page "/virtualmachines/request"
 @using Microsoft.Extensions.Logging
-@inject ILogger<VMAanmaken> Logger
-@using global::Shared
+@inject ILogger<VMAanvragen> Logger
 
-<div class="requestForm">
+<div class="form">
     <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
        @*<DataAnnotationsValidator />*@
        <ObjectGraphDataAnnotationsValidator />

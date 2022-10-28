@@ -14,13 +14,15 @@
 }
 
 .input-group {
-    margin: 20px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-content: center;
+    width: 1000px;
+    margin: auto;
 }
 
-.templates {
-    display: flex;
-    flex-direction: row;
+label {
+    width: 50%;
+    min-width: 200px;
+    margin-bottom: 20px;
 }
