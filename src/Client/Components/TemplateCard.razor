@@ -1,25 +1,9 @@
 <div class="template">
-    @switch(Template?.Type)
-    {
-        case ETemplate.ArtificialIntelligence:
-            <p class="title">Machine Learning</p>
-            <p>Specs: ddfgjdlkg</p>
-            <p>Specs: ddfgjdlkg</p>
-            <p>Specs: ddfgjdlkg</p>
-            break;
-        case ETemplate.MachineLearning:
-            <p class="title">AI</p>
-            <p>Specs: ddfgjdlkg</p>
-            <p>Specs: ddfgjdlkg</p>
-            <p>Specs: ddfgjdlkg</p>
-            break;
-        case ETemplate.Database:
-            <p class="title">Database</p>
-            <p>Specs: ddfgjdlkg</p>
-            <p>Specs: ddfgjdlkg</p>
-            <p>Specs: ddfgjdlkg</p>
-            break;
-    }
+    <p class="title">@Template.Name</p>
+    <p>Mode: @Template.Mode</p>
+    <p>CPU: @Template.Stats.Cpu</p>
+    <p>RAM: @Template.Stats.Ram</p>
+    <p>Storage: @Template.Stats.Storage</p>
 </div>
 
 @code {
