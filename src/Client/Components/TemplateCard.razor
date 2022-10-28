@@ -1,0 +1,27 @@
+<div class="template">
+    @switch(Template?.Type)
+    {
+        case ETemplate.ArtificialIntelligence:
+            <p class="title">Machine Learning</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            break;
+        case ETemplate.MachineLearning:
+            <p class="title">AI</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            break;
+        case ETemplate.Database:
+            <p class="title">Database</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            <p>Specs: ddfgjdlkg</p>
+            break;
+    }
+</div>
+
+@code {
+    [Parameter] public Template? Template { get; set; }
+}

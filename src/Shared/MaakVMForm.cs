@@ -1,5 +1,6 @@
-﻿using Shared;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shared;
 
 public class MaakVMForm
 {
@@ -49,8 +50,8 @@ public class MaakVMForm
     public string? Gebruiker { get; set; }
 
     [Required]
-    public string[] poorten { get; set; }
+    public string[]? Poorten { get; set; }
 
     [Required]
-    public string? host { get; set; }
+    public string? Host { get; set; }
 }

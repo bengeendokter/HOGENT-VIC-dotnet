@@ -8,6 +8,7 @@ public class Template
             new ()
             {
                 Name = "Artificial Intelligence",
+                Type = ETemplate.ArtificialIntelligence,
                 Mode = EMode.PaaS,
                 Stats = new ()
                 {
@@ -21,6 +22,7 @@ public class Template
             new ()
             {
                 Name = "Database",
+                Type = ETemplate.Database,
                 Mode = EMode.IaaS,
                 Stats = new ()
                 {
@@ -34,6 +36,7 @@ public class Template
             new ()
             {
                 Name = "Machine Learning",
+                Type = ETemplate.MachineLearning,
                 Mode = EMode.SaaS,
                 Stats = new ()
                 {
@@ -46,6 +49,7 @@ public class Template
     };
 
     public string? Name { get; set; }
+    public ETemplate Type {get; set; }
     public EMode Mode { get; set; }
     public Stats? Stats { get; set; }
 }
