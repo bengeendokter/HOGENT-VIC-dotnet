@@ -1,0 +1,102 @@
+﻿@page "/aanvraag"
+@using Microsoft.Extensions.Logging
+@inject ILogger<VMAanmaken> Logger
+@using global::Shared
+
+<div class="requestForm">
+    <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
+       @*<DataAnnotationsValidator />*@
+       <ObjectGraphDataAnnotationsValidator />
+        <div class="headerRow">
+            <h1>Vraag een VM aan</h1>
+        </div>
+        <div class="input-group">
+
+            <label>
+                Naam voor de VM <br />
+                <InputText @bind-Value="vmRequest.VMInfo.Name"></InputText>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.Name)"></ValidationMessage>
+            </label>
+            <label>
+                Hostname<br />
+                <InputText @bind-Value="vmRequest.VMInfo.HostName"></InputText>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.HostName)"></ValidationMessage>
+            </label>
+            <label>
+                Start datum<br />
+                <InputDate @bind-Value="vmRequest.VMInfo.StartDate" ></InputDate>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.StartDate)"></ValidationMessage>
+            </label>
+            <label>
+                Eind datum<br />
+                <InputDate @bind-Value="vmRequest.VMInfo.EndDate"></InputDate>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.EndDate)"></ValidationMessage>
+            </label>
+            <label>
+                Is het kritisch dat de VM altijd online staat<br />
+                <InputSelect @bind-Value="vmRequest.VMInfo.IsHighAvailable">
+                    <option value=true> Ja</option>
+                    <option value=false> Nee</option>
+                </InputSelect>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.IsHighAvailable)"></ValidationMessage>
+            </label>
+            <label>
+                FQDN<br />
+                <InputText @bind-Value="vmRequest.VMInfo.FQDN"></InputText>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.FQDN)"></ValidationMessage>
+            </label>
+            <label>
+                Hoe vaak moeten er backups worden genomen<br />
+                <InputSelect @bind-Value="vmRequest.VMInfo.EBackupFrequency">
+                    <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
+                    <option value="@EBackupFrequency.Daily"> Dagelijks</option>
+                </InputSelect>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.EBackupFrequency)"></ValidationMessage>
+            </label>
+            <label>
+                Wanneer moet de VM online staan?<br />
+                <InputRadioGroup @bind-Value="vmRequest.VMInfo.Availability">
+                    <InputRadio Value="@EDay.Monday" />Test
+                    <InputRadio Value="@EDay.Thursday" />Test2
+                </InputRadioGroup>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.Availability)"></ValidationMessage>
+            </label>
+
+            <label>
+                Poorten:<br />
+                <InputText @bind-Value="vmRequest.VMInfo.Poorten"></InputText>
+                <ValidationMessage For="@(()=> vmRequest.VMInfo.Poorten)"></ValidationMessage>
+            </label>
+            <label>
+                Reden voor het aanvragen van de VM<br />
+                <InputTextArea id="reason" @bind-Value="vmRequest.Reason"></InputTextArea>
+                <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
+            </label>
+
+            <button type="submit">Submit</button>
+
+        </div>
+    </EditForm>
+</div>
+
+
+
+
+
+
+@code {
+    private VirtualMachineRequest vmRequest = new VirtualMachineRequest();
+
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("submit");
+        Console.WriteLine(vmRequest.Reason);
+    }
+
+    protected override void OnInitialized()
+    {
+        vmRequest.VMInfo.StartDate = DateTime.Now;
+        vmRequest.VMInfo.EndDate = DateTime.Now;
+    }
+}
