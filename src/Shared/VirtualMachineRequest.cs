@@ -13,4 +13,6 @@ public class VirtualMachineRequest
     [Required]
     [ValidateComplexType]
     public VMInfo VMInfo { get; set; } = new();
+
+    public ERequestStatus Status { get; set; }
 }
