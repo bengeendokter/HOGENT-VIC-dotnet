@@ -94,9 +94,4 @@
         Console.WriteLine(vmRequest.Reason);
     }
 
-    protected override void OnInitialized()
-    {
-        vmRequest.VMInfo.StartDate = DateTime.Now;
-        vmRequest.VMInfo.EndDate = DateTime.Now;
-    }
 }

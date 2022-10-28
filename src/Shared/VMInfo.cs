@@ -21,10 +21,10 @@ public class VMInfo
     [Required]
     [MinLength(3, ErrorMessage = "De hostname moet langer dan 3 characters zijn")]
     public string? HostName { get; set; }
-
-    public DateTime StartDate { get; set; }
     [Required]
-    public DateTime EndDate { get; set; }
+    public DateTime StartDate { get; set; } = DateTime.Now;
+    [Required]
+    public DateTime EndDate { get; set; } = DateTime.Now;
     [Required]
     public bool IsHighAvailable { get; set; }
     [Required]
