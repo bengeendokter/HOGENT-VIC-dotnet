@@ -18,9 +18,9 @@
 
 
 @code {
-    private List<VirtualMachine> List = new();
+    private List<VirtualMachine> list = new();
     protected override void OnInitialized()
     {
-        List = VMService.GetAll();
+        list = VMService.GetAll();
     }
 }
