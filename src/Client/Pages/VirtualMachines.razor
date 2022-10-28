@@ -1,5 +1,4 @@
 ﻿@page "/virtualmachines"
-@using global::Shared
 @inject IVirtualMachineService VMService
 
 <h1 id="vm-title">Virtuele Machines</h1>
@@ -19,10 +18,9 @@
 
 
 @code {
-    private List<VirtualMachine> list;
+    private List<VirtualMachine> List = new();
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-        list = VMService.GetAll();
+        List = VMService.GetAll();
     }
 }

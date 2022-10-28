@@ -1,8 +1,16 @@
-﻿namespace Shared;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shared;
 
 public class VirtualMachineRequest
 {
-    public VirtualMachine? VirtualMachine { get; set; }
-    public ERequestStatus Status { get; set; }
+    [Required]
     public DateTime Date { get; set; }
+
+    [StringLength(100, ErrorMessage = "Het veld reden is te lang")]
+    public string? Reason { get; set; }
+
+    [Required]
+    [ValidateComplexType]
+    public VMInfo VMInfo { get; set; } = new();
 }
