@@ -1,13 +1,15 @@
 ﻿@page "/virtualmachines/manage"
+@page "/virtualmachines/manage/{Id:int}"
 @using Microsoft.Extensions.Logging
 @inject ILogger<VMBeheren> Logger
+@inject IVirtualMachineService VirtualMachineService
 
 <div class="form">
     <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
         @*<DataAnnotationsValidator />*@
        <ObjectGraphDataAnnotationsValidator />
         <div class="headerRow">
-            <h1>Beheer VM</h1>
+            <h1>VM @(Id.HasValue ? $"Wijzigen - {_vm.VMInfo.Name}" : "Aanmaken")</h1>
         </div>
         <div class="input-group">
             <label class="templates" >
@@ -90,6 +92,16 @@
 
 @code {
     private VirtualMachine _vm = new();
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!Id.HasValue) return;
+
+        _vm = VirtualMachineService.Get(Id.Value) ?? new();
+    }
 
     private void HandleValidSubmit()
     {
