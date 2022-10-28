@@ -2,6 +2,7 @@
 @using global::Shared
 @inject IVirtualMachineService VMService
 
+@*TODO change page title*@
 <h1>Virtuele Machine (@vm.Name)</h1>
 
 <h2>Algemeen</h2>
@@ -13,6 +14,14 @@
     <tr>
         <th>Hostname</th>
         <td>@vm.Hostname</td>
+    </tr>
+    <tr>
+        <th>Gebruiker</th>
+        <td></td>
+    </tr>
+    <tr>
+        <th>Wachtwoord</th>
+        <td></td>
     </tr>
     <tr>
         <th>Startdatum gebruik</th>
