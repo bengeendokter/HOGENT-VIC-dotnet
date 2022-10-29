@@ -8,7 +8,6 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 15px;
     padding-bottom: 0;
 }
 
@@ -30,39 +29,46 @@
     width: 100%;
     flex-direction: column;
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 10px;
-    border-bottom: 2px solid var(--clr-secondary);
 }
 
-.nav_option:nth-child(2n) {
-    background-color: var(--clr-primary);
+::deep .nav_link:hover, ::deep .nav_link:hover svg {
+    background-color: var(--clr-CTA);
+    color: var(--clr-primary);
+    fill: var(--clr-primary);
 }
 
-.nav_option:nth-child(2n+1) {
-    background-color: var(--clr-background-blue);
+::deep .nav_link.active {
+    background-color: var(--clr-text-color);
+    color: var(--clr-primary);
+    fill: var(--clr-primary);
+    pointer-events: none;
 }
 
-.nav_option ::deep a:hover, .nav_option ::deep a:hover svg{
-    background-color: var(--clr-secondary);
-    color: var(--clr-CTA);
-    fill: var(--clr-CTA);
+::deep .nav_link.active svg {
+    fill: var(--clr-primary);
 }
 
-.nav_option {
-    height: 50px;
-    width: 100%;
-}
-
-.nav_option ::deep a {
+::deep .nav_link {
     text-decoration: none;
-    color: var(--clr-text-color); 
+    color: var(--clr-text-color);
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     padding: 10px;
+}
+
+::deep .nav_link:not(:last-child) {
+    border-bottom: 1px dashed var(--clr-text-color);
+}
+
+.nav_options {
+    border-top: 1px solid var(--clr-text-color);
+    border-bottom: 1px solid var(--clr-text-color);
 }
 
 .navbar-toggler {
@@ -101,33 +107,48 @@
         border:none;
     }
 
-    .nav_option:nth-child(2n) {
+    ::deep .nav_link:nth-child(2n) {
         background: none;
     }
 
-    .nav_option:nth-child(2n+1) {
+    ::deep .nav_link:nth-child(2n+1) {
         background: none;
     }
 
-    .nav_option {
-        width: auto;
+    ::deep .nav_link:not(:last-child) {
+        border-bottom: none;
     }
 
-    .nav_option ::deep a {
+    ::deep .nav_link {
         padding: 5px;
         width: auto;
+        margin: 0;
+        display: inline-block;
+        display: flex;
+        align-items: center;
+        background: red;
+        font-size: 18px;
+        position: relative;
+        border-bottom: none;
     }
 
-    .nav_option ::deep a:hover
-    {
-    background: none;
-    color: var(--clr-CTA);
-    border-bottom: 1px solid var(--clr-CTA);
+    ::deep .nav_link:hover {
+        background: none;
+        color: var(--clr-CTA)
     }
 
-    .nav_option ::deep a:hover svg {
+    ::deep .nav_link:hover svg {
         background: none;
         fill: var(--clr-CTA);
+    }
+
+    ::deep .nav_link.active {
+        background: none;
+        color: var(--clr-text-color);
+    }
+
+    ::deep .nav_link.active svg {
+        fill: var(--clr-text-color);
     }
 
     .navbar-toggler {
@@ -141,5 +162,42 @@
 
     .goneIfScreenBig {
         display: none;
+    }
+
+    ::deep .nav_link::after {
+        position: absolute;
+        content: '';
+        height: 2px;
+        bottom: -4px;
+        margin: auto;
+        left: 0;
+        right: 0;
+        width: 0%;
+        background: var(--clr-CTA);
+        -o-transition: 0.2s ease-out;
+        -ms-transition: 0.2s ease-out;
+        -moz-transition: 0.2s ease-out;
+        -webkit-transition: 0.2s ease-out;
+        transition: 0.25s ease-in-out;
+        }
+
+     ::deep .nav_link.active {
+        color: var(--clr-text-color)
+    }
+
+    ::deep .nav_link.active::after {
+        position: absolute;
+        content: '';
+        height: 2px;
+        bottom: -4px;
+        margin: auto;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: var(--clr-text-color);
+    }
+
+    ::deep .nav_link:hover::after {
+        width: 100%;
     }
 }

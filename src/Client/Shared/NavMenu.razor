@@ -11,17 +11,27 @@
         @*
         ########## Om link te maken met andere pagina vervang "/" met "/*pagina_naam*" ##########
         *@
-            <div class="nav_option"><NavLink href="/" class="nav_link">Gebruikers</NavLink></div>
-            <div class="nav_option"><NavLink href="/" class="nav_link">Klanten</NavLink></div>
-            <div class="nav_option"><NavLink href="/virtualmachines" class="nav_link">Virtuele Machines</NavLink></div>
-            <div class="nav_option"><NavLink href="/" class="nav_link">Aanvragen</NavLink></div>
-            <div class="nav_option"><NavLink href="/" class="nav_link">Historiek</NavLink></div>
-            <div class="nav_option"><NavLink href="/" class="nav_link icon_link">
+            <NavLink href="/gebruikers" class="nav_link" Match=NavLinkMatch.All>
+                <div>Gebruikers</div>
+            </NavLink>
+            <NavLink href="/klanten" class="nav_link" Match=NavLinkMatch.All>
+                <div>Klanten</div>
+            </NavLink>
+            <NavLink href="/virtuele machines" class="nav_link" Match=NavLinkMatch.All>
+                <div>Virtuele Machines</div>
+            </NavLink>
+            <NavLink href="/aanvragen" class="nav_link" Match=NavLinkMatch.All>
+                <div>Aanvragen</div>
+            </NavLink>
+            <NavLink href="/historiek" class="nav_link" Match=NavLinkMatch.All>
+                <div>Historiek</div>
+            </NavLink>
+            <NavLink href="/account" class="nav_link icon_link" Match=NavLinkMatch.All>
                 <UserIcon></UserIcon> <span class="goneIfScreenBig">Account</span>
-            </NavLink></div>
-            <div class="nav_option"><NavLink href="/" class="nav_link icon_link">
+            </NavLink>
+            <NavLink href="/logoutbuttonlink" class="nav_link icon_link" Match=NavLinkMatch.All>
                 <LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span>
-            </NavLink></div>
+            </NavLink>
     </div>
 </div>
 
