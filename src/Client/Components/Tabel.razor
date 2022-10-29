@@ -1,5 +1,4 @@
-﻿
-<table>
+﻿<table>
     <thead> 
         <tr>
 
@@ -8,7 +7,10 @@
             var Key = fieldInfo.Name;
             var b = string.Concat(@Key[0].ToString().ToUpper(), @Key.AsSpan(1));
 
-            <th>@b</th>
+            if (b != "Id") {
+                    <th>@b</th>
+            }
+                
         }
 
         </tr>
@@ -24,11 +26,27 @@
                 var Key = fieldInfo.Name;
                 var Value = fieldInfo.GetValue(Item);
 
-                @if (@Key == "activiteit")
+                @if (@Key == "Acties")
                 {
-                    <td><img src="favicon.png" /></td>
+                        /*<td><img src="favicon.png" /></td>*/
+                        <td>
+                            <div>
+                              
+                                <button style="border: none; background: none;">
+                                    <span class="material-icons" style="color: black" @onclick="@(() => Console.WriteLine($"Edit user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">edit</span>
+                                </button>
+                                <button style="border: none; background: none;" @onclick="@(() => Console.WriteLine($"Deleting user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">
+                                    <span class="material-icons" style="color: red">delete</span>
+                                </button>
+                                <button style="border: none; background: none;" @onclick="@(() => Console.WriteLine($"More info about user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">
+                                    <span class="material-icons" style="color: blue">info</span>
+                                </button>
+                            </div>
+                        </td>
+
                 }
-                else
+
+                @if (@Key != "Id" && Key != "Acties")
                 {
                     <td>@Value</td>
                 }   
@@ -43,15 +61,19 @@
 @code {
     public class Klant
     {
-        public string naam = "";
-        public string type = "";
-        public string email = "";
-        public string departement = "";
+        public int Id = 0;
+        public string Naam = "";
+        public string Type = "";
+        public string Email = "";
+        public string Departement = "";
+        public string Acties = "";
     };
 
     public ICollection<Klant> mockKlanten = new List<Klant> {
-        new Klant() { naam = "Marc Asselberg", type = "Intern", email = "marc.asselberg@hogent.be", departement="HOGENT" },
-        new Klant() { naam = "Marc Asselberg", type = "Intern", email = "marc.asselberg@hogent.be", departement="HOGENT" },
-        new Klant() { naam = "Marc Asselberg", type = "Intern", email = "marc.asselberg@hogent.be", departement="HOGENT" }
+        new Klant() { Id = 1,  Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
+    new Klant() { Id = 2, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
+        new Klant() { Id = 3, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" }
     };
+
+
 }
