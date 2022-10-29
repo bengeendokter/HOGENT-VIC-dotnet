@@ -1,50 +1,50 @@
-﻿@page "/virtualmachines/{id:int}"
+﻿@page "/virtuele_machines/{id:int}"
 @using global::Shared
 @inject IVirtualMachineService VMService
 
-<h1>Virtuele Machine (@vm.Name)</h1>
+<h1>Virtuele Machine (@vm.VMInfo.Name)</h1>
 
 <h2>Algemeen</h2>
 <table class="table">
     <tr>
         <th>Naam</th>
-        <td>@vm.Name</td>
+        <td>@vm.VMInfo.Name</td>
     </tr>
     <tr>
         <th>Hostname</th>
-        <td>@vm.Hostname</td>
+        <td>@vm.VMInfo.HostName</td>
     </tr>
     <tr>
         <th>Startdatum gebruik</th>
-        <td>@vm.StartDate</td>
+        <td>@vm.VMInfo.StartDate</td>
     </tr>
     <tr>
         <th>Einddatum gebruik</th>
-        <td>@vm.EndDate</td>
+        <td>@vm.VMInfo.EndDate</td>
     </tr>
     <tr>
         <th>FQDN</th>
-        <td>@vm.FQDN</td>
+        <td>@vm.VMInfo.FQDN</td>
     </tr>
     <tr>
         <th>Hoge beschikbaarheid</th>
-        <td>@(vm.IsHighlyAvailable ? "Ja" : "Nee")</td>
+        <td>@(vm.VMInfo.IsHighAvailable ? "Ja" : "Nee")</td>
     </tr>
     <tr>
         <th>Template</th>
-        <td>@vm.Template.Name</td>
+        <td>@vm.VMInfo.Template.Name</td>
     </tr>
     <tr>
         <th>Backup</th>
-        <td>@(vm.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
+        <td>@(vm.VMInfo.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
     </tr>
     <tr>
         <th>Modus</th>
-        <td>@vm.Template.Mode</td>
+        <td>@vm.VMInfo.Template.Mode</td>
     </tr>
     <tr>
         <th>Dagen besschikbaar</th>
-        <td>@vm.AvailableDays</td>
+        <td>@vm.VMInfo.Availability</td>
     </tr>
 </table>
 
@@ -56,15 +56,15 @@
     </tr>
     <tr>
         <th>CPU cores</th>
-        <td>@vm.Template.Stats.Cpu</td>
+        <td>@vm.VMInfo.Template?.Stats?.Cpu</td>
     </tr>
     <tr>
         <th>Geheugen</th>
-        <td>@vm.Template.Stats.Ram</td>
+        <td>@vm.VMInfo.Template.Stats.Ram</td>
     </tr>
     <tr>
         <th>Opslag</th>
-        <td>@vm.Template.Stats.Storage</td>
+        <td>@vm.VMInfo.Template.Stats.Storage</td>
     </tr>
 </table>
 

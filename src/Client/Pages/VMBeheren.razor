@@ -1,0 +1,110 @@
+﻿@page "/virtualmachines/manage"
+@page "/virtualmachines/manage/{Id:int}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<VMBeheren> Logger
+@inject IVirtualMachineService VirtualMachineService
+
+<div class="form">
+    <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
+        @*<DataAnnotationsValidator />*@
+       <ObjectGraphDataAnnotationsValidator />
+        <div class="headerRow">
+            <h1>VM @(Id.HasValue ? $"Wijzigen - {_vm.VMInfo.Name}" : "Aanmaken")</h1>
+        </div>
+        <div class="input-group">
+            <label class="templates" >
+                Templates <br />
+                @foreach (var template in Template.TEMPLATES.Values)
+                {
+                    <TemplateCard Template="@template" />
+                }
+                <br />
+            </label>
+            <label>
+                Naam<br />
+                <InputText @bind-Value="_vm.VMInfo.Name"></InputText>
+                <ValidationMessage For="@(()=> _vm.VMInfo.Name)"></ValidationMessage>
+            </label>
+            <label>
+                Host<br />
+                <InputSelect @bind-Value="_vm.Host">
+                    <option value="server1">Server 1</option>
+                    <option value="server2">Server 2</option>
+                </InputSelect>
+                <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
+            </label>
+            <label>
+                Hostname<br />
+                <InputText @bind-Value="_vm.VMInfo.HostName"></InputText>
+                <ValidationMessage For="@(()=> _vm.VMInfo.HostName)"></ValidationMessage>
+            </label>
+            <label>
+                Start datum<br />
+                <InputDate @bind-Value="_vm.VMInfo.StartDate" ></InputDate>
+                <ValidationMessage For="@(()=> _vm.VMInfo.StartDate)"></ValidationMessage>
+            </label>
+            <label>
+                Eind datum<br />
+                <InputDate @bind-Value="_vm.VMInfo.EndDate"></InputDate>
+                <ValidationMessage For="@(()=> _vm.VMInfo.EndDate)"></ValidationMessage>
+            </label>
+            <label>
+                Is het kritisch dat de VM altijd online staat<br />
+                <InputSelect @bind-Value="_vm.VMInfo.IsHighAvailable">
+                    <option value=true> Ja</option>
+                    <option value=false> Nee</option>
+                </InputSelect>
+                <ValidationMessage For="@(()=> _vm.VMInfo.IsHighAvailable)"></ValidationMessage>
+            </label>
+            <label>
+                FQDN<br />
+                <InputText @bind-Value="_vm.VMInfo.FQDN"></InputText>
+                <ValidationMessage For="@(()=> _vm.VMInfo.FQDN)"></ValidationMessage>
+            </label>
+            <label>
+                Hoe vaak moeten er backups worden genomen<br />
+                <InputSelect @bind-Value="_vm.VMInfo.EBackupFrequency">
+                    <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
+                    <option value="@EBackupFrequency.Daily"> Dagelijks</option>
+                </InputSelect>
+                <ValidationMessage For="@(()=> _vm.VMInfo.EBackupFrequency)"></ValidationMessage>
+            </label>
+            <label>
+                Wanneer moet de VM online staan?<br />
+                <InputRadioGroup @bind-Value="_vm.VMInfo.Availability">
+                    <InputRadio Value="@EDay.Monday" />Test
+                    <InputRadio Value="@EDay.Thursday" />Test2
+                </InputRadioGroup>
+                <ValidationMessage For="@(()=> _vm.VMInfo.Availability)"></ValidationMessage>
+            </label>
+
+            <label>
+                Poorten:<br />
+                <InputText @bind-Value="_vm.VMInfo.Poorten"></InputText>
+                <ValidationMessage For="@(()=> _vm.VMInfo.Poorten)"></ValidationMessage>
+            </label>
+
+            <button type="submit">Submit</button>
+
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private VirtualMachine _vm = new();
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!Id.HasValue) return;
+
+        _vm = VirtualMachineService.Get(Id.Value) ?? new();
+    }
+
+    private void HandleValidSubmit()
+    {
+        
+    }
+}

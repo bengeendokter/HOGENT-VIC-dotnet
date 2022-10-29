@@ -1,17 +1,15 @@
-﻿namespace Shared;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shared;
 
 public class VirtualMachine
 {
     public int Id { get; set; }
-    public string? Name { get; set; }
-    public string? Hostname { get; set; }
-    public string? FQDN { get; set; }
-    public bool IsHighlyAvailable { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public bool IsCreated { get; set; }
+    [Required]
+    public string Host { get; set; }
+    [Required]
+    [ValidateComplexType]
+    public VMInfo? VMInfo { get; set; } = new();
+    public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }
-    public Template? Template { get; set; }
-    public EDay AvailableDays { get; set; }
-    public EBackupFrequency BackupFrequency { get; set; }
 }

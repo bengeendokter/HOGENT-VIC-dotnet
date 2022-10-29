@@ -3,7 +3,7 @@ main {
     height: 100%;
     background-color: var(--clr-background-blue);
     background-image: url('images/waves.png');
-    background-size: 100% 33%;
+    background-size: 100% 45%;
     background-position: center bottom;
     background-repeat: no-repeat;
     padding: 15px 10px;
