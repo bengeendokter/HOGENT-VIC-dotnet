@@ -3,7 +3,7 @@
     border-spacing: 0;
     width: 100%;
     border-radius: 10em;
-    /*border: 1px solid #ddd;*/
+    color: var(--clr-text-color);
 }
 
 th {

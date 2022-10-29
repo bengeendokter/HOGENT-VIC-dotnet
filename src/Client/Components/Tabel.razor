@@ -33,13 +33,13 @@
                             <div>
                               
                                 <button style="border: none; background: none;">
-                                    <span class="material-icons" style="color: black" @onclick="@(() => Console.WriteLine($"Edit user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">edit</span>
+                                    <span class="material-icons" style="color: slategray" @onclick="@(() => Console.WriteLine($"Edit user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">edit</span>
                                 </button>
                                 <button style="border: none; background: none;" @onclick="@(() => Console.WriteLine($"Deleting user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">
                                     <span class="material-icons" style="color: red">delete</span>
                                 </button>
                                 <button style="border: none; background: none;" @onclick="@(() => Console.WriteLine($"More info about user with id {Item.GetType().GetFields()[0].GetValue(Item)}"))">
-                                    <span class="material-icons" style="color: blue">info</span>
+                                    <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">info</span>
                                 </button>
                             </div>
                         </td>
