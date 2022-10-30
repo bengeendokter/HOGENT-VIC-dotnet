@@ -11,4 +11,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddSingleton<IVirtualMachineService, VirtualMachineService>();
 
+builder.Services.AddSingleton<IUsageService, FakeUsageStatsService>();
+
 await builder.Build().RunAsync();

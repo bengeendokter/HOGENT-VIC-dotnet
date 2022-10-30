@@ -11,11 +11,17 @@
     --clr-background-blue: #f2f5fa;
     --clr-usage-container: #89c5f6;
     --clr-usage-circle-top: #1B1651;
+    --clr-boxshadow-usage: rgba(149, 157, 165, 0.2);
     
     --clr-CTA: #309FCF;
     --clr-text-color: #504F4F;
     --clr-red: #DB305E;
     --clr-green: #36BD7C;
+    --clr-usage-black: black;
+
+    --clr-used-green: #36BD7C;
+    --clr-used-orange: #FCC00D;
+    --clr-used-red: #E63462;
 }
 
 :root.dark_mode {
@@ -25,11 +31,12 @@
     --clr-secondary-var2: #eff5fb;
     --clr-secondary-var3: #f3f5fa;
     --clr-background-blue: #0F1729;
-
+    --clr-boxshadow-usage: rgb(221, 203, 203, 0,39);
     --clr-CTA: #38BDF8;
     --clr-text-color: #FFFFFF;
     --clr-red: #FA738C;
     --clr-green: #36BD7C;
+    --clr-usage-black: white;
 }
 
 h1{
