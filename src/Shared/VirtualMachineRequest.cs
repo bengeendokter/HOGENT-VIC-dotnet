@@ -4,15 +4,19 @@ namespace Shared;
 
 public class VirtualMachineRequest
 {
-    [Required]
-    public DateTime Date { get; set; }
 
-    [StringLength(100, ErrorMessage = "Het veld reden is te lang")]
+    public DateTime Date { get; set; }
+    [Required]
+    public DateTime StartDate { get; set; } = DateTime.Now;
+    [Required]
+    public DateTime EndDate { get; set; } = DateTime.Now;
+    [Required]
+    [StringLength(300, ErrorMessage = "Het veld reden is te lang")]
+    [MinLength(30, ErrorMessage = "Geef voldoende informatie bij het aanvragen van de VM.")]
     public string? Reason { get; set; }
 
     [Required]
-    [ValidateComplexType]
-    public VMInfo VMInfo { get; set; } = new();
+    public string projectNaam { get; set; }
 
     public ERequestStatus Status { get; set; }
 }

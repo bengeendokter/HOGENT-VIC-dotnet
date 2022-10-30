@@ -1,6 +1,7 @@
 ﻿
 .template {
-    background-color: var(--clr-secondary-var3);
+    background-color: var(--clr-primary);
+    border-radius: 5px;
     width: 250px;
     height: 150px;
     margin: 20px;

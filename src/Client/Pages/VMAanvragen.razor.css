@@ -1,10 +1,13 @@
 ﻿body {
 }
+.form{
+    max-width: 1000px;
+    margin: auto;
+}
 .input-group {
     display: flex;
     flex-wrap: wrap;
     align-content: center;
-    width: 1000px;
     margin: auto;
 }
 label {
@@ -12,3 +15,13 @@ label {
     min-width: 200px;
     margin-bottom: 20px;
 }
+.input-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.reden{
+    width: 100%;
+    
+}
+
