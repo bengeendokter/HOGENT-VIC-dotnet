@@ -1,5 +1,5 @@
 main {
-    min-height: 100vh;
+    min-height: 200vh;
     height: 100%;
     background-color: var(--clr-background-blue);
     background-image: url('images/waves.png');

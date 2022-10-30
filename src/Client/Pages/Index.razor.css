@@ -1,3 +1,14 @@
 ﻿h1 {
     color: var(--clr-red);
 }
+
+.content {
+    display: flex;
+    flex-flow: row;
+    height: 100%;
+    gap: 15px;
+}
+
+.main_content {
+    flex: 1 1 auto;
+}
