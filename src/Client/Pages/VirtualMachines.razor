@@ -1,8 +1,10 @@
 ﻿@page "/virtuele_machines"
 @inject IVirtualMachineService VMService
 
+@*TODO change page title*@
 <h1 id="vm-title">Virtuele Machines</h1>
 
+@*TODO maybe change to table *@
 <section aria-labelledby="vm-title" class="vm_list">
 @foreach(VirtualMachine vm in list)
 {

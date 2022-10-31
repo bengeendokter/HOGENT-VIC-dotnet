@@ -2,7 +2,8 @@
 @using global::Shared
 @inject IVirtualMachineService VMService
 
-<h1>Virtuele Machine (@vm.VMInfo.Name)</h1>
+@*TODO change page title*@
+<h1>Virtuele Machine (@vm.Name)</h1>
 
 <h2>Algemeen</h2>
 <table class="table">
@@ -13,6 +14,14 @@
     <tr>
         <th>Hostname</th>
         <td>@vm.VMInfo.HostName</td>
+    </tr>
+    <tr>
+        <th>Gebruiker</th>
+        <td></td>
+    </tr>
+    <tr>
+        <th>Wachtwoord</th>
+        <td></td>
     </tr>
     <tr>
         <th>Startdatum gebruik</th>
@@ -44,7 +53,8 @@
     </tr>
     <tr>
         <th>Dagen besschikbaar</th>
-        <td>@vm.VMInfo.Availability</td>
+        @*TODO use constains to check for a certain day*@
+        <td>@vm.AvailableDays</td>
     </tr>
 </table>
 
@@ -68,6 +78,7 @@
     </tr>
 </table>
 
+@*TODO move wijzigen to top right*@
 <a>Wijzigen</a>
 
 @code {

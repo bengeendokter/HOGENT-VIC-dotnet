@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 :root {
+    color-scheme: light;
     --clr-primary: #FFFFFF;
     --clr-secondary: #d3e2f3;
     --clr-secondary-var1: #e6f0f9;
@@ -17,6 +18,7 @@
 }
 
 :root.dark_mode {
+    color-scheme: dark;
     --clr-primary: #232F4A;
     --clr-secondary: #0b1b41;
     --clr-secondary-var1: #e6f0f9;
