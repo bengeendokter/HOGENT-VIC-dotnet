@@ -3,7 +3,7 @@
 @inject IVirtualMachineService VMService
 
 @*TODO change page title*@
-<h1>Virtuele Machine (@vm.Name)</h1>
+<h1>Virtuele Machine (@vm.VMInfo.Name)</h1>
 
 <h2>Algemeen</h2>
 <table class="table">
@@ -54,7 +54,7 @@
     <tr>
         <th>Dagen besschikbaar</th>
         @*TODO use constains to check for a certain day*@
-        <td>@vm.AvailableDays</td>
+        <td>@vm.VMInfo.Availability</td>
     </tr>
 </table>
 
