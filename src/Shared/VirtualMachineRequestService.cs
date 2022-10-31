@@ -39,7 +39,8 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor een bachlerproef onderzoek ivm AI.",
             projectNaam = "bachlerproef AI",
-            Status = ERequestStatus.Accepted
+            Status = ERequestStatus.Accepted,
+            EmailAanvrager = "test@help.be"
         };
         var request2 = new VirtualMachineRequest
         {
@@ -49,7 +50,8 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor een DevOps opdracht.",
             projectNaam = "Opdracht",
-            Status = ERequestStatus.Handled
+            Status = ERequestStatus.Handled,
+            EmailAanvrager = "test@help.be"
         };
         var request3 = new VirtualMachineRequest
         {
@@ -59,7 +61,8 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor iets online te zetten",
             projectNaam = "Online",
-            Status = ERequestStatus.Denied
+            Status = ERequestStatus.Denied,
+            EmailAanvrager = "test@help.be"
         };
     }
 }
