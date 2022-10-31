@@ -3,7 +3,8 @@
     flex-direction: column;
     gap: 2px;
     font-family: "Roboto", sans-serif;
-    color: var(--clr-primary);
+    color: white;
+    padding: 10px;   
 }
 
 p {

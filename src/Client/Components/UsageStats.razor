@@ -1,6 +1,11 @@
 ﻿@inject IUsageService UsageService
 
-<div class="usage_bar">
+
+<div class="usagebar_toggler @UsageTogglerStyleCss" @onclick="ToggleUsageMenu">
+    <OpenIcon />
+</div>
+
+<div class="usage_bar @UsageVisibleCss">
     <div class="container">
         <div class="top_content">
             <div class="top_circle">
@@ -30,5 +35,15 @@
     {
         await base.OnInitializedAsync();
         usages = await UsageService.getAllUsageStats();
+    }
+
+    private bool disappearOptions = false;
+
+    private string? UsageVisibleCss => disappearOptions ? "available" : null;
+    private string? UsageTogglerStyleCss => disappearOptions ? "yes_available" : null;
+
+    private void ToggleUsageMenu()
+    {
+        disappearOptions = !disappearOptions;
     }
 }

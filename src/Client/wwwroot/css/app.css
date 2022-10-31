@@ -12,6 +12,7 @@
     --clr-usage-container: #89c5f6;
     --clr-usage-circle-top: #1B1651;
     --clr-boxshadow-usage: rgba(149, 157, 165, 0.2);
+
     
     --clr-CTA: #309FCF;
     --clr-text-color: #504F4F;
@@ -37,6 +38,7 @@
     --clr-red: #FA738C;
     --clr-green: #36BD7C;
     --clr-usage-black: white;
+    --clr-usage-container: rgba(11, 150, 211, 0.5);
 }
 
 h1{
