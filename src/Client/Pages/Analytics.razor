@@ -22,23 +22,26 @@
     <input type="date" id="datum" name="datum" 
            min="2020-01-01" max="2023-01-01" @bind-value="activitydatum" @bind-value:event="oninput">
 
-    <p>@dag</p>
+    <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
     <br />
-    <p>@activitydatum.Day</p>
-    <p>@activitydatum.Month</p>
-    <p>@activitydatum.Year</p>
-
-    <p>@aantal</p>
-    
-    
+    <p>capaciteit cpu: @cpu</p>
+    <p>capaciteit ram: @ram</p>
+    <p>capaciteit opslag: @storage</p>
+   
 </div>
 
 
 @code {
     private List<Activity> _activities = new();
     private DateTime activitydatum = DateTime.Now;
-    private int dag => activitydatum.Month;
-    private int aantal => _activities.Where(a => (a.Date.Month == dag)).Count();
+
+    /*TODO business logica voor filter methode: filtert nu op Deleted*/
+    private List<Activity> act => _activities.Where(a => (a.Type == EActivity.Deleted)).ToList();
+
+    /*capaciteit cpu, ram en opslag*/
+    private int cpu => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
+    private int ram => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
+    private int storage => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
 
     protected override void OnInitialized()
     {
