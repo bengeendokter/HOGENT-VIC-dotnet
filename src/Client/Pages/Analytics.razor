@@ -16,8 +16,25 @@
 
 </div>
 
+<div>
+    <label for="datum">Kies een datum:</label>
+
+    <input type="date" id="datum" name="datum" 
+           min="2020-01-01" max="2023-01-01" @bind-value="activitydatum" @bind-value:event="oninput">
+
+    <p>@jaar</p>
+    <br />
+    <p>@activitydatum.Day</p>
+    <p>@activitydatum.Month</p>
+    <p>@activitydatum.Year</p>
+    
+</div>
+
+
 @code {
     private List<Activity> _activities = new();
+    private DateTime activitydatum = DateTime.Now;
+    private int jaar => activitydatum.Year;
 
     protected override void OnInitialized()
     {
