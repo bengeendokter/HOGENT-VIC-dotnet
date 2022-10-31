@@ -5,7 +5,7 @@ namespace Shared;
 public class VirtualMachine
 {
     public int Id { get; set; }
-    public Client client { get; set; }
+    public Client? client { get; set; }
     public DateTime CreateDate { get; set; }
     [Required]
     [StringLength(30, ErrorMessage = "De naam is te lang")]
@@ -31,7 +31,7 @@ public class VirtualMachine
     [Required]
     public Template? Template { get; set; }
     [Required]
-    public string Host { get; set; }
+    public string? Host { get; set; }
     [Required]
     [ValidateComplexType]
     public bool IsActive { get; set; }

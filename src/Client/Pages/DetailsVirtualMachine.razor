@@ -3,7 +3,14 @@
 @inject IVirtualMachineService VMService
 
 @*TODO change page title*@
-<h1>Virtuele Machine (@vm.Name)</h1>
+<h1>Virtuele Machine (@vm?.Name)</h1>
+
+@if (vm == null)
+{
+    <p>Loading...</p>
+    return;
+}
+
 
 <h2>Algemeen</h2>
 <table class="table">
@@ -41,7 +48,7 @@
     </tr>
     <tr>
         <th>Template</th>
-        <td>@vm.Template.Name</td>
+        <td>@vm.Template?.Name</td>
     </tr>
     <tr>
         <th>Backup</th>
@@ -49,7 +56,7 @@
     </tr>
     <tr>
         <th>Modus</th>
-        <td>@vm.Template.Mode</td>
+        <td>@vm.Template?.Mode</td>
     </tr>
     <tr>
         <th>Dagen besschikbaar</th>
@@ -70,11 +77,11 @@
     </tr>
     <tr>
         <th>Geheugen</th>
-        <td>@vm.Template.Stats.Ram</td>
+        <td>@vm.Template?.Stats?.Ram</td>
     </tr>
     <tr>
         <th>Opslag</th>
-        <td>@vm.Template.Stats.Storage</td>
+        <td>@vm.Template?.Stats?.Storage</td>
     </tr>
 </table>
 
@@ -83,7 +90,7 @@
 
 @code {
     [Parameter] public int Id { get; set; }
-    private VirtualMachine vm;
+    private VirtualMachine? vm;
 
     protected override void OnInitialized()
     {

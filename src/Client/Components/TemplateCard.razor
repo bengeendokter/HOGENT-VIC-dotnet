@@ -1,9 +1,12 @@
 <div class="template">
-    <p class="title">@Template.Name</p>
-    <p>Mode: @Template.Mode</p>
-    <p>CPU: @Template.Stats.Cpu</p>
-    <p>RAM: @Template.Stats.Ram</p>
-    <p>Storage: @Template.Stats.Storage</p>
+    @if (Template != null)
+    {
+        <p class="title">@Template.Name</p>
+        <p>Mode: @Template.Mode</p>
+        <p>CPU: @Template.Stats?.Cpu</p>
+        <p>RAM: @Template.Stats?.Ram</p>
+        <p>Storage: @Template.Stats?.Storage</p>
+    }
 </div>
 
 @code {

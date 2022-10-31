@@ -20,7 +20,7 @@ public class VirtualMachineRequest
     public string? NummerAanvrager { get; set; }
 
     [Required]
-    public string projectNaam { get; set; }
+    public string? projectNaam { get; set; }
 
     public ERequestStatus Status { get; set; }
 }
