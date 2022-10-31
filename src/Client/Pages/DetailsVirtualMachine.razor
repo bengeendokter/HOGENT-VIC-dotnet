@@ -3,17 +3,17 @@
 @inject IVirtualMachineService VMService
 
 @*TODO change page title*@
-<h1>Virtuele Machine (@vm.VMInfo.Name)</h1>
+<h1>Virtuele Machine (@vm.Name)</h1>
 
 <h2>Algemeen</h2>
 <table class="table">
     <tr>
         <th>Naam</th>
-        <td>@vm.VMInfo.Name</td>
+        <td>@vm.Name</td>
     </tr>
     <tr>
         <th>Hostname</th>
-        <td>@vm.VMInfo.HostName</td>
+        <td>@vm.HostName</td>
     </tr>
     <tr>
         <th>Gebruiker</th>
@@ -25,36 +25,36 @@
     </tr>
     <tr>
         <th>Startdatum gebruik</th>
-        <td>@vm.VMInfo.StartDate</td>
+        <td>@vm.StartDate</td>
     </tr>
     <tr>
         <th>Einddatum gebruik</th>
-        <td>@vm.VMInfo.EndDate</td>
+        <td>@vm.EndDate</td>
     </tr>
     <tr>
         <th>FQDN</th>
-        <td>@vm.VMInfo.FQDN</td>
+        <td>@vm.FQDN</td>
     </tr>
     <tr>
         <th>Hoge beschikbaarheid</th>
-        <td>@(vm.VMInfo.IsHighAvailable ? "Ja" : "Nee")</td>
+        <td>@(vm.IsHighAvailable ? "Ja" : "Nee")</td>
     </tr>
     <tr>
         <th>Template</th>
-        <td>@vm.VMInfo.Template.Name</td>
+        <td>@vm.Template.Name</td>
     </tr>
     <tr>
         <th>Backup</th>
-        <td>@(vm.VMInfo.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
+        <td>@(vm.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
     </tr>
     <tr>
         <th>Modus</th>
-        <td>@vm.VMInfo.Template.Mode</td>
+        <td>@vm.Template.Mode</td>
     </tr>
     <tr>
         <th>Dagen besschikbaar</th>
         @*TODO use constains to check for a certain day*@
-        <td>@vm.VMInfo.Availability</td>
+        <td>@vm.Availability</td>
     </tr>
 </table>
 
@@ -66,15 +66,15 @@
     </tr>
     <tr>
         <th>CPU cores</th>
-        <td>@vm.VMInfo.Template?.Stats?.Cpu</td>
+        <td>@vm.Template?.Stats?.Cpu</td>
     </tr>
     <tr>
         <th>Geheugen</th>
-        <td>@vm.VMInfo.Template.Stats.Ram</td>
+        <td>@vm.Template.Stats.Ram</td>
     </tr>
     <tr>
         <th>Opslag</th>
-        <td>@vm.VMInfo.Template.Stats.Storage</td>
+        <td>@vm.Template.Stats.Storage</td>
     </tr>
 </table>
 

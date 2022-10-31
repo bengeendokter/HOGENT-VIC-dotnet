@@ -10,7 +10,7 @@
 {
         <a class="link" href=@($"/virtuele_machines/{@vm.Id}")>
             <div class="vm_container" >
-                <p class="vm_name">@vm.VMInfo.Name</p>
+                <p class="vm_name">@vm.Name</p>
                 <p class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit")</p>
             </div>
         </a>
