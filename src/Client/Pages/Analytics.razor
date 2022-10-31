@@ -1,4 +1,5 @@
 ﻿@page "/historiek"
+@inject IActivityService ActivityService
 
 <PageTitle>Rapportering</PageTitle>
 
@@ -6,9 +7,23 @@
     <h1 style="padding: 8px 20px;">Historiek</h1>
 </div>
 <div style="display: flex; flex-direction: row;">
+    <div style="background-color: blue; width: 20%;">
+        <!-- Huidige gebruik component-->test
+    </div>
+    <div style="background-color:red; flex: 1 1 auto;"> 
+        test
+    </div>
 
 </div>
 
 @code {
     private List<Activity> _activities = new();
+
+    protected override void OnInitialized()
+    {
+        _activities = ActivityService.GetAll();
+        foreach(var activity in _activities) {
+            Console.WriteLine($"type: {activity.Type}, date: {activity.Date}");
+        }
+    }
 }
