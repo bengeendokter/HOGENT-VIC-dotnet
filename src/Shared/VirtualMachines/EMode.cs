@@ -1,4 +1,4 @@
-﻿namespace Shared;
+﻿namespace Shared.VirtualMachines;
 
 public enum EMode
 {

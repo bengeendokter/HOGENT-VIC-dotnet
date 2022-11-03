@@ -1,4 +1,4 @@
-﻿namespace Shared;
+﻿namespace Shared.VirtualMachines;
 
 [Flags]
 public enum EDay

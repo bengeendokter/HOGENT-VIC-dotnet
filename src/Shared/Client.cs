@@ -1,4 +1,6 @@
-﻿namespace Shared;
+﻿using Shared.VirtualMachines;
+
+namespace Shared;
 
 public class Client
 {
