@@ -8,7 +8,7 @@
 <section aria-labelledby="vm-title" class="vm_list">
 @foreach(VirtualMachine vm in list)
 {
-        <a class="link" href=@($"/virtuele_machines/{@vm.Id}")>
+        <a class="link" href=@($"/vm/{@vm.Id}")>
             <div class="vm_container" >
                 <p class="vm_name">@vm.Name</p>
                 <p class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit")</p>
