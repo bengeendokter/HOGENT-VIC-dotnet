@@ -16,11 +16,11 @@ public class VirtualMachineRequest
     public string? Reason { get; set; }
     [Required]
     public string? EmailAanvrager { get; set; }
-
-    public string? NummerAanvrager { get; set; }
+    [Required]
+    public int? NummerAanvrager { get; set; }
 
     [Required]
-    public string projectNaam { get; set; }
+    public string? ProjectNaam { get; set; }
 
     public ERequestStatus Status { get; set; }
 }

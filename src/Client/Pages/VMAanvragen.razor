@@ -9,18 +9,11 @@
             <h1>Vraag een VM aan</h1>
         </div>
 
-            <div class="input-row" >
-                <h2>Templates</h2>
-                @foreach (var template in Template.TEMPLATES.Values)
-                {
-                    <TemplateCard Template="@template" />
-                }
-            </div>
         <div class="input-group">
             <label>
                 Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
-                <InputText @bind-Value="vmRequest.projectNaam" ></InputText>
-                <ValidationMessage For="@(()=> vmRequest.projectNaam)"></ValidationMessage>
+                <InputText @bind-Value="vmRequest.ProjectNaam" ></InputText>
+                <ValidationMessage For="@(()=> vmRequest.ProjectNaam)"></ValidationMessage>
             </label>
 
             <label>
@@ -34,6 +27,16 @@
                 <ValidationMessage For="@(()=> vmRequest.EndDate)"></ValidationMessage>
             </label>
 
+            <label>
+                Email van de aanvrager <br/>
+                <InputText @bind-Value="vmRequest.EmailAanvrager"></InputText>
+            </label>
+
+            <label>
+                Nummer van de aanvrager<br/>
+                <InputNumber @bind-Value="vmRequest.NummerAanvrager"></InputNumber>
+            </label>
+
 
             <label class="reden">
                Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor de aanvraag.<br />
@@ -41,15 +44,7 @@
                 <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
              </label>
 
-             <label>
-                 Email van de aanvrager
-                 <InputText @bind-Value="vmRequest.EmailAanvrager"></InputText>
-             </label>
 
-            <label>
-                Nummer van de aanvrager
-                <InputText @bind-Value="vmRequest.NummerAanvrager"></InputText>
-            </label>
 
 
             <button type="submit">Submit</button>

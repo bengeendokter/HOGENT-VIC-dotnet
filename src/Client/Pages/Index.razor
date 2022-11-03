@@ -6,5 +6,23 @@
 
 Welcome to your new app.
 
-<Tabel />
+<Tabel mockObjects="mockKlanten"/>
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+@code{
+    public class Klant : IObject
+    {
+        public int Id = 0;
+        public string Naam = "";
+        public string Type = "";
+        public string Email = "";
+        public string Departement = "";
+        public string Acties = "";
+    };
+
+    public ICollection<IObject> mockKlanten = new List<IObject> {
+        new Klant() { Id = 1,  Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
+        new Klant() { Id = 2, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
+        new Klant() { Id = 3, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" }
+    };
+}
