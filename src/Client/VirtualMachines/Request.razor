@@ -2,6 +2,8 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Request> Logger
 
+<PageTitle>VM - Aanvragen</PageTitle>
+
 <div class="form">
     <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />

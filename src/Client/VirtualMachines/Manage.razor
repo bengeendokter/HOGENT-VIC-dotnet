@@ -4,6 +4,8 @@
 @inject ILogger<Manage> Logger
 @inject IVirtualMachineService VirtualMachineService
 
+<PageTitle>VM - Beheren</PageTitle>
+
 <div class="form">
     <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
         @*<DataAnnotationsValidator />*@
