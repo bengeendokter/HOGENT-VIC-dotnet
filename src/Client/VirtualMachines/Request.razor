@@ -1,6 +1,6 @@
 ﻿@page "/request"
 @using Microsoft.Extensions.Logging
-@inject ILogger<VMAanvragen> Logger
+@inject ILogger<Request> Logger
 
 <div class="form">
     <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
