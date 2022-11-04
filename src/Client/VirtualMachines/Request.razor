@@ -1,0 +1,78 @@
+﻿@page "/vm/request"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Request> Logger
+
+<PageTitle>VM - Aanvragen</PageTitle>
+
+<div class="form">
+    <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="headerRow">
+            <h1>Vraag een VM aan</h1>
+        </div>
+
+            <div class="input-row" >
+                <h2>Templates</h2>
+                @foreach (var template in Template.TEMPLATES.Values)
+                {
+                    <TemplateCard Template="@template" />
+                }
+            </div>
+        <div class="input-group">
+            <label>
+                Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
+                <InputText @bind-Value="vmRequest.projectNaam" ></InputText>
+                <ValidationMessage For="@(()=> vmRequest.projectNaam)"></ValidationMessage>
+            </label>
+
+            <label>
+                Start datum<br />
+                <InputDate @bind-Value="vmRequest.StartDate" ></InputDate>
+                <ValidationMessage For="@(()=> vmRequest.StartDate)"></ValidationMessage>
+            </label>
+            <label>
+                Eind datum<br />
+                <InputDate @bind-Value="vmRequest.EndDate"></InputDate>
+                <ValidationMessage For="@(()=> vmRequest.EndDate)"></ValidationMessage>
+            </label>
+
+
+            <label class="reden">
+               Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor de aanvraag.<br />
+                <InputTextArea id="reason" @bind-Value="vmRequest.Reason" style="width: 100%" ></InputTextArea>
+                <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
+             </label>
+
+             <label>
+                 Email van de aanvrager
+                 <InputText @bind-Value="vmRequest.EmailAanvrager"></InputText>
+             </label>
+
+            <label>
+                Nummer van de aanvrager
+                <InputText @bind-Value="vmRequest.NummerAanvrager"></InputText>
+            </label>
+
+
+            <button type="submit">Submit</button>
+
+        </div>
+    </EditForm>
+</div>
+
+
+
+
+
+
+@code {
+    private VirtualMachineRequest vmRequest = new VirtualMachineRequest();
+
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("submit");
+        Console.WriteLine(vmRequest.Reason);
+    }
+
+}
