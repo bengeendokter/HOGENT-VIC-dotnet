@@ -77,8 +77,20 @@
         <p>Capaciteit CPU:</p>
         <p>Totaal: @totaalCPU</p>
         <p>Vrij: @vrijCPU</p>
-        <p>In gebruik: @(totaalCPU - vrijCPU)</p>
-       
+        <p>In gebruik: @gebruikteCPU</p>
+    </div>
+
+    <div style="background: blue; margin: 5px;">
+        <p>Capaciteit RAM:</p>
+        <p>Totaal: @totaalRAM</p>
+        <p>Vrij: @vrijRAM</p>
+        <p>In gebruik: @gebruikteRAM</p>
+    </div>
+    <div style="background: yellow; margin: 5px;">
+        <p>Capaciteit Opslag:</p>
+        <p>Totaal: @totaalStorage</p>
+        <p>Vrij: @vrijStorage</p>
+        <p>In gebruik: @gebruikteStorage</p>
     </div>
  
 </div>
@@ -140,12 +152,12 @@
                 => als Denied
      */
 
-    //totaal zonder met aanvragen rekening te houden 
+    //totale capaciteit zonder aanvragen
     private int totaalCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
     private int totaalRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
     private int totaalStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
 
-    //individuele capaciteit zonder aanvragen
+    //individuele vrije capaciteit zonder aanvragen
     private int vrijCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => {
         if (x.Type == EActivity.Deleted) {
             return acc + x.VirtualMachine.CPU;
@@ -156,6 +168,36 @@
         }
         return acc + 0;
     });
+
+    private int vrijRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => {
+        if (x.Type == EActivity.Deleted) {
+            return acc + x.VirtualMachine.RAM;
+        }
+        else if (x.Type == EActivity.Added && x.VirtualMachine.EndDate <= activitydatum)
+        {
+            return acc + x.VirtualMachine.RAM; 
+        }
+        return acc + 0;
+    });
+
+    private int vrijStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
+    {
+        if (x.Type == EActivity.Deleted)
+        {
+            return acc + x.VirtualMachine.Storage;
+        }
+        else if (x.Type == EActivity.Added && x.VirtualMachine.EndDate <= activitydatum)
+        {
+            return acc + x.VirtualMachine.Storage;
+        }
+        return acc + 0;
+    });
+
+    //individuele gebruikte capaciteit zonder aanvragen
+    private int gebruikteCPU => totaalCPU - vrijCPU;
+    private int gebruikteRAM => totaalRAM - vrijRAM;
+    private int gebruikteStorage => totaalStorage - vrijStorage;
+
 
     /*GRAFIEK*/
 
