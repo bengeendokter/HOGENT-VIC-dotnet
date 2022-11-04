@@ -65,9 +65,10 @@
 
     <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
     <br />
-    <p>capaciteit cpu: @cpu</p>
-    <p>capaciteit ram: @ram</p>
-    <p>capaciteit opslag: @storage</p>
+    <p>totaal capaciteit cpu: @totaalCPU</p>
+    <p>totaal capaciteit ram: @totaalRAM</p>
+    <p>totaal capaciteit opslag: @totaalStorage</p>
+
    
 </div>
 
@@ -105,10 +106,17 @@
     /*TODO business logica voor filter methode: filtert nu op Deleted*/
     private List<Activity> act => _activities.Where(a => (a.Type == EActivity.Deleted)).ToList();
 
+    private int totaalCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
+    private int totaalRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
+    private int totaalStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
+
+    //totale CPU - (deleted) + (added)
+
+
     /*capaciteit cpu, ram en opslag*/
-    private int cpu => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
-    private int ram => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
-    private int storage => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
+   /*private int gebruikteCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
+    private int gebruikteRAM => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
+    private int gebruikteStorage => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);*/
 
     /*GRAFIEK*/
 
