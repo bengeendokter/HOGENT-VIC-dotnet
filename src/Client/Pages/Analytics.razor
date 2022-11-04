@@ -22,6 +22,8 @@
                     <th># RAM</th>
                     <th># Storage</th>
                     <th>Datum</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
 
                 </tr>
             </thead>
@@ -50,26 +52,35 @@
                                 break;
                         }
                         <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-
+                        <td>@vm.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                        <td>@vm.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
 <div>
     <label for="datum">Kies een datum:</label>
 
     <input type="date" id="datum" name="datum"
-           min="2022-01-01" max="2022-01-10" @bind-value="activitydatum" @bind-value:event="oninput">
+           min="2022-01-01" max="2023-04-01" @bind-value="activitydatum" @bind-value:event="oninput">
 
     <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
-    <br />
-    <p>totaal capaciteit cpu: @totaalCPU</p>
-    <p>totaal capaciteit ram: @totaalRAM</p>
-    <p>totaal capaciteit opslag: @totaalStorage</p>
+</div>
 
-   
+<div style="display: flex;
+  flex-wrap: nowrap; justify-content: center; align-items: center
+  ">
+    <div style="background: green; margin: 5px;">
+        <p>Capaciteit CPU:</p>
+        <p>Totaal: @totaalCPU</p>
+        <p>Vrij: @vrijCPU</p>
+        <p>In gebruik: @(totaalCPU - vrijCPU)</p>
+       
+    </div>
+ 
 </div>
 
 <div style="background-color: white">
@@ -101,22 +112,50 @@
 @code {
     private List<Activity> _activities = new();
     private DataItem[] historiek;
-    private DateTime activitydatum = DateTime.Now;
+    private DateTime activitydatum = new DateTime(2022, 01, 01);
 
-    /*TODO business logica voor filter methode: filtert nu op Deleted*/
-    private List<Activity> act => _activities.Where(a => (a.Type == EActivity.Deleted)).ToList();
+    /*
+     VM toegevoegd => meer capaciteit vrij
+                   => als EndDate VM <= Date (gekozen datum)
 
+                   DUS
+                   => minder capaciteit vrij
+                   => als EndDate VM > Date (gekozen datum)
+
+     VM verwijderd => meer capaciteit vrij
+
+     Aanvragen  => minder capaciteit vrij
+                => als Accepted of Handled is
+                => en Date (request) <= Date (activity)
+                => en StartDate <= Date (activity) && Enddate > Date (gekozen datum)
+
+                EN
+                => meer capaciteit vrij
+                => als Accepted/Handled
+                => en Date (request) <= Date (activity)
+                => en StartDate <= Date (activity) && Enddate <= Date (gekozen datum)
+
+                MAAR
+                => niets doen bij
+                => als Denied
+     */
+
+    //totaal zonder met aanvragen rekening te houden 
     private int totaalCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
     private int totaalRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
     private int totaalStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
 
-    //totale CPU - (deleted) + (added)
-
-
-    /*capaciteit cpu, ram en opslag*/
-   /*private int gebruikteCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
-    private int gebruikteRAM => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
-    private int gebruikteStorage => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);*/
+    //individuele capaciteit zonder aanvragen
+    private int vrijCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => {
+        if (x.Type == EActivity.Deleted) {
+            return acc + x.VirtualMachine.CPU;
+        }
+        else if (x.Type == EActivity.Added && x.VirtualMachine.EndDate <= activitydatum)
+        {
+            return acc + x.VirtualMachine.CPU; 
+        }
+        return acc + 0;
+    });
 
     /*GRAFIEK*/
 

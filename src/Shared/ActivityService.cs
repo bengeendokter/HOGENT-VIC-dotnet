@@ -19,18 +19,18 @@ public class ActivityService : IActivityService
             HostName = "VM_JN58CE_2354",
             FQDN = "TBD",
             IsHighAvailable = true,
-            StartDate = new DateTime(2022, 01, 15),
-            EndDate = new DateTime(2023, 02, 14),
+            StartDate = new DateTime(2022, 01, 01),
+            EndDate = new DateTime(2022, 04, 02),
             Template = Template.TEMPLATES[ETemplate.ArtificialIntelligence],
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             EBackupFrequency = EBackupFrequency.Daily,
             IsActive = true,
-            CreateDate = DateTime.Now,
+            CreateDate = new DateTime(2022, 01, 01),
             Poorten = "Poort 1, poort2",
             Host = "host123pt-45f",
-            CPU = 2,
-            RAM = 5,
-            Storage = 920,
+            CPU = 6,
+            RAM = 32,
+            Storage = 25,
             Mode = EMode.IaaS
         };
         var vm2 = new VirtualMachine
@@ -40,33 +40,97 @@ public class ActivityService : IActivityService
             HostName = "VM_ADJC_4562",
             FQDN = "TBD",
             IsHighAvailable = false,
-            StartDate = new DateTime(2022, 03, 02),
-            EndDate = new DateTime(2023, 04, 10),
+            StartDate = new DateTime(2022, 04, 01),
+            EndDate = new DateTime(2022, 06, 01),
             Template = Template.TEMPLATES[ETemplate.Database],
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             EBackupFrequency = EBackupFrequency.Weekly,
             IsActive = true,
-            CreateDate = DateTime.Now,
+            CreateDate = new DateTime(2022, 04, 01),
             Poorten = "Poort 1",
             Host = "host123pt-45f",
-            CPU = 4,
+            CPU = 2,
             RAM = 16,
-            Storage = 512,
+            Storage = 60,
             Mode = EMode.SaaS
         };
-        var rand = new Random();
 
-        for (int i=1; i <=  10; i++)
+        var vm3 = new VirtualMachine
         {
-            var act = new Activity
-            {
-                VirtualMachine = (rand.Next(2) == 0 ? vm : vm2),
-                Date = new DateTime(2022, 01, i),
-                Type = (rand.Next(2) == 0 ? EActivity.Added : EActivity.Deleted)
-            };
+            Id = 2,
+            Name = "VM-IT-3",
+            HostName = "VM_ADJC_4562",
+            FQDN = "TBD",
+            IsHighAvailable = false,
+            StartDate = new DateTime(2022, 05, 01),
+            EndDate = new DateTime(2022, 07, 01),
+            Template = Template.TEMPLATES[ETemplate.MachineLearning],
+            Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
+            EBackupFrequency = EBackupFrequency.Weekly,
+            IsActive = true,
+            CreateDate = new DateTime(2022, 05, 01),
+            Poorten = "Poort 1",
+            Host = "host123pt-45f",
+            CPU = 8,
+            RAM = 64,
+            Storage = 80,
+            Mode = EMode.SaaS
+        };
 
-            _activities.Add(act);
-        }
+        //vm1 toegevoegd
+        var act1 = new Activity
+        {
+            VirtualMachine = (vm),
+            Date = vm.StartDate,
+            Type = EActivity.Added
+        };
+
+        //vm2 toegevoegd
+        var act2 = new Activity
+        {
+            VirtualMachine = (vm2),
+            Date = vm2.StartDate,
+            Type = EActivity.Added
+        };
+
+        //vm1 verwijderd
+        var act3 = new Activity
+        {
+            VirtualMachine = (vm),
+            Date = vm.EndDate,
+            Type = EActivity.Deleted
+        };
+
+        //vm3 toegevoegd
+        var act4 = new Activity
+        {
+            VirtualMachine = (vm3),
+            Date = vm3.StartDate,
+            Type = EActivity.Added
+        };
+
+        //vm2 verwijderd
+        var act5 = new Activity
+        {
+            VirtualMachine = (vm2),
+            Date = vm2.EndDate,
+            Type = EActivity.Deleted
+        };
+
+        //vm3 verwijderd
+        var act6 = new Activity
+        {
+            VirtualMachine = (vm3),
+            Date = vm3.EndDate,
+            Type = EActivity.Deleted
+        };
+
+        _activities.Add(act1);
+        _activities.Add(act2);
+        _activities.Add(act3);
+        _activities.Add(act4);
+        _activities.Add(act5);
+        _activities.Add(act6);
     }
 
     public List<Activity> GetAll()
