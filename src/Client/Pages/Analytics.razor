@@ -62,8 +62,6 @@
 
     <input type="date" id="datum" name="datum"
            min="2022-01-01" max="2022-01-10" @bind-value="activitydatum" @bind-value:event="oninput">
-    <input type="date" id="datum" name="datum"
-           min="2020-01-01" max="2023-01-01" @bind-value="activitydatum" @bind-value:event="oninput">
 
     <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
     <br />
