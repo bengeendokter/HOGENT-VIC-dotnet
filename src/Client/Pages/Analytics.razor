@@ -73,19 +73,29 @@
    
 </div>
 
-    <p> here it is </p>
+<div style="background-color: white">
     <RadzenChart>
-                    <RadzenLineSeries Smooth=false Data="@revenue2019" CategoryProperty="Date" Title="2019" LineType="LineType.Dashed" ValueProperty="Revenue">
-                        <RadzenMarkers MarkerType="MarkerType.Square" />
-                        <RadzenSeriesDataLabels Visible=true />
-                    </RadzenLineSeries>
-                   
-                    <RadzenCategoryAxis Padding="20" Formatter="@FormatAsMonth" />
-                    <RadzenValueAxis>
-                        <RadzenGridLines Visible="true" />
-                        <RadzenAxisTitle Text="Revenue in USD" />
-                    </RadzenValueAxis>
-                </RadzenChart>
+        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Capaciteit CPU" LineType="LineType.Solid" ValueProperty="CPU">
+            <RadzenMarkers MarkerType="MarkerType.Circle" />
+            <RadzenSeriesDataLabels Visible="false" />
+        </RadzenLineSeries>
+
+        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Capaciteit RAM" LineType="LineType.Solid" ValueProperty="RAM">
+            <RadzenMarkers MarkerType="MarkerType.Circle" />
+            <RadzenSeriesDataLabels Visible="false" />
+        </RadzenLineSeries>
+
+        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Capaciteit Storage" LineType="LineType.Solid" ValueProperty="Storage">
+            <RadzenMarkers MarkerType="MarkerType.Circle" />
+            <RadzenSeriesDataLabels Visible="false" />
+        </RadzenLineSeries>
+
+        <RadzenCategoryAxis Padding="1" Formatter="@FormatAsMonth" />
+        <RadzenValueAxis>
+            <RadzenGridLines Visible="true" />
+            <RadzenAxisTitle Text="capaciteit in Gb" />
+        </RadzenValueAxis>
+    </RadzenChart>
 </div>
 
 
