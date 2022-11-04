@@ -36,23 +36,24 @@
     max-width: 330px;
     width: 100%;
     border-radius: 10px;
+    flex: 1 1 auto;
 }
 
 .available {
     position: absolute;
-    display: grid;
+    display: flex;
+    justify-content: center;
     z-index: 100;
     min-width: 330px;
     max-width: 100%;
     width: 100%;
     background-color: var(--clr-background-blue);
-    padding: 50px;
 }
 
 .yes_available {
     border: 2px solid #4949e3;
     border-left:none;
-    background-color: var(--clr-primary)
+    background-color: var(--clr-primary);
 }
 .yes_available ::deep svg {
     fill: #4949e3;
@@ -60,10 +61,12 @@
 
 
 .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     max-width: 290px;
-    width: 100%;
+    width: 300px;
     height: max-content;
-    /*background-color: var(--clr-primary);*/
     background-color: var(--clr-usage-purple);
     border-radius: 10px;
     padding-bottom: 15px;
@@ -110,7 +113,7 @@
     position: absolute;
     bottom: 50px;
     border-radius: 10px;
-    width: 120%;
+    width: 100%;
     height: auto;
     padding: 10px 20px;
     background-color: var(--clr-primary);
@@ -140,6 +143,8 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 @media (min-width: 1080px) {
@@ -147,7 +152,8 @@
         display: none;
     }
     .usage_bar {
-        display: grid;
+        display: flex;
+        justify-content: center;
     }
     .available {
         position: relative;
