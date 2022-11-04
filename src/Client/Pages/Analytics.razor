@@ -1,6 +1,7 @@
 ﻿@page "/historiek"
 @using System.Globalization
 @inject IActivityService ActivityService
+@inject IVirtualMachineRequestService VirtualMachineRequestService
 
 <PageTitle>Rapportering</PageTitle>
 
@@ -115,7 +116,7 @@
         <RadzenCategoryAxis Padding="1" Formatter="@FormatAsMonth" />
         <RadzenValueAxis>
             <RadzenGridLines Visible="true" />
-            <RadzenAxisTitle Text="capaciteit in Gb" />
+            <RadzenAxisTitle Text="capaciteit in GB" />
         </RadzenValueAxis>
     </RadzenChart>
 </div>
@@ -123,20 +124,21 @@
 
 @code {
     private List<Activity> _activities = new();
+    private List<VirtualMachineRequest> _requests = new();
     private DataItem[] historiek;
     private DateTime activitydatum = new DateTime(2022, 01, 01);
 
     /*
-     VM toegevoegd => meer capaciteit vrij
-                   => als EndDate VM <= Date (gekozen datum)
+    VM toegevoegd => meer capaciteit vrij
+    => als EndDate VM <= Date (gekozen datum)
 
-                   DUS
-                   => minder capaciteit vrij
-                   => als EndDate VM > Date (gekozen datum)
+    DUS
+    => minder capaciteit vrij
+    => als EndDate VM > Date (gekozen datum)
 
-     VM verwijderd => meer capaciteit vrij
+    VM verwijderd => meer capaciteit vrij
 
-     Aanvragen  => minder capaciteit vrij
+                Aanvragen  => minder capaciteit vrij
                 => als Accepted of Handled is
                 => en Date (request) <= Date (activity)
                 => en StartDate <= Date (activity) && Enddate > Date (gekozen datum)
@@ -150,7 +152,7 @@
                 MAAR
                 => niets doen bij
                 => als Denied
-     */
+    */
 
     //totale capaciteit zonder aanvragen
     private int totaalCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
@@ -199,6 +201,11 @@
     private int gebruikteStorage => totaalStorage - vrijStorage;
 
 
+    /*TODO 
+    -aanvragen ook bijvoegen
+    -grafiek verandert als datum verandert
+    */
+
     /*GRAFIEK*/
 
     class DataItem
@@ -207,7 +214,7 @@
         public double CPU { get; set; }
         public double RAM { get; set; }
         public double Storage { get; set; }
-    
+
     }
 
     string FormatAsMonth(object value)
@@ -224,6 +231,13 @@
     {
         /* Sorteren op datum in back-end*/
         _activities = ActivityService.GetAll();
+        _requests = VirtualMachineRequestService.GetAll();
+
+        foreach(var r in _requests)
+        {
+            Console.WriteLine($"project naam: {r.projectNaam}");
+        }
+
         historiek = new DataItem[_activities.Count];
         
         for (int i = 0; i < historiek.Length; i++)

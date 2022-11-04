@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shared;
 
-internal class VirtualMachineRequestService : IVirtualMachineRequestService
+public class VirtualMachineRequestService : IVirtualMachineRequestService
 {
     private readonly List<VirtualMachineRequest> _requests = new List<VirtualMachineRequest>();
     public VirtualMachineRequestService()
@@ -64,5 +64,9 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             Status = ERequestStatus.Denied,
             EmailAanvrager = "test@help.be"
         };
+
+        _requests.Add(request1);
+        _requests.Add(request2);
+        _requests.Add(request3);
     }
 }
