@@ -50,6 +50,7 @@ public class ActivityService : IActivityService
 
     public List<Activity> GetAll()
     {
-        return _activities;
+        /* tijdelijk sorteren op datum, later sortering verplaatsen naar backend */
+        return _activities.OrderByDescending(a => a.Date).ToList();
     }
 }

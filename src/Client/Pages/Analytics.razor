@@ -1,4 +1,5 @@
 ﻿@page "/historiek"
+@using System.Globalization
 @inject IActivityService ActivityService
 
 <PageTitle>Rapportering</PageTitle>
@@ -7,11 +8,52 @@
     <h1 style="padding: 8px 20px;">Historiek</h1>
 </div>
 <div style="display: flex; flex-direction: row;">
-    <div style="background-color: blue; width: 20%;">
-        <!-- Huidige gebruik component-->test
+    <div style="background-color: lightblue; width: 20%;">
+        <!-- Huidige gebruik component-->
     </div>
-    <div style="background-color:red; flex: 1 1 auto;"> 
-        test
+    <div style="flex: 1 1 auto;"> 
+        <table>
+            <thead> 
+                <tr>
+                    <th></th>
+                    <th>Virtual Machine</th>
+                    <th>Activiteit</th>
+                    <th># CPU</th>
+                    <th># RAM</th>
+                    <th># Storage</th>
+                    <th>Datum</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{var id = 1;}
+                @foreach (Activity activity in _activities) 
+                {
+                    <tr>
+                        <td>@(id++)</td>
+                        <td>@activity.VirtualMachine.Name</td>
+                        @switch (activity.Type) {
+                            case EActivity.Added:
+                                <td>VM toegevoegd</td>
+                                <td class="added">+ @activity.VirtualMachine.CPU Cores</td>
+                                <td class="added">+ @activity.VirtualMachine.RAM GB</td>
+                                <td class="added">+ @activity.VirtualMachine.Storage GB</td>
+                                break;
+                            case EActivity.Deleted:
+                                <td>VM verwijderd</td>
+                                <td class="deleted">- @activity.VirtualMachine.CPU Cores</td>
+                                <td class="deleted">- @activity.VirtualMachine.RAM GB</td>
+                                <td class="deleted">- @activity.VirtualMachine.Storage GB</td>
+                                break;
+                            default:
+                                break;
+                        }
+                        <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
 </div>
@@ -45,9 +87,11 @@
 
     protected override void OnInitialized()
     {
+        /* Sorteren op datum in back-end*/
         _activities = ActivityService.GetAll();
-        foreach(var activity in _activities) {
-            Console.WriteLine($"type: {activity.Type}, date: {activity.Date}");
-        }
+
+        //foreach(var activity in _activities) {
+        //    Console.WriteLine($"type: {activity.Type}, date: {activity.Date}");
+        //}
     }
 }
