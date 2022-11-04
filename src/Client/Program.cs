@@ -1,9 +1,9 @@
+global using Shared;
+global using Shared.VirtualMachines;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Client;
 using Client.VirtualMachines;
-using Shared;
-using Shared.VirtualMachines;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
