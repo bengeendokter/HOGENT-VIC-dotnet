@@ -10,11 +10,24 @@
     --clr-secondary-var2: #eff5fb;
     --clr-secondary-var3: #f3f5fa;
     --clr-background-blue: #f2f5fa;
+    --clr-usage-container: #89c5f6;
+    --clr-usage-circle-top: #1B1651;
+    --clr-boxshadow-usage: rgba(149, 157, 165, 0.2);
 
+    --clr-usage-purple: #7e7ee6;
+    --clr-usage-info-text: #5252ff;
+    
     --clr-CTA: #309FCF;
     --clr-text-color: #504F4F;
     --clr-red: #DB305E;
     --clr-green: #36BD7C;
+    --clr-usage-black: black;
+
+    --clr-used-green: #36BD7C;
+    --clr-used-orange: #FCC00D;
+    --clr-used-red: #E63462;
+    --clr-usage-toggler-arrow: #FFFFFF;
+    --clr-usage-toggler-background: #7e7ee6;
 }
 
 :root.dark_mode {
@@ -25,11 +38,18 @@
     --clr-secondary-var2: #eff5fb;
     --clr-secondary-var3: #f3f5fa;
     --clr-background-blue: #0F1729;
-
+    --clr-boxshadow-usage: rgb(221, 203, 203, 0,39);
     --clr-CTA: #38BDF8;
     --clr-text-color: #FFFFFF;
     --clr-red: #FA738C;
     --clr-green: #36BD7C;
+    --clr-usage-black: white;
+    --clr-usage-container: rgba(11, 150, 211, 0.5);
+
+    --clr-usage-purple: #2a2a87;
+    --clr-usage-info-text: #5252ff;
+    --clr-usage-toggler-arrow: #4949e3;
+    --clr-usage-toggler-background: var(--clr-primary);
 }
 
 h1{
@@ -49,6 +69,16 @@ h2 {
 article{
     padding: 0 !important;
     margin: 0 !important;
+}
+
+body {
+    background-color: var(--clr-background-blue);
+    background-image: url("/images/waves.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    min-height: 100vh;
+    width: 100%;
 }
 
 html, body {
@@ -91,3 +121,16 @@ html, body {
 } .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 1080px) {
+    .content {
+        flex-direction: row;
+        gap: 15px;
+    }
+}
