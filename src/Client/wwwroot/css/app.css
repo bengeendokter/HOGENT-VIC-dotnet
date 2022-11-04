@@ -77,11 +77,13 @@ body {
     background-repeat: no-repeat;
     background-position: center bottom;
     min-height: 100vh;
+    height: 100%;
     width: 100%;
 }
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    min-height: 100%
 } h1:focus {
     outline: none;
 } a, .btn-link {
@@ -127,9 +129,26 @@ html, body {
     flex-wrap: wrap;
 }
 
+.main_content {
+    flex: 1 1 auto;
+    padding: 15px;
+}
+
+.available + .main_content {
+    display: none;
+}
+
 @media (min-width: 1080px) {
+
     .content {
         flex-direction: row;
         gap: 15px;
+        width: 100%;
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+
+    .available + .main_content {
+        display: block;
     }
 }

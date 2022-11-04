@@ -1,10 +1,15 @@
 ﻿<div class="navbar">
     <div class="icon-hamburger-div">
         <NavLink href="/">
-            <HoGentLogo></HoGentLogo>
+            <HoGentLogo />
         </NavLink>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <HamburgerIcon></HamburgerIcon>
+            @if(disappearOptions){
+                <HamburgerIcon />
+                
+            } else {
+                <CloseIcon />
+            }
         </button>
     </div>
     <div class="nav_options @NavVisibleCss" @onclick="ToggleNavMenu">
@@ -27,10 +32,10 @@
                 <div>Historiek</div>
             </NavLink>
             <NavLink href="/account" class="nav_link icon_link" Match=NavLinkMatch.All>
-                <UserIcon></UserIcon> <span class="goneIfScreenBig">Account</span>
+                <div><UserIcon></UserIcon> <span class="goneIfScreenBig">Account</span></div>
             </NavLink>
             <NavLink href="/logoutbuttonlink" class="nav_link icon_link" Match=NavLinkMatch.All>
-                <LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span>
+                <div><LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span></div>
             </NavLink>
     </div>
 </div>

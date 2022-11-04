@@ -6,10 +6,13 @@
     color: white;
     padding: 10px;
     width: 85%;
+    height: 150px;
+    font-size: 100%;
 }
 
 p {
     margin: 0;
+    font-size: 100%;
 }
 
 .title{
