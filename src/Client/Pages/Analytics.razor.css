@@ -2,18 +2,24 @@
     background-color: var(--clr-secondary);
 }
 
-.container {
-    display: flex; 
+.analytics-container {
+    display: flex;
     flex-direction: row;
 }
 
-.table-container {
+.currentUse-container {
+    width: 20%;
+    background-color: lightblue;
+}
 
+.table-container {
+    flex: 1 1 auto;
+    padding: 1em;
+    overflow-x: auto;
 }
 
 /*#region Table*/
 table {
-    margin: 1em;
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
@@ -45,10 +51,6 @@ thead tr th:last-child {
     border-bottom-right-radius: 10px;
 }
 
-tbody {
-    overflow-y: scroll;
-}
-
 tr {
     background-color: var(--clr-primary); /*secondary*/
 }
@@ -78,6 +80,16 @@ tr:nth-child(even) {
 
 /*#endregion */
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
+    .analytics-container {
+        flex-direction: column;
+    }
 
+    .currentUse-container {
+        width: 100%;
+    }
+
+    .table-container {
+        padding: 1em 0px;
+    }
 }
