@@ -1,6 +1,6 @@
 ﻿namespace Shared;
 
-public enum EUsageTypeUnit
+public enum EUsageUnit
 {
     Cores,
     GB,

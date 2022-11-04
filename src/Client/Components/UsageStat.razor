@@ -2,7 +2,7 @@
     <p class="title">Capaciteit @Type (@Unit)</p>
     <p class="percentage">@BerekenPercentage() %</p>
     <div class="progressbar">
-        <div style=@myStyle></div>
+        <div style=@MyStyle></div>
     </div>
     <div class="used">
         <p>Totaal:</p>
@@ -16,23 +16,18 @@
 
 @code {
     [Parameter]
-    public EUsageType? Type { get; set; }
+    public EUsage? Type { get; set; }
     [Parameter]
-    public EUsageTypeUnit? Unit { get; set; }
+    public EUsageUnit? Unit { get; set; }
     [Parameter]
     public decimal Total { get; set; }
     [Parameter]
     public decimal Used { get; set; }
 
-    public string myStyle
-    {
-        get
-        {
-            return GetStyleString();
-        }
-    }
+    public string MyStyle => GetStyleString();
 
-    private decimal BerekenRemaining() {
+    private decimal BerekenRemaining()
+    {
         return Total - Used;
     }
 
@@ -41,7 +36,8 @@
         return Math.Round((Used / Total) * 100, 2);
     }
 
-    private string GetStyleString() {
+    private string GetStyleString()
+    {
         decimal percentage = BerekenPercentage();
         string color;
         

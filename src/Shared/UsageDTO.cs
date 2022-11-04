@@ -1,16 +1,12 @@
-﻿using System;
-
-namespace Shared;
+﻿namespace Shared;
 
 public class UsageDTO
 {
     public class Index
     {
-        public EUsageType UsageType { get; set; }
-        public EUsageTypeUnit Eenheid { get; set; }
-
+        public EUsage UsageType { get; set; }
+        public EUsageUnit Unit { get; set; }
         public decimal Total { get; set; }
-
-        public decimal Gebruikt { get; set; }
+        public decimal Used { get; set; }
     }
 }

@@ -2,5 +2,5 @@
 
 public interface IUsageService
 {
-    Task<IEnumerable<UsageDTO.Index>> getAllUsageStats();
+    Task<IEnumerable<UsageDTO.Index>> GetAllUsageStats();
 }

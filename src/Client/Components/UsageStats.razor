@@ -20,8 +20,9 @@
         </div>
         @if (usages != null) {
         <div class="stats">
-            @foreach(var u in usages){
-                <UsageStat Type=u.UsageType Unit=u.Eenheid Total=u.Total Used=u.Gebruikt/>
+            @foreach(var u in usages)
+            {
+                <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used/>
             }
         </div>
         }
@@ -34,7 +35,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        usages = await UsageService.getAllUsageStats();
+        usages = await UsageService.GetAllUsageStats();
     }
 
     private bool disappearOptions = false;

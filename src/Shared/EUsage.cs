@@ -1,6 +1,6 @@
 ﻿namespace Shared;
 
-public enum EUsageType
+public enum EUsage
 {
     Cpu,
     Ram,
