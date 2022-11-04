@@ -33,13 +33,34 @@ public class ActivityService : IActivityService
             Storage = 920,
             Mode = EMode.IaaS
         };
+        var vm2 = new VirtualMachine
+        {
+            Id = 2,
+            Name = "VM-IT-2",
+            HostName = "VM_ADJC_4562",
+            FQDN = "TBD",
+            IsHighAvailable = false,
+            StartDate = new DateTime(2022, 03, 02),
+            EndDate = new DateTime(2023, 04, 10),
+            Template = Template.TEMPLATES[ETemplate.Database],
+            Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
+            EBackupFrequency = EBackupFrequency.Weekly,
+            IsActive = true,
+            CreateDate = DateTime.Now,
+            Poorten = "Poort 1",
+            Host = "host123pt-45f",
+            CPU = 4,
+            RAM = 16,
+            Storage = 512,
+            Mode = EMode.SaaS
+        };
         var rand = new Random();
 
         for (int i=1; i <=  10; i++)
         {
             var act = new Activity
             {
-                VirtualMachine = vm,
+                VirtualMachine = (rand.Next(2) == 0 ? vm : vm2),
                 Date = new DateTime(2022, 01, i),
                 Type = (rand.Next(2) == 0 ? EActivity.Added : EActivity.Deleted)
             };

@@ -5,11 +5,11 @@
 <PageTitle>Rapportering</PageTitle>
 
 <div class="title-container">
-    <h1 style="padding: 8px 20px;">Historiek</h1>
+    <h1>Historiek</h1>
 </div>
 <div class="analytics-container">
     <div class="currentUse-container">
-        <!-- Huidige gebruik component-->test
+        <!-- Huidige gebruik component-->
     </div>
     <div class="table-container"> 
         <table>
@@ -29,21 +29,22 @@
                 @{var id = 1;}
                 @foreach (Activity activity in _activities) 
                 {
+                    var vm = activity.VirtualMachine;
                     <tr>
                         <td>@(id++)</td>
-                        <td>@activity.VirtualMachine.Name</td>
+                        <td>@vm.Name</td>
                         @switch (activity.Type) {
                             case EActivity.Added:
                                 <td>VM toegevoegd</td>
-                                <td class="added">+ @activity.VirtualMachine.CPU Cores</td>
-                                <td class="added">+ @activity.VirtualMachine.RAM GB</td>
-                                <td class="added">+ @activity.VirtualMachine.Storage GB</td>
+                                <td class="added">+ @vm.CPU Cores</td>
+                                <td class="added">+ @vm.RAM GB</td>
+                                <td class="added">+ @vm.Storage GB</td>
                                 break;
                             case EActivity.Deleted:
                                 <td>VM verwijderd</td>
-                                <td class="deleted">- @activity.VirtualMachine.CPU Cores</td>
-                                <td class="deleted">- @activity.VirtualMachine.RAM GB</td>
-                                <td class="deleted">- @activity.VirtualMachine.Storage GB</td>
+                                <td class="deleted">- @vm.CPU Cores</td>
+                                <td class="deleted">- @vm.RAM GB</td>
+                                <td class="deleted">- @vm.Storage GB</td>
                                 break;
                             default:
                                 break;
@@ -55,13 +56,11 @@
             </tbody>
         </table>
     </div>
-
 </div>
-
 <div>
     <label for="datum">Kies een datum:</label>
 
-    <input type="date" id="datum" name="datum" 
+    <input type="date" id="datum" name="datum"
            min="2020-01-01" max="2023-01-01" @bind-value="activitydatum" @bind-value:event="oninput">
 
     <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
@@ -69,8 +68,9 @@
     <p>capaciteit cpu: @cpu</p>
     <p>capaciteit ram: @ram</p>
     <p>capaciteit opslag: @storage</p>
-   
+
 </div>
+
 
 
 @code {
