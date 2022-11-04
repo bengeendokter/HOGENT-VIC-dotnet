@@ -61,6 +61,8 @@
     <label for="datum">Kies een datum:</label>
 
     <input type="date" id="datum" name="datum"
+           min="2022-01-01" max="2022-01-10" @bind-value="activitydatum" @bind-value:event="oninput">
+    <input type="date" id="datum" name="datum"
            min="2020-01-01" max="2023-01-01" @bind-value="activitydatum" @bind-value:event="oninput">
 
     <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
@@ -89,6 +91,7 @@
 
 @code {
     private List<Activity> _activities = new();
+    private DataItem[] historiek;
     private DateTime activitydatum = DateTime.Now;
 
     /*TODO business logica voor filter methode: filtert nu op Deleted*/
@@ -99,13 +102,39 @@
     private int ram => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
     private int storage => act.Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
 
+    /*GRAFIEK*/
+
+    class DataItem
+    {
+        public DateTime Date { get; set; }
+        public double CPU { get; set; }
+        public double RAM { get; set; }
+        public double Storage { get; set; }
+    
+    }
+
+    string FormatAsMonth(object value)
+    {
+        if (value != null)
+        {
+            return Convert.ToDateTime(value).ToString("dd/MM/yyyy");
+        }
+
+        return string.Empty;
+    }
+
     protected override void OnInitialized()
     {
         /* Sorteren op datum in back-end*/
         _activities = ActivityService.GetAll();
-
-        //foreach(var activity in _activities) {
-        //    Console.WriteLine($"type: {activity.Type}, date: {activity.Date}");
-        //}
+        historiek = new DataItem[_activities.Count];
+        
+        for (int i = 0; i < historiek.Length; i++)
+        {
+            historiek[i] = new DataItem { Date = _activities[i].Date, CPU = (double)_activities[i].VirtualMachine.CPU, RAM = (double)_activities[i].VirtualMachine.RAM, Storage = (double)_activities[i].VirtualMachine.Storage };
+        }
     }
+
+    
+
 }
