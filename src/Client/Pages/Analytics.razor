@@ -130,21 +130,22 @@
     private DateTime activitydatum = new DateTime(2022, 01, 01);
 
     //totaal
-    private int TotaalactiviteitCPU() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU); }
-    private int TotaalactiviteitRAM() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM); }
-    private int TotaalactiviteitStorage() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage); }
+    private int TotaalactiviteitCPU(DateTime datum) { return _activities.Where(a => (a.Date <= datum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU); }
+    private int TotaalactiviteitRAM(DateTime datum) { return _activities.Where(a => (a.Date <= datum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM); }
+    private int TotaalactiviteitStorage(DateTime datum) { return _activities.Where(a => (a.Date <= datum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage); }
 
     //vrij activiteit
-    private int[] Vrijactiviteit() {
+    private int[] Vrijactiviteit(DateTime datum)
+    {
         int[] lijst = new int[] { 0, 0, 0 };
 
-        _activities.Where(a => (a.Date <= activitydatum)).ToList().ForEach(a => {
+        _activities.Where(a => (a.Date <= datum)).ToList().ForEach(a => {
 
             int tempCPU = lijst[0];
             int tempRAM = lijst[1];
             int tempStorage = lijst[2];
 
-            if (a.Type == EActivity.Deleted || (a.Type == EActivity.Added && a.VirtualMachine.EndDate <= activitydatum))
+            if (a.Type == EActivity.Deleted || (a.Type == EActivity.Added && a.VirtualMachine.EndDate <= datum))
             {
                 lijst[0] = tempCPU + a.VirtualMachine.CPU;
                 lijst[1] = tempRAM + a.VirtualMachine.RAM;
@@ -156,12 +157,13 @@
     }
 
     //vrij aanvraag
-    private int[] Vrijaanvraag() {
+    private int[] Vrijaanvraag(DateTime datum)
+    {
         int[] lijst = new int[] { 0, 0, 0 };
 
         _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
-            && r.Date <= activitydatum
-            && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
+            && r.Date <= datum
+            && (r.StartDate <= datum && r.EndDate <= datum)
             ).ToList().ForEach(r => {
                 int tempCPU = lijst[0];
                 int tempRAM = lijst[1];
@@ -185,12 +187,13 @@
     }
 
     //gebruik aanvraag
-    private int[] Gebruikaanvraag() {
+    private int[] Gebruikaanvraag(DateTime datum)
+    {
         int[] lijst = new int[] { 0, 0, 0 };
 
         _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
-            && r.Date <= activitydatum
-            && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
+            && r.Date <= datum
+            && (r.StartDate <= datum && r.EndDate > datum)
             ).ToList().ForEach(r => {
                 int tempCPU = lijst[0];
                 int tempRAM = lijst[1];
@@ -214,29 +217,29 @@
     }
 
     //berekenen
-    private int DefinitieftotaalCPUfunc() { return TotaalactiviteitCPU() + Vrijaanvraag()[0] + Gebruikaanvraag()[0]; }
-    private int DefinitiefvrijCPUfunc() {return Vrijactiviteit()[0] + Vrijaanvraag()[0];}
-    private int DefinitiefgebruikCPUfunc() { return (TotaalactiviteitCPU() - Vrijactiviteit()[0]) + Gebruikaanvraag()[0]; }
+    private int DefinitieftotaalCPUfunc(DateTime datum) { return TotaalactiviteitCPU(datum) + Vrijaanvraag(datum)[0] + Gebruikaanvraag(datum)[0]; }
+    private int DefinitiefvrijCPUfunc(DateTime datum) { return Vrijactiviteit(datum)[0] + Vrijaanvraag(datum)[0]; }
+    private int DefinitiefgebruikCPUfunc(DateTime datum) { return (TotaalactiviteitCPU(datum) - Vrijactiviteit(datum)[0]) + Gebruikaanvraag(datum)[0]; }
 
-    private int DefinitieftotaalRAMfunc() { return TotaalactiviteitRAM() + Vrijaanvraag()[1] + Gebruikaanvraag()[1]; }
-    private int DefinitiefvrijRAMfunc() { return Vrijactiviteit()[1] + Vrijaanvraag()[1]; }
-    private int DefinitiefgebruikRAMfunc() { return (TotaalactiviteitRAM() - Vrijactiviteit()[1]) + Gebruikaanvraag()[1]; }
+    private int DefinitieftotaalRAMfunc(DateTime datum) { return TotaalactiviteitRAM(datum) + Vrijaanvraag(datum)[1] + Gebruikaanvraag(datum)[1]; }
+    private int DefinitiefvrijRAMfunc(DateTime datum) { return Vrijactiviteit(datum)[1] + Vrijaanvraag(datum)[1]; }
+    private int DefinitiefgebruikRAMfunc(DateTime datum) { return (TotaalactiviteitRAM(datum) - Vrijactiviteit(datum)[1]) + Gebruikaanvraag(datum)[1]; }
 
-    private int DefinitieftotaalStoragefunc() { return TotaalactiviteitStorage() + Vrijaanvraag()[2] + Gebruikaanvraag()[2]; }
-    private int DefinitiefvrijStoragefunc() { return Vrijactiviteit()[2] + Vrijaanvraag()[2]; }
-    private int DefinitiefgebruikStoragefunc() { return (TotaalactiviteitStorage() - Vrijactiviteit()[2]) + Gebruikaanvraag()[2]; }
+    private int DefinitieftotaalStoragefunc(DateTime datum) { return TotaalactiviteitStorage(datum) + Vrijaanvraag(datum)[2] + Gebruikaanvraag(datum)[2]; }
+    private int DefinitiefvrijStoragefunc(DateTime datum) { return Vrijactiviteit(datum)[2] + Vrijaanvraag(datum)[2]; }
+    private int DefinitiefgebruikStoragefunc(DateTime datum) { return (TotaalactiviteitStorage(datum) - Vrijactiviteit(datum)[2]) + Gebruikaanvraag(datum)[2]; }
 
-    private int DefinitieftotaalCPU => DefinitieftotaalCPUfunc();
-    private int DefinitiefvrijCPU => DefinitiefvrijCPUfunc();
-    private int DefinitiefgebruikCPU => DefinitiefgebruikCPUfunc();
+    private int DefinitieftotaalCPU => DefinitieftotaalCPUfunc(activitydatum);
+    private int DefinitiefvrijCPU => DefinitiefvrijCPUfunc(activitydatum);
+    private int DefinitiefgebruikCPU => DefinitiefgebruikCPUfunc(activitydatum);
 
-    private int DefinitieftotaalRAM => DefinitieftotaalRAMfunc();
-    private int DefinitiefvrijRAM => DefinitiefvrijRAMfunc();
-    private int DefinitiefgebruikRAM => DefinitiefgebruikRAMfunc();
+    private int DefinitieftotaalRAM => DefinitieftotaalRAMfunc(activitydatum);
+    private int DefinitiefvrijRAM => DefinitiefvrijRAMfunc(activitydatum);
+    private int DefinitiefgebruikRAM => DefinitiefgebruikRAMfunc(activitydatum);
 
-    private int DefinitieftotaalStorage => DefinitieftotaalStoragefunc();
-    private int DefinitiefvrijStorage => DefinitiefvrijStoragefunc();
-    private int DefinitiefgebruikStorage => DefinitiefgebruikStoragefunc();
+    private int DefinitieftotaalStorage => DefinitieftotaalStoragefunc(activitydatum);
+    private int DefinitiefvrijStorage => DefinitiefvrijStoragefunc(activitydatum);
+    private int DefinitiefgebruikStorage => DefinitiefgebruikStoragefunc(activitydatum);
 
     /*GRAFIEK*/
 
@@ -260,28 +263,32 @@
     }
 
     private DataItem[] GrafiekWeergave() {
-
-        DataItem[] data = new DataItem[1];
-
-        //DefinitieftotaalStoragefunc()
-        //DefinitiefvrijStoragefunc()
-        //DefinitiefgebruikStoragefunc();
+        //vooruitgang van dat datum tot 1 maand erna
 
         //activitydatum
+        DateTime begin = activitydatum;
+        //tot 1 maand
+        DateTime end = activitydatum.AddMonths(5);
+
+        //alle datums opvullen
+        var datums = new List<DateTime>();
+
+        for (var dt = begin; dt <= end; dt = dt.AddMonths(1))
+        {
+            datums.Add(dt);
+        }
+
+        DataItem[] data = new DataItem[datums.Count()];
 
         for (int i = 0; i < data.Length; i++)
         {
             //historiek[i] = new DataItem { Date = _activities[i].Date, CPU = (double)_activities[i].VirtualMachine.CPU, RAM = (double)_activities[i].VirtualMachine.RAM, Storage = (double)_activities[i].VirtualMachine.Storage };
             data[i] = new DataItem
                 {
-                    /*Date = activitydatum,
-                    CPU = (double)_activities.Where(a => a.Date == activitydatum).First().VirtualMachine.CPU,
-                    RAM = (double)_activities.Where(a => a.Date == activitydatum).First().VirtualMachine.RAM,
-                    Storage = (double)_activities.Where(a => a.Date == activitydatum).First().VirtualMachine.Storage*/
-                    Date = activitydatum,
-                    CPU = (double) ((_activities.Where(a => a.Date == activitydatum).FirstOrDefault()?.VirtualMachine?.CPU) ?? 0),
-                    RAM = (double) ((_activities.Where(a => a.Date == activitydatum).FirstOrDefault()?.VirtualMachine?.RAM) ?? 0),
-                    Storage = (double) ((_activities.Where(a => a.Date == activitydatum).FirstOrDefault()?.VirtualMachine?.Storage) ?? 0)
+                    Date = datums[i],
+                    CPU = (double)DefinitiefvrijCPUfunc(datums[i]),
+                    RAM = (double)DefinitiefvrijRAMfunc(datums[i]),
+                    Storage = (double)DefinitiefvrijStoragefunc(datums[i])
                 };
         }
 
