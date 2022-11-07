@@ -1,8 +1,13 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
 
-<h1>Aanvragen</h1>
-<Tabel mockObjects="mockRequests"></Tabel>
+
+<GenericLayout Display=false Title="Aanvragen">
+    <Content>
+        <h1>Aanvragen</h1>
+        <Tabel mockObjects="mockRequests" />
+    </Content>
+</GenericLayout>
 
 @code {
     public class Request{
