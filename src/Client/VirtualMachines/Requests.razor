@@ -1,31 +1,43 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
 
-
 <GenericLayout Display=false Title="Aanvragen">
     <Content>
         <h1>Aanvragen</h1>
-        <Table Collection="mockRequests" />
+        <select @bind="@_sortFilter" @oninput="@FilterChange">
+            <option value=0>Datum oplopend</option>
+            <option value=1>Datum aflopend</option>
+            <option value=2>Projectnaam oplopend</option>
+            <option value=3>Projectnaam aflopend</option>
+        </select>
+        <select @bind="@_statusFilter" @oninput="@StatusChange">
+            <option value=0>Alle</option>
+            <option value=1>Accepted</option>
+            <option value=2>Handled</option>
+            <option value=3>Denied</option>
+        </select>
+        <div>@_sortFilter</div>
+        <div>@_statusFilter</div>
+
+        <Table Collection="filteredObjects" />
     </Content>
 </GenericLayout>
 
 @code {
     public class Request{
         public int Id = 0;
-        public DateTime Date;
         public string? EmailAanvrager;
         public string? ProjectNaam;
         public ERequestStatus Status;
+        public DateTime Date;
     }
 
-    public ICollection<Object> mockRequests = new List<Object>();
+    public ICollection<Object> requestObjects = new List<Object>();
+    public ICollection<Object> filteredObjects = new List<Object>();
     private List<VirtualMachineRequest> list = new();
-    //{
-    //    new Request() { Id = 1,  EmailAanvrager = "test@Asselberg.be", ProjectNaam = "DevOps database server", Date = DateTime.Now, Status=ERequestStatus.Handled},
-    //    new Request() { Id = 2,  EmailAanvrager = "eden@hogent.be", ProjectNaam = "DevOps backend server", Date = DateTime.MaxValue, Status=ERequestStatus.Denied},
-    //    new Request() { Id = 3,  EmailAanvrager = "Marc@Asselberg.be", ProjectNaam = "Hogent Project 4", Date = DateTime.Now, Status=ERequestStatus.Accepted},
-    //    new Request() { Id = 4,  EmailAanvrager = "Jelle.delporte@student.hogent.be", ProjectNaam = "Hogent priject 48", Date = DateTime.Now, Status=ERequestStatus.Handled}
-    //};
+
+    private int _sortFilter { get; set; }
+    private int _statusFilter { get; set; }
 
     protected override void OnInitialized()
     {
@@ -33,7 +45,7 @@
 
         list.ForEach(request =>
         {
-            mockRequests.Add(
+            requestObjects.Add(
                 new Request()
                 {
                     Id = request.Id,
@@ -43,6 +55,52 @@
                     Status = request.Status
                 });
         });
+        filteredObjects = requestObjects;
+    }
+
+    private void FilterChange()
+    {
+        switch(_sortFilter){
+            case 0:
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Date).Reverse().ToList();
+                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
+                break;
+            case 1:
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Date).ToList();
+                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
+
+                break;
+            case 2:
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).ProjectNaam).Reverse().ToList();
+                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
+                break;
+            case 3:
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).ProjectNaam).ToList();
+                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
+
+                break;
+            default:
+                break;
+        }
+    }
+    private void StatusChange(){
+        switch(_statusFilter){
+            case 0:
+                filteredObjects = requestObjects;
+                break;
+            case 1:
+                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Accepted).ToList();
+                break;
+            case 2:
+                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Handled).ToList();
+                break;
+            case 3:
+                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Denied).ToList();
+                break;
+            default:
+                filteredObjects = requestObjects;
+                break;
+        }
     }
 
 }
