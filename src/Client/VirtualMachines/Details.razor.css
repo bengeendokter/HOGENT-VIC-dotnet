@@ -1,4 +1,118 @@
-﻿.table
-{
+﻿.details {
+    container-type: inline-size;
+}
+
+.details_group {
+    display: flex;
+    justify-content: space-around;
+}
+
+.main_heading {
+    display: flex;
+    justify-content: space-between;
+}
+
+.breadcrumb {
     color: var(--clr-text-color);
+    text-decoration: none;
+    display: inline;
+}
+
+    .breadcrumb:hover, .breadcrumb:focus-visible {
+        text-decoration: underline;
+    }
+
+.weekdays {
+    display: flex;
+    gap: 1em;
+    justify-content: center
+}
+
+.day {
+    --outline: none;
+    --text-decoration: line-through;
+    text-decoration: var(--text-decoration);
+    border-radius: 50%;
+    outline: var(--outline);
+    aspect-ratio: 1;
+    width: 3.5ch;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.available {
+    --outline: 2px solid var(--clr-text-color);
+    --text-decoration: none;
+}
+
+.vm_status {
+    --clr-status: var(--clr-red);
+    margin: 0;
+    color: var(--clr-primary);
+    background: var(--clr-status);
+    border-radius: 5px;
+    min-width: 5ch;
+    text-align: center;
+    padding-inline: 0.3em;
+    display: inline-block;
+    padding-block: 0em;
+}
+
+.active {
+    --clr-status: var(--clr-CTA);
+}
+
+
+/*table styles*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px;
+    color: var(--clr-text-color);
+    font-family: 'Roboto', sans-serif;
+}
+
+tr:first-child th {
+    border-top-left-radius: 10px;
+}
+
+tr:first-child td {
+    border-top-right-radius: 10px;
+}
+
+tr:last-child th {
+    border-bottom-left-radius: 10px;
+}
+
+tr:last-child td {
+    border-bottom-right-radius: 10px;
+}
+
+tr {
+    background-color: var(--clr-primary);
+    border-radius: 10px;
+}
+
+th, td {
+    padding: 1em;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: var(--clr-background-blue);
+}
+
+@container (max-width: 760px) {
+    .details_group {
+        flex-direction: column;
+    }
+
+    .details_item h2 {
+        text-align: center;
+    }
+
+    .specifications {
+        margin-inline: clamp(0em, 8em, 10em);
+    }
 }

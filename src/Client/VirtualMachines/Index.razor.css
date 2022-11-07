@@ -1,49 +1,106 @@
-﻿.vm_list
-{
-    display: grid;
-    gap: 1em;
-}
-
-.vm_container {
-    background: var(--clr-primary);
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    padding: 0.4em;
-    box-shadow: 0px 1px 4px rgb(0 0 0 / 0.25);
-}
-    
-.vm_container:focus-visible, .vm_container:hover
-{
-    transition: outline .1s ease;
-    outline: var(--clr-text-color) solid 2px;
-    outline-offset: .2em;
-}
-
-a, .link
-{
+﻿.link {
     text-decoration: none;
-    color: var(--clr-text-color);
+    color: var(--clr-primary);
+    background: var(--clr-CTA);
+    border-radius: 5px;
+    padding: 0.3em;
+    min-width: 12ch;
+    display: inline-block;
 }
 
-.vm_name
-{
-    margin: 0;
+    .link:focus-visible, .link:hover {
+        transition: outline .1s ease;
+        outline: var(--clr-text-color) solid 2px;
+        outline-offset: .2em;
+    }
+
+.vm_list {
+    container-type: inline-size;
 }
 
-.vm_status
-{
+.vm_status {
     --clr-status: var(--clr-red);
-
     margin: 0;
     color: var(--clr-primary);
     background: var(--clr-status);
     border-radius: 5px;
     min-width: 5ch;
     text-align: center;
+    padding-inline: 0.3em;
+    display: inline-block;
 }
 
-.active
-{
+.active {
     --clr-status: var(--clr-CTA);
+}
+
+/*table*/
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 10px;
+    color: var(--clr-text-color);
+}
+
+th {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+td {
+    font-family: 'Roboto', sans-serif;
+}
+
+thead {
+    border: 3px;
+    border-radius: 10px;
+}
+
+    thead tr th:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    thead tr th:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+tr {
+    background-color: var(--clr-primary);
+    border-radius: 10px;
+}
+
+th, td {
+    text-align: center;
+    padding: 1em;
+}
+
+thead:after {
+    content: '';
+    display: table-row;
+    height: 1.3em;
+}
+
+tr:nth-child(even) {
+    background-color: var(--clr-background-blue);
+}
+
+
+/*table
+{
+    overflow-x: auto;
+    display: block;
+}*/
+
+@container (max-width: 700px) {
+    table {
+        overflow-x: auto;
+        display: block;
+    }
+
+    .link {
+        min-width: 7ch;
+    }
 }
