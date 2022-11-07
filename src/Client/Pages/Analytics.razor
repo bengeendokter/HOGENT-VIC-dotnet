@@ -76,24 +76,24 @@
   ">
     <div style="background: green; margin: 5px;">
         <p>Capaciteit CPU:</p>
-        <p>Totaal: @definitieftotaalCPU</p>
-        <p>Vrij: @definitiefvrijCPU</p>
-        <p>In gebruik: @definitiefgebruikCPU</p>
+        <p>Totaal: @DefinitieftotaalCPU</p>
+        <p>Vrij: @DefinitiefvrijCPU</p>
+        <p>In gebruik: @DefinitiefgebruikCPU</p>
     </div>
 
-    <!-- <div style="background: orange; margin: 5px;">
+     <div style="background: orange; margin: 5px;">
         <p>Capaciteit RAM:</p>
-        <p>Totaal: @definitieftotaalRAM</p>
-        <p>Vrij: @definitiefvrijRAM</p>
-        <p>In gebruik: @definitiefgebruikRAM</p>
+        <p>Totaal: @DefinitieftotaalRAM</p>
+        <p>Vrij: @DefinitiefvrijRAM</p>
+        <p>In gebruik: @DefinitiefgebruikRAM</p>
     </div>
 
     <div style="background: yellow; margin: 5px;">
         <p>Capaciteit Opslag:</p>
-        <p>Totaal: @definitieftotaalStorage</p>
-        <p>Vrij: @definitiefvrijStorage</p>
-        <p>In gebruik: @definitiefgebruikStorage</p>
-    </div>-->
+        <p>Totaal: @DefinitieftotaalStorage</p>
+        <p>Vrij: @DefinitiefvrijStorage</p>
+        <p>In gebruik: @DefinitiefgebruikStorage</p>
+    </div>
  
 </div>
 
@@ -129,11 +129,13 @@
     private DataItem[] historiek;
     private DateTime activitydatum = new DateTime(2022, 01, 01);
 
-    private int totaalactiviteitCPU() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU); }
-    private int totaalactiviteitRAM() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM); }
-    private int totaalactiviteitStorage() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage); }
+    //totaal
+    private int TotaalactiviteitCPU() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU); }
+    private int TotaalactiviteitRAM() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM); }
+    private int TotaalactiviteitStorage() { return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage); }
 
-    private int vrijactiviteitCPU() {
+    //vrij activiteit
+    private int VrijactiviteitCPU() {
         return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
         {
             if (x.Type == EActivity.Deleted)
@@ -148,7 +150,39 @@
         });
     }
 
-    private int vrijaanvraagCPU() {
+    private int VrijactiviteitRAM()
+    {
+        return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
+        {
+            if (x.Type == EActivity.Deleted)
+            {
+                return acc + x.VirtualMachine.RAM;
+            }
+            else if (x.Type == EActivity.Added && x.VirtualMachine.EndDate <= activitydatum)
+            {
+                return acc + x.VirtualMachine.RAM;
+            }
+            return acc + 0;
+        });
+    }
+
+    private int VrijactiviteitStorage() {
+        return _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
+        {
+            if (x.Type == EActivity.Deleted)
+            {
+                return acc + x.VirtualMachine.Storage;
+            }
+            else if (x.Type == EActivity.Added && x.VirtualMachine.EndDate <= activitydatum)
+            {
+                return acc + x.VirtualMachine.Storage;
+            }
+            return acc + 0;
+        });
+    }
+
+    //vrij aanvraag
+    private int VrijaanvraagCPU() {
         return _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
             && r.Date <= activitydatum
             && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
@@ -166,7 +200,46 @@
         });
     }
 
-    private int gebruikaanvraagCPU() {
+    private int VrijaanvraagRAM()
+    {
+        return _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+            && r.Date <= activitydatum
+            && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
+            ).ToList().Aggregate(0, (acc, x) =>
+        {
+            if (x.Reason.Contains("DevOps"))
+            {
+                return acc + Template.TEMPLATES[ETemplate.Database].Stats.Ram;
+            }
+            else if (x.Reason.Contains("AI"))
+            {
+                return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Ram;
+            }
+            return acc + 0;
+        });
+    }
+
+    private int VrijaanvraagStorage()
+    {
+        return _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+            && r.Date <= activitydatum
+            && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
+            ).ToList().Aggregate(0, (acc, x) =>
+        {
+            if (x.Reason.Contains("DevOps"))
+            {
+                return acc + Template.TEMPLATES[ETemplate.Database].Stats.Storage;
+            }
+            else if (x.Reason.Contains("AI"))
+            {
+                return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Storage;
+            }
+            return acc + 0;
+        });
+    }
+
+    //gebruik
+    private int GebruikaanvraagCPU() {
         return _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
             && r.Date <= activitydatum
             && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
@@ -184,26 +257,68 @@
             });
     }
 
-    /*TODO 
-    -aanvragen ook bijvoegen*/
-    private int definitieftotaalCPUfunc() {
-        return totaalactiviteitCPU() + vrijaanvraagCPU() + gebruikaanvraagCPU(); 
-    }
-
-    private int definitiefvrijCPUfunc()
+    private int GebruikaanvraagRAM()
     {
-        return vrijactiviteitCPU() + vrijaanvraagCPU();
+        return _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+            && r.Date <= activitydatum
+            && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
+            ).ToList().Aggregate(0, (acc, x) =>
+            {
+                if (x.Reason.Contains("DevOps"))
+                {
+                    return acc + Template.TEMPLATES[ETemplate.Database].Stats.Ram;
+                }
+                else if (x.Reason.Contains("AI"))
+                {
+                    return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Ram;
+                }
+                return acc + 0;
+            });
     }
 
-    private int definitiefgebruikCPUfunc() {
-        return (totaalactiviteitCPU() - vrijactiviteitCPU()) + gebruikaanvraagCPU();
+    private int GebruikaanvraagStorage()
+    {
+        return _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+            && r.Date <= activitydatum
+            && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
+            ).ToList().Aggregate(0, (acc, x) =>
+            {
+                if (x.Reason.Contains("DevOps"))
+                {
+                    return acc + Template.TEMPLATES[ETemplate.Database].Stats.Storage;
+                }
+                else if (x.Reason.Contains("AI"))
+                {
+                    return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Storage;
+                }
+                return acc + 0;
+            });
     }
 
-    private int definitieftotaalCPU => definitieftotaalCPUfunc();
-    private int definitiefvrijCPU => definitiefvrijCPUfunc();
-    private int definitiefgebruikCPU => definitiefgebruikCPUfunc();
+    //berekenen
+    private int DefinitieftotaalCPUfunc() { return TotaalactiviteitCPU() + VrijaanvraagCPU() + GebruikaanvraagCPU(); }
+    private int DefinitiefvrijCPUfunc() {return VrijactiviteitCPU() + VrijaanvraagCPU();}
+    private int DefinitiefgebruikCPUfunc() { return (TotaalactiviteitCPU() - VrijactiviteitCPU()) + GebruikaanvraagCPU(); }
 
+    private int DefinitieftotaalRAMfunc() { return TotaalactiviteitRAM() + VrijaanvraagRAM() + GebruikaanvraagRAM(); }
+    private int DefinitiefvrijRAMfunc() { return VrijactiviteitRAM() + VrijaanvraagRAM(); }
+    private int DefinitiefgebruikRAMfunc() { return (TotaalactiviteitRAM() - VrijactiviteitRAM()) + GebruikaanvraagRAM(); }
 
+    private int DefinitieftotaalStoragefunc() { return TotaalactiviteitStorage() + VrijaanvraagStorage() + GebruikaanvraagStorage(); }
+    private int DefinitiefvrijStoragefunc() { return VrijactiviteitStorage() + VrijaanvraagStorage(); }
+    private int DefinitiefgebruikStoragefunc() { return (TotaalactiviteitStorage() - VrijactiviteitStorage()) + GebruikaanvraagStorage(); }
+
+    private int DefinitieftotaalCPU => DefinitieftotaalCPUfunc();
+    private int DefinitiefvrijCPU => DefinitiefvrijCPUfunc();
+    private int DefinitiefgebruikCPU => DefinitiefgebruikCPUfunc();
+
+    private int DefinitieftotaalRAM => DefinitieftotaalRAMfunc();
+    private int DefinitiefvrijRAM => DefinitiefvrijRAMfunc();
+    private int DefinitiefgebruikRAM => DefinitiefgebruikRAMfunc();
+
+    private int DefinitieftotaalStorage => DefinitieftotaalStoragefunc();
+    private int DefinitiefvrijStorage => DefinitiefvrijStoragefunc();
+    private int DefinitiefgebruikStorage => DefinitiefgebruikStoragefunc();
 
 
     /*-grafiek verandert als datum verandert
@@ -236,10 +351,10 @@
         _activities = ActivityService.GetAll();
         _requests = VirtualMachineRequestService.GetAll();
 
-        foreach(var r in _requests)
+        /*foreach(var r in _requests)
         {
             Console.WriteLine($"project naam: {r.projectNaam}");
-        }
+        }*/
 
         historiek = new DataItem[_activities.Count];
         
@@ -248,7 +363,4 @@
             historiek[i] = new DataItem { Date = _activities[i].Date, CPU = (double)_activities[i].VirtualMachine.CPU, RAM = (double)_activities[i].VirtualMachine.RAM, Storage = (double)_activities[i].VirtualMachine.Storage };
         }
     }
-
-    
-
 }
