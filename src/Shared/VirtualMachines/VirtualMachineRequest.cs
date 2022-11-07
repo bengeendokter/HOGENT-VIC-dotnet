@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shared.VirtualMachines;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared;
 
