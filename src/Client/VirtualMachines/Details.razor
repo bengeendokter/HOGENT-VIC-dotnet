@@ -2,7 +2,12 @@
 @using System.Globalization
 @inject IVirtualMachineService VMService
 
-@*TODO change page title*@
+@if (vm == null)
+{
+    <p>Loading...</p>
+    return;
+}
+
 <GenericLayout Display=false Title=@vm.Name> 
     <Content>
 
@@ -50,7 +55,7 @@
                         </tr>
                         <tr>
                             <th>Template</th>
-                            <td>@vm.Template.Name</td>
+                            <td>@vm.Template?.Name</td>
                         </tr>
                         <tr>
                             <th>Backup</th>
@@ -58,20 +63,23 @@
                         </tr>
                         <tr>
                             <th>Modus</th>
-                            <td>@vm.Template.Mode</td>
+                            <td>@vm.Template?.Mode</td>
                         </tr>
                         <tr>
                             <th>Dagen besschikbaar</th>
                             @*TODO use constains to check for a certain day*@
                             <td>
                                 <div class="weekdays">
-                                    <div title="Maandag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Monday) ? "available" : ""))>Ma</div>
-                                    <div title="Dinsdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Tuesday) ? "available" : ""))>Di</div>
-                                    <div title="Woensdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Wednesday) ? "available" : ""))>Wo</div>
-                                    <div title="Donderdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Thursday) ? "available" : ""))>Do</div>
-                                    <div title="Vrijdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Friday) ? "available" : ""))>Vr</div>
-                                    <div title="Zaterdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Saturday) ? "available" : ""))>Za</div>
-                                    <div title="Zondag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Sunday) ? "available" : ""))>Zo</div>
+                                    @if (vm.Availability != null)
+                                    {
+                                        <div title="Maandag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Monday) ? "available" : ""))>Ma</div>
+                                        <div title="Dinsdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Tuesday) ? "available" : ""))>Di</div>
+                                        <div title="Woensdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Wednesday) ? "available" : ""))>Wo</div>
+                                        <div title="Donderdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Thursday) ? "available" : ""))>Do</div>
+                                        <div title="Vrijdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Friday) ? "available" : ""))>Vr</div>
+                                        <div title="Zaterdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Saturday) ? "available" : ""))>Za</div>
+                                        <div title="Zondag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Sunday) ? "available" : ""))>Zo</div>
+                                    }
                                 </div>
                             </td>
                         </tr>
@@ -95,11 +103,11 @@
                         </tr>
                         <tr>
                             <th>Ram</th>
-                            <td>@vm.Template.Stats.Ram GB</td>
+                            <td>@vm.Template?.Stats?.Ram GB</td>
                         </tr>
                         <tr>
                             <th>Opslag</th>
-                            <td>@vm.Template.Stats.Storage GB</td>
+                            <td>@vm.Template?.Stats?.Storage GB</td>
                         </tr>
                     </table>
                 </secion>
@@ -111,7 +119,7 @@
 
 @code {
     [Parameter] public int Id { get; set; }
-    private VirtualMachine vm;
+    private VirtualMachine? vm;
 
     protected override void OnInitialized()
     {
