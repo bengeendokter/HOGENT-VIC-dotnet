@@ -77,39 +77,39 @@
     <div style="background: green; margin: 5px;">
         <p>Capaciteit CPU:</p>
         <p>Totaal: @DefinitieftotaalCPU</p>
-        <p>Vrij: @DefinitiefvrijCPU</p>
-        <p>In gebruik: @DefinitiefgebruikCPU</p>
+        <p>Resterend: @DefinitiefvrijCPU</p>
+        <p>Verbruik: @DefinitiefgebruikCPU</p>
     </div>
 
      <div style="background: orange; margin: 5px;">
         <p>Capaciteit RAM:</p>
         <p>Totaal: @DefinitieftotaalRAM</p>
-        <p>Vrij: @DefinitiefvrijRAM</p>
-        <p>In gebruik: @DefinitiefgebruikRAM</p>
+        <p>Resterend: @DefinitiefvrijRAM</p>
+        <p>Verbruik: @DefinitiefgebruikRAM</p>
     </div>
 
     <div style="background: yellow; margin: 5px;">
         <p>Capaciteit Opslag:</p>
         <p>Totaal: @DefinitieftotaalStorage</p>
-        <p>Vrij: @DefinitiefvrijStorage</p>
-        <p>In gebruik: @DefinitiefgebruikStorage</p>
+        <p>Resterend: @DefinitiefvrijStorage</p>
+        <p>Verbruik: @DefinitiefgebruikStorage</p>
     </div>
  
 </div>
 
 <div style="background-color: white">
     <RadzenChart>
-        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Capaciteit CPU" LineType="LineType.Solid" ValueProperty="CPU">
+        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik CPU" LineType="LineType.Solid" ValueProperty="CPU">
             <RadzenMarkers MarkerType="MarkerType.Circle" />
             <RadzenSeriesDataLabels Visible="false" />
         </RadzenLineSeries>
 
-        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Capaciteit RAM" LineType="LineType.Solid" ValueProperty="RAM">
+        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik RAM" LineType="LineType.Solid" ValueProperty="RAM">
             <RadzenMarkers MarkerType="MarkerType.Circle" />
             <RadzenSeriesDataLabels Visible="false" />
         </RadzenLineSeries>
 
-        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Capaciteit Opslag" LineType="LineType.Solid" ValueProperty="Storage">
+        <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik Opslag" LineType="LineType.Solid" ValueProperty="Storage">
             <RadzenMarkers MarkerType="MarkerType.Circle" />
             <RadzenSeriesDataLabels Visible="false" />
         </RadzenLineSeries>
@@ -284,9 +284,9 @@
             data[i] = new DataItem
                 {
                     Date = datums[i],
-                    CPU = (double)DefinitiefvrijCPUfunc(datums[i]),
-                    RAM = (double)DefinitiefvrijRAMfunc(datums[i]),
-                    Storage = (double)DefinitiefvrijStoragefunc(datums[i])
+                    CPU = (double)DefinitiefgebruikCPUfunc(datums[i]),
+                    RAM = (double)DefinitiefgebruikRAMfunc(datums[i]),
+                    Storage = (double)DefinitiefgebruikStoragefunc(datums[i])
                 };
         }
         return data;
