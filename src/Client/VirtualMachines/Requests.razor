@@ -1,0 +1,43 @@
+﻿@page "/request/list"
+@inject IVirtualMachineRequestService VMRequestService
+
+<h1>Aanvragen</h1>
+<Tabel mockObjects="mockRequests"></Tabel>
+
+@code {
+    public class Request : IObject{
+        public int Id = 0;
+        public DateTime Date;
+        public string? EmailAanvrager;
+        public string? ProjectNaam;
+        public ERequestStatus Status;
+    }
+
+    public ICollection<IObject> mockRequests = new List<IObject>();
+    private List<VirtualMachineRequest> list = new();
+    //{
+    //    new Request() { Id = 1,  EmailAanvrager = "test@Asselberg.be", ProjectNaam = "DevOps database server", Date = DateTime.Now, Status=ERequestStatus.Handled},
+    //    new Request() { Id = 2,  EmailAanvrager = "eden@hogent.be", ProjectNaam = "DevOps backend server", Date = DateTime.MaxValue, Status=ERequestStatus.Denied},
+    //    new Request() { Id = 3,  EmailAanvrager = "Marc@Asselberg.be", ProjectNaam = "Hogent Project 4", Date = DateTime.Now, Status=ERequestStatus.Accepted},
+    //    new Request() { Id = 4,  EmailAanvrager = "Jelle.delporte@student.hogent.be", ProjectNaam = "Hogent priject 48", Date = DateTime.Now, Status=ERequestStatus.Handled}
+    //};
+
+    protected override void OnInitialized()
+    {
+        list = VMRequestService.GetAll();
+
+        list.ForEach(request =>
+        {
+            mockRequests.Add(
+                new Request()
+                {
+                    Id = request.Id,
+                    EmailAanvrager = request.EmailAanvrager,
+                    ProjectNaam = request.ProjectNaam,
+                    Date = request.Date,
+                    Status = request.Status
+                });
+        });
+    }
+
+}

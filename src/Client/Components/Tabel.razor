@@ -1,8 +1,9 @@
-﻿<table>
+﻿
+<table>
     <thead> 
         <tr>
 
-        @foreach (var fieldInfo in mockKlanten.First().GetType().GetFields())
+            @foreach (var fieldInfo in mockObjects.First().GetType().GetFields())
         {
             var Key = fieldInfo.Name;
             var b = string.Concat(@Key[0].ToString().ToUpper(), @Key.AsSpan(1));
@@ -18,7 +19,7 @@
 
     <tbody>
 
-    @foreach (object Item in mockKlanten)
+        @foreach (object Item in mockObjects)
     {
         <tr>
             @foreach (var fieldInfo in Item.GetType().GetFields())
@@ -59,21 +60,6 @@
 </table>
 
 @code {
-    public class Klant
-    {
-        public int Id = 0;
-        public string Naam = "";
-        public string Type = "";
-        public string Email = "";
-        public string Departement = "";
-        public string Acties = "";
-    };
 
-    public ICollection<Klant> mockKlanten = new List<Klant> {
-        new Klant() { Id = 1,  Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
-    new Klant() { Id = 2, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
-        new Klant() { Id = 3, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" }
-    };
-
-
+    [Parameter] public ICollection<IObject> mockObjects { get; set; }
 }

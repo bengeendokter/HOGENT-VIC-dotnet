@@ -2,7 +2,7 @@
 
 namespace Client.VirtualMachines;
 
-internal class VirtualMachineRequestService : IVirtualMachineRequestService
+public class VirtualMachineRequestService : IVirtualMachineRequestService
 {
     private readonly List<VirtualMachineRequest> _requests = new List<VirtualMachineRequest>();
     public VirtualMachineRequestService()
@@ -17,6 +17,7 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public List<VirtualMachineRequest> GetAll()
     {
+        Console.WriteLine("test");
         return _requests;
     }
 
@@ -34,9 +35,10 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             StartDate = DateTime.Now,
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor een bachlerproef onderzoek ivm AI.",
-            projectNaam = "bachlerproef AI",
+            ProjectNaam = "bachlerproef AI",
             Status = ERequestStatus.Accepted,
-            EmailAanvrager = "test@help.be"
+            EmailAanvrager = "test@help.be",
+            NummerAanvrager = 0469569562
         };
         var request2 = new VirtualMachineRequest
         {
@@ -45,9 +47,10 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             StartDate = DateTime.Now,
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor een DevOps opdracht.",
-            projectNaam = "Opdracht",
+            ProjectNaam = "Opdracht",
             Status = ERequestStatus.Handled,
-            EmailAanvrager = "test@help.be"
+            EmailAanvrager = "test@help.be",
+            NummerAanvrager = 0469569562
         };
         var request3 = new VirtualMachineRequest
         {
@@ -56,9 +59,13 @@ internal class VirtualMachineRequestService : IVirtualMachineRequestService
             StartDate = DateTime.Now,
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor iets online te zetten",
-            projectNaam = "Online",
+            ProjectNaam = "Online",
             Status = ERequestStatus.Denied,
-            EmailAanvrager = "test@help.be"
+            EmailAanvrager = "test@help.be",
+            NummerAanvrager = 0469569562
         };
+        _requests.Add(request1);
+        _requests.Add(request2);
+        _requests.Add(request3);
     }
 }

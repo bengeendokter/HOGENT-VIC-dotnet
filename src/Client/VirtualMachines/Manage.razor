@@ -106,17 +106,17 @@
         <div class="input-group">
             <label>
                 CPU cores<br/>
-    @*            <InputNumber @bind-Value=""></InputNumber>*@
+                 <InputNumber @bind-Value="_vm.CPU"></InputNumber>
             </label>
 
             <label>
                 RAM <br />
-                @*<InputNumber @bind-Value=""></InputNumber>*@
+                <InputNumber @bind-Value="_vm.RAM"></InputNumber>
             </label>
 
             <label>
                 Storage <br />
-                @*<InputNumber @bind-Value=""></InputNumber>*@
+                <InputNumber @bind-Value="_vm.Storage"></InputNumber>
             </label>
 
             <label>
@@ -127,7 +127,11 @@
 
             <label>
                 Mode: <br/>
-                @*<InputSelect @bind-Value=""></InputSelect>*@
+                <InputSelect @bind-Value="_vm.Mode">
+                    <option value="@EMode.PaaS">Paas</option>
+                    <option value="@EMode.IaaS">Iaas</option>
+                    <option value="@EMode.SaaS">Saas</option>
+                </InputSelect>
             </label>
 
             <label>

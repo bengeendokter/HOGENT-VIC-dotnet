@@ -12,6 +12,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddSingleton<IVirtualMachineService, VirtualMachineService>();
+builder.Services.AddSingleton<IVirtualMachineRequestService, VirtualMachineRequestService>();
 
 builder.Services.AddSingleton<IUsageService, FakeUsageStatsService>();
 
