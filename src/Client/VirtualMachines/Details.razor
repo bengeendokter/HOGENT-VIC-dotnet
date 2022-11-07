@@ -1,95 +1,115 @@
 ﻿@page "/vm/{id:int}"
+@using System.Globalization
+@using global::Shared
 @inject IVirtualMachineService VMService
 
-<PageTitle>VM - Details</PageTitle>
-<h1>Virtuele Machine (@vm?.Name)</h1>
+<PageTitle>@vm.Name</PageTitle>
 
-@if (vm == null)
-{
-    <p>Loading...</p>
-    return;
-}
+@*TODO change page title*@
 
+<div class="main_heading">
+    <h1 id="vm-title"><a class="breadcrumb" href="/virtuele_machines">Virtuele Machine</a> - (@vm.Name)</h1>
+    @*TODO move wijzigen to top right*@
+    <a>Bewerken</a>
+</div>
+<section aria-labelledby="vm-title" class="details">
+    <div class="details_group">
+        <section class="details_item">
+            <h2>Algemeen</h2>
+            <table class="table">
+                <tr>
+                    <th>Naam</th>
+                    <td>@vm.Name</td>
+                </tr>
+                <tr>
+                    <th>Hostname</th>
+                    <td>@vm.HostName</td>
+                </tr>
+                <tr>
+                    <th>Gebruiker</th>
+                    <td>admin</td>
+                </tr>
+                <tr>
+                    <th>Wachtwoord</th>
+                    <td>***********</td>
+                </tr>
+                <tr>
+                    <th>Startdatum gebruik</th>
+                    <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
+                </tr>
+                <tr>
+                    <th>Einddatum gebruik</th>
+                    <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
+                </tr>
+                <tr>
+                    <th>FQDN</th>
+                    <td>@vm.FQDN</td>
+                </tr>
+                <tr>
+                    <th>Hoge beschikbaarheid</th>
+                    <td>@(vm.IsHighAvailable ? "Ja" : "Nee")</td>
+                </tr>
+                <tr>
+                    <th>Template</th>
+                    <td>@vm.Template.Name</td>
+                </tr>
+                <tr>
+                    <th>Backup</th>
+                    <td>@(vm.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
+                </tr>
+                <tr>
+                    <th>Modus</th>
+                    <td>@vm.Template.Mode</td>
+                </tr>
+                <tr>
+                    <th>Dagen besschikbaar</th>
+                    @*TODO use constains to check for a certain day*@
+                    <td>
+                        <div class="weekdays">
+                            <div title="Maandag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Monday) ? "available" : ""))>Ma</div>
+                            <div title="Dinsdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Tuesday) ? "available" : ""))>Di</div>
+                            <div title="Woensdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Wednesday) ? "available" : ""))>Wo</div>
+                            <div title="Donderdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Thursday) ? "available" : ""))>Do</div>
+                            <div title="Vrijdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Friday) ? "available" : ""))>Vr</div>
+                            <div title="Zaterdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Saturday) ? "available" : ""))>Za</div>
+                            <div title="Zondag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Sunday) ? "available" : ""))>Zo</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </section>
 
-<h2>Algemeen</h2>
-<table class="table">
-    <tr>
-        <th>Naam</th>
-        <td>@vm.Name</td>
-    </tr>
-    <tr>
-        <th>Hostname</th>
-        <td>@vm.HostName</td>
-    </tr>
-    <tr>
-        <th>Gebruiker</th>
-        <td></td>
-    </tr>
-    <tr>
-        <th>Wachtwoord</th>
-        <td></td>
-    </tr>
-    <tr>
-        <th>Startdatum gebruik</th>
-        <td>@vm.StartDate</td>
-    </tr>
-    <tr>
-        <th>Einddatum gebruik</th>
-        <td>@vm.EndDate</td>
-    </tr>
-    <tr>
-        <th>FQDN</th>
-        <td>@vm.FQDN</td>
-    </tr>
-    <tr>
-        <th>Hoge beschikbaarheid</th>
-        <td>@(vm.IsHighAvailable ? "Ja" : "Nee")</td>
-    </tr>
-    <tr>
-        <th>Template</th>
-        <td>@vm.Template?.Name</td>
-    </tr>
-    <tr>
-        <th>Backup</th>
-        <td>@(vm.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
-    </tr>
-    <tr>
-        <th>Modus</th>
-        <td>@vm.Template?.Mode</td>
-    </tr>
-    <tr>
-        <th>Dagen besschikbaar</th>
-        @*TODO use constains to check for a certain day*@
-        <td>@vm.Availability</td>
-    </tr>
-</table>
-
-<h2>Status</h2>
-<table class="table">
-    <tr>
-        <th>Status</th>
-        <td>@(vm.IsActive ? "Aan" : "Uit")</td>
-    </tr>
-    <tr>
-        <th>CPU cores</th>
-        <td>@vm.Template?.Stats?.Cpu</td>
-    </tr>
-    <tr>
-        <th>Geheugen</th>
-        <td>@vm.Template?.Stats?.Ram</td>
-    </tr>
-    <tr>
-        <th>Opslag</th>
-        <td>@vm.Template?.Stats?.Storage</td>
-    </tr>
-</table>
-
-@*TODO move wijzigen to top right*@
-<a>Wijzigen</a>
+        <secion class="details_item specifications">
+            <h2>Specificaties</h2>
+            <table class="table">
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <span class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>
+                            @(vm.IsActive ? "Aan" : "Uit")
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>CPU</th>
+                    <td>@vm.Template?.Stats?.Cpu cores</td>
+                </tr>
+                <tr>
+                    <th>Ram</th>
+                    <td>@vm.Template.Stats.Ram GB</td>
+                </tr>
+                <tr>
+                    <th>Opslag</th>
+                    <td>@vm.Template.Stats.Storage GB</td>
+                </tr>
+            </table>
+        </secion>
+    </div>
+</section>
 
 @code {
     [Parameter] public int Id { get; set; }
-    private VirtualMachine? vm;
+    private VirtualMachine vm;
 
     protected override void OnInitialized()
     {

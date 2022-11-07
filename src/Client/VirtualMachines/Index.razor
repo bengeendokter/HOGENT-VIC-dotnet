@@ -1,23 +1,547 @@
 ﻿@page "/vm"
+@using System.Globalization
 @inject IVirtualMachineService VMService
 
 <PageTitle>Virtuele Machines</PageTitle>
+
+@*TODO change page title*@
 <h1 id="vm-title">Virtuele Machines</h1>
 
 @*TODO maybe change to table *@
 <section aria-labelledby="vm-title" class="vm_list">
-@foreach(VirtualMachine vm in list)
-{
-        <a class="link" href=@($"/vm/{@vm.Id}")>
-            <div class="vm_container" >
-                <p class="vm_name">@vm.Name</p>
-                <p class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit")</p>
-            </div>
-        </a>
-}
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Naam
+                </th>
+                <th>
+                    CPU
+                </th>
+                <th>
+                    Ram
+                </th>
+                <th>
+                    Opslag
+                </th>
+                <th>
+                    Start datum
+                </th>
+                <th>
+                    Eind datum
+                </th>
+                <th>
+                    Backup
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (VirtualMachine vm in list)
+            {
+
+
+
+                <tr>
+                    <td><a class="link" href=@($"/vm/{@vm.Id}")>@vm.Name -></a></td>
+                    <td>@vm.CPU cores</td>
+                    <td>@vm.RAM GB</td>
+                    <td>@vm.Storage GB</td>
+                    <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
+                    <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
+                    <td>@(vm.EBackupFrequency.ToString() == "Daily" ? "Dagelijks" : "Wekelijks")</td>
+                    <td>
+                        <span class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit") </span>
+                    </td>
+                </tr>
+
+
+
+            }
+
+
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    VM1
+                </td>
+                <td>
+                    6 cores
+                </td>
+                <td>
+                    30 GB
+                </td>
+                <td>
+                    8 GB
+                </td>
+                <td>
+                    01-15-2022
+                </td>
+                <td>
+                    26-09-2023
+                </td>
+                <td>
+                    Dagelijks
+                </td>
+                <td>
+                    <span class=@(String.Join(" ", new List<string>() {"vm_status", true ? "active" : ""}))>
+                        Aan
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
-
-
 
 @code {
     private List<VirtualMachine> list = new();
