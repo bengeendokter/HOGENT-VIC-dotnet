@@ -76,22 +76,33 @@
   ">
     <div style="background: green; margin: 5px;">
         <p>Capaciteit CPU:</p>
-        <p>Totaal: @totaalCPU</p>
-        <p>Vrij: @vrijCPU</p>
-        <p>In gebruik: @gebruikteCPU</p>
+        <!--<p>Totaal: @totaalactiviteitCPU</p>
+        <p>Vrij: @vrijactiviteitCPU</p>
+        <p>In gebruik: @gebruikactiviteitCPU</p>
+        <p>Aanvraag vrij: @vrijaanvraagCPU</p>
+        <p>Aanvraag gebruik: @gebruikaanvraagCPU</p>
+        <br />
+        <p>Totaal: @(totaalactiviteitCPU + vrijaanvraagCPU + gebruikaanvraagCPU)</p>
+        <p>Vrij: @(vrijactiviteitCPU + vrijaanvraagCPU)</p>
+        <p>In gebruik: @(gebruikactiviteitCPU + gebruikaanvraagCPU)</p>
+        <br />-->
+        <p>Totaal: @definitieftotaalCPU</p>
+        <p>Vrij: @definitiefvrijCPU</p>
+        <p>In gebruik: @definitiefgebruikCPU</p>
     </div>
 
-    <div style="background: blue; margin: 5px;">
+    <div style="background: orange; margin: 5px;">
         <p>Capaciteit RAM:</p>
-        <p>Totaal: @totaalRAM</p>
-        <p>Vrij: @vrijRAM</p>
-        <p>In gebruik: @gebruikteRAM</p>
+        <p>Totaal: @definitieftotaalRAM</p>
+        <p>Vrij: @definitiefvrijRAM</p>
+        <p>In gebruik: @definitiefgebruikRAM</p>
     </div>
+
     <div style="background: yellow; margin: 5px;">
         <p>Capaciteit Opslag:</p>
-        <p>Totaal: @totaalStorage</p>
-        <p>Vrij: @vrijStorage</p>
-        <p>In gebruik: @gebruikteStorage</p>
+        <p>Totaal: @definitieftotaalStorage</p>
+        <p>Vrij: @definitiefvrijStorage</p>
+        <p>In gebruik: @definitiefgebruikStorage</p>
     </div>
  
 </div>
@@ -138,40 +149,142 @@
 
     VM verwijderd => meer capaciteit vrij
 
-                Aanvragen  => minder capaciteit vrij
-                => als Accepted of Handled is
-                => en Date (request) <= Date (activity)
-                => en StartDate <= Date (activity) && Enddate > Date (gekozen datum)
+    Aanvragen     => minder capaciteit vrij
+    => als Accepted of Handled is
+    => en Date (request) <= Date (activity)
+    => en StartDate <= Date (activity) && Enddate > Date (gekozen datum)
 
-                EN
-                => meer capaciteit vrij
-                => als Accepted/Handled
-                => en Date (request) <= Date (activity)
-                => en StartDate <= Date (activity) && Enddate <= Date (gekozen datum)
+    EN
+    => meer capaciteit vrij
+    => als Accepted/Handled
+    => en Date (request) <= Date (activity)
+    => en StartDate <= Date (activity) && Enddate <= Date (gekozen datum)
 
-                MAAR
-                => niets doen bij
-                => als Denied
+    MAAR
+    => niets doen bij
+    => als Denied
     */
 
+
+    //aavrangen bijgerekend
+    //komt bij totaal en vrij te staan
+    private int vrijaanvraagCPU => _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+                                                                && r.Date <= activitydatum
+                                                                && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
+                                                                ).ToList().Aggregate(0, (acc, x) =>
+                                                            {
+                                                                if (x.Reason.Contains("DevOps"))
+                                                                {
+                                                                    return acc + Template.TEMPLATES[ETemplate.Database].Stats.Cpu;
+                                                                }
+                                                                else if (x.Reason.Contains("AI"))
+                                                                {
+                                                                    return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Cpu;
+                                                                }
+                                                                return acc + 0;
+                                                            });
+    
+    private int vrijaanvraagRAM => _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+                                                                && r.Date <= activitydatum
+                                                                && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
+                                                                ).ToList().Aggregate(0, (acc, x) =>
+                                                            {
+                                                                if (x.Reason.Contains("DevOps"))
+                                                                {
+                                                                    return acc + Template.TEMPLATES[ETemplate.Database].Stats.Ram;
+                                                                }
+                                                                else if (x.Reason.Contains("AI"))
+                                                                {
+                                                                    return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Ram;
+                                                                }
+                                                                return acc + 0;
+                                                            });
+
+    private int vrijaanvraagStorage => _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+                                                                && r.Date <= activitydatum
+                                                                && (r.StartDate <= activitydatum && r.EndDate <= activitydatum)
+                                                                ).ToList().Aggregate(0, (acc, x) =>
+                                                            {
+                                                                if (x.Reason.Contains("DevOps"))
+                                                                {
+                                                                    return acc + Template.TEMPLATES[ETemplate.Database].Stats.Storage;
+                                                                }
+                                                                else if (x.Reason.Contains("AI"))
+                                                                {
+                                                                    return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Storage;
+                                                                }
+                                                                return acc + 0;
+                                                            });
+
+    //komt bij totaal en gebruikt te staan
+    private int gebruikaanvraagCPU => _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+                                                                && r.Date <= activitydatum
+                                                                && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
+                                                                ).ToList().Aggregate(0, (acc, x) =>
+                                                                {
+                                                                    if (x.Reason.Contains("DevOps"))
+                                                                    {
+                                                                        return acc + Template.TEMPLATES[ETemplate.Database].Stats.Cpu;
+                                                                    }
+                                                                    else if (x.Reason.Contains("AI"))
+                                                                    {
+                                                                        return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Cpu;
+                                                                    }
+                                                                    return acc + 0;
+                                                                });
+
+    private int gebruikaanvraagRAM => _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+                                                                && r.Date <= activitydatum
+                                                                && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
+                                                                ).ToList().Aggregate(0, (acc, x) =>
+                                                                {
+                                                                    if (x.Reason.Contains("DevOps"))
+                                                                    {
+                                                                        return acc + Template.TEMPLATES[ETemplate.Database].Stats.Ram;
+                                                                    }
+                                                                    else if (x.Reason.Contains("AI"))
+                                                                    {
+                                                                        return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Ram;
+                                                                    }
+                                                                    return acc + 0;
+                                                                });
+
+    private int gebruikaanvraagStorage => _requests.Where(r => (r.Status == ERequestStatus.Handled || r.Status == ERequestStatus.Accepted)
+                                                                && r.Date <= activitydatum
+                                                                && (r.StartDate <= activitydatum && r.EndDate > activitydatum)
+                                                                ).ToList().Aggregate(0, (acc, x) =>
+                                                                {
+                                                                    if (x.Reason.Contains("DevOps"))
+                                                                    {
+                                                                        return acc + Template.TEMPLATES[ETemplate.Database].Stats.Storage;
+                                                                    }
+                                                                    else if (x.Reason.Contains("AI"))
+                                                                    {
+                                                                        return acc + Template.TEMPLATES[ETemplate.ArtificialIntelligence].Stats.Storage;
+                                                                    }
+                                                                    return acc + 0;
+                                                                });
+
     //totale capaciteit zonder aanvragen
-    private int totaalCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
-    private int totaalRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
-    private int totaalStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
+    private int totaalactiviteitCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU);
+    private int totaalactiviteitRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.RAM);
+    private int totaalactiviteitStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.Storage);
 
     //individuele vrije capaciteit zonder aanvragen
-    private int vrijCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => {
-        if (x.Type == EActivity.Deleted) {
+    private int vrijactiviteitCPU => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
+    {
+        if (x.Type == EActivity.Deleted)
+        {
             return acc + x.VirtualMachine.CPU;
         }
         else if (x.Type == EActivity.Added && x.VirtualMachine.EndDate <= activitydatum)
         {
-            return acc + x.VirtualMachine.CPU; 
+            return acc + x.VirtualMachine.CPU;
         }
         return acc + 0;
     });
 
-    private int vrijRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => {
+    private int vrijactiviteitRAM => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) => {
         if (x.Type == EActivity.Deleted) {
             return acc + x.VirtualMachine.RAM;
         }
@@ -182,7 +295,7 @@
         return acc + 0;
     });
 
-    private int vrijStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
+    private int vrijactiviteitStorage => _activities.Where(a => (a.Date <= activitydatum)).ToList().Aggregate(0, (acc, x) =>
     {
         if (x.Type == EActivity.Deleted)
         {
@@ -196,14 +309,27 @@
     });
 
     //individuele gebruikte capaciteit zonder aanvragen
-    private int gebruikteCPU => totaalCPU - vrijCPU;
-    private int gebruikteRAM => totaalRAM - vrijRAM;
-    private int gebruikteStorage => totaalStorage - vrijStorage;
+    private int gebruikactiviteitCPU => totaalactiviteitCPU - vrijactiviteitCPU;
+    private int gebruikactiviteitRAM => totaalactiviteitRAM - vrijactiviteitRAM;
+    private int gebruikactiviteitStorage => totaalactiviteitStorage - vrijactiviteitStorage;
 
 
     /*TODO 
-    -aanvragen ook bijvoegen
-    -grafiek verandert als datum verandert
+    -aanvragen ook bijvoegen*/
+    private int definitieftotaalCPU => totaalactiviteitCPU + vrijaanvraagCPU + gebruikaanvraagCPU;
+    private int definitiefvrijCPU => vrijactiviteitCPU + vrijaanvraagCPU;
+    private int definitiefgebruikCPU => gebruikactiviteitCPU + gebruikaanvraagCPU;
+
+    private int definitieftotaalRAM => totaalactiviteitRAM + vrijaanvraagRAM + gebruikaanvraagRAM;
+    private int definitiefvrijRAM => vrijactiviteitRAM + vrijaanvraagRAM;
+    private int definitiefgebruikRAM => gebruikactiviteitRAM + gebruikaanvraagRAM;
+
+    private int definitieftotaalStorage => totaalactiviteitStorage + vrijaanvraagStorage + gebruikaanvraagStorage;
+    private int definitiefvrijStorage => vrijactiviteitStorage + vrijaanvraagStorage;
+    private int definitiefgebruikStorage => gebruikactiviteitStorage + gebruikaanvraagStorage;
+
+
+    /*-grafiek verandert als datum verandert
     */
 
     /*GRAFIEK*/
