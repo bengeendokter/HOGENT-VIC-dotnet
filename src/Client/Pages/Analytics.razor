@@ -126,7 +126,7 @@
 @code {
     private List<Activity> _activities = new();
     private List<VirtualMachineRequest> _requests = new();
-    private DataItem[] historiek;
+    private DataItem[] historiek => GrafiekWeergave();
     private DateTime activitydatum = new DateTime(2022, 01, 01);
 
     //totaal
@@ -238,10 +238,6 @@
     private int DefinitiefvrijStorage => DefinitiefvrijStoragefunc();
     private int DefinitiefgebruikStorage => DefinitiefgebruikStoragefunc();
 
-
-    /*-grafiek verandert als datum verandert
-    */
-
     /*GRAFIEK*/
 
     class DataItem
@@ -263,6 +259,35 @@
         return string.Empty;
     }
 
+    private DataItem[] GrafiekWeergave() {
+
+        DataItem[] data = new DataItem[1];
+
+        //DefinitieftotaalStoragefunc()
+        //DefinitiefvrijStoragefunc()
+        //DefinitiefgebruikStoragefunc();
+
+        //activitydatum
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            //historiek[i] = new DataItem { Date = _activities[i].Date, CPU = (double)_activities[i].VirtualMachine.CPU, RAM = (double)_activities[i].VirtualMachine.RAM, Storage = (double)_activities[i].VirtualMachine.Storage };
+            data[i] = new DataItem
+                {
+                    /*Date = activitydatum,
+                    CPU = (double)_activities.Where(a => a.Date == activitydatum).First().VirtualMachine.CPU,
+                    RAM = (double)_activities.Where(a => a.Date == activitydatum).First().VirtualMachine.RAM,
+                    Storage = (double)_activities.Where(a => a.Date == activitydatum).First().VirtualMachine.Storage*/
+                    Date = activitydatum,
+                    CPU = (double) ((_activities.Where(a => a.Date == activitydatum).FirstOrDefault()?.VirtualMachine?.CPU) ?? 0),
+                    RAM = (double) ((_activities.Where(a => a.Date == activitydatum).FirstOrDefault()?.VirtualMachine?.RAM) ?? 0),
+                    Storage = (double) ((_activities.Where(a => a.Date == activitydatum).FirstOrDefault()?.VirtualMachine?.Storage) ?? 0)
+                };
+        }
+
+        return data;
+    }
+
     protected override void OnInitialized()
     {
         /* Sorteren op datum in back-end*/
@@ -273,12 +298,5 @@
         {
             Console.WriteLine($"project naam: {r.projectNaam}");
         }*/
-
-        historiek = new DataItem[_activities.Count];
-        
-        for (int i = 0; i < historiek.Length; i++)
-        {
-            historiek[i] = new DataItem { Date = _activities[i].Date, CPU = (double)_activities[i].VirtualMachine.CPU, RAM = (double)_activities[i].VirtualMachine.RAM, Storage = (double)_activities[i].VirtualMachine.Storage };
-        }
     }
 }
