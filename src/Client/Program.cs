@@ -1,7 +1,9 @@
 global using Shared;
+global using Shared.VirtualMachines;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Client;
+using Client.VirtualMachines;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -11,5 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddSingleton<IVirtualMachineService, VirtualMachineService>();
 builder.Services.AddSingleton<IVirtualMachineRequestService, VirtualMachineRequestService>();
+
+builder.Services.AddSingleton<IUsageService, FakeUsageStatsService>();
 
 await builder.Build().RunAsync();

@@ -1,0 +1,52 @@
+﻿<div class="navbar">
+    <div class="icon-hamburger-div">
+        <NavLink href="/">
+            <HoGentLogo />
+        </NavLink>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            @if(disappearOptions){
+                <HamburgerIcon />
+                
+            } else {
+                <CloseIcon />
+            }
+        </button>
+    </div>
+    <div class="nav_options @NavVisibleCss" @onclick="ToggleNavMenu">
+        @*
+        ########## Om link te maken met andere pagina vervang "/" met "/*pagina_naam*" ##########
+        *@
+            <NavLink href="/gebruikers" class="nav_link" Match=NavLinkMatch.All>
+                <div>Gebruikers</div>
+            </NavLink>
+            <NavLink href="/klanten" class="nav_link" Match=NavLinkMatch.All>
+                <div>Klanten</div>
+            </NavLink>
+            <NavLink href="/vm" class="nav_link" Match=NavLinkMatch.All>
+                <div>Virtuele Machines</div>
+            </NavLink>
+            <NavLink href="/aanvragen" class="nav_link" Match=NavLinkMatch.All>
+                <div>Aanvragen</div>
+            </NavLink>
+            <NavLink href="/historiek" class="nav_link" Match=NavLinkMatch.All>
+                <div>Historiek</div>
+            </NavLink>
+            <NavLink href="/account" class="nav_link icon_link" Match=NavLinkMatch.All>
+                <div><UserIcon></UserIcon> <span class="goneIfScreenBig">Account</span></div>
+            </NavLink>
+            <NavLink href="/logoutbuttonlink" class="nav_link icon_link" Match=NavLinkMatch.All>
+                <div><LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span></div>
+            </NavLink>
+    </div>
+</div>
+
+@code {
+    private bool disappearOptions = true;
+
+    private string? NavVisibleCss => disappearOptions ? "gone" : null;
+
+    private void ToggleNavMenu()
+    {
+        disappearOptions = !disappearOptions;
+    }
+}

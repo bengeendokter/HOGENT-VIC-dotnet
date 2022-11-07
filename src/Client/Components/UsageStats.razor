@@ -1,0 +1,59 @@
+﻿@inject IUsageService UsageService
+
+@if (display) {
+        <div class="usagebar_toggler @UsageTogglerStyleCss" @onclick="ToggleUsageMenu">
+        <OpenIcon />
+    </div>
+
+    <div class="usage_bar @UsageVisibleCss">
+        <div class="container">
+            <div class="top_content">
+                <div class="top_circle">
+                    <div class="inner_circle">
+                        <UsageIcon/>
+                    </div>
+                </div>
+                <div class="info">
+                    <p>HUIDIG GEBRUIK</p>
+                    <p>Hoeveel werd er al verbruikt en hoeveel is er nog over</p>
+                </div>
+            </div>
+            @if (usages != null)
+            {
+                <div class="stats">
+                    @foreach (var u in usages)
+                    {
+                            <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used/>
+                    }
+                    @foreach (var u in usages)
+                    {
+                            <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used/>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool display { get; set; }
+
+    private IEnumerable<UsageDTO.Index>? usages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        usages = await UsageService.GetAllUsageStats();
+    }
+
+    private bool disappearOptions = false;
+
+    private string? UsageVisibleCss => disappearOptions ? "available" : null;
+    private string? UsageTogglerStyleCss => disappearOptions ? "yes_available" : null;
+
+    private void ToggleUsageMenu()
+    {
+        disappearOptions = !disappearOptions;
+    }
+}
