@@ -15,12 +15,13 @@ p {
     font-size: 100%;
 }
 
-.title{
+.title {
     font-weight: bold;
     font-size: 18px;
 }
-.percentage {
-}
+
+.percentage {}
+
 .progressbar {
     width: 100%;
     background-color: white;
@@ -29,6 +30,7 @@ p {
     display: flex;
     align-items: center;
 }
+
 .progressbar div {
     background-color: lawngreen;
     margin: 2px;
@@ -36,12 +38,14 @@ p {
     width: 24%;
     height: 80%;
 }
+
 .used {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
+
 .over {
     display: flex;
     flex-direction: row;
