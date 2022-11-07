@@ -263,12 +263,11 @@
     }
 
     private DataItem[] GrafiekWeergave() {
-        //vooruitgang van dat datum tot 1 maand erna
-
-        //activitydatum
+        //gekozen datum
         DateTime begin = activitydatum;
-        //tot 1 maand
-        DateTime end = activitydatum.AddMonths(5);
+        //tot x maanden (evolutie)
+        int tot = 5;
+        DateTime end = activitydatum.AddMonths(tot);
 
         //alle datums opvullen
         var datums = new List<DateTime>();
@@ -282,7 +281,6 @@
 
         for (int i = 0; i < data.Length; i++)
         {
-            //historiek[i] = new DataItem { Date = _activities[i].Date, CPU = (double)_activities[i].VirtualMachine.CPU, RAM = (double)_activities[i].VirtualMachine.RAM, Storage = (double)_activities[i].VirtualMachine.Storage };
             data[i] = new DataItem
                 {
                     Date = datums[i],
@@ -291,7 +289,6 @@
                     Storage = (double)DefinitiefvrijStoragefunc(datums[i])
                 };
         }
-
         return data;
     }
 
@@ -300,10 +297,5 @@
         /* Sorteren op datum in back-end*/
         _activities = ActivityService.GetAll();
         _requests = VirtualMachineRequestService.GetAll();
-
-        /*foreach(var r in _requests)
-        {
-            Console.WriteLine($"project naam: {r.projectNaam}");
-        }*/
     }
 }
