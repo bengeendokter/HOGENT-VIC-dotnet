@@ -14,7 +14,7 @@
         <div class="main_heading">
             <h1 id="vm-title"><a class="breadcrumb" href="/vm">Virtuele Machine</a> - (@vm.Name)</h1>
             @*TODO move wijzigen to top right*@
-            <a>Bewerken</a>
+            <a class="link" href=@($"/vm/{Id}")>Bewerken</a>
         </div>
         <section aria-labelledby="vm-title" class="details">
             <div class="details_group">
@@ -127,12 +127,7 @@
                             <td>HoGent</td>
                         </tr>
                         <tr>
-                            <th>Aanvrager</th>
-                            <td>Jan De Smet</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td>jan.desmet@student.hogent.be</td>
+                                <td colspan="2"><a class="link" href=@($"/vm/{Id}")>Meer info</a></td>
                         </tr>
                     </table>
                 </secion>
