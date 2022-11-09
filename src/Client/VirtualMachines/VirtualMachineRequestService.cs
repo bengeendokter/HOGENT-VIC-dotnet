@@ -31,37 +31,37 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         var request1 = new VirtualMachineRequest
         {
             Id = 1,
-            Date = DateTime.Now,
-            StartDate = DateTime.Now,
+            Date = new DateTime(2022, 10, 25, 9, 15, 0),
+            StartDate = new DateTime(2022, 11, 15, 9, 15, 0),
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor een bachlerproef onderzoek ivm AI.",
             ProjectNaam = "bachlerproef AI",
             Status = ERequestStatus.Accepted,
-            EmailAanvrager = "test@help.be",
+            EmailAanvrager = "brecht@test.be",
             NummerAanvrager = 0469569562
         };
         var request2 = new VirtualMachineRequest
         {
             Id = 2,
-            Date = DateTime.Now,
-            StartDate = DateTime.Now,
+            Date = new DateTime(2022, 10, 23, 9, 15, 0),
+            StartDate = new DateTime(2022, 11, 05, 9, 15, 0),
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor een DevOps opdracht.",
             ProjectNaam = "Opdracht",
             Status = ERequestStatus.Handled,
-            EmailAanvrager = "test@help.be",
+            EmailAanvrager = "diemen@test.be",
             NummerAanvrager = 0469569562
         };
         var request3 = new VirtualMachineRequest
         {
-            Id = 3,
-            Date = DateTime.Now,
-            StartDate = DateTime.Now,
+            Id = 3, 
+            Date = new DateTime(2022, 10, 20, 9, 15, 0),
+            StartDate = new DateTime(2022, 11, 19, 9, 15, 0),
             EndDate = DateTime.MaxValue,
             Reason = "Virtual machine voor iets online te zetten",
             ProjectNaam = "Online",
             Status = ERequestStatus.Denied,
-            EmailAanvrager = "test@help.be",
+            EmailAanvrager = "harld@test.be",
             NummerAanvrager = 0469569562
         };
         _requests.Add(request1);

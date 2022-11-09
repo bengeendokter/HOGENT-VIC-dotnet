@@ -1,7 +1,8 @@
 ﻿@inject IUsageService UsageService
 
-@if (display) {
-        <div class="usagebar_toggler @UsageTogglerStyleCss" @onclick="ToggleUsageMenu">
+@if (display)
+{
+    <div class="usagebar_toggler @UsageTogglerStyleCss" @onclick="ToggleUsageMenu">
         <OpenIcon />
     </div>
 
@@ -10,7 +11,7 @@
             <div class="top_content">
                 <div class="top_circle">
                     <div class="inner_circle">
-                        <UsageIcon/>
+                        <UsageIcon />
                     </div>
                 </div>
                 <div class="info">
@@ -23,11 +24,11 @@
                 <div class="stats">
                     @foreach (var u in usages)
                     {
-                            <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used/>
+                        <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used />
                     }
                     @foreach (var u in usages)
                     {
-                            <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used/>
+                        <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used />
                     }
                 </div>
             }

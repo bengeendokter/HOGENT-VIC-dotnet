@@ -1,0 +1,66 @@
+﻿<table>
+    <thead>
+        <tr>
+            @foreach (var fieldInfo in Collection.First().GetType().GetFields())
+            {
+                var name = fieldInfo.Name;
+                name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
+
+                if (!name.Equals("Id"))
+                {
+                    <th>@name</th>
+                }
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Collection)
+        {
+            <tr>
+                @foreach (var fieldInfo in item.GetType().GetFields())
+                {
+                    var key = fieldInfo.Name;
+                    var value = fieldInfo.GetValue(item);
+
+                    @if (key.Equals("Acties"))
+                    {
+                        /*<td><img src="favicon.png" /></td>*/
+                        <td>
+                            <div>
+                                <button style="border: none; background: none;">
+                                    <span class="material-icons" style="color: slategray"
+                            @onclick="@(() => Console.WriteLine($"Edit user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                        edit
+                                    </span>
+                                </button>
+                                <button style="border: none; background: none;"
+                        @onclick="@(() => Console.WriteLine($"Deleting user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                    <span class="material-icons" style="color: red">
+                                        delete
+                                    </span>
+                                </button>
+                                <button style="border: none; background: none;"
+                        @onclick="@(() => Console.WriteLine($"More info about user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                    <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">
+                                        info
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+                    }
+
+                    @if (!key.Equals("Id") && !key.Equals("Acties"))
+                    {
+                        <td>@value</td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter] public ICollection<object> Collection { get; set; } = new List<object>();
+}

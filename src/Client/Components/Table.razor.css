@@ -31,10 +31,12 @@ thead tr th:last-child {
 }
 
 tr {
-    background-color: var(--clr-primary); /*secondary*/
+    background-color: var(--clr-primary);
+    /*secondary*/
 }
 
-th, td {
+th,
+td {
     text-align: center;
     padding: 16px;
 }
@@ -46,6 +48,6 @@ thead:after {
 }
 
 tr:nth-child(even) {
-    background-color: var(--clr-background-blue); /*primary*/
+    background-color: var(--clr-background-blue);
+    /*primary*/
 }
-
