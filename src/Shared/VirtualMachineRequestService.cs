@@ -13,7 +13,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     {
         SetDummyRequestList();
     }
-    
+
     public VirtualMachineRequest? Get(int id)
     {
         return _requests.FirstOrDefault(x => x.Id == id);
@@ -29,14 +29,51 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         throw new NotImplementedException();
     }
 
+    private DateTime DatumCreator(int maand, int dag)
+    {
+        int j = DateTime.Now.Year;
+        int m = DateTime.Now.Month;
+        int d = DateTime.Now.Day;
+
+        var dagen = DateTime.DaysInMonth(j, m);
+
+        int j1 = j;
+        int m1 = m;
+        int d1 = d;
+
+        if (d1 + dag > dagen)
+        {
+            d1 = (d1 + dag) % dagen;
+            m1 += 1;
+
+        }
+        else
+        {
+            d1 += dag;
+        }
+
+        if (m1 + maand > 12)
+        {
+            m1 = (m1 + maand) % 12;
+            j1 += 1;
+
+        }
+        else
+        {
+            m1 += maand;
+        }
+
+        return new DateTime(j1, m1, d1);
+    }
+
     private void SetDummyRequestList()
     {
         var request1 = new VirtualMachineRequest
         {
             Id = 1,
-            Date = new DateTime(2022, 01, 01),
-            StartDate = new DateTime(2022, 02, 01),
-            EndDate = new DateTime(2022, 03, 01),
+            Date = DatumCreator(1, 0).AddMonths(-1),
+            StartDate = DatumCreator(1, 0),
+            EndDate = DatumCreator(2, 0),
             Reason = "Virtual machine voor een bachlerproef onderzoek ivm AI.",
             projectNaam = "bachlerproef AI",
             Status = ERequestStatus.Accepted,
@@ -45,9 +82,9 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         var request2 = new VirtualMachineRequest
         {
             Id = 2,
-            Date = new DateTime(2022, 01, 02),
-            StartDate = new DateTime(2022, 02, 02),
-            EndDate = new DateTime(2022, 03, 02),
+            Date = DatumCreator(1, 1).AddMonths(-1),
+            StartDate = DatumCreator(1, 1),
+            EndDate = DatumCreator(2, 1),
             Reason = "Virtual machine voor een DevOps opdracht.",
             projectNaam = "Opdracht",
             Status = ERequestStatus.Handled,
@@ -56,9 +93,9 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         var request3 = new VirtualMachineRequest
         {
             Id = 3,
-            Date = new DateTime(2022, 04, 05),
-            StartDate = new DateTime(2022, 05, 05),
-            EndDate = new DateTime(2022, 05, 20),
+            Date = DatumCreator(4, 4).AddMonths(-1),
+            StartDate = DatumCreator(4, 4),
+            EndDate = DatumCreator(4, 19),
             Reason = "Virtual machine voor iets online te zetten",
             projectNaam = "Online",
             Status = ERequestStatus.Denied,

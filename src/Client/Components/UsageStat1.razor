@@ -1,0 +1,58 @@
+﻿<div class="usage_container">
+    <p class="title">Capaciteit @Type (@Unit)</p>
+    <p class="percentage">@BerekenPercentage() %</p>
+    <div class="progressbar">
+        <div style=@MyStyle></div>
+    </div>
+    <div class="used">
+        <p>Totaal:</p>
+        <p>@Total</p>
+    </div>
+    <div class="over">
+        <p>Resterend:</p>
+        <p>@BerekenRemaining()</p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Type { get; set; }
+    [Parameter]
+    public string? Unit { get; set; }
+    [Parameter]
+    public decimal Total { get; set; }
+    [Parameter]
+    public decimal Used { get; set; }
+
+    public string MyStyle => GetStyleString();
+
+    private decimal BerekenRemaining()
+    {
+        return Total - Used;
+    }
+
+    private decimal BerekenPercentage()
+    {
+        return Math.Round((Used / (Total == 0 ? 1 : Total)) * 100, 2);
+    }
+
+    private string GetStyleString()
+    {
+        decimal percentage = BerekenPercentage();
+        string color;
+
+        switch (percentage)
+        {
+            case < 33:
+                color = "green";
+                break;
+            case < 66:
+                color = "orange";
+                break;
+            default:
+                color = "red";
+                break;
+        };
+        return $"width: {Math.Round(percentage)}%; background-color: {color};";
+    }
+}

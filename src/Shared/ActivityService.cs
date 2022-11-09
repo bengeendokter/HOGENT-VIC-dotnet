@@ -9,6 +9,42 @@ public class ActivityService : IActivityService
         SetDummyActivities();
     }
 
+    private DateTime DatumCreator(int maand, int dag)
+    {
+        int j = DateTime.Now.Year;
+        int m = DateTime.Now.Month;
+        int d = DateTime.Now.Day;
+
+        var dagen = DateTime.DaysInMonth(j, m);
+
+        int j1 = j;
+        int m1 = m;
+        int d1 = d;
+
+        if (d1 + dag > dagen)
+        {
+            d1 = (d1 + dag) % dagen;
+            m1 += 1;
+
+        } else
+        {
+            d1 += dag;
+        }
+
+        if (m1 + maand > 12)
+        {
+            m1 = (m1 + maand) % 12;
+            j1 += 1;
+
+        }
+        else
+        {
+            m1 += maand;
+        }
+        
+        return new DateTime(j1, m1, d1);
+    }
+
     private void SetDummyActivities()
     {
         _activities.Clear();
@@ -19,13 +55,13 @@ public class ActivityService : IActivityService
             HostName = "VM_JN58CE_2354",
             FQDN = "TBD",
             IsHighAvailable = true,
-            StartDate = new DateTime(2022, 01, 01),
-            EndDate = new DateTime(2022, 04, 02),
+            StartDate = DatumCreator(0, 0),
+            EndDate = DatumCreator(3, 1),
             Template = Template.TEMPLATES[ETemplate.ArtificialIntelligence],
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             EBackupFrequency = EBackupFrequency.Daily,
             IsActive = true,
-            CreateDate = new DateTime(2022, 01, 01),
+            CreateDate = DatumCreator(0, 0),
             Poorten = "Poort 1, poort2",
             Host = "host123pt-45f",
             CPU = 6,
@@ -40,13 +76,13 @@ public class ActivityService : IActivityService
             HostName = "VM_ADJC_4562",
             FQDN = "TBD",
             IsHighAvailable = false,
-            StartDate = new DateTime(2022, 04, 01),
-            EndDate = new DateTime(2022, 06, 01),
+            StartDate = DatumCreator(3, 0),
+            EndDate = DatumCreator(5, 0),
             Template = Template.TEMPLATES[ETemplate.Database],
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             EBackupFrequency = EBackupFrequency.Weekly,
             IsActive = true,
-            CreateDate = new DateTime(2022, 04, 01),
+            CreateDate = DatumCreator(3, 0),
             Poorten = "Poort 1",
             Host = "host123pt-45f",
             CPU = 2,
@@ -62,13 +98,13 @@ public class ActivityService : IActivityService
             HostName = "VM_ADJC_4562",
             FQDN = "TBD",
             IsHighAvailable = false,
-            StartDate = new DateTime(2022, 05, 01),
-            EndDate = new DateTime(2022, 07, 01),
+            StartDate = DatumCreator(4, 0),
+            EndDate = DatumCreator(6, 0),
             Template = Template.TEMPLATES[ETemplate.MachineLearning],
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             EBackupFrequency = EBackupFrequency.Weekly,
             IsActive = true,
-            CreateDate = new DateTime(2022, 05, 01),
+            CreateDate = DatumCreator(4, 0),
             Poorten = "Poort 1",
             Host = "host123pt-45f",
             CPU = 8,
