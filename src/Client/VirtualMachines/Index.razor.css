@@ -34,8 +34,24 @@
     --clr-status: var(--clr-CTA);
 }
 
-/*table*/
+.sort_button {
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    fill: var(--clr-text-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+}
 
+    .sort_button:focus-visible, .sort_button:hover {
+        text-decoration: underline;
+        color: var(--clr-CTA);
+        fill: var(--clr-CTA);
+    }
+
+/*table*/
 table {
     border-collapse: collapse;
     border-spacing: 0;

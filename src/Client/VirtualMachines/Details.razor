@@ -14,7 +14,7 @@
         <div class="main_heading">
             <h1 id="vm-title"><a class="breadcrumb" href="/vm">Virtuele Machine</a> - (@vm.Name)</h1>
             @*TODO move wijzigen to top right*@
-            <a class="link" href=@($"/vm/{Id}")>Bewerken</a>
+            <a class="link" href=@($"/vm/manage/{Id}")>Bewerken</a>
         </div>
         <section aria-labelledby="vm-title" class="details">
             <div class="details_group">
@@ -59,7 +59,7 @@
                         </tr>
                         <tr>
                             <th>Modus</th>
-                            <td>@vm.Template?.Mode</td>
+                            <td>@vm.Mode</td>
                         </tr>
                         <tr>
                             <th>Dagen besschikbaar</th>
@@ -98,15 +98,15 @@
                         </tr>
                         <tr>
                             <th>CPU</th>
-                            <td>@vm.Template?.Stats?.Cpu cores</td>
+                            <td>@vm.CPU cores</td>
                         </tr>
                         <tr>
                             <th>Ram</th>
-                            <td>@vm.Template?.Stats?.Ram GB</td>
+                            <td>@vm.RAM GB</td>
                         </tr>
                         <tr>
                             <th>Opslag</th>
-                            <td>@vm.Template?.Stats?.Storage GB</td>
+                            <td>@vm.Storage GB</td>
                         </tr>
                     </table>
                 </secion>
