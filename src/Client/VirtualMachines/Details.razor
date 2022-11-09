@@ -51,15 +51,19 @@
                         </tr>
                         <tr>
                             <th>Hoge beschikbaarheid</th>
-                            <td>@(vm.IsHighAvailable ? "Ja" : "Nee")</td>
+                            <td>@(
+                                    vm.IsHighAvailable ? "Ja" : "Nee"
+                        )</td>
                         </tr>
                         <tr>
                             <th>Template</th>
-                            <td>@vm.Template?.Name</td>
+                            <td><span lang="en">@vm.Template?.Name</span></td>
                         </tr>
                         <tr>
                             <th>Backup</th>
-                            <td>@(vm.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks") </td>
+                            <td>@(
+                                    vm.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks"
+                        ) </td>
                         </tr>
                         <tr>
                             <th>Modus</th>
@@ -67,19 +71,18 @@
                         </tr>
                         <tr>
                             <th>Dagen besschikbaar</th>
-                            @*TODO use constains to check for a certain day*@
                             <td>
                                 <div class="weekdays">
-                                    @if (vm.Availability != null)
-                                    {
-                                        <div title="Maandag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Monday) ? "available" : ""))>Ma</div>
-                                        <div title="Dinsdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Tuesday) ? "available" : ""))>Di</div>
-                                        <div title="Woensdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Wednesday) ? "available" : ""))>Wo</div>
-                                        <div title="Donderdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Thursday) ? "available" : ""))>Do</div>
-                                        <div title="Vrijdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Friday) ? "available" : ""))>Vr</div>
-                                        <div title="Zaterdag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Saturday) ? "available" : ""))>Za</div>
-                                        <div title="Zondag" class=@("day " + (vm.Availability.Value.HasFlag(EDay.Sunday) ? "available" : ""))>Zo</div>
-                                    }
+                                @if (vm.Availability != null && days != null)
+                                {
+                                    @foreach (KeyValuePair<string, bool> kvp in days)
+                                        {
+                                            <div class=@("day " + (kvp.Value ? "available" : ""))>
+                                                <span title=@kvp.Key aria-hidden="true">@kvp.Key.Substring(0,2)</span>
+                                                <span class="sr_only">@($"{kvp.Key} {(kvp.Value ? "" : "niet ")}beschikbaar")</span>
+                                        </div>
+                                        }
+                                }
                                 </div>
                             </td>
                         </tr>
@@ -93,7 +96,9 @@
                             <th>Status</th>
                             <td>
                                 <span class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>
-                                    @(vm.IsActive ? "Aan" : "Uit")
+                                    @(
+                                        vm.IsActive ? "Aan" : "Uit"
+                        )
                                 </span>
                             </td>
                         </tr>
@@ -121,9 +126,21 @@
     [Parameter] public int Id { get; set; }
     private VirtualMachine? vm;
 
+    private Dictionary<String, bool>? days;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
         vm = VMService.Get(Id);
+
+        days = new(){
+        {"Maandag", vm.Availability.Value.HasFlag(EDay.Monday)}
+        ,{"Dinsdag", vm.Availability.Value.HasFlag(EDay.Tuesday)}
+        ,{"Woensdag", vm.Availability.Value.HasFlag(EDay.Wednesday)}
+        ,{"Donderdag", vm.Availability.Value.HasFlag(EDay.Thursday)}
+        ,{"Vrijdag", vm.Availability.Value.HasFlag(EDay.Friday)}
+        ,{"Zaterdag", vm.Availability.Value.HasFlag(EDay.Saturday)}
+        ,{"Zondag", vm.Availability.Value.HasFlag(EDay.Sunday)}
+        };
     }
 }

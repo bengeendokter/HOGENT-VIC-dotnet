@@ -138,6 +138,17 @@ html, body {
     display: none;
 }
 
+.sr_only {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    margin: -1px;
+    height: inherit;
+    width: inherit;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+
 @media (min-width: 1080px) {
 
     .content {
