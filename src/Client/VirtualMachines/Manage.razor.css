@@ -31,3 +31,7 @@ label {
     flex-direction: row;
     width: 100%;
 }
+.card {
+    background-color: var(--clr-primary);
+    border-radius: 10px;
+}

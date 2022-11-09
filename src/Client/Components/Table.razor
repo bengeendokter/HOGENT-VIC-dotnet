@@ -1,11 +1,13 @@
-﻿<table>
+﻿@using System.Globalization
+
+<table>
     <thead>
         <tr>
             @foreach (var fieldInfo in Collection.First().GetType().GetFields())
             {
                 var name = fieldInfo.Name;
-                name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
-
+                @*name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));*@
+                name = String.Join(" ", name.Split("_").ToArray());
                 if (!name.Equals("Id"))
                 {
                     <th>@name</th>
@@ -26,32 +28,43 @@
 
                     @if (key.Equals("Acties"))
                     {
+
                         /*<td><img src="favicon.png" /></td>*/
                         <td>
                             <div>
-                                <button style="border: none; background: none;">
-                                    <span class="material-icons" style="color: slategray"
-                            @onclick="@(() => Console.WriteLine($"Edit user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
-                                        edit
-                                    </span>
-                                </button>
+                                @if (new List<object>{0}.Contains(value))
+                                {
+                                    <button style="border: none; background: none;">
+                                        <span class="material-icons" style="color: slategray"
+                                            @onclick="@(() => Console.WriteLine($"Edit user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                            edit
+                                        </span>
+                                    </button>
+                                }
+                                @if (new List<object> { 0 }.Contains(value)){
                                 <button style="border: none; background: none;"
-                        @onclick="@(() => Console.WriteLine($"Deleting user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                        @onclick="@(() => Console.WriteLine($"Deleting user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
                                     <span class="material-icons" style="color: red">
                                         delete
                                     </span>
                                 </button>
+                                }
+                                @if (new List<object> { 0, 1 }.Contains(value)){
                                 <button style="border: none; background: none;"
-                        @onclick="@(() => Console.WriteLine($"More info about user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                       @onclick="@(() => Console.WriteLine($"More info about user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
                                     <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">
                                         info
                                     </span>
                                 </button>
+                                }
                             </div>
                         </td>
                     }
-
-                    @if (!key.Equals("Id") && !key.Equals("Acties"))
+                    else if(value is DateTime){
+                        <td>@value</td>
+                    }
+                        
+                    else if (!key.Equals("Id") && !key.Equals("Acties"))
                     {
                         <td>@value</td>
                     }
