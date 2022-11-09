@@ -41,7 +41,7 @@ public class VirtualMachineService : IVirtualMachineService
             FQDN = "TBD",
             IsHighAvailable = true,
             StartDate = new DateTime(2022, 01, 15),
-            EndDate = new DateTime(2023, 02, 14),
+            EndDate = new DateTime(2023, 04, 14),
             Template = Template.TEMPLATES[ETemplate.ArtificialIntelligence],
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             EBackupFrequency = EBackupFrequency.Daily,
@@ -49,9 +49,9 @@ public class VirtualMachineService : IVirtualMachineService
             CreateDate = DateTime.Now,
             Poorten = "Poort 1, poort2",
             Host = "host123pt-45f",
-            CPU = 2,
-            RAM = 5,
-            Storage = 920,
+            CPU = 4,
+            RAM = 3,
+            Storage = 950,
             Mode = EMode.IaaS
         };
         

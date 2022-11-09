@@ -110,7 +110,7 @@ tr:nth-child(even) {
     display: block;
 }*/
 
-@container (max-width: 700px) {
+@container (max-width: 900px) {
     table {
         overflow-x: auto;
         display: block;
