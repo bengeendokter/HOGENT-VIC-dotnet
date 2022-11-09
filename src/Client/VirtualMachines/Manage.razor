@@ -1,8 +1,11 @@
 ﻿@page "/vm/manage"
 @page "/vm/manage/{id:int}"
+@page "/vm/manage/request/{id:int}"
 @using Microsoft.Extensions.Logging
 @inject ILogger<Manage> Logger
 @inject IVirtualMachineService VirtualMachineService
+@inject IVirtualMachineRequestService VirtualMachineRequestService
+@inject NavigationManager NavigationManager
 
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
@@ -11,30 +14,32 @@
                 @*<DataAnnotationsValidator />*@
             <ObjectGraphDataAnnotationsValidator />
             <div class="headerRow">
-                <h1>VM @(Id.HasValue ? $"Wijzigen - {_vm.Name}" : "Aanmaken")</h1>
+                    <h1>VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" : "Aanmaken")</h1>
             </div>
-            <h2>Informatie van de aanvrager</h2>
-            <div class="input-group">
-                <label>
-                    Email aanvrager<br/>
-                </label>
+            @if(_request!=null){
+                    <h2>Informatie van de aanvrager</h2>
+                    <div class="card">
+                        Projectnaam: @_request.ProjectNaam<br/>
+                        Start datum: @_request.StartDate<br/>
+                        Eind datum: @_request.EndDate<br/>
+                        Email: @_request.EmailAanvrager<br/>
+                        Nummer: @_request.NummerAanvrager<br/>
+                        Reden aanvraag: <br/>
+                        @_request.Reason
 
-                <label>
-                    Telefoonnummer aanvrager<br/>
-                </label>
+                    </div>
+            }
 
-                <label>
-                    Gebruiker van de VM<br/>
-                </label>
 
-                <label>
-                    Relatie gebruiker-klant<br />
-                </label>
-
-            </div>
 
             <h2> Algemene informatie</h2>
             <div class="input-group">
+                <label>
+                    Klant<br/>
+                    <InputSelect @bind-Value="_vm.client">
+                    </InputSelect>
+                </label>
+
                 <label>
                     Naam<br />
                     <InputText @bind-Value="_vm.Name"></InputText>
@@ -77,11 +82,6 @@
                     <ValidationMessage For="@(()=> _vm.IsHighAvailable)"></ValidationMessage>
                 </label>
 
-                <label>
-                    FQDN<br />
-                    <InputText @bind-Value="_vm.FQDN"></InputText>
-                    <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                </label>
 
                 <label>
                     Hoe vaak moeten er backups worden genomen<br />
@@ -102,6 +102,8 @@
                 </label>
 
             </div>
+
+
             <h2>Specificaties</h2>
             <div class="input-group">
                 <label>
@@ -124,7 +126,11 @@
                     <InputText @bind-Value="_vm.Poorten"></InputText>
                     <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                 </label>
-
+                <label>
+                    FQDN<br />
+                    <InputText @bind-Value="_vm.FQDN"></InputText>
+                    <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
+                </label>
                 <label>
                     Mode: <br/>
                     <InputSelect @bind-Value="_vm.Mode">
@@ -151,6 +157,7 @@
 
 @code {
     private VirtualMachine _vm = new();
+    private VirtualMachineRequest? _request;
 
     [Parameter]
     public int? Id { get; set; }
@@ -159,11 +166,31 @@
     {
         if (!Id.HasValue) return;
 
-        _vm = VirtualMachineService.Get(Id.Value) ?? new();
+        if (NavigationManager.Uri.Contains("request")){
+            _request = VirtualMachineRequestService.Get(Id.Value) ?? null;
+            _vm.StartDate = _request.StartDate;
+            _vm.EndDate = _request.EndDate;
+        }
+        else
+            _vm = VirtualMachineService.Get(Id.Value) ?? new();
     }
 
     private void HandleValidSubmit()
     {
+        //Aanmaken VM gevolg van aanvraag
+        if (_request!=null){
+
+        }
+        //wijzigen VM
+        else if (Id.HasValue && VirtualMachineService.Get(Id.Value)!= null)
+        {
+
+        }
+        //Aanmaken VM
+        else{
+
+        }
+
         
     }
 }

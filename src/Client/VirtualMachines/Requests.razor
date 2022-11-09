@@ -5,19 +5,17 @@
     <Content>
         <h1>Aanvragen</h1>
         <select @bind="@_sortFilter" @oninput="@FilterChange">
-            <option value=0>Datum oplopend</option>
-            <option value=1>Datum aflopend</option>
-            <option value=2>Projectnaam oplopend</option>
-            <option value=3>Projectnaam aflopend</option>
+            <option value="0">Datum oplopend</option>
+            <option value="1">Datum aflopend</option>
+            <option value="2">Projectnaam oplopend</option>
+            <option value="3">Projectnaam aflopend</option>
         </select>
         <select @bind="@_statusFilter" @oninput="@StatusChange">
-            <option value=0>Alle</option>
-            <option value=1>Accepted</option>
-            <option value=2>Handled</option>
-            <option value=3>Denied</option>
+            <option value="0">Alle</option>
+            <option value="1">Accepted</option>
+            <option value="2">Handled</option>
+            <option value="3">Denied</option>
         </select>
-        <div>@_sortFilter</div>
-        <div>@_statusFilter</div>
 
         <Table Collection="filteredObjects" />
     </Content>
@@ -26,18 +24,20 @@
 @code {
     public class Request{
         public int Id = 0;
-        public string? EmailAanvrager;
-        public string? ProjectNaam;
+        public string? Email_aanvrager;
+        public string? Projectnaam;
+        public DateTime? Start_datum;
         public ERequestStatus Status;
-        public DateTime Date;
+        public DateTime? Datum_aanvraag;
+        public int Acties = 1;
     }
 
     public ICollection<Object> requestObjects = new List<Object>();
     public ICollection<Object> filteredObjects = new List<Object>();
     private List<VirtualMachineRequest> list = new();
 
-    private int _sortFilter { get; set; }
-    private int _statusFilter { get; set; }
+    private string _sortFilter { get; set; }
+    private string _statusFilter { get; set; }
 
     protected override void OnInitialized()
     {
@@ -49,52 +49,51 @@
                 new Request()
                 {
                     Id = request.Id,
-                    EmailAanvrager = request.EmailAanvrager,
-                    ProjectNaam = request.ProjectNaam,
-                    Date = request.Date,
+                    Email_aanvrager = request.EmailAanvrager,
+                    Projectnaam = request.ProjectNaam,
+                    Start_datum = request.StartDate,
+                    Datum_aanvraag = request.Date,
                     Status = request.Status
                 });
         });
         filteredObjects = requestObjects;
     }
 
-    private void FilterChange()
+    private void FilterChange(ChangeEventArgs changeEvent)
     {
-        switch(_sortFilter){
-            case 0:
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Date).Reverse().ToList();
-                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
-                break;
-            case 1:
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Date).ToList();
-                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
 
+        switch (changeEvent.Value)
+        {
+            case "0":
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Datum_aanvraag).ToList();
                 break;
-            case 2:
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).ProjectNaam).Reverse().ToList();
-                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
+            case "1":
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Datum_aanvraag).Reverse().ToList();
                 break;
-            case 3:
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).ProjectNaam).ToList();
-                Console.WriteLine(requestObjects.Cast<Request>().First().Id);
-
+            case "2":
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Projectnaam).ToList();
+                break;
+            case "3":
+                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Projectnaam).Reverse().ToList();
                 break;
             default:
                 break;
         }
     }
-    private void StatusChange(){
-        switch(_statusFilter){
-            case 0:
+    private void StatusChange(ChangeEventArgs changeEvent)
+    {
+
+        switch(changeEvent.Value){
+            case "0":
                 filteredObjects = requestObjects;
                 break;
-            case 1:
+            case "1":
                 filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Accepted).ToList();
                 break;
-            case 2:
+            case "2":
                 filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Handled).ToList();
                 break;
-            case 3:
+            case "3":
                 filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Denied).ToList();
                 break;
             default:
