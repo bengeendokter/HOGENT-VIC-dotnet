@@ -30,14 +30,6 @@
                             <td>@vm.HostName</td>
                         </tr>
                         <tr>
-                            <th>Gebruiker</th>
-                            <td>admin</td>
-                        </tr>
-                        <tr>
-                            <th>Wachtwoord</th>
-                            <td>***********</td>
-                        </tr>
-                        <tr>
                             <th>Startdatum gebruik</th>
                             <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         </tr>
@@ -89,6 +81,8 @@
                     </table>
                 </section>
 
+                <div class="details_subgroup">
+
                 <secion class="details_item specifications">
                     <h2>Specificaties</h2>
                     <table class="table">
@@ -116,6 +110,33 @@
                         </tr>
                     </table>
                 </secion>
+
+                <secion class="details_item">
+                    <h2>Gebruiker</h2>
+                    <table class="table">
+                        <tr>
+                            <th>Gebruiker</th>
+                            <td>admin</td>
+                        </tr>
+                        <tr>
+                            <th>Wachtwoord</th>
+                            <td><input class="password" readonly type=@TxtType value="wachtwoord" /><button class="button" type="button" @onclick="ShowPassword"><EyeIcon /></button></td>
+                        </tr>
+                        <tr>
+                            <th>Klant</th>
+                            <td>HoGent</td>
+                        </tr>
+                        <tr>
+                            <th>Aanvrager</th>
+                            <td>Jan De Smet</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>jan.desmet@student.hogent.be</td>
+                        </tr>
+                    </table>
+                </secion>
+                </div>
             </div>
         </section>
 
@@ -127,6 +148,8 @@
     private VirtualMachine? vm;
 
     private Dictionary<String, bool>? days;
+
+    public string TxtType = "password";
 
     protected override void OnInitialized()
     {
@@ -143,4 +166,16 @@
         ,{"Zondag", vm.Availability.Value.HasFlag(EDay.Sunday)}
         };
     }
+
+    public void ShowPassword()
+    {
+        if (this.TxtType == "password")
+        {
+            this.TxtType = "text";
+        }
+        else
+        {
+            this.TxtType = "password";
+        }
+    } 
 }
