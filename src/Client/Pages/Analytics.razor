@@ -68,7 +68,7 @@
     <input type="date" id="datum" name="datum"
            min="2022-01-01" max="2023-04-01" @bind-value="activitydatum" @bind-value:event="oninput">
 
-    <p>@($"Historiek/capiciteit voor {activitydatum.Day}/{activitydatum.Month}/{activitydatum.Year}:")</p>
+    <p>@($"Historiek/capiciteit voor {activitydatum.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}:")</p>
 </div>
 
 <div style="display: flex;
@@ -95,6 +95,23 @@
         <p>Verbruik: @DefinitiefgebruikStorage</p>
     </div>
  
+</div>
+
+<div>
+    <label for="grafiekdatum">Kies een datum voor grafische weergave:</label>
+    <input type="date" id="grafiekdatum" name="grafiekdatum"
+           min="2022-01-01" max="2023-04-01" @bind-value="grafiekdatum" @bind-value:event="oninput">
+
+    <br />
+
+    <label for="evolutie">Kies een :</label>
+    <select name="evolutie" id="evolutie" @bind="evolutie">
+        <option value="1">1 maand</option>
+        <option value="3">3 maanden</option>
+        <option value="5">5 maanden</option>
+        <option value="8">8 maanden</option>
+        <option value="12">1 jaar</option>
+    </select>
 </div>
 
 <div style="background-color: white">
@@ -128,6 +145,8 @@
     private List<VirtualMachineRequest> _requests = new();
     private DataItem[] historiek => GrafiekWeergave();
     private DateTime activitydatum = new DateTime(2022, 01, 01);
+    private DateTime grafiekdatum = new DateTime(2022, 01, 01);
+    private int evolutie = 5;
 
     //totaal
     private int TotaalactiviteitCPU(DateTime datum) { return _activities.Where(a => (a.Date <= datum)).ToList().Aggregate(0, (acc, x) => acc + x.VirtualMachine.CPU); }
@@ -264,10 +283,10 @@
 
     private DataItem[] GrafiekWeergave() {
         //gekozen datum
-        DateTime begin = activitydatum;
+        DateTime begin = grafiekdatum;
         //tot x maanden (evolutie)
-        int tot = 5;
-        DateTime end = activitydatum.AddMonths(tot);
+        int tot = evolutie;
+        DateTime end = grafiekdatum.AddMonths(tot);
 
         //alle datums opvullen
         var datums = new List<DateTime>();
