@@ -9,12 +9,13 @@
     <h1>Historiek</h1>
 </div>
 
-<div>
-    <label for="datum">Kies een datum:</label>
-    <input type="date" id="datum" name="datum"
-           min=@($"{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") max=@($"{DateTime.Now.AddYears(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") @bind-value="activitydatum" @bind-value:event="oninput">
-
-    <p>@($"Historiek/capiciteit voor {activitydatum.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}:")</p>
+<div class="statsdatum">
+    <div>
+        <label for="datum">Kies een datum:</label>
+        <input type="date" id="datum" name="datum"
+               min=@($"{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") max=@($"{DateTime.Now.AddYears(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") @bind-value="activitydatum" @bind-value:event="oninput">
+    </div>
+    <p>@($"Capiciteit van het verbruik voor {activitydatum.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}:")</p>
 </div>
 
 <div class="analysis_stats">
@@ -23,13 +24,13 @@
     <UsageStat1 Type="Opslag" Unit="GB" Total=@DefinitieftotaalStorage Used=@DefinitiefgebruikStorage/>
 </div>
 
-<div>
+<div class="grafiekdatum">
     <label for="grafiekdatum">Kies een datum voor grafische weergave:</label>
     <input type="date" id="grafiekdatum" name="grafiekdatum"
            min=@($"{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") max=@($"{DateTime.Now.AddYears(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") @bind-value="grafiekdatum" @bind-value:event="oninput">
     <br />
 
-    <label for="evolutie">Kies een :</label>
+    <label for="evolutie">Kies de evolutie die je wenst voor de grafiek:</label>
     <select name="evolutie" id="evolutie" @bind="evolutie">
         <option value="1">1 maand</option>
         <option value="3">3 maanden</option>
@@ -40,28 +41,22 @@
 </div>
 
 <div class="grafiek">
+    <p>Verbruik CPU, RAM en Opslag:</p>
     <RadzenChart>
         <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik CPU" LineType="LineType.Solid" ValueProperty="CPU">
             <RadzenMarkers MarkerType="MarkerType.Circle" />
-            <RadzenSeriesDataLabels Visible="false" />
         </RadzenLineSeries>
-
         <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik RAM" LineType="LineType.Solid" ValueProperty="RAM">
             <RadzenMarkers MarkerType="MarkerType.Circle" />
-            <RadzenSeriesDataLabels Visible="false" />
         </RadzenLineSeries>
-
         <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik Opslag" LineType="LineType.Solid" ValueProperty="Storage">
             <RadzenMarkers MarkerType="MarkerType.Circle" />
-            <RadzenSeriesDataLabels Visible="false" />
         </RadzenLineSeries>
-
-        <RadzenCategoryAxis  Padding="1" Formatter="@FormatAsMonth" />
+        <RadzenCategoryAxis Padding="1" Formatter="@FormatAsMonth" />
         <RadzenValueAxis>
             <RadzenGridLines Visible="true" />
-            <RadzenAxisTitle Text="capaciteit in Cores(CPU) en GB(Ram en Opslag)" />
-        </RadzenValueAxis>
-        <RadzenLegend Position="LegendPosition.Top" />
+            <RadzenAxisTitle Text="Capaciteit in Cores en GB" />
+        </RadzenValueAxis> 
     </RadzenChart>
 </div>
 
