@@ -6,6 +6,5 @@ public interface IVirtualMachineRequestService
 
     VirtualMachineRequest? Get(int id);
 
-    //TODO: DTO
     VirtualMachineRequest? Update(int id, VirtualMachineRequest request);
 }
