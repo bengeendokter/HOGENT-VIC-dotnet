@@ -83,8 +83,23 @@ tr:nth-child(even) {
     color: var(--clr-red);
 }
 
-/*#endregion */
+.voorspelling_link {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 25px;
+    border: 10px solid #e4e8ef;
+    width: 90%;
+    height: auto;
+    background-color: lightblue;
+}
 
+
+/*#endregion */
 @media screen and (max-width: 640px) {
     .title-container > h1 {
         text-align: center;

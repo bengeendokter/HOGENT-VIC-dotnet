@@ -9,9 +9,10 @@
     <h1>Historiek</h1>
 </div>
 <div class="analytics-container">
+    <!--
     <div class="currentUse-container">
-        <!-- Huidige gebruik component-->
     </div>
+    -->
     <div class="table-container"> 
         <table>
             <thead> 
@@ -62,9 +63,19 @@
     </div>
 </div>
 
-<NavLink href="/historiek/voorspelling" Match=NavLinkMatch.All>
-    <div>Voorspelling</div>
-</NavLink>
+
+<div class="voorspelling_link">
+    Klik om voorspellingen te doen met data:
+    <NavLink href="/historiek/voorspelling" Match=NavLinkMatch.All>
+        <div>
+            <span class="material-icons" style="color: greenyellow">
+                trending_up
+            </span> Voorspelling
+        </div>     
+    </NavLink>
+</div>
+
+
 
 @code {
     private List<Activity> _activities = new();

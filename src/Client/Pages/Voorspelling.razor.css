@@ -17,68 +17,6 @@
     background-color: var(--clr-background-title);
 }
 
-.grafiek {
-    margin: 0 auto;
-    text-align: center;
-    width: 95%;
-    height: 100%;
-    padding: 10px;
-    background-color: white;
-}
-
-.analysis_stats {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
-    margin: 0 auto;
-    width: 90%;
-    height: auto;
-    padding: 10px;
-    background-color: purple;
-}
-
-.statsdatum {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: lightblue;
-    font-family: Roboto;
-    text-align: center;
-}
-
-.statsdatum input {
-    border-radius: 5%;
-    background-color: lightgrey;
-}
-
-.grafiekdatum {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: lightblue;
-    font-family: Roboto;
-    text-align: center;
-}
-
-.grafiekdatum input {
-    border-radius: 5%;
-    background-color: lightgrey;
-}
-
-.grafiekdatum select {
-    border-radius: 5%;
-    background-color: lightgrey;
-}
-
 /*sdfsdfsdf*/
 @media screen and (max-width: 640px) {
     .title-container > h1 {
@@ -95,9 +33,159 @@
     }
 }
 
-@media screen and (max-width: 810px) {
+.datacomponent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: center;
+    width: 98%;
+    height: 50%;
+    padding: 10px;
+    background-color: #e4e8ef;
+    margin-top: 10px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.analysis_stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin: 0 auto;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    border-radius: 25px;
+}
+
+.statsdatum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: lightblue;
+    font-family: Roboto;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.statsdatum input {
+    border-radius: 5%;
+    background-color: #38BDF8;
+}
+
+.grafiekcomponent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin: 0 auto;
+    text-align: center;
+    width: 98%;
+    padding: 10px;
+    background-color: #e4e8ef;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.grafiek {
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 25px;
+}
+
+.grafiekdatum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    background-color: lightblue;
+    font-family: Roboto;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.grafiekdatum input {
+    border-radius: 5%;
+    background-color: #38BDF8;
+}
+
+.grafiekdatum select {
+    border-radius: 5%;
+    background-color: #38BDF8;
+}
+
+
+@media screen and (max-width: 910px) {
+    .datacomponent {
+        background-color: blue;
+    }
+
     .analysis_stats {
         flex-direction: column;
-        width: 99%;
+        width: 98%;
     }
+
+    .statsdatum {
+        width: 98%;
+    }
+
+    .grafiekcomponent {
+        flex-direction: column;
+        background-color: red;
+    }
+    
+    .grafiek {
+        width: 98%;
+        height: 100%;
+    }
+
+    .grafiekdatum {
+        margin-bottom: 15px;
+        width: 98%;
+        height: auto;
+    }
+}
+
+@media screen and (min-width: 910px) {
+    .datacomponent {
+        height: 320px;
+    }
+
+    .analysis_stats {
+        width: 98%;
+    }
+
+    .statsdatum {
+        width: 98%;
+    }
+
+    .grafiekcomponent {
+        justify-content: space-between;
+        width: 98%;
+        height: 420px;
+        padding: 27px;
+        gap: 10px;
+    }
+
+    .grafiek {
+        width: 98%;
+        height: 100%;
+    }
+
+    .grafiekdatum {
+        width: auto;
+        height: 100%;
+    }
+
+    
 }
