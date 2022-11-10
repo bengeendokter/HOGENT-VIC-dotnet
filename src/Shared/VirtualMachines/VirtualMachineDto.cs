@@ -13,4 +13,15 @@ public static class VirtualMachineDto
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
     }
+
+    public class Detail : Index
+    {
+        public string? HostName { get; set; }
+        public string? FQDN { get; set; }
+        public bool IsHighlyAvailable { get; set; }
+        public Template? Template { get; set; }
+        public EBackupFrequency BackupFrequency { get; set; }
+        public EDay Availability { get; set; }
+        public EMode Mode { get; set; }
+    }
 }

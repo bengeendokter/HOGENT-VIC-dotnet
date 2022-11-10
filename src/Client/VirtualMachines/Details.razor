@@ -44,7 +44,7 @@
                         <tr>
                             <th>Hoge beschikbaarheid</th>
                             <td>@(
-                                    vm.IsHighAvailable ? "Ja" : "Nee"
+                                    vm.IsHighlyAvailable ? "Ja" : "Nee"
                         )</td>
                         </tr>
                         <tr>
@@ -54,7 +54,7 @@
                         <tr>
                             <th>Backup</th>
                             <td>@(
-                                    vm.EBackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks"
+                                    vm.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks"
                         ) </td>
                         </tr>
                         <tr>
@@ -65,7 +65,7 @@
                             <th>Dagen besschikbaar</th>
                             <td>
                                 <div class="weekdays">
-                                @if (vm.Availability != null && days != null)
+                                @if (days != null)
                                 {
                                     @foreach (KeyValuePair<string, bool> kvp in days)
                                         {
@@ -140,7 +140,7 @@
 
 @code {
     [Parameter] public int Id { get; set; }
-    private VirtualMachine? vm;
+    private VirtualMachineDto.Detail? vm;
 
     private Dictionary<String, bool>? days;
 
@@ -150,15 +150,16 @@
     {
         base.OnInitialized();
         vm = VMService.Get(Id);
+        if (vm == null) return;
 
         days = new(){
-        {"Maandag", vm.Availability.Value.HasFlag(EDay.Monday)}
-        ,{"Dinsdag", vm.Availability.Value.HasFlag(EDay.Tuesday)}
-        ,{"Woensdag", vm.Availability.Value.HasFlag(EDay.Wednesday)}
-        ,{"Donderdag", vm.Availability.Value.HasFlag(EDay.Thursday)}
-        ,{"Vrijdag", vm.Availability.Value.HasFlag(EDay.Friday)}
-        ,{"Zaterdag", vm.Availability.Value.HasFlag(EDay.Saturday)}
-        ,{"Zondag", vm.Availability.Value.HasFlag(EDay.Sunday)}
+        {"Maandag", vm.Availability.HasFlag(EDay.Monday)}
+        ,{"Dinsdag", vm.Availability.HasFlag(EDay.Tuesday)}
+        ,{"Woensdag", vm.Availability.HasFlag(EDay.Wednesday)}
+        ,{"Donderdag", vm.Availability.HasFlag(EDay.Thursday)}
+        ,{"Vrijdag", vm.Availability.HasFlag(EDay.Friday)}
+        ,{"Zaterdag", vm.Availability.HasFlag(EDay.Saturday)}
+        ,{"Zondag", vm.Availability.HasFlag(EDay.Sunday)}
         };
     }
 

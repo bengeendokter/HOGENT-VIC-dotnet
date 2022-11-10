@@ -9,9 +9,22 @@ public class VirtualMachineService : IVirtualMachineService
         SetDummyVirtualMachineList();
     }
 
-    public VirtualMachine? Get(int id)
+    public VirtualMachineDto.Detail? Get(int id)
     {
-        return _vms.FirstOrDefault(v => v.Id == id);
+        var vm = _vms.FirstOrDefault(v => v.Id == id);
+        if (vm == null) return null;
+
+        return new VirtualMachineDto.Detail
+        {
+            Id = vm.Id,
+            Name = vm.Name,
+            CPU = vm.CPU,
+            RAM = vm.RAM,
+            Storage = vm.Storage,
+            StartDate = vm.StartDate,
+            EndDate = vm.EndDate,
+            IsActive = vm.IsActive
+        };
     }
 
     public List<VirtualMachineDto.Index> GetAll()
