@@ -11,152 +11,151 @@
     <Content>
         <div class="form">
             <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
-                @*<DataAnnotationsValidator />*@
-            <ObjectGraphDataAnnotationsValidator />
-            <div class="headerRow">
-                    <h1>VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" : "Aanmaken")</h1>
-            </div>
-            @if(_request!=null){
+                <FluentValidationValidator />
+                <div class="headerRow">
+                    <h1>VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
+                        "Aanmaken")</h1>
+                </div>
+                @if (_request != null)
+                {
                     <h2>Informatie van de aanvrager</h2>
                     <div class="card">
-                        Projectnaam: @_request.ProjectNaam<br/>
-                        Start datum: @_request.StartDate<br/>
-                        Eind datum: @_request.EndDate<br/>
-                        Email: @_request.EmailAanvrager<br/>
-                        Nummer: @_request.NummerAanvrager<br/>
-                        Reden aanvraag: <br/>
+                        Projectnaam: @_request.ProjectNaam<br />
+                        Start datum: @_request.StartDate<br />
+                        Eind datum: @_request.EndDate<br />
+                        Email: @_request.EmailAanvrager<br />
+                        Nummer: @_request.NummerAanvrager<br />
+                        Reden aanvraag: <br />
                         @_request.Reason
 
                     </div>
-            }
+                }
 
+                <h2> Algemene informatie</h2>
+                <div class="input-group">
+                    <label>
+                        Klant<br />
+                        <InputSelect @bind-Value="_vm.Client">
+                        </InputSelect>
+                    </label>
 
+                    <label>
+                        Naam<br />
+                        <InputText @bind-Value="_vm.Name"></InputText>
+                        <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
+                    </label>
 
-            <h2> Algemene informatie</h2>
-            <div class="input-group">
-                <label>
-                    Klant<br/>
-                    <InputSelect @bind-Value="_vm.client">
-                    </InputSelect>
-                </label>
+                    <label>
+                        Hostname<br />
+                        <InputText @bind-Value="_vm.HostName"></InputText>
+                        <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Naam<br />
-                    <InputText @bind-Value="_vm.Name"></InputText>
-                    <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
-                </label>
+                    <label>
+                        Start datum<br />
+                        <InputDate @bind-Value="_vm.StartDate"></InputDate>
+                        <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Hostname<br />
-                    <InputText @bind-Value="_vm.HostName"></InputText>
-                    <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
-                </label>
+                    <label>
+                        Eind datum<br />
+                        <InputDate @bind-Value="_vm.EndDate"></InputDate>
+                        <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Start datum<br />
-                    <InputDate @bind-Value="_vm.StartDate" ></InputDate>
-                    <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
-                </label>
+                    <label>
+                        Template (optioneel)<br />
+                        <InputSelect @bind-Value="_vm.Template">
+                            <option value="@ETemplate.Database">Database</option>
+                            <option value="@ETemplate.MachineLearning">Machine Learning</option>
+                            <option value="@ETemplate.ArtificialIntelligence">AI</option>
+                        </InputSelect>
+                    </label>
 
-                <label>
-                    Eind datum<br />
-                    <InputDate @bind-Value="_vm.EndDate"></InputDate>
-                    <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
-                </label>  
+                    <label>
+                        Moet de VM altijd beschikbaar zijn<br />
+                        <InputSelect @bind-Value="_vm.IsHighlyAvailable">
+                            <option value=true> Ja</option>
+                            <option value=false> Nee</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> _vm.IsHighlyAvailable)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Template (optioneel)<br/>
-                    <InputSelect @bind-Value="_vm.Template">
-                        <option value="@ETemplate.Database">Database</option>
-                        <option value="@ETemplate.MachineLearning">Machine Learning</option>
-                        <option value="@ETemplate.ArtificialIntelligence">AI</option>
-                    </InputSelect>
-                </label>
+                    <label>
+                        Hoe vaak moeten er backups worden genomen<br />
+                        <InputSelect @bind-Value="_vm.BackupFrequency">
+                            <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
+                            <option value="@EBackupFrequency.Daily"> Dagelijks</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Moet de VM altijd beschikbaar zijn<br />
-                    <InputSelect @bind-Value="_vm.IsHighlyAvailable">
-                        <option value=true> Ja</option>
-                        <option value=false> Nee</option>
-                    </InputSelect>
-                    <ValidationMessage For="@(()=> _vm.IsHighlyAvailable)"></ValidationMessage>
-                </label>
+                    <label>
+                        Wanneer moet de VM online staan?<br />
+                        <InputRadioGroup @bind-Value="_vm.Availability">
+                            <InputRadio Value="@EDay.Monday" />Test
+                            <InputRadio Value="@EDay.Thursday" />Test2
+                        </InputRadioGroup>
+                        <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                    </label>
 
+                </div>
 
-                <label>
-                    Hoe vaak moeten er backups worden genomen<br />
-                    <InputSelect @bind-Value="_vm.BackupFrequency">
-                        <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
-                        <option value="@EBackupFrequency.Daily"> Dagelijks</option>
-                    </InputSelect>
-                    <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
-                </label>
+                <h2>Specificaties</h2>
+                <div class="input-group">
+                    <label>
+                        CPU cores<br />
+                        <InputNumber @bind-Value="_vm.CPU"></InputNumber>
+                    </label>
 
-                <label>
-                    Wanneer moet de VM online staan?<br />
-                    <InputRadioGroup @bind-Value="_vm.Availability">
-                        <InputRadio Value="@EDay.Monday" />Test
-                        <InputRadio Value="@EDay.Thursday" />Test2
-                    </InputRadioGroup>
-                    <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                </label>
+                    <label>
+                        RAM <br />
+                        <InputNumber @bind-Value="_vm.RAM"></InputNumber>
+                    </label>
 
-            </div>
+                    <label>
+                        Storage <br />
+                        <InputNumber @bind-Value="_vm.Storage"></InputNumber>
+                    </label>
 
+                    <label>
+                        Poorten:<br />
+                        <InputText @bind-Value="_vm.Poorten"></InputText>
+                        <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
+                    </label>
 
-            <h2>Specificaties</h2>
-            <div class="input-group">
-                <label>
-                    CPU cores<br/>
-                     <InputNumber @bind-Value="_vm.CPU"></InputNumber>
-                </label>
+                    <label>
+                        FQDN<br />
+                        <InputText @bind-Value="_vm.FQDN"></InputText>
+                        <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    RAM <br />
-                    <InputNumber @bind-Value="_vm.RAM"></InputNumber>
-                </label>
+                    <label>
+                        Mode: <br />
+                        <InputSelect @bind-Value="_vm.Mode">
+                            <option value="@EMode.PaaS">Paas</option>
+                            <option value="@EMode.IaaS">Iaas</option>
+                            <option value="@EMode.SaaS">Saas</option>
+                        </InputSelect>
+                    </label>
 
-                <label>
-                    Storage <br />
-                    <InputNumber @bind-Value="_vm.Storage"></InputNumber>
-                </label>
-
-                <label>
-                    Poorten:<br />
-                    <InputText @bind-Value="_vm.Poorten"></InputText>
-                    <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
-                </label>
-                <label>
-                    FQDN<br />
-                    <InputText @bind-Value="_vm.FQDN"></InputText>
-                    <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                </label>
-                <label>
-                    Mode: <br/>
-                    <InputSelect @bind-Value="_vm.Mode">
-                        <option value="@EMode.PaaS">Paas</option>
-                        <option value="@EMode.IaaS">Iaas</option>
-                        <option value="@EMode.SaaS">Saas</option>
-                    </InputSelect>
-                </label>
-
-                <label>
-                    Host<br />
-                    <InputSelect @bind-Value="_vm.Host">
-                        <option value="server1">Server 1</option>
-                        <option value="server2">Server 2</option>
-                    </InputSelect>
-                    <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
-                </label>
-            </div>
-            <button type="submit">Submit</button>
-    </EditForm>
+                    <label>
+                        Host<br />
+                        <InputSelect @bind-Value="_vm.Host">
+                            <option value="server1">Server 1</option>
+                            <option value="server2">Server 2</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
+                    </label>
+                </div>
+                <button type="submit">Submit</button>
+            </EditForm>
         </div>
     </Content>
 </GenericLayout>
 
 @code {
-    private VirtualMachine _vm = new();
+    private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequest? _request;
 
     [Parameter]
@@ -167,18 +166,21 @@
         if (!Id.HasValue) return;
 
         if (NavigationManager.Uri.Contains("request")){
-            _request = VirtualMachineRequestService.Get(Id.Value) ?? null;
+            _request = VirtualMachineRequestService.Get(Id.Value);
+            if (_request == null) return;
+            
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
         }
         else
-            _vm = VirtualMachineService.Get(Id.Value) ?? new();
+            _vm = (VirtualMachineDto.Mutate)(VirtualMachineService.Get(Id.Value) ?? new());
     }
 
     private void HandleValidSubmit()
     {
         //Aanmaken VM gevolg van aanvraag
-        if (_request!=null){
+        if (_request!=null)
+        {
 
         }
         //wijzigen VM
@@ -187,10 +189,9 @@
 
         }
         //Aanmaken VM
-        else{
+        else
+        {
 
-        }
-
-        
+        }   
     }
 }

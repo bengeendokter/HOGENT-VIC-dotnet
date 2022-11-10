@@ -49,14 +49,30 @@ public class VirtualMachineService : IVirtualMachineService
         }).ToList();
     }
 
-    // TODO: Dto
-    public VirtualMachine? Update(int id, VirtualMachine updatedVm)
+    public VirtualMachineDto.Detail? Update(int id, VirtualMachineDto.Mutate updatedVm)
     {
         var vm = _vms.FirstOrDefault(v => v.Id == id);
         if (vm == null) return null;
-        // TODO: enkel de mogelijke properties
-        vm = updatedVm;
-        return vm;
+
+        vm.Name = updatedVm.Name;
+        vm.CPU = updatedVm.CPU;
+        vm.RAM = updatedVm.RAM;
+        vm.Storage = updatedVm.Storage;
+        vm.StartDate = updatedVm.StartDate;
+        vm.EndDate = updatedVm.EndDate;
+        vm.IsActive = updatedVm.IsActive;
+        vm.HostName = updatedVm.HostName;
+        vm.FQDN = updatedVm.FQDN;
+        vm.IsHighlyAvailable = updatedVm.IsHighlyAvailable;
+        vm.Template = updatedVm.Template;
+        vm.BackupFrequency = updatedVm.BackupFrequency;
+        vm.Availability = updatedVm.Availability;
+        vm.Mode = updatedVm.Mode;
+        vm.Host = updatedVm.Host;
+        vm.Client = updatedVm.Client;
+        vm.Poorten = updatedVm.Poorten;
+
+        return Get(id);
     }
 
     private void SetDummyVirtualMachineList()
