@@ -165,15 +165,35 @@
     {
         if (!Id.HasValue) return;
 
-        if (NavigationManager.Uri.Contains("request")){
+        if (NavigationManager.Uri.Contains("request"))
+        {
             _request = VirtualMachineRequestService.Get(Id.Value);
             if (_request == null) return;
-            
+
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
         }
         else
-            _vm = (VirtualMachineDto.Mutate)(VirtualMachineService.Get(Id.Value) ?? new());
+        {
+            var vm = VirtualMachineService.Get(Id.Value) ?? new();
+            _vm.Name = vm.Name;
+            _vm.CPU = vm.CPU;
+            _vm.RAM = vm.RAM;
+            _vm.Storage = vm.Storage;
+            _vm.StartDate = vm.StartDate;
+            _vm.EndDate = vm.EndDate;
+            _vm.IsActive = vm.IsActive;
+            _vm.HostName = vm.HostName;
+            _vm.FQDN = vm.FQDN;
+            _vm.IsHighlyAvailable = vm.IsHighlyAvailable;
+            _vm.Template = vm.Template;
+            _vm.BackupFrequency = vm.BackupFrequency;
+            _vm.Availability = vm.Availability;
+            _vm.Mode = vm.Mode;
+            _vm.Host = vm.Host;
+            _vm.Client = vm.Client;
+            _vm.Poorten = vm.Poorten;
+        }
     }
 
     private void HandleValidSubmit()

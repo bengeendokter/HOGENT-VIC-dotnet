@@ -20,6 +20,9 @@ public static class VirtualMachineDto
     {
         public string? HostName { get; set; }
         public string? FQDN { get; set; }
+        public string? Host { get; set; }
+        public string? Poorten { get; set; }
+        public Client? Client { get; set; }
         public bool IsHighlyAvailable { get; set; }
         public Template? Template { get; set; }
         public EBackupFrequency BackupFrequency { get; set; }
@@ -29,17 +32,15 @@ public static class VirtualMachineDto
 
     public class Mutate : Detail
     {
-        public string? Host { get; set; }
-        public string? Poorten { get; set; }
-        public Client? Client { get; set; }
-
         public class Validator : AbstractValidator<Mutate>
         {
             public Validator()
             {
-                RuleFor(x => x.Name).NotEmpty().MinimumLength(3).WithMessage("De naam moet langer dan 3 karakters zijn");
+                RuleFor(x => x.Name).NotEmpty().WithMessage("Dit veld is verplicht");
+                RuleFor(x => x.Name).MinimumLength(3).WithMessage("De naam moet langer dan 3 karakters zijn");
                 RuleFor(x => x.Name).MaximumLength(30).WithMessage("De naam is te lang");
-                RuleFor(x => x.HostName).NotEmpty().MinimumLength(3).WithMessage("De hostname moet langer dan 3 karakters zijn");
+                RuleFor(x => x.HostName).NotEmpty().WithMessage("Dit veld is verplicht");
+                RuleFor(x => x.HostName).MinimumLength(3).WithMessage("De hostname moet langer dan 3 karakters zijn");
                 RuleFor(x => x.Host).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.Poorten).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.StartDate).NotEmpty().WithMessage("Dit veld is verplicht");
