@@ -1,10 +1,8 @@
-﻿using Shared.VirtualMachines;
-
-namespace Client.VirtualMachines;
+﻿namespace Client.VirtualMachines;
 
 public class VirtualMachineService : IVirtualMachineService
 {
-    private readonly List<VirtualMachine> _vms = new List<VirtualMachine>();
+    private readonly List<VirtualMachine> _vms = new();
 
     public VirtualMachineService()
     {
@@ -16,9 +14,19 @@ public class VirtualMachineService : IVirtualMachineService
         return _vms.FirstOrDefault(v => v.Id == id);
     }
 
-    public List<VirtualMachine> GetAll()
+    public List<VirtualMachineDto.Index> GetAll()
     {
-        return _vms;
+        return _vms.Select(v => new VirtualMachineDto.Index
+        {
+            Id = v.Id,
+            Name = v.Name,
+            CPU = v.CPU,
+            RAM = v.RAM,
+            Storage = v.Storage,
+            StartDate = v.StartDate,
+            EndDate = v.EndDate,
+            IsActive = v.IsActive
+        }).ToList();
     }
 
     // TODO: Dto

@@ -40,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (VirtualMachine vm in list)
+                    @foreach (var vm in list)
                     {
                     <tr>
                     <td><a class="link" href=@($"/vm/{@vm.Id}")>@vm.Name</a></td>
@@ -62,7 +62,7 @@
 </GenericLayout>
 
 @code {
-    private List<VirtualMachine> list = new();
+    private List<VirtualMachineDto.Index> list = new();
     protected override void OnInitialized()
     {
         list = VMService.GetAll();

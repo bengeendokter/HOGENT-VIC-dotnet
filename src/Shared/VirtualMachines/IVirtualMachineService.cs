@@ -2,7 +2,7 @@
 
 public interface IVirtualMachineService
 {
-    List<VirtualMachine> GetAll();
+    List<VirtualMachineDto.Index> GetAll();
 
     VirtualMachine? Get(int id);
 
