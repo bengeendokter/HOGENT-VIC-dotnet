@@ -23,7 +23,14 @@ public class VirtualMachineService : IVirtualMachineService
             Storage = vm.Storage,
             StartDate = vm.StartDate,
             EndDate = vm.EndDate,
-            IsActive = vm.IsActive
+            IsActive = vm.IsActive,
+            HostName = vm.HostName,
+            FQDN = vm.FQDN,
+            Availability = vm.Availability,
+            BackupFrequency = vm.BackupFrequency,
+            IsHighlyAvailable = vm.IsHighlyAvailable,
+            Mode = vm.Mode,
+            Template = vm.Template
         };
     }
 
