@@ -75,21 +75,21 @@
 
                 <label>
                     Moet de VM altijd beschikbaar zijn<br />
-                    <InputSelect @bind-Value="_vm.IsHighAvailable">
+                    <InputSelect @bind-Value="_vm.IsHighlyAvailable">
                         <option value=true> Ja</option>
                         <option value=false> Nee</option>
                     </InputSelect>
-                    <ValidationMessage For="@(()=> _vm.IsHighAvailable)"></ValidationMessage>
+                    <ValidationMessage For="@(()=> _vm.IsHighlyAvailable)"></ValidationMessage>
                 </label>
 
 
                 <label>
                     Hoe vaak moeten er backups worden genomen<br />
-                    <InputSelect @bind-Value="_vm.EBackupFrequency">
+                    <InputSelect @bind-Value="_vm.BackupFrequency">
                         <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
                         <option value="@EBackupFrequency.Daily"> Dagelijks</option>
                     </InputSelect>
-                    <ValidationMessage For="@(()=> _vm.EBackupFrequency)"></ValidationMessage>
+                    <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
                 </label>
 
                 <label>

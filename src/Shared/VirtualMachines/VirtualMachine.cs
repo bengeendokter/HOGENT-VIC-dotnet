@@ -19,15 +19,15 @@ public class VirtualMachine
     [Required]
     public DateTime EndDate { get; set; } = DateTime.Now;
     [Required]
-    public bool IsHighAvailable { get; set; }
+    public bool IsHighlyAvailable { get; set; }
     [Required]
     public string? FQDN { get; set; }
     [Required]
     public string? Poorten { get; set; }
     [Required]
-    public EBackupFrequency EBackupFrequency { get; set; }
+    public EBackupFrequency BackupFrequency { get; set; }
     [Required]
-    public EDay? Availability { get; set; }
+    public EDay Availability { get; set; }
     [Required]
     public Template? Template { get; set; }
     [Required]
