@@ -7,6 +7,14 @@
 
 <div class="title-container">
     <h1>Historiek</h1>
+    <select @onchange="@OnSelect">
+        <option value="" selected disabled hidden>Sorteer op</option>
+        <option value="date">Datum</option>
+        <option value="name">Naam</option>
+        <option value="vcpu"># CPU</option>
+        <option value="ram"># RAM</option>
+        <option value="storage"># Storage</option>
+    </select>
 </div>
 <div class="analytics-container">
     <!--
@@ -79,6 +87,39 @@
 
 @code {
     private List<Activity> _activities = new();
+
+    /* Sorteren via Select Tag */
+    private void OnSelect(ChangeEventArgs e) {
+        switch (e?.Value?.ToString()) {
+            case "date":
+                _activities = _activities.OrderByDescending(a => a.Date).ToList();
+                break;
+            case "name":
+                _activities = _activities.OrderBy(a => a.VirtualMachine?.Name).ToList();
+                break;
+            case "vcpu":
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.CPU)).ToList();
+                break;
+            case "ram":
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.RAM)).ToList();
+                break;
+            case "storage":
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.Storage)).ToList();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* Hulpfunctie voor sorteren gebaseerd op EActivity type */
+    private int ValueSignByActivityType(EActivity type, int value) {
+        return type switch
+        {
+            EActivity.Added => value,
+            EActivity.Deleted => - value,
+            _ => value
+        };
+    }
 
     protected override void OnInitialized()
     {
