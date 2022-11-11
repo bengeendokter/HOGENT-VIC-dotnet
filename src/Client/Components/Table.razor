@@ -36,14 +36,14 @@
                                 {
                                     <button style="border: none; background: none;">
                                         <span class="material-icons" style="color: slategray"
-                                            @onclick="@(() => Console.WriteLine($"Edit user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                            @onclick="() => OnEdit(item.GetType().GetFields()[0].GetValue(item))">
                                             edit
                                         </span>
                                     </button>
                                 }
                                 @if (new List<object> { 0 }.Contains(value)){
                                 <button style="border: none; background: none;"
-                                        @onclick="@(() => Console.WriteLine($"Deleting user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                     @onclick="() => OnDelete(item.GetType().GetFields()[0].GetValue(item))">
                                     <span class="material-icons" style="color: red">
                                         delete
                                     </span>
@@ -51,7 +51,7 @@
                                 }
                                 @if (new List<object> { 0, 1 }.Contains(value)){
                                 <button style="border: none; background: none;"
-                                       @onclick="@(() => Console.WriteLine($"More info about user with id {item.GetType().GetFields()[0].GetValue(item)}"))">
+                                    @onclick="() => OnInfo(item.GetType().GetFields()[0].GetValue(item))">
                                     <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">
                                         info
                                     </span>
@@ -75,5 +75,27 @@
 </table>
 
 @code {
+    private int _id { get; set; }
+    //Geef een lijst met objecten mee aan de Table component, deze objects zijn een klasse die alle atributten bevat die je wilt weergeven, De eerste attribuut is het ID en de laatste is de acties die je wilt
+    //Kijk naar de Requests page voor een voorbeeld
+    //Zorg dat de naam van de attribuut de naam van de kolommen in de tabel met _ als er een spatie moet zijn
     [Parameter] public ICollection<object> Collection { get; set; } = new List<object>();
+    //Als je de gekozen acties hebt meegegeven in een attribuut zal je deze eventcallbacks terugkrijgen met het id zodat je in de parent dit kan implementeren.
+    [Parameter] public EventCallback<int> InfoCallback { get; set; }
+    [Parameter] public EventCallback<int> DeleteCallback { get; set; }
+    [Parameter] public EventCallback<int> EditCallback { get; set; }
+
+    private void OnInfo(object? id) {
+        _id = Convert.ToInt32(id);
+        InfoCallback.InvokeAsync(_id);
+    }
+    private void OnEdit(object? id) {
+        _id = Convert.ToInt32(id);
+        EditCallback.InvokeAsync(_id);
+    }
+    private void OnDelete(object? id)
+    {
+        _id = Convert.ToInt32(id);
+        DeleteCallback.InvokeAsync(_id);
+    }
 }

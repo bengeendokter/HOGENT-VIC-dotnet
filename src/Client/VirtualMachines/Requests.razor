@@ -1,5 +1,6 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
+@inject NavigationManager NavigationManager
 
 <GenericLayout Display=false Title="Aanvragen">
     <Content>
@@ -17,7 +18,7 @@
             <option value="3">Denied</option>
         </select>
 
-        <Table Collection="filteredObjects" />
+        <Table Collection="filteredObjects" InfoCallback="@RequestInfo"/>
     </Content>
 </GenericLayout>
 
@@ -100,6 +101,11 @@
                 filteredObjects = requestObjects;
                 break;
         }
+    }
+
+    private void RequestInfo(int id){
+        Console.WriteLine($"goind to request with id {id}");
+        NavigationManager.NavigateTo($"/vm/manage/request/{id}");
     }
 
 }
