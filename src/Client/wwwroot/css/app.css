@@ -8,6 +8,7 @@
     --clr-secondary-var1: #e6f0f9;
     --clr-secondary-var2: #eff5fb;
     --clr-secondary-var3: #f3f5fa;
+    --clr-background-title: #e4e8ef;
     --clr-background-blue: #f2f5fa;
     --clr-usage-container: #89c5f6;
     --clr-usage-circle-top: #1B1651;
@@ -41,10 +42,10 @@
     --clr-CTA: #38BDF8;
     --clr-text-color: #FFFFFF;
     --clr-red: #FA738C;
+    --clr-background-title: #324167;
     --clr-green: #36BD7C;
     --clr-usage-black: white;
     --clr-usage-container: rgba(11, 150, 211, 0.5);
-
     --clr-usage-purple: #2a2a87;
     --clr-usage-info-text: #5252ff;
     --clr-usage-toggler-arrow: #4949e3;

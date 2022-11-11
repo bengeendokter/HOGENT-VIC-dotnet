@@ -1,0 +1,129 @@
+﻿@page "/historiek"
+@using System.Globalization
+@inject IActivityService ActivityService
+@inject IVirtualMachineRequestService VirtualMachineRequestService
+
+<PageTitle>Rapportering</PageTitle>
+
+<div class="title-container">
+    <h1>Historiek</h1>
+    <select @onchange="@OnSelect">
+        <option value="" selected disabled hidden>Sorteer op</option>
+        <option value="date">Datum</option>
+        <option value="name">Naam</option>
+        <option value="vcpu"># CPU</option>
+        <option value="ram"># RAM</option>
+        <option value="storage"># Storage</option>
+    </select>
+</div>
+<div class="analytics-container">
+    <!--
+    <div class="currentUse-container">
+    </div>
+    -->
+    <div class="table-container"> 
+        <table>
+            <thead> 
+                <tr>
+                    <th></th>
+                    <th>Virtual Machine</th>
+                    <th>Activiteit</th>
+                    <th># CPU</th>
+                    <th># RAM</th>
+                    <th># Storage</th>
+                    <th>Datum</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{var id = 1;}
+                @foreach (Activity activity in _activities) 
+                {
+                    var vm = activity.VirtualMachine;
+                    <tr>
+                        <td>@(id++)</td>
+                        <td>@vm.Name</td>
+                        @switch (activity.Type) {
+                            case EActivity.Added:
+                                <td>VM toegevoegd</td>
+                                <td class="added">+ @vm.CPU Cores</td>
+                                <td class="added">+ @vm.RAM GB</td>
+                                <td class="added">+ @vm.Storage GB</td>
+                                break;
+                            case EActivity.Deleted:
+                                <td>VM verwijderd</td>
+                                <td class="deleted">- @vm.CPU Cores</td>
+                                <td class="deleted">- @vm.RAM GB</td>
+                                <td class="deleted">- @vm.Storage GB</td>
+                                break;
+                            default:
+                                break;
+                        }
+                        <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                        <td>@vm.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                        <td>@vm.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="voorspelling_link">
+    Klik om voorspellingen te doen met data:
+    <NavLink href="/historiek/voorspelling" Match=NavLinkMatch.All>
+        <div>
+            <span class="material-icons" style="color: greenyellow">
+                trending_up
+            </span> Voorspelling
+        </div>     
+    </NavLink>
+</div>
+
+
+
+@code {
+    private List<Activity> _activities = new();
+
+    /* Sorteren via Select Tag */
+    private void OnSelect(ChangeEventArgs e) {
+        switch (e?.Value?.ToString()) {
+            case "date":
+                _activities = _activities.OrderByDescending(a => a.Date).ToList();
+                break;
+            case "name":
+                _activities = _activities.OrderBy(a => a.VirtualMachine?.Name).ToList();
+                break;
+            case "vcpu":
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.CPU)).ToList();
+                break;
+            case "ram":
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.RAM)).ToList();
+                break;
+            case "storage":
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.Storage)).ToList();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* Hulpfunctie voor sorteren gebaseerd op EActivity type */
+    private int ValueSignByActivityType(EActivity type, int value) {
+        return type switch
+        {
+            EActivity.Added => value,
+            EActivity.Deleted => - value,
+            _ => value
+        };
+    }
+
+    protected override void OnInitialized()
+    {
+        /* Sorteren op datum in back-end*/
+        _activities = ActivityService.GetAll();
+    }
+}

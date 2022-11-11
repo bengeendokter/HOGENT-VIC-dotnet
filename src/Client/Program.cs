@@ -15,5 +15,6 @@ builder.Services.AddSingleton<IVirtualMachineService, VirtualMachineService>();
 builder.Services.AddSingleton<IVirtualMachineRequestService, VirtualMachineRequestService>();
 
 builder.Services.AddSingleton<IUsageService, FakeUsageStatsService>();
+builder.Services.AddSingleton<IActivityService, ActivityService>();
 
 await builder.Build().RunAsync();

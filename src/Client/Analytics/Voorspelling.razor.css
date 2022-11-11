@@ -1,0 +1,191 @@
+﻿.title-container {
+    background-color: var(--clr-background-title);
+}
+
+    .title-container > h1 {
+        padding: 8px 20px;
+        margin-block-end: 0px;
+    }
+
+.analytics-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.currentUse-container {
+    width: 20%;
+    background-color: var(--clr-background-title);
+}
+
+/*sdfsdfsdf*/
+@media screen and (max-width: 640px) {
+    .title-container > h1 {
+        text-align: center;
+        margin-block-end: 0.7em;
+    }
+
+    .analytics-container {
+        flex-direction: column;
+    }
+
+    .currentUse-container {
+        width: 100%;
+    }
+}
+
+.datacomponent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: center;
+    width: 98%;
+    height: 50%;
+    padding: 10px;
+    background-color: #e4e8ef;
+    margin-top: 10px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.analysis_stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin: 0 auto;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    border-radius: 25px;
+}
+
+.statsdatum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: lightblue;
+    font-family: Roboto;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.statsdatum input {
+    border-radius: 5%;
+    background-color: #38BDF8;
+}
+
+.grafiekcomponent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin: 0 auto;
+    text-align: center;
+    width: 98%;
+    padding: 10px;
+    background-color: #e4e8ef;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.grafiek {
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 25px;
+}
+
+.grafiekdatum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    background-color: lightblue;
+    font-family: Roboto;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.grafiekdatum input {
+    border-radius: 5%;
+    background-color: #38BDF8;
+}
+
+.grafiekdatum select {
+    border-radius: 5%;
+    background-color: #38BDF8;
+}
+
+
+@media screen and (max-width: 910px) {
+    .datacomponent {
+        background-color: blue;
+    }
+
+    .analysis_stats {
+        flex-direction: column;
+        width: 98%;
+    }
+
+    .statsdatum {
+        width: 98%;
+    }
+
+    .grafiekcomponent {
+        flex-direction: column;
+        background-color: red;
+    }
+    
+    .grafiek {
+        width: 98%;
+        height: 100%;
+    }
+
+    .grafiekdatum {
+        margin-bottom: 15px;
+        width: 98%;
+        height: auto;
+    }
+}
+
+@media screen and (min-width: 910px) {
+    .datacomponent {
+        height: 320px;
+    }
+
+    .analysis_stats {
+        width: 98%;
+    }
+
+    .statsdatum {
+        width: 98%;
+    }
+
+    .grafiekcomponent {
+        justify-content: space-between;
+        width: 98%;
+        height: 420px;
+        padding: 27px;
+        gap: 10px;
+    }
+
+    .grafiek {
+        width: 98%;
+        height: 100%;
+    }
+
+    .grafiekdatum {
+        width: auto;
+        height: 100%;
+    }
+
+    
+}
