@@ -20,9 +20,9 @@
     </div>
 
     <div class="analysis_stats">
-        <UsageStat1 Type="CPU" Unit="Cores" Total=@DefinitieftotaalCPU Used=@DefinitiefgebruikCPU />
-        <UsageStat1 Type="RAM" Unit="GB" Total=@DefinitieftotaalRAM Used=@DefinitiefgebruikRAM />
-        <UsageStat1 Type="Opslag" Unit="GB" Total=@DefinitieftotaalStorage Used=@DefinitiefgebruikStorage />
+        <UsageStat Type=@EUsage.Cpu Unit=@EUsageUnit.Cores Total=@DefinitieftotaalCPU Used=@DefinitiefgebruikCPU />
+        <UsageStat Type=@EUsage.Ram Unit=@EUsageUnit.GB Total=@DefinitieftotaalRAM Used=@DefinitiefgebruikRAM />
+        <UsageStat Type=@EUsage.Storage Unit=@EUsageUnit.GB Total=@DefinitieftotaalStorage Used=@DefinitiefgebruikStorage />
     </div>
 </div>
 

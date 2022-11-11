@@ -33,7 +33,7 @@
 
     private decimal BerekenPercentage()
     {
-        return Math.Round((Used / Total) * 100, 2);
+        return Math.Round((Used / (Total == 0 ? 1 : Total)) * 100, 2);
     }
 
     private string GetStyleString()
