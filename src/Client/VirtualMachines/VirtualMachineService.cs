@@ -18,9 +18,6 @@ public class VirtualMachineService : IVirtualMachineService
         {
             Id = vm.Id,
             Name = vm.Name,
-            CPU = vm.CPU,
-            RAM = vm.RAM,
-            Storage = vm.Storage,
             StartDate = vm.StartDate,
             EndDate = vm.EndDate,
             IsActive = vm.IsActive,
@@ -29,7 +26,6 @@ public class VirtualMachineService : IVirtualMachineService
             Availability = vm.Availability,
             BackupFrequency = vm.BackupFrequency,
             IsHighlyAvailable = vm.IsHighlyAvailable,
-            Mode = vm.Mode,
             Template = vm.Template
         };
     }
@@ -40,9 +36,6 @@ public class VirtualMachineService : IVirtualMachineService
         {
             Id = v.Id,
             Name = v.Name,
-            CPU = v.CPU,
-            RAM = v.RAM,
-            Storage = v.Storage,
             StartDate = v.StartDate,
             EndDate = v.EndDate,
             IsActive = v.IsActive
@@ -54,10 +47,6 @@ public class VirtualMachineService : IVirtualMachineService
         var vm = _vms.FirstOrDefault(v => v.Id == id);
         if (vm == null) return null;
 
-        vm.Name = updatedVm.Name;
-        vm.CPU = updatedVm.CPU;
-        vm.RAM = updatedVm.RAM;
-        vm.Storage = updatedVm.Storage;
         vm.StartDate = updatedVm.StartDate;
         vm.EndDate = updatedVm.EndDate;
         vm.IsActive = updatedVm.IsActive;
@@ -67,10 +56,7 @@ public class VirtualMachineService : IVirtualMachineService
         vm.Template = updatedVm.Template;
         vm.BackupFrequency = updatedVm.BackupFrequency;
         vm.Availability = updatedVm.Availability;
-        vm.Mode = updatedVm.Mode;
-        vm.Host = updatedVm.Host;
         vm.Client = updatedVm.Client;
-        vm.Poorten = updatedVm.Poorten;
 
         return Get(id);
     }
@@ -91,12 +77,6 @@ public class VirtualMachineService : IVirtualMachineService
             BackupFrequency = EBackupFrequency.Daily,
             IsActive = true,
             CreateDate = DateTime.Now,
-            Poorten = "Poort 1, poort2",
-            Host = "host123pt-45f",
-            CPU = 4,
-            RAM = 3,
-            Storage = 950,
-            Mode = EMode.IaaS
         };
         
         var vm2 = new VirtualMachine
@@ -113,12 +93,6 @@ public class VirtualMachineService : IVirtualMachineService
             BackupFrequency = EBackupFrequency.Weekly,
             IsActive = false,
             CreateDate = DateTime.Now,
-            Poorten = "Poort 1, poort2",
-            Host = "host123pt-45f",
-            CPU = 2,
-            RAM = 5,
-            Storage = 920,
-            Mode = EMode.IaaS
         };
 
         // TODO more vms

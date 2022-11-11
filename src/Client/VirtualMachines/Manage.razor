@@ -16,19 +16,16 @@
                     <h1>VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
                         "Aanmaken")</h1>
                 </div>
+                <div class="side">
+
+                </div>
                 @if (_request != null)
                 {
-                    <h2>Informatie van de aanvrager</h2>
-                    <div class="card">
-                        Projectnaam: @_request.ProjectNaam<br />
-                        Start datum: @_request.StartDate<br />
-                        Eind datum: @_request.EndDate<br />
-                        Email: @_request.EmailAanvrager<br />
-                        Nummer: @_request.NummerAanvrager<br />
-                        Reden aanvraag: <br />
-                        @_request.Reason
+                    <div class="input-group">
+
 
                     </div>
+
                 }
 
                 <h2> Algemene informatie</h2>
@@ -64,15 +61,6 @@
                     </label>
 
                     <label>
-                        Template (optioneel)<br />
-                        <InputSelect @bind-Value="_vm.Template">
-                            <option value="@ETemplate.Database">Database</option>
-                            <option value="@ETemplate.MachineLearning">Machine Learning</option>
-                            <option value="@ETemplate.ArtificialIntelligence">AI</option>
-                        </InputSelect>
-                    </label>
-
-                    <label>
                         Moet de VM altijd beschikbaar zijn<br />
                         <InputSelect @bind-Value="_vm.IsHighlyAvailable">
                             <option value=true> Ja</option>
@@ -98,57 +86,12 @@
                         </InputRadioGroup>
                         <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
                     </label>
-
-                </div>
-
-                <h2>Specificaties</h2>
-                <div class="input-group">
-                    <label>
-                        CPU cores<br />
-                        <InputNumber @bind-Value="_vm.CPU"></InputNumber>
-                    </label>
-
-                    <label>
-                        RAM <br />
-                        <InputNumber @bind-Value="_vm.RAM"></InputNumber>
-                    </label>
-
-                    <label>
-                        Storage <br />
-                        <InputNumber @bind-Value="_vm.Storage"></InputNumber>
-                    </label>
-
-                    <label>
-                        Poorten:<br />
-                        <InputText @bind-Value="_vm.Poorten"></InputText>
-                        <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
-                    </label>
-
                     <label>
                         FQDN<br />
                         <InputText @bind-Value="_vm.FQDN"></InputText>
                         <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
                     </label>
-
-                    <label>
-                        Mode: <br />
-                        <InputSelect @bind-Value="_vm.Mode">
-                            <option value="@EMode.PaaS">Paas</option>
-                            <option value="@EMode.IaaS">Iaas</option>
-                            <option value="@EMode.SaaS">Saas</option>
-                        </InputSelect>
-                    </label>
-
-                    <label>
-                        Host<br />
-                        <InputSelect @bind-Value="_vm.Host">
-                            <option value="server1">Server 1</option>
-                            <option value="server2">Server 2</option>
-                        </InputSelect>
-                        <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
-                    </label>
                 </div>
-                <button type="submit">Submit</button>
             </EditForm>
         </div>
     </Content>

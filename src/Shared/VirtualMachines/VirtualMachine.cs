@@ -11,14 +11,9 @@ public class VirtualMachine
     public DateTime EndDate { get; set; } = DateTime.Now;
     public bool IsHighlyAvailable { get; set; }
     public string? FQDN { get; set; }
-    public string? Poorten { get; set; }
     public EBackupFrequency BackupFrequency { get; set; }
     public EDay Availability { get; set; }
     public Template? Template { get; set; }
-    public string? Host { get; set; }
     public bool IsActive { get; set; }
-    public int CPU { get; set; }
-    public int RAM { get; set; }
-    public int Storage { get; set; }
-    public EMode Mode { get; set; }
+
 }

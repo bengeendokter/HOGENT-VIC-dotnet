@@ -10,6 +10,8 @@ public class Template
                 Name = "Artificial Intelligence",
                 Type = ETemplate.ArtificialIntelligence,
                 Mode = EMode.PaaS,
+                Host = "server1",
+                Poorten = "22, 80",
                 Stats = new ()
                 {
                     Cpu = 6,
@@ -24,6 +26,8 @@ public class Template
                 Name = "Database",
                 Type = ETemplate.Database,
                 Mode = EMode.IaaS,
+                Host = "server2",
+                Poorten = "22",
                 Stats = new ()
                 {
                     Cpu = 2,
@@ -38,6 +42,8 @@ public class Template
                 Name = "Machine Learning",
                 Type = ETemplate.MachineLearning,
                 Mode = EMode.SaaS,
+                Host = "server3",
+                Poorten = "80",
                 Stats = new ()
                 {
                     Cpu = 8,
@@ -52,4 +58,6 @@ public class Template
     public ETemplate Type {get; set; }
     public EMode Mode { get; set; }
     public Stats? Stats { get; set; }
+    public string? Host { get; set; }
+    public string? Poorten { get; set; }
 }
