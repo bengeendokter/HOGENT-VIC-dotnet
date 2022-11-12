@@ -31,6 +31,12 @@
                     </div>
                 }
 
+                <h2>Templates</h2>
+                @foreach (KeyValuePair < ETemplate, Template > t in Template.TEMPLATES){
+                    <TemplateCard Template="@t" TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
+                }
+                <button @onclick="CustomTemplate">Aangepaste template</button>
+
                 <h2> Algemene informatie</h2>
                 <div class="input-group">
                     <label>
@@ -64,15 +70,6 @@
                     </label>
 
                     <label>
-                        Template (optioneel)<br />
-                        <InputSelect @bind-Value="_vm.Template">
-                            <option value="@ETemplate.Database">Database</option>
-                            <option value="@ETemplate.MachineLearning">Machine Learning</option>
-                            <option value="@ETemplate.ArtificialIntelligence">AI</option>
-                        </InputSelect>
-                    </label>
-
-                    <label>
                         Moet de VM altijd beschikbaar zijn<br />
                         <InputSelect @bind-Value="_vm.IsHighlyAvailable">
                             <option value=true> Ja</option>
@@ -99,25 +96,7 @@
                         <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
                     </label>
 
-                </div>
-
-                <h2>Specificaties</h2>
-                <div class="input-group">
-                    <label>
-                        CPU cores<br />
-                        <InputNumber @bind-Value="_vm.CPU"></InputNumber>
-                    </label>
-
-                    <label>
-                        RAM <br />
-                        <InputNumber @bind-Value="_vm.RAM"></InputNumber>
-                    </label>
-
-                    <label>
-                        Storage <br />
-                        <InputNumber @bind-Value="_vm.Storage"></InputNumber>
-                    </label>
-
+               
                     <label>
                         Poorten:<br />
                         <InputText @bind-Value="_vm.Poorten"></InputText>
@@ -130,14 +109,6 @@
                         <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
                     </label>
 
-                    <label>
-                        Mode: <br />
-                        <InputSelect @bind-Value="_vm.Mode">
-                            <option value="@EMode.PaaS">Paas</option>
-                            <option value="@EMode.IaaS">Iaas</option>
-                            <option value="@EMode.SaaS">Saas</option>
-                        </InputSelect>
-                    </label>
 
                     <label>
                         Host<br />
@@ -151,12 +122,17 @@
                 <button type="submit">Submit</button>
             </EditForm>
         </div>
+
+        @if(_showCustomTemplate){
+            <CustomTemplateDialog OnCancel="CancelCustomTemp" OnConfirm="ConfirmCustomTemp"></CustomTemplateDialog>
+        }
     </Content>
 </GenericLayout>
 
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequest? _request;
+    private bool _showCustomTemplate = false;
 
     [Parameter]
     public int? Id { get; set; }
@@ -194,6 +170,19 @@
             _vm.Client = vm.Client;
             _vm.Poorten = vm.Poorten;
         }
+    }
+
+    private void HandleTemplate(ETemplate template){
+        _vm.Template = Template.TEMPLATES.Where(t => t.Key == template).First().Value;
+    }
+    private void CustomTemplate(){
+        _showCustomTemplate = true;
+    }
+    private void ConfirmCustomTemp(){
+        _showCustomTemplate = false;
+    }
+    private void CancelCustomTemp(){
+        _showCustomTemplate = false;
     }
 
     private void HandleValidSubmit()

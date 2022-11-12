@@ -1,14 +1,29 @@
 <div class="template">
-    @if (Template != null)
-    {
-        <p class="title">@Template.Name</p>
-        <p>Mode: @Template.Mode</p>
-        <p>CPU: @Template.Stats?.Cpu</p>
-        <p>RAM: @Template.Stats?.Ram</p>
-        <p>Storage: @Template.Stats?.Storage</p>
-    }
+
+        <h3>@Template.Key</h3>
+        <table>
+            <tr>
+                <td>Mode</td>
+                <td>@Template.Value.Mode</td>
+            </tr>
+            <tr>
+                <td>Ram</td>
+                <td>@Template.Value.Stats.Ram</td>
+            </tr>
+            <tr>
+                <td>CPU cores</td>
+                <td>@Template.Value.Stats.Cpu</td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>@Template.Value.Stats.Storage</td>
+            </tr>
+        </table>
+        <button @onclick="TemplateClicked">|Selecteer template</button>
+    
 </div>
 
 @code {
-    [Parameter] public Template? Template { get; set; }
+    [Parameter] public KeyValuePair < ETemplate, Template > Template { get; set; }
+    [Parameter] public EventCallback TemplateClicked { get; set; }
 }
