@@ -16,6 +16,7 @@
             <option value="1">Accepted</option>
             <option value="2">Handled</option>
             <option value="3">Denied</option>
+            <option value="4">Requested</option>
         </select>
 
         <Table Collection="filteredObjects" InfoCallback="@RequestInfo"/>
@@ -96,6 +97,9 @@
                 break;
             case "3":
                 filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Denied).ToList();
+                break;
+            case "4":
+                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Requested).ToList();
                 break;
             default:
                 filteredObjects = requestObjects;

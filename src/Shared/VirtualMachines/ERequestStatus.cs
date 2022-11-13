@@ -4,5 +4,6 @@ public enum ERequestStatus
 {
     Accepted,
     Denied,
-    Handled
+    Handled,
+    Requested
 }

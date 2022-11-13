@@ -11,7 +11,13 @@
 }
 .dialog {
     background-color: white;
-    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    min-width: calc(100% - 40rem);
+    min-height: 600px;
+    max-height: 100px;
+    z-index: 2000;
+
+    margin: auto;
+    /*    box-shadow: 0 0 12px rgba(0,0,0,0.6);
     display: flex;
     flex-direction: column;
     z-index: 2000;
@@ -20,7 +26,7 @@
     width: 700px;
     max-height: calc(100% - 3rem);
     animation: dialog-entry 0.4s;
-    animation-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000);
+    animation-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000);*/
 }
 .dialog-title {
     background-color: #444;

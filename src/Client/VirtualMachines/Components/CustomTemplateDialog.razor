@@ -1,14 +1,20 @@
-﻿<div class="dialog-container">
+﻿using System.ComponentModel.DataAnnotations;
+
+<div class="dialog-container">
     <div class="dialog">
         <div class="dialog-title">
             <h2>CustomTemplateDialog</h2>
         </div>
+        <EditForm Model="@_template" OnValidSubmit="@HandleValidSubmit">
+            <InputText @bind-Value="_template.Name"/>
 
 
-        <button @onclick=OnCancel>Annuleer</button>
-        <button @onclick=OnConfirm>Gebruik aangepaste template</button>
+            <button @onclick=OnCancel>Annuleer</button>
+            <button type="submit">Gebruik aangepaste template</button>
+        </EditForm>
+
     </div>
-    </div>
+</div>
 @code {
     private Template _template = new();
     [Parameter] public EventCallback OnCancel { get; set; }

@@ -1,10 +1,17 @@
 ﻿
 .template {
     background-color: var(--clr-primary);
+    border-radius: 10px;
+    padding: 10px;
+    width: 200px;
+    margin: 5px
+}
+button {
+    color: var(--clr-CTA);
+    font-weight: 600;
+    border: none;
+    background-color: #FFFFFF;
     border-radius: 5px;
-    width: 250px;
-    height: 150px;
-    margin: 20px;
 }
 
 .title {

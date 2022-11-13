@@ -1,5 +1,5 @@
 ﻿namespace Shared.VirtualMachines;
-
+using System.ComponentModel.DataAnnotations;
 public class Template
 {
     public static readonly Dictionary<ETemplate, Template> TEMPLATES = new()
@@ -47,9 +47,11 @@ public class Template
             }
         }
     };
-
+    [Required]
     public string? Name { get; set; }
     public ETemplate Type {get; set; }
+    [Required]
     public EMode Mode { get; set; }
+    [Required]
     public Stats? Stats { get; set; }
 }
