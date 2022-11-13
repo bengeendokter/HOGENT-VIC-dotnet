@@ -48,69 +48,39 @@ public class ActivityService : IActivityService
     private void SetDummyActivities()
     {
         _activities.Clear();
-        var vm = new VirtualMachine
+        var vm = new VirtualMachineDto.Index
         {
             Id = 1,
             Name = "VM-IT-1",
-            HostName = "VM_JN58CE_2354",
-            FQDN = "TBD",
-            IsHighlyAvailable = true,
             StartDate = DatumCreator(0, 0),
             EndDate = DatumCreator(3, 1),
-            Template = Template.TEMPLATES[ETemplate.ArtificialIntelligence],
-            Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
-            BackupFrequency = EBackupFrequency.Daily,
             IsActive = true,
-            CreateDate = DatumCreator(0, 0),
-            Poorten = "Poort 1, poort2",
-            Host = "host123pt-45f",
             CPU = 6,
             RAM = 32,
             Storage = 25,
-            Mode = EMode.IaaS
         };
-        var vm2 = new VirtualMachine
+        var vm2 = new VirtualMachineDto.Index
         {
             Id = 2,
             Name = "VM-IT-2",
-            HostName = "VM_ADJC_4562",
-            FQDN = "TBD",
-            IsHighlyAvailable = false,
             StartDate = DatumCreator(3, 0),
             EndDate = DatumCreator(5, 0),
-            Template = Template.TEMPLATES[ETemplate.Database],
-            Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
-            BackupFrequency = EBackupFrequency.Weekly,
             IsActive = true,
-            CreateDate = DatumCreator(3, 0),
-            Poorten = "Poort 1",
-            Host = "host123pt-45f",
             CPU = 2,
             RAM = 16,
             Storage = 60,
-            Mode = EMode.SaaS
         };
 
-        var vm3 = new VirtualMachine
+        var vm3 = new VirtualMachineDto.Index
         {
             Id = 2,
             Name = "VM-IT-3",
-            HostName = "VM_ADJC_4562",
-            FQDN = "TBD",
-            IsHighlyAvailable = false,
             StartDate = DatumCreator(4, 0),
             EndDate = DatumCreator(6, 0),
-            Template = Template.TEMPLATES[ETemplate.MachineLearning],
-            Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
-            BackupFrequency = EBackupFrequency.Weekly,
             IsActive = true,
-            CreateDate = DatumCreator(4, 0),
-            Poorten = "Poort 1",
-            Host = "host123pt-45f",
             CPU = 8,
             RAM = 64,
             Storage = 80,
-            Mode = EMode.SaaS
         };
 
         //vm1 toegevoegd

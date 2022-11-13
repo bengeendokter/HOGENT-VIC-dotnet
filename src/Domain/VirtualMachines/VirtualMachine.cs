@@ -1,10 +1,10 @@
-﻿namespace Shared.VirtualMachines;
+﻿using Domain.Common;
 
-public class VirtualMachine
+namespace Domain.VirtualMachines;
+
+public class VirtualMachine : Entity
 {
-    public int Id { get; set; }
-    public Client? Client { get; set; }
-    public DateTime CreateDate { get; set; }
+    public object? Client { get; set; } // TODO: relation with client domain class
     public string? Name { get; set; }
     public string? HostName { get; set; }
     public DateTime StartDate { get; set; } = DateTime.Now;
@@ -14,7 +14,7 @@ public class VirtualMachine
     public string? Poorten { get; set; }
     public EBackupFrequency BackupFrequency { get; set; }
     public EDay Availability { get; set; }
-    public Template? Template { get; set; }
+    public object? Template { get; set; } // TODO: relation with template domain class
     public string? Host { get; set; }
     public bool IsActive { get; set; }
     public int CPU { get; set; }

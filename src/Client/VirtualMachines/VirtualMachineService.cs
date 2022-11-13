@@ -2,7 +2,7 @@
 
 public class VirtualMachineService : IVirtualMachineService
 {
-    private readonly List<VirtualMachine> _vms = new();
+    private readonly List<VirtualMachineDto.Detail> _vms = new();
 
     public VirtualMachineService()
     {
@@ -77,7 +77,7 @@ public class VirtualMachineService : IVirtualMachineService
 
     private void SetDummyVirtualMachineList()
     {
-        var vm1 = new VirtualMachine
+        var vm1 = new VirtualMachineDto.Detail
         {
             Id = 1,
             Name = "VM-IT-1",
@@ -90,7 +90,7 @@ public class VirtualMachineService : IVirtualMachineService
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday),
             BackupFrequency = EBackupFrequency.Daily,
             IsActive = true,
-            CreateDate = DateTime.Now,
+            CreatedAt = DateTime.Now,
             Poorten = "Poort 1, poort2",
             Host = "host123pt-45f",
             CPU = 4,
@@ -99,7 +99,7 @@ public class VirtualMachineService : IVirtualMachineService
             Mode = EMode.IaaS
         };
         
-        var vm2 = new VirtualMachine
+        var vm2 = new VirtualMachineDto.Detail
         {
             Id = 2,
             Name = "VM-IT-2",
@@ -112,7 +112,7 @@ public class VirtualMachineService : IVirtualMachineService
             Availability = (EDay)((int)EDay.Monday + (int)EDay.Tuesday + (int)EDay.Wednesday + (int)EDay.Thursday + (int)EDay.Friday + (int)EDay.Saturday + (int)EDay.Sunday),
             BackupFrequency = EBackupFrequency.Weekly,
             IsActive = false,
-            CreateDate = DateTime.Now,
+            CreatedAt = DateTime.Now,
             Poorten = "Poort 1, poort2",
             Host = "host123pt-45f",
             CPU = 2,

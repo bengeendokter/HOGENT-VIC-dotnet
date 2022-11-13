@@ -28,6 +28,7 @@ public static class VirtualMachineDto
         public EBackupFrequency BackupFrequency { get; set; }
         public EDay Availability { get; set; }
         public EMode Mode { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 
     public class Mutate : Detail
