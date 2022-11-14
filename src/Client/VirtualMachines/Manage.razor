@@ -19,6 +19,7 @@
             <div class="grid">
                 <div class="templates">
                     <h2>Templates</h2>
+                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
                     @foreach (KeyValuePair<ETemplate, Template> t in Template.TEMPLATES)
                     {
@@ -33,16 +34,33 @@
                 @if (_request != null)
                 {
                     <h2>Informatie van de aanvrager</h2>
-                    <div class="card">
-                        Projectnaam: @_request.ProjectNaam<br />
-                        Start datum: @_request.StartDate<br />
-                        Eind datum: @_request.EndDate<br />
-                        Email: @_request.EmailAanvrager<br />
-                        Nummer: @_request.NummerAanvrager<br />
-                        Reden aanvraag: <br />
-                        @_request.Reason
+                        <div class="input-group">
+                        <label>
+                            Projectnaam:<br/>
+                            <div class="field">@_request.ProjectNaam</div>
+                        </label>
+                        <label>
+                            Start datum:<br/>
+                                <div class="field">@_request.StartDate.ToString("dd/MM/yyyy")</div>
+                        </label>
+                        <label>
+                            Eind datum:<br/>
+                                <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
+                        </label>
+                        <label>
+                            Email aanvrager:<br/>
+                            <div class="field">@_request.EmailAanvrager</div>
+                        </label>
+                        <label>
+                            Nummer aanvrager:<br/>
+                            <div class="field">@_request.NummerAanvrager</div>
+                        </label>
 
                     </div>
+                        <label>
+                            Projectnaam:<br />
+                            <div class="reden">@_request.Reason</div>
+                        </label>
                 }
                 </div>
 
@@ -52,37 +70,37 @@
                     <div class="input-group">
                         <label>
                             Klant<br />
-                            <InputSelect @bind-Value="_vm.Client">
+                            <InputSelect @bind-Value="_vm.Client" class="inputField">
                             </InputSelect>
                         </label>
 
                         <label>
                             Naam<br />
-                            <InputText @bind-Value="_vm.Name"></InputText>
+                            <InputText @bind-Value="_vm.Name" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
                         </label>
 
                         <label>
                             Hostname<br />
-                            <InputText @bind-Value="_vm.HostName"></InputText>
+                            <InputText @bind-Value="_vm.HostName" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
                         </label>
 
                         <label>
                             Start datum<br />
-                            <InputDate @bind-Value="_vm.StartDate"></InputDate>
+                            <InputDate @bind-Value="_vm.StartDate" class="inputField"></InputDate>
                             <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
                         </label>
 
                         <label>
                             Eind datum<br />
-                            <InputDate @bind-Value="_vm.EndDate"></InputDate>
+                            <InputDate @bind-Value="_vm.EndDate" class="inputField"></InputDate>
                             <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
                         </label>
 
                         <label>
                             Moet de VM altijd beschikbaar zijn<br />
-                            <InputSelect @bind-Value="_vm.IsHighlyAvailable">
+                            <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
                                 <option value=true> Ja</option>
                                 <option value=false> Nee</option>
                             </InputSelect>
@@ -91,7 +109,7 @@
 
                         <label>
                             Hoeveelheid backups<br />
-                            <InputSelect @bind-Value="_vm.BackupFrequency">
+                            <InputSelect @bind-Value="_vm.BackupFrequency" class="inputField">
                                 <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
                                 <option value="@EBackupFrequency.Daily"> Dagelijks</option>
                             </InputSelect>
@@ -110,20 +128,20 @@
                
                         <label>
                             Poorten:<br />
-                            <InputText @bind-Value="_vm.Poorten"></InputText>
+                            <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                         </label>
 
                         <label>
                             FQDN<br />
-                            <InputText @bind-Value="_vm.FQDN"></InputText>
+                            <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
                         </label>
 
 
                         <label>
                             Host<br />
-                            <InputSelect @bind-Value="_vm.Host">
+                            <InputSelect @bind-Value="_vm.Host" class="inputField">
                                 <option value="server1">Server 1</option>
                                 <option value="server2">Server 2</option>
                             </InputSelect>
