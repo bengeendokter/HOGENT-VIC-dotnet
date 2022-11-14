@@ -126,10 +126,6 @@
 
 
 @media screen and (max-width: 910px) {
-    .datacomponent {
-        background-color: blue;
-    }
-
     .analysis_stats {
         flex-direction: column;
         width: 98%;
@@ -141,7 +137,6 @@
 
     .grafiekcomponent {
         flex-direction: column;
-        background-color: red;
     }
     
     .grafiek {
