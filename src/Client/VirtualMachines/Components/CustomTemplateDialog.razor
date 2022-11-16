@@ -6,6 +6,32 @@
             <h2>CustomTemplateDialog</h2>
         </div>
         <EditForm Model="@_template" OnValidSubmit="@HandleValidSubmit">
+            <div class="input-group">
+                <label>
+                    Mode
+                    <InputSelect @bind-Value="_template.Mode" class="inputField">
+                        @foreach(EMode m in EMode.GetValues(typeof(EMode))){
+                            <option value=@m>@m</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(()=> _template.Mode)"></ValidationMessage>
+                </label>
+
+                <label>
+                    CPU <br/>
+                    <InputNumber @bind-Value="_template.Stats.Cpu" class="inputField" />
+                </label>
+
+                <label>
+                    Ram <br />
+                    <InputNumber @bind-Value="_template.Stats.Ram" class="inputField" />
+                </label>
+
+                <label>
+                    Storage <br />
+                    <InputNumber @bind-Value="_template.Stats.Storage" class="inputField" />
+                </label>
+            </div>
             <InputText @bind-Value="_template.Name"/>
 
 
@@ -21,6 +47,6 @@
     [Parameter] public EventCallback OnConfirm { get; set; }
 
     private void HandleValidSubmit(){
-        
+        OnConfirm.InvokeAsync();
     }
 }

@@ -23,7 +23,7 @@
                     <div class="wrap">
                     @foreach (KeyValuePair<ETemplate, Template> t in Template.TEMPLATES)
                     {
-                        <TemplateCard Template="@t" TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
+                            <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template?.Type TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
                     }
 
                     </div>
@@ -69,16 +69,6 @@
                     <h2> Algemene informatie</h2>
                     <div class="input-group">
                         <label>
-                            Klant<br />
-                            <InputSelect @bind-Value="_vm.Client" class="inputField">
-                                <!--
-                                <option value="" selected> Option 1</option>
-                                <option value=""         > Option 2</option>
-                                -->
-                            </InputSelect>
-                        </label>
-
-                        <label>
                             Naam<br />
                             <InputText @bind-Value="_vm.Name" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
@@ -88,6 +78,22 @@
                             Hostname<br />
                             <InputText @bind-Value="_vm.HostName" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
+                        </label>
+
+                        <label>
+                            FQDN<br />
+                            <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
+                            <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
+                        </label>
+
+                        <label>
+                            Klant<br />
+                            <InputSelect @bind-Value="_vm.Client" class="inputField">
+                                <!--
+                                <option value="" selected> Option 1</option>
+                                <option value=""         > Option 2</option>
+                                -->
+                            </InputSelect>
                         </label>
 
                         <label>
@@ -103,7 +109,7 @@
                         </label>
 
                         <label>
-                            Moet de VM altijd beschikbaar zijn<br />
+                            Is het belangrijk dat de VM altijd beschikbaar is?<br />
                             <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
                                 <option value=true> Ja</option>
                                 <option value=false> Nee</option>
@@ -121,29 +127,6 @@
                         </label>
 
                         <label>
-                            Wanneer moet de VM online staan?<br />
-                            <InputRadioGroup @bind-Value="_vm.Availability">
-                                <InputRadio Value="@EDay.Monday" />Test
-                                <InputRadio Value="@EDay.Thursday" />Test2
-                            </InputRadioGroup>
-                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>
-
-               
-                        <label>
-                            Poorten:<br />
-                            <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
-                            <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
-                        </label>
-
-                        <label>
-                            FQDN<br />
-                            <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
-                            <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                        </label>
-
-
-                        <label>
                             Host<br />
                             <InputSelect @bind-Value="_vm.Host" class="inputField">
                                 <option value="server1">Server 1</option>
@@ -151,6 +134,27 @@
                             </InputSelect>
                             <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
                         </label>
+       
+                        <label>
+                            Poorten:<br />
+                            <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
+                            <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
+                        </label>
+
+                        <label>
+                            Wanneer moet de VM online staan?<br />
+                            <InputRadioGroup @bind-Value="_vm.Availability">
+                                <InputRadio Value="@EDay.Monday" />Maandag
+                                <InputRadio Value="@EDay.Tuesday" />Dinsdag
+                                <InputRadio Value="@EDay.Wednesday" />Woensdag
+                                <InputRadio Value="@EDay.Thursday"/>Donderdag
+                                <InputRadio Value="@EDay.Friday" />Vrijdag
+                                <InputRadio Value="@EDay.Saturday" />Zaterdag
+                                <InputRadio Value="@EDay.Sunday" />Zondag
+                            </InputRadioGroup>
+                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                        </label>
+
                     </div>
                     <button type="submit">Submit</button>
                 </div>

@@ -4,34 +4,26 @@
     bottom: 0;
     left: 0;
     right: 0;
+    height: 100%;
     background-color: rgba(0,0,0,0.5);
     z-index: 2000;
     display: flex;
-    animation: dialog-container-entry 0.2s;
 }
 .dialog {
-    background-color: white;
+    background-color: var(--clr-secondary-var3);
     min-width: calc(100% - 40rem);
     min-height: 600px;
     max-height: 100px;
     z-index: 2000;
-
     margin: auto;
-    /*    box-shadow: 0 0 12px rgba(0,0,0,0.6);
-    display: flex;
-    flex-direction: column;
-    z-index: 2000;
-    align-self: center;
-    margin: auto;
-    width: 700px;
-    max-height: calc(100% - 3rem);
-    animation: dialog-entry 0.4s;
-    animation-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000);*/
+    border-radius: 20px;
 }
 .dialog-title {
-    background-color: #444;
+    background-color: var(--clr-text-color);
     color: #fff2cc;
     padding: 1.3rem 2rem;
+    border-start-start-radius: 20px;
+    border-start-end-radius: 20px;
 }
 
     .dialog-title h2 {
@@ -46,4 +38,33 @@
 .dialog-body {
     flex-grow: 1;
     padding: 0.5rem 3rem 1rem 0;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+label {
+    min-width: 30%;
+    margin: 5px 20px 10px 0px;
+}
+
+::deep select.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+}
+
+::deep input.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
 }
