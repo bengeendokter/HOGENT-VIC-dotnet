@@ -95,10 +95,12 @@ a, .btn-link {
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
+    background-color: var(--clr-CTA);
     border-color: #1861ac;
     border: none;
     border-radius: 5px;
+    font-size: 24px;
+    height: 38px
 }
 
 .btn-secondary {

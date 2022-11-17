@@ -5,7 +5,8 @@
         <div class="dialog-title">
             <h2>CustomTemplateDialog</h2>
         </div>
-        <EditForm Model="@_template" OnValidSubmit="@HandleValidSubmit">
+        <div class="dialog-body">
+          <EditForm Model="@_template" OnValidSubmit="@HandleValidSubmit">
             <div class="input-group">
                 <label>
                     Mode
@@ -19,34 +20,50 @@
 
                 <label>
                     CPU <br/>
-                    <InputNumber @bind-Value="_template.Stats.Cpu" class="inputField" />
+                    <InputNumber @bind-Value="_template.Cpu" class="inputField" />
                 </label>
 
                 <label>
                     Ram <br />
-                    <InputNumber @bind-Value="_template.Stats.Ram" class="inputField" />
+                    <InputNumber @bind-Value="_template.Ram" class="inputField" />
                 </label>
 
                 <label>
                     Storage <br />
-                    <InputNumber @bind-Value="_template.Stats.Storage" class="inputField" />
+                    <InputNumber @bind-Value="_template.Storage" class="inputField" />
                 </label>
             </div>
-            <InputText @bind-Value="_template.Name"/>
 
 
-            <button @onclick=OnCancel>Annuleer</button>
-            <button type="submit">Gebruik aangepaste template</button>
+            <button @onclick=OnCancel class="btn-secondary">Annuleer</button>
+            <button type="submit" class="btn-primary">Gebruik aangepaste template</button>
         </EditForm>
-
+        </div>
     </div>
 </div>
 @code {
-    private Template _template = new();
+    public class Temp 
+    {
+        public EMode Mode { get; set; }
+        public int Cpu { get; set; }
+        public int Ram { get; set; }
+        public int Storage { get; set; }
+    }
+    private Temp _template = new();
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public EventCallback OnConfirm { get; set; }
+    [Parameter] public EventCallback<Template> OnConfirm { get; set; }
 
     private void HandleValidSubmit(){
-        OnConfirm.InvokeAsync();
+        Template template = new()
+            {
+                Mode = _template.Mode,
+                Stats = new Stats()
+                {
+                    Cpu = _template.Cpu,
+                    Ram = _template.Ram,
+                    Storage = _template.Storage
+                },
+            };
+        OnConfirm.InvokeAsync(template);
     }
 }
