@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Shared.Clients;
 
 namespace Shared.VirtualMachines;
 
@@ -22,7 +23,7 @@ public static class VirtualMachineDto
         public string? FQDN { get; set; }
         public string? Host { get; set; }
         public string? Poorten { get; set; }
-        public Client? Client { get; set; }
+        public ClientDto.Index? Client { get; set; }
         public bool IsHighlyAvailable { get; set; }
         public Template? Template { get; set; }
         public EBackupFrequency BackupFrequency { get; set; }

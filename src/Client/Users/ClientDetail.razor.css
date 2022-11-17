@@ -1,0 +1,94 @@
+﻿.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: inline-block;
+    margin: 2em 0em;
+}
+
+.detail-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0em 3em;
+    gap: 2em;
+}
+
+/*#region Buttons */
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2em 0em;
+    gap: 1em;
+}
+button {
+    text-decoration: none;
+    color: var(--clr-primary);
+    border-radius: 5px;
+    padding: .5em 4em;
+    min-width: 12ch;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+}
+
+button:focus-visible, button:hover {
+    transition: outline .5s ease;
+    outline: var(--clr-text-color) solid 2px;
+    outline-offset: .2em;
+}
+
+.edit {
+    background: var(--clr-CTA);
+} 
+
+.delete {
+    background: var(--clr-red);
+}
+/*#endregion */
+
+
+/*#region Table */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px;
+    color: var(--clr-text-color);
+    font-family: 'Roboto', sans-serif;
+}
+
+/*top left*/
+tr:first-child > :first-child {
+    border-top-left-radius: 10px;
+}
+/*top right*/
+tr:first-child > :last-child {
+    border-top-right-radius: 10px;
+}
+/*bottom left*/
+tr:last-child > :last-child {
+    border-bottom-right-radius: 10px;
+}
+/*bottom right*/
+tr:last-child > :first-child {
+    border-bottom-left-radius: 10px;
+}
+
+tr {
+    background-color: var(--clr-primary);
+    border-radius: 10px;
+}
+
+th, td {
+    padding: 1em 4em 1em 1em;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: var(--clr-background-blue);
+}
+/*#endregion */

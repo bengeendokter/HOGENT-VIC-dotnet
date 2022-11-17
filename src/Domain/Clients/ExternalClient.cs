@@ -1,4 +1,4 @@
-﻿namespace Shared;
+﻿namespace Domain.Clients;
 
 public class ExternalClient : Client
 {

@@ -1,0 +1,82 @@
+﻿@page "/klanten/{id:int}"
+
+<GenericLayout Display=false Title=@dummyClient.Name>
+    <Content>
+        <div class="center-container">
+            <div class="container">
+            <h1 id="client-name">Klant - @dummyClient.Name</h1>
+            <section aria-labelledby="client-name">
+                <div class="detail-container">
+                    <!-- Details Algemeen -->
+                    <section>
+                        <h2>Algemeen</h2>
+                        <table>
+                            <tr>
+                                <th>Emailadres</th>
+                                <td>@dummyClient.Email</td>
+                            </tr>
+                            <tr>
+                                <th>GSM-nummer</th>
+                                <td>@dummyClient.PhoneNumber</td>
+                            </tr>
+                            <tr>
+                                <th>Backup contactpersoon</th>
+                                <td>@dummyClient.BackupContact</td>
+                            </tr>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <!-- Later nog aanpassen naar gebruiker object-->
+                                <td>@dummyClient.User</td>
+                            </tr>
+                        </table>
+                    </section>
+                    <!-- Details Intern/Extern-->
+                    <section>
+                        <h2>Intern</h2>
+                        <table>
+                            <tr>
+                                <th>Departement</th>
+                                <td>DIT</td>
+                            </tr>
+                            <tr>
+                                <th>Opleiding</th>
+                                <td>Toegepaste Informatica</td>
+                            </tr>
+                        </table>
+                    </section>
+                </div>
+                <!-- Knoppen -->
+                <div class="button-container">
+                    <button class="edit">Wijzigen</button>
+                    <button class="delete">Verwijderen</button>
+                </div>
+            </section>
+            </div>
+        </div>
+    </Content>
+</GenericLayout>
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    public class DummyClient
+    {
+        public int Id;
+        public string? Name;
+        public string? Email;
+        public string? PhoneNumber;
+        public string? BackupContact;
+        public string? User;
+
+    }
+
+    public DummyClient dummyClient = new DummyClient
+    {
+        Id = 1, 
+        Name = "Marc Asselberg",
+        Email = "marc.asselberg@hogent.be",
+        PhoneNumber = "XXX XX XX XX",
+        BackupContact = "marc.asselberg@hogent.be",
+        User = "Jelle"
+    };
+}
