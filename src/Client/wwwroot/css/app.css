@@ -69,6 +69,10 @@ article {
     margin: 0 !important;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 body {
     background-color: var(--clr-background-blue);
     background-image: url("/images/waves.png");
