@@ -31,8 +31,8 @@
                     var key = fieldInfo.Name;
                     var value = fieldInfo.GetValue(item);
 
-                    if(value is DateTime){
-                        <td>@value</td>
+                    if(value is DateTime dateTime){
+                        <td>@dateTime.ToString("dd/MM/yyyy")</td>
                     }
                     else if (!key.Equals("Id"))
                     {
