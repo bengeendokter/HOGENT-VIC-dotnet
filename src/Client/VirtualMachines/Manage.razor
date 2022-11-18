@@ -19,11 +19,10 @@
             <div class="grid">
                 <div class="templates">
                     <h2>Templates</h2>
-                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
-                    @foreach (KeyValuePair<ETemplate, Template> t in Template.TEMPLATES)
+                    @foreach (Template t in Template.TEMPLATES)
                     {
-                            <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template?.Type TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
+                            <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
                     }
 
                     </div>
@@ -61,7 +60,7 @@
 
                     </div>
                         <label>
-                            Projectnaam:<br />
+                            Extra info over de aanvraag:<br />
                             <div class="reden">@_request.Reason</div>
                         </label>
                 }
@@ -164,9 +163,9 @@
                 
             </div>
             </EditForm>
-        @if(_showCustomTemplate){
+@*        @if(_showCustomTemplate){
             <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
-        }
+        }*@
     </Content>
 </GenericLayout>
 
@@ -214,16 +213,18 @@
         }
     }
 
-    private void HandleTemplate(ETemplate template){
-        _vm.Template = Template.TEMPLATES.Where(t => t.Key == template).First().Value;
+    private void HandleTemplate(Template template){
+        _vm.Template = template.Type;
+        _vm.CPU = template.CPU;
+        _vm.RAM = template.RAM;
+        _vm.Storage = template.Storage;
+        _vm.Mode = template.Mode;
     }
     private void CustomTemplate(){
         _showCustomTemplate = true;
     }
     private void ConfirmCustomTemp(Template template){
         _showCustomTemplate = false;
-        _customTemplate = template;
-        _vm.Template = template;
 
     }
     private void CancelCustomTemp(){

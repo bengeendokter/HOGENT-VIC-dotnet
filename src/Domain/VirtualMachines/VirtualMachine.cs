@@ -57,11 +57,11 @@ public class VirtualMachine : Entity
     }
 
     // TODO: relation with template domain class
-    private object template = default!;
-    public object Template
+    private ETemplate template = default!;
+    public ETemplate Template
     {
         get => template;
-        set => template = Guard.Against.Null(value, nameof(Template));
+        set => template = Guard.Against.EnumOutOfRange(value, nameof(Template));
     }
 
     private string host = default!;

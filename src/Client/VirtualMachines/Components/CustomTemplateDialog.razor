@@ -19,13 +19,23 @@
                 </label>
 
                 <label>
+                    Type
+                    <InputSelect @bind-Value="_template.Type" class="inputField">
+                        @foreach(ETemplate m in ETemplate.GetValues(typeof(ETemplate))){
+                            <option value=@m>@m</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(()=> _template.Mode)"></ValidationMessage>
+                </label>
+
+                <label>
                     CPU <br/>
-                    <InputNumber @bind-Value="_template.Cpu" class="inputField" />
+                    <InputNumber @bind-Value="_template.CPU" class="inputField" />
                 </label>
 
                 <label>
                     Ram <br />
-                    <InputNumber @bind-Value="_template.Ram" class="inputField" />
+                    <InputNumber @bind-Value="_template.RAM" class="inputField" />
                 </label>
 
                 <label>
@@ -49,21 +59,11 @@
         public int Ram { get; set; }
         public int Storage { get; set; }
     }
-    private Temp _template = new();
+    private Template _template = new();
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public EventCallback<Template> OnConfirm { get; set; }
 
     private void HandleValidSubmit(){
-        Template template = new()
-            {
-                Mode = _template.Mode,
-                Stats = new Stats()
-                {
-                    Cpu = _template.Cpu,
-                    Ram = _template.Ram,
-                    Storage = _template.Storage
-                },
-            };
-        OnConfirm.InvokeAsync(template);
+        OnConfirm.InvokeAsync(_template);
     }
 }

@@ -4,22 +4,22 @@
         <table>
             <tr>
                 <td>Mode</td>
-                <td>@Template.Value.Mode</td>
+                <td>@Template.Mode</td>
             </tr>
             <tr>
                 <td>Ram</td>
-                <td>@Template.Value.Stats.Ram</td>
+                <td>@Template.RAM</td>
             </tr>
             <tr>
                 <td>CPU cores</td>
-                <td>@Template.Value.Stats.Cpu</td>
+                <td>@Template.CPU</td>
             </tr>
             <tr>
                 <td>Storage</td>
-                <td>@Template.Value.Stats.Storage</td>
+                <td>@Template.Storage</td>
             </tr>
         </table>
-    @if (Template.Key == ActiveTemplate)
+    @if (Template.Type == ActiveTemplate)
     {
             <button @onclick="TemplateClicked" class="active">Selecteer template</button>
         }
@@ -30,7 +30,7 @@
 </div>
 
 @code {
-    [Parameter] public KeyValuePair < ETemplate, Template > Template { get; set; }
+    [Parameter] public Template Template { get; set; }
     [Parameter] public ETemplate? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
 }

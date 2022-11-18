@@ -2,55 +2,47 @@
 using System.ComponentModel.DataAnnotations;
 public class Template
 {
-    public static readonly Dictionary<ETemplate, Template> TEMPLATES = new()
+    public static readonly List<Template> TEMPLATES = new()
     {
-        { ETemplate.ArtificialIntelligence,
+
             new ()
             {
-                Name = "Artificial Intelligence",
                 Type = ETemplate.ArtificialIntelligence,
                 Mode = EMode.PaaS,
-                Stats = new ()
-                {
-                    Cpu = 6,
-                    Ram = 32,
-                    Storage = 25
-                }
-            }
-        },
-        { ETemplate.Database,
+                CPU = 2,
+                RAM = 32,
+                Storage = 8
+            },
+
+
             new ()
             {
-                Name = "Database",
                 Type = ETemplate.Database,
                 Mode = EMode.IaaS,
-                Stats = new ()
-                {
-                    Cpu = 2,
-                    Ram = 16,
-                    Storage = 60
-                }
-            }
-        },
-        { ETemplate.MachineLearning,
+                CPU = 4,
+                RAM = 4,
+                Storage = 200
+            },
+        
+
             new ()
             {
-                Name = "Machine Learning",
                 Type = ETemplate.MachineLearning,
                 Mode = EMode.SaaS,
-                Stats = new ()
-                {
-                    Cpu = 8,
-                    Ram = 64,
-                    Storage = 80
-                }
-            }
-        }
+                CPU = 8,
+                RAM = 64,
+                Storage = 80
+
+            },
+       
     };
-    public string? Name { get; set; }
     public ETemplate Type {get; set; }
     [Required(ErrorMessage = "Dit veld is verplicht")]
     public EMode Mode { get; set; }
     [Required]
-    public Stats? Stats { get; set; }
+    public int CPU { get; set; }
+    [Required]
+    public int RAM { get; set; }
+    [Required]
+    public int Storage { get; set; }
 }
