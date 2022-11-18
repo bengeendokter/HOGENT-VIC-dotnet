@@ -40,10 +40,11 @@
     flex-direction: column;
     margin: 0 auto;
     text-align: center;
-    width: 98%;
-    height: 50%;
+    width: 95%;
     padding: 10px;
     background-color: var(--clr-background-title);
+    /*background-color: var(--clr-usage-toggler-background);*/
+    /*background-color: var(--clr-primary);*/
     margin-top: 10px;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
@@ -58,7 +59,7 @@
     height: auto;
     padding: 10px;
     /*background-color: white;*/
-    background-color: var(--clr-usage-toggler-background);
+    background-color: var(--clr-usage-container);
     border-radius: 15px;
 }
 
@@ -71,6 +72,8 @@
     padding: 10px;
     margin-bottom: 15px;
     background-color: var(--clr-secondary);
+    /*background-color: var(--clr-background-title);*/
+    /*background-color: var(--clr-usage-toggler-background);*/
     font-family: Roboto;
     text-align: center;
     border-radius: 15px;
@@ -79,7 +82,7 @@
 .statsdatum input {
     color: var(--clr-text-color);
     border-radius: 5%;
-    background-color: var(--clr-background-title);
+    background-color: var(--clr-secondary);
 }
 
 .grafiekcomponent {
@@ -89,7 +92,7 @@
     flex-direction: row;
     margin: 0 auto;
     text-align: center;
-    width: 98%;
+    width: 95%;
     padding: 10px;
     background-color: var(--clr-background-title);
     border-bottom-left-radius: 25px;
@@ -99,7 +102,6 @@
 .grafiek {
     margin: 0 auto;
     text-align: center;
-    padding: 10px;
     background-color: var(--clr-primary);
     border-radius: 15px;
 }
@@ -109,7 +111,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 10px;
     background-color: var(--clr-secondary);
     font-family: Roboto;
     text-align: center;
@@ -119,39 +120,45 @@
 .grafiekdatum input {
     color: var(--clr-text-color);
     border-radius: 5%;
-    background-color: var(--clr-background-title);
+    background-color: var(--clr-secondary);
 }
 
 .grafiekdatum select {
     color: var(--clr-text-color);
     border-radius: 5%;
-    background-color: var(--clr-background-title);
+    background-color: var(--clr-secondary);
 }
 
 
 @media screen and (max-width: 910px) {
+    .datacomponent {
+        width: 90%;
+    }
+
     .analysis_stats {
         flex-direction: column;
-        width: 98%;
+        width: 95%;
     }
 
     .statsdatum {
-        width: 98%;
+        width: 95%;
     }
 
     .grafiekcomponent {
         flex-direction: column;
+        width: 90%;
     }
     
     .grafiek {
-        width: 98%;
-        height: 100%;
+        width: 95%;
+        height: auto;
     }
 
     .grafiekdatum {
         margin-bottom: 15px;
-        width: 98%;
+        width: 95%;
         height: auto;
+        padding: 5px;
     }
 }
 
@@ -161,29 +168,33 @@
     }
 
     .analysis_stats {
-        width: 98%;
+        width: 95%;
     }
 
     .statsdatum {
-        width: 98%;
+        width: 95%;
     }
 
     .grafiekcomponent {
         justify-content: space-between;
-        width: 98%;
-        height: 420px;
-        padding: 27px;
+        width: 95%;
+        height: 400px;
+        position: sticky;
+        padding: 10px;
         gap: 10px;
+        max-height: 400px;
     }
 
     .grafiek {
-        width: 98%;
-        height: 100%;
+        width: 80%;
+        height: 95%;
+        padding: 5px;
     }
 
     .grafiekdatum {
         width: auto;
-        height: 100%;
+        height: 95%;
+        padding: 5px;
     }
 
     
