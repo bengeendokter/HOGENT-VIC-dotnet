@@ -6,6 +6,5 @@ public interface IVirtualMachineService
 
     VirtualMachineDto.Detail? Get(int id);
 
-    // TODO: Dto
     VirtualMachineDto.Detail? Update(int id, VirtualMachineDto.Mutate vm);
 }

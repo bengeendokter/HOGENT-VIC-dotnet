@@ -4,41 +4,6 @@ namespace Shared.VirtualMachines;
 
 public static class TemplateDto
 {
-    /*public static readonly List<Template> TEMPLATES = new()
-    {
-
-            new ()
-            {
-                Type = ETemplate.ArtificialIntelligence,
-                Mode = EMode.PaaS,
-                CPU = 2,
-                RAM = 32,
-                Storage = 8
-            },
-
-
-            new ()
-            {
-                Type = ETemplate.Database,
-                Mode = EMode.IaaS,
-                CPU = 4,
-                RAM = 4,
-                Storage = 200
-            },
-        
-
-            new ()
-            {
-                Type = ETemplate.MachineLearning,
-                Mode = EMode.SaaS,
-                CPU = 8,
-                RAM = 64,
-                Storage = 80
-
-            },
-       
-    };*/
-
     public class Detail
     {
         public int Id { get; set; }
