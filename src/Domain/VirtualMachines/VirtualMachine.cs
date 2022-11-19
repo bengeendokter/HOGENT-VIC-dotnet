@@ -75,21 +75,21 @@ public class VirtualMachine : Entity
     public int CPU
     {
         get => cpu;
-        set => cpu = Guard.Against.Negative(value, nameof(CPU));
+        set => cpu = Guard.Against.NegativeOrZero(value, nameof(CPU));
     }
 
     private int ram = default!;
     public int RAM
     {
         get => ram;
-        set => ram = Guard.Against.Negative(value, nameof(RAM));
+        set => ram = Guard.Against.NegativeOrZero(value, nameof(RAM));
     }
 
     private int storage = default!;
     public int Storage
     {
         get => storage;
-        set => storage = Guard.Against.Negative(value, nameof(Storage));
+        set => storage = Guard.Against.NegativeOrZero(value, nameof(Storage));
     }
 
     private EMode mode = default!;
