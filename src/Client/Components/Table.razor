@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@typeparam T
 
 <table>
     <thead>
@@ -84,7 +85,7 @@
     //Geef een lijst met objecten mee aan de Table component, deze objects zijn een klasse die alle atributten bevat die je wilt weergeven, De eerste attribuut is het ID en de laatste is de acties die je wilt
     //Kijk naar de Requests page voor een voorbeeld
     //Zorg dat de naam van de attribuut de naam van de kolommen in de tabel met _ als er een spatie moet zijn
-    [Parameter] public ICollection<object> Collection { get; set; } = new List<object>();
+    [Parameter] public ICollection<T> Collection { get; set; } = new List<T>();
     //Als je de gekozen acties hebt meegegeven in een attribuut zal je deze eventcallbacks terugkrijgen met het id zodat je in de parent dit kan implementeren.
     [Parameter] public EventCallback<int> InfoCallback { get; set; }
     [Parameter] public EventCallback<int> DeleteCallback { get; set; }

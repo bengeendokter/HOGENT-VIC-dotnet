@@ -11,31 +11,49 @@
 
 
 @code{
-    public List<ClientDto.Index> clients = new();
-    public ICollection<Klant> clientObjects = new List<Klant>();
-    public ICollection<ClientDto.Index> filteredClients = new List<ClientDto.Index>();
+    private List<ClientDto.Index> clients = new();
+    private ICollection<Klant> clientObjects = new List<Klant>();
+    public ICollection<Klant> filteredClients = new List<Klant>();
 
     public class Klant
     {
-        public int Id = 0;
+        public int Id;
+        public string? Naam;
+        public string? Type;
+        public string? Telefoon_nummer;
+        public string? Klant_organisatie;
+        /* public int Id = 0;
         public string Naam = "";
         public string Type = "";
         public string Email = "";
-        public string Departement = "";
+        public string Departement = ""; */
     }; 
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         clients = ClientService.GetAll();
-        filteredClients = clients;
+        clients.ForEach(c =>
+        {
+            clientObjects.Add(new Klant
+            {
+                Id = c.Id,
+                Naam = c.Name,
+                Type = ConvertTypeToString(c.ClientType),
+                Telefoon_nummer = c.PhoneNumber,
+                Klant_organisatie = c.ClientOrganisation
+            });
+        });
+        filteredClients = clientObjects;
 
     }
 
-    /*
-    public ICollection<Klant> clientObjects2 = new List<Klant> {
-        new Klant() { Id = 1,  Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
-        new Klant() { Id = 2, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
-        new Klant() { Id = 3, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" }
-    }; */
+    private string ConvertTypeToString(EClientType type) {
+        return (type) switch
+        {
+            EClientType.Internal => "Intern",
+            EClientType.External => "Extern",
+            _ => ""
+        };
+    }
 }
