@@ -6,6 +6,7 @@
 @inject IVirtualMachineService VirtualMachineService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
+@inject ITemplateService TemplateService
 
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
@@ -17,10 +18,10 @@
             </div>
 
             <div class="grid">
-                <div class="templates">
+@*                <div class="templates">
                     <h2>Templates</h2>
                     <div class="wrap">
-                    @foreach (Template t in Template.TEMPLATES)
+                    @foreach (TemplateDto.Detail t in _templates)
                     {
                             <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
                     }
@@ -30,7 +31,7 @@
                         <div> Test</div>
                     }
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
-                </div>
+                </div>*@
 
                 <div class="request">
                 @if (_request != null)
@@ -163,6 +164,7 @@
                 
             </div>
             </EditForm>
+            <div>HEEEEEEELP</div>
 @*        @if(_showCustomTemplate){
             <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
         }*@
@@ -172,7 +174,8 @@
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequest? _request;
-    private Template? _customTemplate;
+    //private TemplateDto.Detail? _customTemplate;
+    //private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
 
     [Parameter]
@@ -180,6 +183,7 @@
 
     protected override void OnInitialized()
     {
+        //_templates = TemplateService.GetAll();
         if (!Id.HasValue) return;
 
         if (NavigationManager.Uri.Contains("request"))
@@ -213,7 +217,7 @@
         }
     }
 
-    private void HandleTemplate(Template template){
+    private void HandleTemplate(TemplateDto.Detail template){
         _vm.Template = template.Type;
         _vm.CPU = template.CPU;
         _vm.RAM = template.RAM;
@@ -223,7 +227,7 @@
     private void CustomTemplate(){
         _showCustomTemplate = true;
     }
-    private void ConfirmCustomTemp(Template template){
+    private void ConfirmCustomTemp(TemplateDto.Detail template){
         _showCustomTemplate = false;
 
     }

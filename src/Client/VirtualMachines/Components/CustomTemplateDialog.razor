@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿@*using System.ComponentModel.DataAnnotations;
 
 <div class="dialog-container">
     <div class="dialog">
@@ -59,11 +59,12 @@
         public int Ram { get; set; }
         public int Storage { get; set; }
     }
-    private Template _template = new();
+    private TemplateDto.Detail _template = new();
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public EventCallback<Template> OnConfirm { get; set; }
+    [Parameter] public EventCallback<TemplateDto.Detail> OnConfirm { get; set; }
 
     private void HandleValidSubmit(){
         OnConfirm.InvokeAsync(_template);
     }
 }
+*@

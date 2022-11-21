@@ -1,6 +1,6 @@
-<div class="template">
+@*<div class="template">
 
-        <h3>@Template.Key</h3>
+        <h3>@Template.Type</h3>
         <table>
             <tr>
                 <td>Mode</td>
@@ -30,7 +30,7 @@
 </div>
 
 @code {
-    [Parameter] public Template Template { get; set; }
+    [Parameter] public TemplateDto.Detail Template { get; set; }
     [Parameter] public ETemplate? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
-}
+}*@
