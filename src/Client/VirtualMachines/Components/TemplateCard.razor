@@ -19,11 +19,18 @@
                 <td>@Template.Value.Stats.Storage</td>
             </tr>
         </table>
-        <button @onclick="TemplateClicked">Selecteer template</button>
-    
+    @if (Template.Key == ActiveTemplate)
+    {
+            <button @onclick="TemplateClicked" class="active">Selecteer template</button>
+        }
+        else{
+            <button @onclick="TemplateClicked" class="inactive">Selecteer template</button>
+        }
+
 </div>
 
 @code {
     [Parameter] public KeyValuePair < ETemplate, Template > Template { get; set; }
+    [Parameter] public ETemplate? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
 }

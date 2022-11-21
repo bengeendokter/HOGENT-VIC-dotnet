@@ -47,10 +47,9 @@ public class Template
             }
         }
     };
-    [Required]
     public string? Name { get; set; }
     public ETemplate Type {get; set; }
-    [Required]
+    [Required(ErrorMessage = "Dit veld is verplicht")]
     public EMode Mode { get; set; }
     [Required]
     public Stats? Stats { get; set; }

@@ -54,7 +54,7 @@ h1 {
     font-weight: bold;
     font-size: 32px;
     margin: 0;
-    margin-block-end: 0.7em;
+    margin-block-end: 0.3em;
     padding: 0;
 }
 
@@ -67,6 +67,10 @@ h2 {
 article {
     padding: 0 !important;
     margin: 0 !important;
+}
+
+button:hover {
+    cursor: pointer;
 }
 
 body {
@@ -95,10 +99,12 @@ a, .btn-link {
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
+    background-color: var(--clr-CTA);
     border-color: #1861ac;
     border: none;
     border-radius: 5px;
+    font-size: 24px;
+    height: 38px
 }
 
 .btn-secondary {
@@ -181,6 +187,7 @@ a, .btn-link {
     padding: 0;
     position: absolute;
 }
+
 
 @media (min-width: 1080px) {
 

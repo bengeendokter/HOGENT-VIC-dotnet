@@ -19,13 +19,17 @@
             <div class="grid">
                 <div class="templates">
                     <h2>Templates</h2>
+                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
                     @foreach (KeyValuePair<ETemplate, Template> t in Template.TEMPLATES)
                     {
-                        <TemplateCard Template="@t" TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
+                            <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template?.Type TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
                     }
 
                     </div>
+                    @if(_customTemplate != null){
+                        <div> Test</div>
+                    }
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
 
@@ -33,16 +37,33 @@
                 @if (_request != null)
                 {
                     <h2>Informatie van de aanvrager</h2>
-                    <div class="card">
-                        Projectnaam: @_request.ProjectNaam<br />
-                        Start datum: @_request.StartDate<br />
-                        Eind datum: @_request.EndDate<br />
-                        Email: @_request.EmailAanvrager<br />
-                        Nummer: @_request.NummerAanvrager<br />
-                        Reden aanvraag: <br />
-                        @_request.Reason
+                        <div class="input-group">
+                        <label>
+                            Projectnaam:<br/>
+                            <div class="field">@_request.ProjectNaam</div>
+                        </label>
+                        <label>
+                            Start datum:<br/>
+                                <div class="field">@_request.StartDate.ToString("dd/MM/yyyy")</div>
+                        </label>
+                        <label>
+                            Eind datum:<br/>
+                                <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
+                        </label>
+                        <label>
+                            Email aanvrager:<br/>
+                            <div class="field">@_request.EmailAanvrager</div>
+                        </label>
+                        <label>
+                            Nummer aanvrager:<br/>
+                            <div class="field">@_request.NummerAanvrager</div>
+                        </label>
 
                     </div>
+                        <label>
+                            Projectnaam:<br />
+                            <div class="reden">@_request.Reason</div>
+                        </label>
                 }
                 </div>
 
@@ -51,38 +72,48 @@
                     <h2> Algemene informatie</h2>
                     <div class="input-group">
                         <label>
-                            Klant<br />
-                            <InputSelect @bind-Value="_vm.Client">
-                            </InputSelect>
-                        </label>
-
-                        <label>
                             Naam<br />
-                            <InputText @bind-Value="_vm.Name"></InputText>
+                            <InputText @bind-Value="_vm.Name" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
                         </label>
 
                         <label>
                             Hostname<br />
-                            <InputText @bind-Value="_vm.HostName"></InputText>
+                            <InputText @bind-Value="_vm.HostName" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
                         </label>
 
                         <label>
+                            FQDN<br />
+                            <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
+                            <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
+                        </label>
+
+                        <label>
+                            Klant<br />
+                            <InputSelect @bind-Value="_vm.Client" class="inputField">
+                                <!--
+                                <option value="" selected> Option 1</option>
+                                <option value=""         > Option 2</option>
+                                -->
+                            </InputSelect>
+                        </label>
+
+                        <label>
                             Start datum<br />
-                            <InputDate @bind-Value="_vm.StartDate"></InputDate>
+                            <InputDate @bind-Value="_vm.StartDate" class="inputField"></InputDate>
                             <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
                         </label>
 
                         <label>
                             Eind datum<br />
-                            <InputDate @bind-Value="_vm.EndDate"></InputDate>
+                            <InputDate @bind-Value="_vm.EndDate" class="inputField"></InputDate>
                             <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
                         </label>
 
                         <label>
-                            Moet de VM altijd beschikbaar zijn<br />
-                            <InputSelect @bind-Value="_vm.IsHighlyAvailable">
+                            Moet de VM altijd besckikbaar zijn?<br />
+                            <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
                                 <option value=true> Ja</option>
                                 <option value=false> Nee</option>
                             </InputSelect>
@@ -91,7 +122,7 @@
 
                         <label>
                             Hoeveelheid backups<br />
-                            <InputSelect @bind-Value="_vm.BackupFrequency">
+                            <InputSelect @bind-Value="_vm.BackupFrequency" class="inputField">
                                 <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
                                 <option value="@EBackupFrequency.Daily"> Dagelijks</option>
                             </InputSelect>
@@ -99,36 +130,34 @@
                         </label>
 
                         <label>
-                            Wanneer moet de VM online staan?<br />
-                            <InputRadioGroup @bind-Value="_vm.Availability">
-                                <InputRadio Value="@EDay.Monday" />Test
-                                <InputRadio Value="@EDay.Thursday" />Test2
-                            </InputRadioGroup>
-                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>
-
-               
-                        <label>
-                            Poorten:<br />
-                            <InputText @bind-Value="_vm.Poorten"></InputText>
-                            <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
-                        </label>
-
-                        <label>
-                            FQDN<br />
-                            <InputText @bind-Value="_vm.FQDN"></InputText>
-                            <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                        </label>
-
-
-                        <label>
                             Host<br />
-                            <InputSelect @bind-Value="_vm.Host">
+                            <InputSelect @bind-Value="_vm.Host" class="inputField">
                                 <option value="server1">Server 1</option>
                                 <option value="server2">Server 2</option>
                             </InputSelect>
                             <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
                         </label>
+       
+                        <label>
+                            Poorten:<br />
+                            <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
+                            <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
+                        </label>
+
+                        <label>
+                            Wanneer moet de VM online staan?<br />
+                            <InputRadioGroup @bind-Value="_vm.Availability">
+                                <InputRadio Value="@EDay.Monday" />Maandag
+                                <InputRadio Value="@EDay.Tuesday" />Dinsdag
+                                <InputRadio Value="@EDay.Wednesday" />Woensdag
+                                <InputRadio Value="@EDay.Thursday"/>Donderdag
+                                <InputRadio Value="@EDay.Friday" />Vrijdag
+                                <InputRadio Value="@EDay.Saturday" />Zaterdag
+                                <InputRadio Value="@EDay.Sunday" />Zondag
+                            </InputRadioGroup>
+                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                        </label>
+
                     </div>
                     <button type="submit">Submit</button>
                 </div>
@@ -136,7 +165,7 @@
             </div>
             </EditForm>
         @if(_showCustomTemplate){
-            <CustomTemplateDialog OnCancel="CancelCustomTemp" OnConfirm="ConfirmCustomTemp"></CustomTemplateDialog>
+            <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
         }
     </Content>
 </GenericLayout>
@@ -144,6 +173,7 @@
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequest? _request;
+    private Template? _customTemplate;
     private bool _showCustomTemplate = false;
 
     [Parameter]
@@ -190,8 +220,11 @@
     private void CustomTemplate(){
         _showCustomTemplate = true;
     }
-    private void ConfirmCustomTemp(){
+    private void ConfirmCustomTemp(Template template){
         _showCustomTemplate = false;
+        _customTemplate = template;
+        _vm.Template = template;
+
     }
     private void CancelCustomTemp(){
         _showCustomTemplate = false;
