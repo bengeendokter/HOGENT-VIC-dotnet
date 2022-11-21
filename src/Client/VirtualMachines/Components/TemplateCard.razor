@@ -1,4 +1,4 @@
-@*<div class="template">
+<div class="template">
 
         <h3>@Template.Type</h3>
         <table>
@@ -19,8 +19,8 @@
                 <td>@Template.Storage</td>
             </tr>
         </table>
-    @if (Template.Type == ActiveTemplate)
-    {
+        @if (active)
+        {
             <button @onclick="TemplateClicked" class="active">Selecteer template</button>
         }
         else{
@@ -33,4 +33,10 @@
     [Parameter] public TemplateDto.Detail Template { get; set; }
     [Parameter] public ETemplate? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
-}*@
+    private bool active = false;
+
+    private void handleClick(){
+        active = true;
+    }
+
+}

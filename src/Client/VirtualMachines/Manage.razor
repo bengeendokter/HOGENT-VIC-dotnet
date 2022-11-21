@@ -8,14 +8,17 @@
 @inject NavigationManager NavigationManager
 @inject ITemplateService TemplateService
 
+<div class="title-container">
+    <h1>
+        VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
+         "Aanmaken")
+    </h1>
+</div>
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
-            <div class="headerRow">
-                <h1>VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
-                        "Aanmaken")</h1>
-            </div>
+
 
             <div class="grid">
                 <div class="templates">
@@ -23,7 +26,7 @@
                     <div class="wrap">
                     @foreach (TemplateDto.Detail t in _templates)
                     {
-                            <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
+                            <TemplateCard Template="@t" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
                     }
 
                     </div>
@@ -144,19 +147,13 @@
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                         </label>
 
-                        <label>
+@*                        <label>
                             Wanneer moet de VM online staan?<br />
-                            <InputRadioGroup @bind-Value="_vm.Availability">
-                                <InputRadio Value="@EDay.Monday" />Maandag
-                                <InputRadio Value="@EDay.Tuesday" />Dinsdag
-                                <InputRadio Value="@EDay.Wednesday" />Woensdag
-                                <InputRadio Value="@EDay.Thursday"/>Donderdag
-                                <InputRadio Value="@EDay.Friday" />Vrijdag
-                                <InputRadio Value="@EDay.Saturday" />Zaterdag
-                                <InputRadio Value="@EDay.Sunday" />Zondag
-                            </InputRadioGroup>
+                            @foreach(EDay day in EDay.GetValues(typeof(EDay))){
+                                <InputCheckbox Value=@day @bind-Value="_vm.Availability"></InputCheckbox>
+                            }
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>
+                        </label>*@
 
                     </div>
                     <button type="submit">Submit</button>
@@ -164,16 +161,16 @@
                 
             </div>
             </EditForm>
-@*        @if(_showCustomTemplate){
+        @if(_showCustomTemplate){
             <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
-        }*@
+        }
     </Content>
 </GenericLayout>
 
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequest? _request;
-    private TemplateDto.Detail? _customTemplate;
+    private TemplateDto.Create? _customTemplate;
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
 
@@ -226,9 +223,15 @@
     private void CustomTemplate(){
         _showCustomTemplate = true;
     }
-    private void ConfirmCustomTemp(TemplateDto.Detail template){
-        _showCustomTemplate = false;
+    private void ConfirmCustomTemp(TemplateDto.Create template){
+        _vm.Template = template.Type;
+        _vm.CPU = template.CPU;
+        _vm.RAM = template.RAM;
+        _vm.Storage = template.Storage;
+        _vm.Mode = template.Mode;
 
+        _showCustomTemplate = false;
+        _customTemplate = template;
     }
     private void CancelCustomTemp(){
         _showCustomTemplate = false;
