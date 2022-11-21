@@ -16,7 +16,6 @@
     gap: 2em;
 }
 
-/*#region Buttons */
 .button-container {
     display: flex;
     flex-direction: row;
@@ -24,32 +23,6 @@
     margin: 2em 0em;
     gap: 1em;
 }
-button {
-    text-decoration: none;
-    color: var(--clr-primary);
-    border-radius: 5px;
-    padding: .5em 4em;
-    min-width: 12ch;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: fit-content;
-}
-
-button:focus-visible, button:hover {
-    transition: outline .5s ease;
-    outline: var(--clr-text-color) solid 2px;
-    outline-offset: .2em;
-}
-
-.edit {
-    background: var(--clr-CTA);
-} 
-
-.delete {
-    background: var(--clr-red);
-}
-/*#endregion */
 
 
 /*#region Table */

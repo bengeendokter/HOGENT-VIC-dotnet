@@ -1,15 +1,20 @@
 ﻿@page "/klanten"
+@inject IClientService ClientService
 
 <GenericLayout Display=false Title="Klanten">
     <Content>
         <h1>Klanten</h1>
 
-        <Table Collection="clientObjects" />
+        <Table Collection="@filteredClients" />
     </Content>
 </GenericLayout>
 
 
 @code{
+    public List<ClientDto.Index> clients = new();
+    public ICollection<Klant> clientObjects = new List<Klant>();
+    public ICollection<ClientDto.Index> filteredClients = new List<ClientDto.Index>();
+
     public class Klant
     {
         public int Id = 0;
@@ -17,11 +22,20 @@
         public string Type = "";
         public string Email = "";
         public string Departement = "";
-    };
+    }; 
 
-    public ICollection<Object> clientObjects = new List<Object> {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        clients = ClientService.GetAll();
+        filteredClients = clients;
+
+    }
+
+    /*
+    public ICollection<Klant> clientObjects2 = new List<Klant> {
         new Klant() { Id = 1,  Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
         new Klant() { Id = 2, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" },
         new Klant() { Id = 3, Naam = "Marc Asselberg", Type = "Intern", Email = "marc.asselberg@hogent.be", Departement="HOGENT" }
-    };
+    }; */
 }
