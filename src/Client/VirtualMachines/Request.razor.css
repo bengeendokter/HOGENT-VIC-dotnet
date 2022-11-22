@@ -25,3 +25,24 @@ label {
     
 }
 
+
+::deep select.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+}
+
+::deep input.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+}
+

@@ -6,7 +6,7 @@
     <Content>
         <div class="form">
             <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
-                <DataAnnotationsValidator />
+                <FluentValidationValidator />
                 <div class="headerRow">
                     <h1>Vraag een VM aan</h1>
                 </div>
@@ -14,8 +14,8 @@
                 <div class="input-group">
                     <label>
                         Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
-                        <InputText @bind-Value="vmRequest.ProjectNaam" ></InputText>
-                        <ValidationMessage For="@(()=> vmRequest.ProjectNaam)"></ValidationMessage>
+                        <InputText @bind-Value="vmRequest.ProjectName" ></InputText>
+                        <ValidationMessage For="@(()=> vmRequest.ProjectName)"></ValidationMessage>
                     </label>
 
                     <label>
@@ -27,16 +27,6 @@
                         Eind datum<br />
                         <InputDate @bind-Value="vmRequest.EndDate"></InputDate>
                         <ValidationMessage For="@(()=> vmRequest.EndDate)"></ValidationMessage>
-                    </label>
-
-                    <label>
-                        Email van de aanvrager <br/>
-                        <InputText @bind-Value="vmRequest.EmailAanvrager"></InputText>
-                    </label>
-
-                    <label>
-                        Nummer van de aanvrager<br/>
-                        <InputNumber @bind-Value="vmRequest.NummerAanvrager"></InputNumber>
                     </label>
 
 
@@ -55,7 +45,7 @@
 </GenericLayout>
 
 @code {
-    private VirtualMachineRequest vmRequest = new VirtualMachineRequest();
+    private VirtualMachineRequestDto.Create vmRequest = new();
 
 
     private void HandleValidSubmit()

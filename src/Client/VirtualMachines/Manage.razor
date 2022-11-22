@@ -26,12 +26,12 @@
                     <div class="wrap">
                     @foreach (TemplateDto.Detail t in _templates)
                     {
-                            <TemplateCard Template="@t" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
+                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
                     }
 
                     </div>
                     @if(_customTemplate != null){
-                        <div> Test</div>
+                        <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
                     }
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
@@ -43,7 +43,7 @@
                         <div class="input-group">
                         <label>
                             Projectnaam:<br/>
-                            <div class="field">@_request.ProjectNaam</div>
+                            <div class="field">@_request.ProjectName</div>
                         </label>
                         <label>
                             Start datum:<br/>
@@ -53,14 +53,7 @@
                             Eind datum:<br/>
                                 <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
                         </label>
-                        <label>
-                            Email aanvrager:<br/>
-                            <div class="field">@_request.EmailAanvrager</div>
-                        </label>
-                        <label>
-                            Nummer aanvrager:<br/>
-                            <div class="field">@_request.NummerAanvrager</div>
-                        </label>
+
 
                     </div>
                         <label>
@@ -156,7 +149,7 @@
                         </label>*@
 
                     </div>
-                    <button type="submit">Submit</button>
+                    <button class="btn-primary" type="submit">Maak VM aan</button>
                 </div>
                 
             </div>
@@ -169,10 +162,11 @@
 
 @code {
     private VirtualMachineDto.Mutate _vm = new();
-    private VirtualMachineRequest? _request;
-    private TemplateDto.Create? _customTemplate;
+    private VirtualMachineRequestDto.Detail? _request;
+    private TemplateDto.Detail? _customTemplate;
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
+    private int? _activeTemplate;
 
     [Parameter]
     public int? Id { get; set; }
@@ -214,6 +208,7 @@
     }
 
     private void HandleTemplate(TemplateDto.Detail template){
+        _activeTemplate = template.Id;
         _vm.Template = template.Type;
         _vm.CPU = template.CPU;
         _vm.RAM = template.RAM;
@@ -224,14 +219,24 @@
         _showCustomTemplate = true;
     }
     private void ConfirmCustomTemp(TemplateDto.Create template){
-        _vm.Template = template.Type;
-        _vm.CPU = template.CPU;
-        _vm.RAM = template.RAM;
-        _vm.Storage = template.Storage;
-        _vm.Mode = template.Mode;
+        //_vm.Template = template.Type;
+        //_vm.CPU = template.CPU;
+        //_vm.RAM = template.RAM;
+        //_vm.Storage = template.Storage;
+        //_vm.Mode = template.Mode;
+        TemplateDto.Detail customTemp = new()
+            {
+                Id = -1,
+                Mode = template.Mode,
+                Type = template.Type,
+                RAM = template.RAM,
+                CPU = template.CPU,
+                Storage = template.Storage
+            };
 
         _showCustomTemplate = false;
-        _customTemplate = template;
+        _customTemplate = customTemp;
+        _activeTemplate = -1;
     }
     private void CancelCustomTemp(){
         _showCustomTemplate = false;

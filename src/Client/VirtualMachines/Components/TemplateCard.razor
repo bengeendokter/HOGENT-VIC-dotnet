@@ -19,24 +19,25 @@
                 <td>@Template.Storage</td>
             </tr>
         </table>
-        @if (active)
+        @if (ActiveTemplate.Equals(Template.Id))
         {
-            <button @onclick="TemplateClicked" class="active">Selecteer template</button>
+        <button @onclick="handleClick" class="active">Selecteer template</button>
         }
         else{
-            <button @onclick="TemplateClicked" class="inactive">Selecteer template</button>
+        <button @onclick="handleClick" class="inactive">Selecteer template</button>
         }
 
 </div>
 
 @code {
     [Parameter] public TemplateDto.Detail Template { get; set; }
-    [Parameter] public ETemplate? ActiveTemplate {get; set;}
+    [Parameter] public int? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
     private bool active = false;
 
     private void handleClick(){
-        active = true;
+        active = !active;
+        TemplateClicked.InvokeAsync();
     }
 
 }

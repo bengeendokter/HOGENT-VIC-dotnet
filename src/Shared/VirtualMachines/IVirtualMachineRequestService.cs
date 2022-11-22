@@ -2,9 +2,9 @@
 
 public interface IVirtualMachineRequestService
 {
-    List<VirtualMachineRequest> GetAll();
+    List<VirtualMachineRequestDto.Detail> GetAll();
 
-    VirtualMachineRequest? Get(int id);
+    VirtualMachineRequestDto.Detail? Get(int id);
 
-    VirtualMachineRequest? Update(int id, VirtualMachineRequest request);
+    VirtualMachineRequestDto.Detail? Update(int id, VirtualMachineRequestDto.Detail request);
 }

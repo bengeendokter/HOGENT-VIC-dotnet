@@ -1,10 +1,11 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
 @inject NavigationManager NavigationManager
-
-<GenericLayout Display=false Title="Aanvragen">
-    <Content>
-        <h1>Aanvragen</h1>
+<div class="title-container">
+    <h1>
+        Virtuele machine aanvragen
+    </h1>
+    <div class="filters">
         <select @bind="@_sortFilter" @oninput="@FilterChange">
             <option value="0">Datum oplopend</option>
             <option value="1">Datum aflopend</option>
@@ -18,6 +19,10 @@
             <option value="3">Denied</option>
             <option value="4">Requested</option>
         </select>
+    </div>
+</div>
+<GenericLayout Display=false Title="Aanvragen">
+    <Content>
 
         <Table Collection="filteredObjects" InfoCallback="@RequestInfo"/>
     </Content>
@@ -26,8 +31,8 @@
 @code {
     public class Request{
         public int Id = 0;
-        public string? Email_aanvrager;
         public string? Projectnaam;
+        public string Klant = "N/A";
         public DateTime? Start_datum;
         public ERequestStatus Status;
         public DateTime? Datum_aanvraag;
@@ -35,7 +40,7 @@
 
     public ICollection<Object> requestObjects = new List<Object>();
     public ICollection<Object> filteredObjects = new List<Object>();
-    private List<VirtualMachineRequest> list = new();
+    private List<VirtualMachineRequestDto.Detail> list = new();
 
     private string _sortFilter { get; set; }
     private string _statusFilter { get; set; }
@@ -50,8 +55,7 @@
                 new Request()
                 {
                     Id = request.Id,
-                    Email_aanvrager = request.EmailAanvrager,
-                    Projectnaam = request.ProjectNaam,
+                    Projectnaam = request.ProjectName,
                     Start_datum = request.StartDate,
                     Datum_aanvraag = request.Date,
                     Status = request.Status
