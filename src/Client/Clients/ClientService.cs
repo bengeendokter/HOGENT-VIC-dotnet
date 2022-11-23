@@ -41,6 +41,16 @@ public class ClientService : IClientService
         };
     }
 
+    public void Delete(int id)
+    {
+        var client = _clients.FirstOrDefault(x => x.Id == id);
+        if (client == null)
+            return;
+
+        _clients.Remove(client);
+    }
+
+
     private void SetDummyData()
     {
         _clients.AddRange(new List<ClientDto.Detail>

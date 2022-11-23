@@ -29,6 +29,7 @@
             Collection="@filteredClients" 
             InfoCallback="@GoToClientDetails"
             EditCallback="@GoToEditClient"
+            DeleteCallback="@DeleteClient"
         />
     </Content>
 </GenericLayout>
@@ -51,20 +52,26 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        RefreshClients();
+    }
+
+    private void RefreshClients() {
         clients = ClientService.GetAll();
+        clientObjects.Clear();
+        filteredClients.Clear();
+
         clients.ForEach(c =>
         {
             clientObjects.Add(new Klant
-            {
-                Id = c.Id,
-                Naam = c.Name,
-                Type = ConvertTypeToString(c.ClientType),
-                Telefoon_nummer = c.PhoneNumber,
-                Klant_organisatie = c.ClientOrganisation
-            });
+                {
+                    Id = c.Id,
+                    Naam = c.Name,
+                    Type = ConvertTypeToString(c.ClientType),
+                    Telefoon_nummer = c.PhoneNumber,
+                    Klant_organisatie = c.ClientOrganisation
+                });
         });
         filteredClients = clientObjects;
-
     }
 
     private void GoToClientDetails(int id)
@@ -80,6 +87,12 @@
     private void GoToEditClient(int id)
     {
         NavigationManager.NavigateTo($"/klanten/wijzig/{id}");
+    }
+
+    private void DeleteClient(int id)
+    {
+        ClientService.Delete(id);
+        RefreshClients();
     }
 
     private void OnSelectFilter(ChangeEventArgs e)

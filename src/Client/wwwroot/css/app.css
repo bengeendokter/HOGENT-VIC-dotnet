@@ -25,29 +25,31 @@
     --clr-used-red: #E63462;
     --clr-usage-toggler-arrow: #FFFFFF;
     --clr-usage-toggler-background: #7e7ee6;
+    --clr-deleteBackground: rgb(255, 255, 255, 0.1);
 }
 
-:root.dark_mode {
-    color-scheme: dark;
-    --clr-primary: #232F4A;
-    --clr-secondary: #0b1b41;
-    --clr-secondary-var1: #e6f0f9;
-    --clr-secondary-var2: #eff5fb;
-    --clr-secondary-var3: #f3f5fa;
-    --clr-background-blue: #0F1729;
-    --clr-boxshadow-usage: rgb(221, 203, 203, 0,39);
-    --clr-CTA: #38BDF8;
-    --clr-text-color: #FFFFFF;
-    --clr-red: #FA738C;
-    --clr-background-title: #324167;
-    --clr-green: #36BD7C;
-    --clr-usage-black: white;
-    --clr-usage-container: rgba(11, 150, 211, 0.5);
-    --clr-usage-purple: #2a2a87;
-    --clr-usage-info-text: #5252ff;
-    --clr-usage-toggler-arrow: #4949e3;
-    --clr-usage-toggler-background: var(--clr-primary);
-}
+    :root.dark_mode {
+        color-scheme: dark;
+        --clr-primary: #232F4A;
+        --clr-secondary: #0b1b41;
+        --clr-secondary-var1: #e6f0f9;
+        --clr-secondary-var2: #eff5fb;
+        --clr-secondary-var3: #f3f5fa;
+        --clr-background-blue: #0F1729;
+        --clr-boxshadow-usage: rgb(221, 203, 203, 0,39);
+        --clr-CTA: #38BDF8;
+        --clr-text-color: #FFFFFF;
+        --clr-red: #FA738C;
+        --clr-background-title: #324167;
+        --clr-green: #36BD7C;
+        --clr-usage-black: white;
+        --clr-usage-container: rgba(11, 150, 211, 0.5);
+        --clr-usage-purple: #2a2a87;
+        --clr-usage-info-text: #5252ff;
+        --clr-usage-toggler-arrow: #4949e3;
+        --clr-usage-toggler-background: var(--clr-primary);
+        --clr-deleteBackground: rgb(35, 47, 74, 0.2);
+    }
 
 h1 {
     color: var(--clr-text-color);

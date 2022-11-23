@@ -27,7 +27,8 @@
 .button-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
     margin-bottom: 2em;
     gap: 1em;
 }
+

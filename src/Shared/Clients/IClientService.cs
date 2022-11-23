@@ -4,5 +4,5 @@ public interface IClientService
 {
     List<ClientDto.Index> GetAll();
     ClientDto.Detail GetDetail(int id);
-    
+    void Delete(int id);
 }
