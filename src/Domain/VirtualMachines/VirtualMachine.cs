@@ -45,7 +45,7 @@ public class VirtualMachine : Entity
         get => endDate;
         set =>
             endDate = Guard.Against.AgainstExpression(
-                d => d < startDate,
+                d => d > startDate,
                 value,
                 "EndDate must be greater than StartDate"
             );
