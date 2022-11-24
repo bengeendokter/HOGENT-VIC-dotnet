@@ -173,8 +173,8 @@
         return data;
     }
 
-    protected override void OnInitialized()
+    override protected async Task OnInitializedAsync()
     {
-        _vms = VirtualMachineService.GetIndexAsync().Result;
+        _vms = await VirtualMachineService.GetIndexAsync();
     }
 }

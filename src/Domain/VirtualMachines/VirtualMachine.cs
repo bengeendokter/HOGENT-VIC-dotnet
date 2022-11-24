@@ -6,12 +6,12 @@ namespace Domain.VirtualMachines;
 public class VirtualMachine : Entity
 {
     // TODO: relation with client domain class
-    private object client = default!;
-    public object Client
+    /*private string client = default!;
+    public string Client
     {
         get => client;
         set => client = Guard.Against.Null(value, nameof(Client));
-    }
+    }*/
 
     private string name = default!;
     public string Name
@@ -131,7 +131,7 @@ public class VirtualMachine : Entity
     private VirtualMachine() { }
 
     public VirtualMachine(
-        object client,
+        // object client,
         string name,
         string hostName,
         DateTime startDate,
@@ -149,7 +149,7 @@ public class VirtualMachine : Entity
         bool isHighlyAvailable
     )
     {
-        Client = client;
+        // Client = client;
         Name = name;
         HostName = hostName;
         StartDate = startDate;

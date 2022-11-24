@@ -5,7 +5,7 @@ namespace Client.VirtualMachines;
 public class VirtualMachineService : IVirtualMachineService
 {
     private readonly HttpClient client;
-    private const string endpoint = "api/vm";
+    private const string endpoint = "api/virtualmachine";
 
     public VirtualMachineService(HttpClient client)
     {

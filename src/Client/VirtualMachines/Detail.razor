@@ -146,10 +146,9 @@
 
     public string TxtType = "password";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        vm = VMService.GetDetailAsync(Id).Result;
+        vm = await VMService.GetDetailAsync(Id);
         if (vm == null) return;
 
         days = new(){

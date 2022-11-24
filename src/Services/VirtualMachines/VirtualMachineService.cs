@@ -71,7 +71,7 @@ public class VirtualMachineService : IVirtualMachineService
             );
 
         var vm = new VirtualMachine(
-            model.Client!,
+            // model.Client!,
             model.Name!,
             model.HostName!,
             model.StartDate,
@@ -119,7 +119,7 @@ public class VirtualMachineService : IVirtualMachineService
         vm.Availability = (Domain.VirtualMachines.EDay)model.Availability;
         vm.Mode = (Domain.VirtualMachines.EMode)model.Mode;
         vm.Host = model.Host!;
-        vm.Client = model.Client!;
+        // vm.Client = model.Client!;
         vm.Poorten = model.Poorten!;
 
         await dbContext.SaveChangesAsync();
