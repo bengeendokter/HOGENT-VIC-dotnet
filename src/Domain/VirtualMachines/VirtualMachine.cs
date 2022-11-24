@@ -27,19 +27,28 @@ public class VirtualMachine : Entity
         set => hostName = Guard.Against.NullOrEmpty(value, nameof(HostName));
     }
 
-
     private DateTime startDate = default!;
     public DateTime StartDate
     {
         get => startDate;
-        set => startDate = Guard.Against.AgainstExpression(d => d < DateTime.Now, value, "StartDate must be later than now");
+        set =>
+            startDate = Guard.Against.AgainstExpression(
+                d => d < DateTime.Now,
+                value,
+                "StartDate must be later than now"
+            );
     }
 
     private DateTime endDate = default!;
     public DateTime EndDate
     {
         get => endDate;
-        set => endDate = Guard.Against.AgainstExpression(d => d < startDate, value, "EndDate must be greater than StartDate");
+        set =>
+            endDate = Guard.Against.AgainstExpression(
+                d => d < startDate,
+                value,
+                "EndDate must be greater than StartDate"
+            );
     }
 
     private string fqdn = default!;
@@ -121,5 +130,40 @@ public class VirtualMachine : Entity
     /// </summary>
     private VirtualMachine() { }
 
-    // TODO: public constructor
+    public VirtualMachine(
+        object client,
+        string name,
+        string hostName,
+        DateTime startDate,
+        DateTime endDate,
+        string fqdn,
+        string poorten,
+        object template,
+        string host,
+        int cpu,
+        int ram,
+        int storage,
+        EMode mode,
+        EBackupFrequency backupFrequency,
+        EDay availability,
+        bool isHighlyAvailable
+    )
+    {
+        Client = client;
+        Name = name;
+        HostName = hostName;
+        StartDate = startDate;
+        EndDate = endDate;
+        FQDN = fqdn;
+        Poorten = poorten;
+        Template = template;
+        Host = host;
+        CPU = cpu;
+        RAM = ram;
+        Storage = storage;
+        Mode = mode;
+        BackupFrequency = backupFrequency;
+        Availability = availability;
+        IsHighlyAvailable = isHighlyAvailable;
+    }
 }
