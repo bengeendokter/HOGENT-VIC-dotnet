@@ -146,7 +146,8 @@ public class VirtualMachine : Entity
         EMode mode,
         EBackupFrequency backupFrequency,
         EDay availability,
-        bool isHighlyAvailable
+        bool isHighlyAvailable,
+        bool isActive
     )
     {
         // Client = client;
@@ -165,5 +166,6 @@ public class VirtualMachine : Entity
         BackupFrequency = backupFrequency;
         Availability = availability;
         IsHighlyAvailable = isHighlyAvailable;
+        IsActive = isActive;
     }
 }

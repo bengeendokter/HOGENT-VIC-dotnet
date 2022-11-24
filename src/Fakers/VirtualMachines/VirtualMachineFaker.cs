@@ -25,6 +25,7 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
                     f.Random.Enum<EMode>(),
                     f.Random.Enum<EBackupFrequency>(),
                     f.Random.Enum<EDay>(),
+                    f.Random.Bool(),
                     f.Random.Bool()
                 )
         );

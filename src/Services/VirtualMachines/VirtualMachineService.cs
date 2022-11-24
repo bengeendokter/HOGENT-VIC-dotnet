@@ -86,7 +86,8 @@ public class VirtualMachineService : IVirtualMachineService
             (Domain.VirtualMachines.EMode)model.Mode,
             (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency,
             (Domain.VirtualMachines.EDay)model.Availability,
-            model.IsHighlyAvailable
+            model.IsHighlyAvailable,
+            false
         );
 
         dbContext.VirtualMachines.Add(vm);
