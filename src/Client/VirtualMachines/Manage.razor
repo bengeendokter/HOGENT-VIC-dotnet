@@ -6,29 +6,31 @@
 @inject IVirtualMachineService VirtualMachineService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
+@inject ITemplateService TemplateService
 
+<div class="title-container">
+    <h1>
+        VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
+         "Aanmaken")
+    </h1>
+</div>
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
-            <div class="headerRow">
-                <h1>VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
-                        "Aanmaken")</h1>
-            </div>
-
             <div class="grid">
                 <div class="templates">
                     <h2>Templates</h2>
                     <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
-                    @foreach (KeyValuePair<ETemplate, Template> t in Template.TEMPLATES)
+                    @foreach (TemplateDto.Detail t in _templates)
                     {
-                            <TemplateCard Template="@t" ActiveTemplate=@_vm?.Template?.Type TemplateClicked="() => HandleTemplate(t.Key)"></TemplateCard>
+                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
                     }
 
                     </div>
                     @if(_customTemplate != null){
-                        <div> Test</div>
+                        <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
                     }
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
@@ -40,7 +42,7 @@
                         <div class="input-group">
                         <label>
                             Projectnaam:<br/>
-                            <div class="field">@_request.ProjectNaam</div>
+                            <div class="field">@_request.ProjectName</div>
                         </label>
                         <label>
                             Start datum:<br/>
@@ -50,18 +52,11 @@
                             Eind datum:<br/>
                                 <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
                         </label>
-                        <label>
-                            Email aanvrager:<br/>
-                            <div class="field">@_request.EmailAanvrager</div>
-                        </label>
-                        <label>
-                            Nummer aanvrager:<br/>
-                            <div class="field">@_request.NummerAanvrager</div>
-                        </label>
+
 
                     </div>
                         <label>
-                            Projectnaam:<br />
+                            Extra info over de aanvraag:<br />
                             <div class="reden">@_request.Reason</div>
                         </label>
                 }
@@ -144,22 +139,16 @@
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                         </label>
 
-                        <label>
+@*                        <label>
                             Wanneer moet de VM online staan?<br />
-                            <InputRadioGroup @bind-Value="_vm.Availability">
-                                <InputRadio Value="@EDay.Monday" />Maandag
-                                <InputRadio Value="@EDay.Tuesday" />Dinsdag
-                                <InputRadio Value="@EDay.Wednesday" />Woensdag
-                                <InputRadio Value="@EDay.Thursday"/>Donderdag
-                                <InputRadio Value="@EDay.Friday" />Vrijdag
-                                <InputRadio Value="@EDay.Saturday" />Zaterdag
-                                <InputRadio Value="@EDay.Sunday" />Zondag
-                            </InputRadioGroup>
+                            @foreach(EDay day in EDay.GetValues(typeof(EDay))){
+                                <InputCheckbox Value=@day @bind-Value="_vm.Availability"></InputCheckbox>
+                            }
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>
+                        </label>*@
 
                     </div>
-                    <button type="submit">Submit</button>
+                    <button class="btn-primary" type="submit">Maak VM aan</button>
                 </div>
                 
             </div>
@@ -172,15 +161,18 @@
 
 @code {
     private VirtualMachineDto.Mutate _vm = new();
-    private VirtualMachineRequest? _request;
-    private Template? _customTemplate;
+    private VirtualMachineRequestDto.Detail? _request;
+    private TemplateDto.Detail? _customTemplate;
+    private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
+    private int? _activeTemplate;
 
     [Parameter]
     public int? Id { get; set; }
 
     protected override void OnInitialized()
     {
+        _templates = TemplateService.GetAll();
         if (!Id.HasValue) return;
 
         if (NavigationManager.Uri.Contains("request"))
@@ -214,20 +206,36 @@
         }
     }
 
-    private void HandleTemplate(ETemplate template){
-        _vm.Template = Template.TEMPLATES.Where(t => t.Key == template).First().Value;
+    private void HandleTemplate(TemplateDto.Detail template){
+        _activeTemplate = template.Id;
+        _vm.Template = template.Type;
+        _vm.CPU = template.CPU;
+        _vm.RAM = template.RAM;
+        _vm.Storage = template.Storage;
+        _vm.Mode = template.Mode;
     }
     private void CustomTemplate(){
         _showCustomTemplate = true;
     }
-    private void ConfirmCustomTemp(Template template){
+    private void CancelCustomTemp()
+    {
         _showCustomTemplate = false;
-        _customTemplate = template;
-        _vm.Template = template;
-
     }
-    private void CancelCustomTemp(){
+    private void ConfirmCustomTemp(TemplateDto.Create template){
+
+        TemplateDto.Detail customTemp = new()
+            {
+                Id = -1,
+                Mode = template.Mode,
+                Type = template.Type,
+                RAM = template.RAM,
+                CPU = template.CPU,
+                Storage = template.Storage
+            };
+
         _showCustomTemplate = false;
+        _customTemplate = customTemp;
+        HandleTemplate(customTemp);
     }
 
     private void HandleValidSubmit()
@@ -235,7 +243,7 @@
         //Aanmaken VM gevolg van aanvraag
         if (_request!=null)
         {
-
+ 
         }
         //wijzigen VM
         else if (Id.HasValue && VirtualMachineService.GetDetailAsync(Id.Value).Result != null)

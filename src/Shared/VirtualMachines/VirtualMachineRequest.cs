@@ -15,13 +15,10 @@ public class VirtualMachineRequest
     [StringLength(300, ErrorMessage = "Het veld reden is te lang")]
     [MinLength(30, ErrorMessage = "Geef voldoende informatie bij het aanvragen van de VM.")]
     public string? Reason { get; set; }
-    [Required]
-    public string? EmailAanvrager { get; set; }
-    [Required]
-    public int? NummerAanvrager { get; set; }
 
     [Required]
-    public string? ProjectNaam { get; set; }
+    public string? ProjectName { get; set; }
+    public Client client { get; set; }
 
     public ERequestStatus Status { get; set; }
 }

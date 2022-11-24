@@ -4,24 +4,24 @@ namespace Client.VirtualMachines;
 
 public class VirtualMachineRequestService : IVirtualMachineRequestService
 {
-    private readonly List<VirtualMachineRequest> _requests = new List<VirtualMachineRequest>();
+    private readonly List<VirtualMachineRequestDto.Detail> _requests = new List<VirtualMachineRequestDto.Detail>();
     public VirtualMachineRequestService()
     {
         SetDummyRequestList();
     }
 
-    public VirtualMachineRequest? Get(int id)
+    public VirtualMachineRequestDto.Detail? Get(int id)
     {
         return _requests.FirstOrDefault(x => x.Id == id);
     }
 
-    public List<VirtualMachineRequest> GetAll()
+    public List<VirtualMachineRequestDto.Detail> GetAll()
     {
         Console.WriteLine("test");
         return _requests;
     }
 
-    public VirtualMachineRequest? Update(int id, VirtualMachineRequest request)
+    public VirtualMachineRequestDto.Detail? Update(int id, VirtualMachineRequestDto.Detail request)
     {
         throw new NotImplementedException();
     }
@@ -65,42 +65,36 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     private void SetDummyRequestList()
     {
-        var request1 = new VirtualMachineRequest
+        var request1 = new VirtualMachineRequestDto.Detail
         {
             Id = 1,
             Date = DatumCreator(1, 0).AddMonths(-1),
+            ProjectName = "Bachlerproef AI",
             StartDate = DatumCreator(1, 0),
             EndDate = DatumCreator(2, 0),
             Reason = "Virtual machine voor een bachlerproef onderzoek ivm AI.",
-            ProjectNaam = "bachlerproef AI",
-            Status = ERequestStatus.Accepted,
-            EmailAanvrager = "brecht@test.be",
-            NummerAanvrager = 0469569562
+            Status = ERequestStatus.Requested,
         };
-        var request2 = new VirtualMachineRequest
+        var request2 = new VirtualMachineRequestDto.Detail
         {
             Id = 2,
-
             Date = DatumCreator(1, 1).AddMonths(-1),
+            ProjectName = "DotNet applicatie software development",
             StartDate = DatumCreator(1, 1),
             EndDate = DatumCreator(2, 1),
             Reason = "Virtual machine voor een DevOps opdracht.",
-            ProjectNaam = "Opdracht",
-            Status = ERequestStatus.Handled,
-            EmailAanvrager = "diemen@test.be",
-            NummerAanvrager = 0469569562
+            Status = ERequestStatus.Denied,
+
         };
-        var request3 = new VirtualMachineRequest
+        var request3 = new VirtualMachineRequestDto.Detail
         {
             Id = 3,
             Date = DatumCreator(4, 4).AddMonths(-1),
+            ProjectName = "Online",
             StartDate = DatumCreator(4, 4),
             EndDate = DatumCreator(4, 19),
             Reason = "Virtual machine voor iets online te zetten",
-            ProjectNaam = "Online",
-            Status = ERequestStatus.Denied,
-            EmailAanvrager = "harld@test.be",
-            NummerAanvrager = 0469569562
+            Status = ERequestStatus.Handled,
         };
 
         _requests.Add(request1);
