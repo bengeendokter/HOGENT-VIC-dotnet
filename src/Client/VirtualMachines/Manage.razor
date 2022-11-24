@@ -193,7 +193,7 @@
         }
         else
         {
-            var vm = VirtualMachineService.Get(Id.Value) ?? new();
+            var vm = VirtualMachineService.GetDetailAsync(Id.Value).Result ?? new();
             _vm.Name = vm.Name;
             _vm.CPU = vm.CPU;
             _vm.RAM = vm.RAM;
@@ -238,7 +238,7 @@
 
         }
         //wijzigen VM
-        else if (Id.HasValue && VirtualMachineService.Get(Id.Value)!= null)
+        else if (Id.HasValue && VirtualMachineService.GetDetailAsync(Id.Value).Result != null)
         {
 
         }

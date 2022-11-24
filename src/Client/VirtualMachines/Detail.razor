@@ -149,7 +149,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        vm = VMService.Get(Id);
+        vm = VMService.GetDetailAsync(Id).Result;
         if (vm == null) return;
 
         days = new(){

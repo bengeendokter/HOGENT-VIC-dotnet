@@ -2,10 +2,7 @@
 
 public interface IVirtualMachineService
 {
-    List<VirtualMachineDto.Index> GetAll();
-
-    VirtualMachineDto.Detail? Get(int id);
-
-    // TODO: Dto
-    VirtualMachineDto.Detail? Update(int id, VirtualMachineDto.Mutate vm);
+    Task<List<VirtualMachineDto.Index>> GetIndexAsync();
+    Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId);
+    Task MutateAsync(int virtualMachineId, VirtualMachineDto.Mutate model);
 }

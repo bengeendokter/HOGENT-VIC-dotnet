@@ -175,6 +175,6 @@
 
     protected override void OnInitialized()
     {
-        _vms = VirtualMachineService.GetAll();
+        _vms = VirtualMachineService.GetIndexAsync().Result;
     }
 }

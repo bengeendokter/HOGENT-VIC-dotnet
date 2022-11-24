@@ -65,7 +65,7 @@
     private List<VirtualMachineDto.Index> list = new();
     protected override void OnInitialized()
     {
-        list = VMService.GetAll();
+        list = VMService.GetIndexAsync().Result;
     }
 
     public void SortByName()

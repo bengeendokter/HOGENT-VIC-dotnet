@@ -9,12 +9,11 @@ public class VirtualMachineService : IVirtualMachineService
         SetDummyVirtualMachineList();
     }
 
-    public VirtualMachineDto.Detail? Get(int id)
+    public Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)
     {
-        var vm = _vms.FirstOrDefault(v => v.Id == id);
-        if (vm == null) return null;
+        var vm = _vms.First(v => v.Id == virtualMachineId);
 
-        return new VirtualMachineDto.Detail
+        return Task.FromResult(new VirtualMachineDto.Detail
         {
             Id = vm.Id,
             Name = vm.Name,
@@ -31,12 +30,12 @@ public class VirtualMachineService : IVirtualMachineService
             IsHighlyAvailable = vm.IsHighlyAvailable,
             Mode = vm.Mode,
             Template = vm.Template
-        };
+        });
     }
 
-    public List<VirtualMachineDto.Index> GetAll()
+    public Task<List<VirtualMachineDto.Index>> GetIndexAsync()
     {
-        return _vms.Select(v => new VirtualMachineDto.Index
+        return Task.FromResult(_vms.Select(v => new VirtualMachineDto.Index
         {
             Id = v.Id,
             Name = v.Name,
@@ -46,33 +45,33 @@ public class VirtualMachineService : IVirtualMachineService
             StartDate = v.StartDate,
             EndDate = v.EndDate,
             IsActive = v.IsActive
-        }).ToList();
+        }).ToList());
     }
 
-    public VirtualMachineDto.Detail? Update(int id, VirtualMachineDto.Mutate updatedVm)
+    public Task MutateAsync(int virtualMachineId, VirtualMachineDto.Mutate model)
     {
-        var vm = _vms.FirstOrDefault(v => v.Id == id);
-        if (vm == null) return null;
+        var vm = _vms.FirstOrDefault(v => v.Id == virtualMachineId);
+        if (vm == null) return Task.CompletedTask;
 
-        vm.Name = updatedVm.Name;
-        vm.CPU = updatedVm.CPU;
-        vm.RAM = updatedVm.RAM;
-        vm.Storage = updatedVm.Storage;
-        vm.StartDate = updatedVm.StartDate;
-        vm.EndDate = updatedVm.EndDate;
-        vm.IsActive = updatedVm.IsActive;
-        vm.HostName = updatedVm.HostName;
-        vm.FQDN = updatedVm.FQDN;
-        vm.IsHighlyAvailable = updatedVm.IsHighlyAvailable;
-        vm.Template = updatedVm.Template;
-        vm.BackupFrequency = updatedVm.BackupFrequency;
-        vm.Availability = updatedVm.Availability;
-        vm.Mode = updatedVm.Mode;
-        vm.Host = updatedVm.Host;
-        vm.Client = updatedVm.Client;
-        vm.Poorten = updatedVm.Poorten;
+        vm.Name = model.Name;
+        vm.CPU = model.CPU;
+        vm.RAM = model.RAM;
+        vm.Storage = model.Storage;
+        vm.StartDate = model.StartDate;
+        vm.EndDate = model.EndDate;
+        vm.IsActive = model.IsActive;
+        vm.HostName = model.HostName;
+        vm.FQDN = model.FQDN;
+        vm.IsHighlyAvailable = model.IsHighlyAvailable;
+        vm.Template = model.Template;
+        vm.BackupFrequency = model.BackupFrequency;
+        vm.Availability = model.Availability;
+        vm.Mode = model.Mode;
+        vm.Host = model.Host;
+        vm.Client = model.Client;
+        vm.Poorten = model.Poorten;
 
-        return Get(id);
+        return GetDetailAsync(virtualMachineId);
     }
 
     private DateTime DatumCreator(int maand, int dag)
