@@ -138,7 +138,7 @@ public class VirtualMachine : Entity
         DateTime endDate,
         string fqdn,
         string poorten,
-        object template,
+        ETemplate template,
         string host,
         int cpu,
         int ram,

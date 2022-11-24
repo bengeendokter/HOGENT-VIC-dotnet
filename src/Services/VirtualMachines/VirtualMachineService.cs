@@ -78,7 +78,7 @@ public class VirtualMachineService : IVirtualMachineService
             model.EndDate,
             model.FQDN!,
             model.Poorten!,
-            model.Template!,
+            (Domain.VirtualMachines.ETemplate)model.Template,
             model.Host!,
             model.CPU,
             model.RAM,
@@ -114,7 +114,7 @@ public class VirtualMachineService : IVirtualMachineService
         vm.HostName = model.HostName!;
         vm.FQDN = model.FQDN!;
         vm.IsHighlyAvailable = model.IsHighlyAvailable;
-        vm.Template = model.Template!;
+        vm.Template = (Domain.VirtualMachines.ETemplate)model.Template!;
         vm.BackupFrequency = (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency;
         vm.Availability = (Domain.VirtualMachines.EDay)model.Availability;
         vm.Mode = (Domain.VirtualMachines.EMode)model.Mode;
