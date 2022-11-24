@@ -114,13 +114,17 @@ a, .btn-link {
 }
 
 .btn-secondary {
+    text-decoration: none;
     color: var(--clr-CTA);
-    font-weight: 600;
-    border: none;
     background-color: #FFFFFF;
+    font-weight: 600;
     border-radius: 5px;
-    font-size: 24px;
-    height: 38px
+    padding: .5em 4em;
+    min-width: 12ch;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
 }
 
 .btn-delete {

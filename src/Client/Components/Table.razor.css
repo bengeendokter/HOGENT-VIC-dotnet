@@ -69,7 +69,8 @@ tr:nth-child(even) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 1em;
+    border: solid 2px var(--clr-primary);
     padding: 1em;
     text-align: center;
     gap: .5em;

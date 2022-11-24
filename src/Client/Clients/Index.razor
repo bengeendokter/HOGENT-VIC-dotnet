@@ -56,7 +56,8 @@
     }
 
     private void RefreshClients() {
-        clients = ClientService.GetAll();
+        ClientRequest.Index request = new();
+        clients = ClientService.GetAll(request);
         clientObjects.Clear();
         filteredClients.Clear();
 
@@ -86,7 +87,7 @@
 
     private void GoToEditClient(int id)
     {
-        NavigationManager.NavigateTo($"/klanten/wijzig/{id}");
+        NavigationManager.NavigateTo($"/klanten/wijzigen/{id}");
     }
 
     private void DeleteClient(int id)

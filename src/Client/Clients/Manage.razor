@@ -1,12 +1,119 @@
 ﻿@page "/klanten/aanmaken"
-@page "/klanten/wijzig/{id:int}"
+@page "/klanten/wijzigen/{id:int}"
+@inject IClientService ClientService
+@inject NavigationManager NavigationManager
 
 <GenericLayout Display=false Title="Klant aanmaken of wijzigen">
     <Content>
-
+        <EditForm Model="@_client" OnValidSubmit="OnSubmit" >
+            <FluentValidationValidator />
+            <h1>@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")</h1>
+            <div>
+                <label >Naam</label>
+                <div>
+                    <InputText  @bind-Value="_client.Name" />
+                    <ValidationMessage For="() => _client.Name" />
+                </div>
+            </div>
+            <div>
+                <label>Telefoon nr.</label>
+                <div>
+                    <InputText @bind-Value="_client.PhoneNumber" />
+                    <ValidationMessage For="() => _client.PhoneNumber" />
+                </div>
+            </div>
+            <div>
+                <label>Email</label>
+                <div>
+                    <InputText @bind-Value="_client.Email" />
+                    <ValidationMessage For="() => _client.Email" />
+                </div>
+            </div>
+            <div>
+                <label>Backup contact</label>
+                <div>
+                    <InputText @bind-Value="_client.BackupContact" />
+                    <ValidationMessage For="() => _client.BackupContact" />
+                </div>
+            </div>
+            <div>
+                <label>Klant organisatie</label>
+                <div>
+                    <InputText @bind-Value="_client.ClientOrganisation" />
+                    <ValidationMessage For="() => _client.ClientOrganisation" />
+                </div>
+            </div>
+            <div>
+                <label>Type Organisatie</label>
+                <div>
+                    <InputSelect @bind-Value="_client.ClientType">
+                        <option value="@EClientType.Internal">Intern</option>
+                        <option value="@EClientType.External">Extern</option>
+                    </InputSelect>
+                    <ValidationMessage For="() => _client.ClientType" />
+                </div>
+            </div>
+            @if (_client.ClientType == EClientType.Internal) {
+                <div>
+                    <label>Opleiding</label>
+                    <div>
+                        <InputText @bind-Value="_client.Education" />
+                        <ValidationMessage For="() => _client.Education" />
+                    </div>
+                </div>
+            }
+            @if (_client.ClientType == EClientType.External) {
+                <div>
+                    <label>Extern type</label>
+                    <div>
+                        <InputText @bind-Value="_client.ExternalType" />
+                        <ValidationMessage For="() => _client.ExternalType" />
+                    </div>
+                </div>
+            }
+            <div class="button-container">
+                @if (IsEdit) 
+                {
+                    <button type="submit" class="btn-primary">Wijzigen</button>
+                } else 
+                {
+                    <button type="submit" class="btn-primary">Toevoegen</button>
+                }
+                <a href="/klanten" class="btn-secondary">Annuleren</a>
+            </div>
+        </EditForm>
     </Content>
 </GenericLayout>
 
 @code {
     [Parameter] public int? Id { get; set; }
+    [Parameter] public bool IsEdit { get; set; } = false;
+
+    private ClientDto.Mutate _client = new();
+    private string _clientName = "";
+
+    protected override void OnInitialized() {
+        if (Id.HasValue && NavigationManager.Uri.Contains("wijzigen"))
+        {
+            IsEdit = true;
+            var client = ClientService.GetDetail(Id.Value);
+            _clientName = client?.Name;
+            _client = new ClientDto.Mutate
+            {
+                Name = client.Name,
+                PhoneNumber = client.PhoneNumber,
+                ClientType = client.ClientType,
+                ClientOrganisation = client.ClientOrganisation,
+                Email = client.Email,
+                BackupContact = client.BackupContact,
+                Education = client.Education,
+                ExternalType = client.ExternalType,
+            };
+        }
+    }
+
+    private void OnSubmit()
+    {
+        NavigationManager.NavigateTo("/klanten");
+    }
 }

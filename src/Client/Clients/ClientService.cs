@@ -1,4 +1,6 @@
-﻿namespace Client.Users;
+﻿using Radzen;
+
+namespace Client.Users;
 
 public class ClientService : IClientService
 {
@@ -9,7 +11,7 @@ public class ClientService : IClientService
         SetDummyData();
     }
 
-    public List<ClientDto.Index> GetAll()
+    public List<ClientDto.Index> GetAll(ClientRequest.Index request)
     {
         return _clients.Select(x => new ClientDto.Index
         {
