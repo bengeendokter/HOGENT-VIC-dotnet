@@ -18,11 +18,10 @@
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
-
-
             <div class="grid">
                 <div class="templates">
                     <h2>Templates</h2>
+                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
                     @foreach (TemplateDto.Detail t in _templates)
                     {
@@ -218,12 +217,12 @@
     private void CustomTemplate(){
         _showCustomTemplate = true;
     }
+    private void CancelCustomTemp()
+    {
+        _showCustomTemplate = false;
+    }
     private void ConfirmCustomTemp(TemplateDto.Create template){
-        //_vm.Template = template.Type;
-        //_vm.CPU = template.CPU;
-        //_vm.RAM = template.RAM;
-        //_vm.Storage = template.Storage;
-        //_vm.Mode = template.Mode;
+
         TemplateDto.Detail customTemp = new()
             {
                 Id = -1,
@@ -236,10 +235,7 @@
 
         _showCustomTemplate = false;
         _customTemplate = customTemp;
-        _activeTemplate = -1;
-    }
-    private void CancelCustomTemp(){
-        _showCustomTemplate = false;
+        HandleTemplate(customTemp);
     }
 
     private void HandleValidSubmit()
@@ -247,7 +243,7 @@
         //Aanmaken VM gevolg van aanvraag
         if (_request!=null)
         {
-
+ 
         }
         //wijzigen VM
         else if (Id.HasValue && VirtualMachineService.Get(Id.Value)!= null)

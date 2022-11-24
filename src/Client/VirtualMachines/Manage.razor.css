@@ -4,14 +4,14 @@
 .grid {
     display: grid;
     grid-template-columns: 300px auto;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
 }
 .btn-secondary {
     max-width: 260px;
 }
 .templates{
     grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 3;
     display: flex;
     flex-direction: column;
 }
@@ -47,7 +47,7 @@ label {
 
 .form {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 2 / span 2;
 }
 .input-group label div{
     background-color: var(--clr-primary);

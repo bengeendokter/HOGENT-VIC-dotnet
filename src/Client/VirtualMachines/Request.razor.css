@@ -1,29 +1,48 @@
-﻿body {
-}
-.form{
-    max-width: 1000px;
+﻿.requestpage{
+    display: flex;
     margin: auto;
+    max-width: 1500px;
+}
+.form {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .input-group {
     display: flex;
     flex-wrap: wrap;
-    align-content: center;
-    margin: auto;
 }
 label {
-    width: 50%;
+    padding: 5px 20px 10px 0px;
+    width: 32%;
     min-width: 200px;
-    margin-bottom: 20px;
 }
-.input-row {
-    display: flex;
-    flex-direction: row;
+.input-group label div {
+    background-color: var(--clr-primary);
+    padding: 5px;
+}
+
+.reden {
     width: 100%;
+    padding-right: 20px;
 }
-.reden{
-    width: 100%;
-    
+
+.existingClient {
+    background-color: var(--clr-primary);
+    color: var(--clr-CTA);
+    height: 50px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 100px
 }
+.btn-primary{
+    width: 200px;
+}
+
 
 
 ::deep select.inputField {
@@ -44,5 +63,15 @@ label {
     border-radius: 0;
     border: none;
     border-radius: 2px;
+}
+::deep textarea.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+    height: 100px;
 }
 

@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿
+using Ardalis.GuardClauses;
 using Domain.Common;
 
 namespace Domain.VirtualMachines;

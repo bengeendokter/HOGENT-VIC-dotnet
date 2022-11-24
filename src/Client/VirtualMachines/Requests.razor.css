@@ -1,2 +1,29 @@
-﻿body {
+﻿.background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--clr-deleteBackground);
+}
+
+.window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    padding: 1em;
+    text-align: center;
+    gap: .5em;
+    background-color: var(--clr-secondary);
+}
+
+.window-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: .5em;
 }
