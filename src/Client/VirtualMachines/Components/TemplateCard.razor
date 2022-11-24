@@ -8,15 +8,15 @@
             </tr>
             <tr>
                 <td>Ram</td>
-                <td>@Template.Value.Stats.Ram</td>
+                <td>@Template.Value.Stats?.Ram</td>
             </tr>
             <tr>
                 <td>CPU cores</td>
-                <td>@Template.Value.Stats.Cpu</td>
+                <td>@Template.Value.Stats?.Cpu</td>
             </tr>
             <tr>
                 <td>Storage</td>
-                <td>@Template.Value.Stats.Storage</td>
+                <td>@Template.Value.Stats?.Storage</td>
             </tr>
         </table>
     @if (Template.Key == ActiveTemplate)

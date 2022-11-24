@@ -37,8 +37,8 @@
     public ICollection<Object> filteredObjects = new List<Object>();
     private List<VirtualMachineRequest> list = new();
 
-    private string _sortFilter { get; set; }
-    private string _statusFilter { get; set; }
+    private string? _sortFilter;
+    private string? _statusFilter;
 
     protected override void OnInitialized()
     {

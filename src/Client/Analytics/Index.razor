@@ -42,6 +42,8 @@
                 @foreach (Activity activity in _activities) 
                 {
                     var vm = activity.VirtualMachine;
+                    @if (vm == null) continue;
+
                     <tr>
                         <td>@(id++)</td>
                         <td>@vm.Name</td>
@@ -98,13 +100,13 @@
                 _activities = _activities.OrderBy(a => a.VirtualMachine?.Name).ToList();
                 break;
             case "vcpu":
-                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.CPU)).ToList();
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine?.CPU ?? 0)).ToList();
                 break;
             case "ram":
-                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.RAM)).ToList();
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine?.RAM ?? 0)).ToList();
                 break;
             case "storage":
-                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine.Storage)).ToList();
+                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine?.Storage ?? 0)).ToList();
                 break;
             default:
                 break;
