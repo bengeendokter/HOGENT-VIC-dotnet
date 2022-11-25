@@ -12,7 +12,7 @@
     <Content>
 
         <div class="main_heading">
-            <h1 id="vm-title"><a class="breadcrumb" href="/vm">Virtuele Machine</a> - (@vm.Name)</h1>
+            <h1 id="vm-title"><a class="breadcrumb" href="/vm"><i class="arrow left"></i>Virtuele Machine</a> - (@vm.Name)</h1>
             @*TODO move wijzigen to top right*@
             <a class="link" href=@($"/vm/manage/{Id}")>Bewerken</a>
         </div>
@@ -124,10 +124,10 @@
                         </tr>
                         <tr>
                             <th>Klant</th>
-                            <td>HoGent</td>
+                                <td>VOKA</td>
                         </tr>
                         <tr>
-                                <td colspan="2"><a class="link" href=@($"/vm/{Id}")>Meer info</a></td>
+                                <td colspan="2"><a class="link" href=@($"/klanten/5")>Meer info</a></td>
                         </tr>
                     </table>
                 </secion>
