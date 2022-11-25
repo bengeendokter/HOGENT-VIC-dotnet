@@ -28,7 +28,9 @@ public class VirtualMachineService : IVirtualMachineService
                         Storage = v.Storage,
                         StartDate = v.StartDate,
                         EndDate = v.EndDate,
-                        IsActive = v.IsActive
+                        IsActive = v.IsActive,
+                        Template = (Shared.VirtualMachines.ETemplate)v.Template,
+                        IsHighlyAvailable= v.IsHighlyAvailable,
                     }
             )
             .ToListAsync();
