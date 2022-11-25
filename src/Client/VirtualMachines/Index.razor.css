@@ -23,6 +23,8 @@
 .vm_status {
     --clr-status: var(--clr-red);
     margin: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
     color: var(--clr-primary);
     background: var(--clr-status);
     border-radius: 5px;
@@ -48,7 +50,6 @@
 }
 
     .sort_button:focus-visible, .sort_button:hover {
-        text-decoration: underline;
         color: var(--clr-CTA);
         fill: var(--clr-CTA);
     }
