@@ -14,6 +14,8 @@ public static class VirtualMachineDto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
+        public bool IsHighlyAvailable { get; set; }
+        public ETemplate Template { get; set; }
     }
 
     public class Detail : Index
@@ -23,8 +25,6 @@ public static class VirtualMachineDto
         public string? Host { get; set; }
         public string? Poorten { get; set; }
         public Client? Client { get; set; }
-        public bool IsHighlyAvailable { get; set; }
-        public ETemplate Template { get; set; }
         public EBackupFrequency BackupFrequency { get; set; }
         public EDay Availability { get; set; }
         public EMode Mode { get; set; }
