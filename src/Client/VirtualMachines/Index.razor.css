@@ -33,7 +33,7 @@
 }
 
 .active {
-    --clr-status: var(--clr-CTA);
+    --clr-status: var(--clr-green);
 }
 
 .sort_button {
