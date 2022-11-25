@@ -56,7 +56,7 @@ h1 {
     font-weight: bold;
     font-size: 32px;
     margin: 0;
-    margin-block-end: 0.3em;
+
     padding: 0;
 }
 
@@ -118,6 +118,7 @@ a, .btn-link {
     color: var(--clr-CTA);
     background-color: #FFFFFF;
     font-weight: 600;
+    border: none;
     border-radius: 5px;
     padding: .5em 4em;
     min-width: 12ch;
@@ -150,15 +151,16 @@ a, .btn-link {
 /*#endregion */
 
 .content {
-    padding-top: 1.1rem;
+
 }
 
 .valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+    background: #E1F8E6 !important;
 }
 
 .invalid {
-    outline: 1px solid red;
+    /*outline: 1px solid red;*/
+    background: #FAE6E5 !important;
 }
 
 .validation-message {
@@ -218,6 +220,21 @@ a, .btn-link {
     overflow: hidden;
     padding: 0;
     position: absolute;
+}
+
+.title-container {
+    background-color: var(--clr-background-title);
+    height: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: space-between;
+}
+title-container filters {
+    display: flex;
+
 }
 
 

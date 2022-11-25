@@ -12,12 +12,16 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(
+    sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }
+);
 
-builder.Services.AddSingleton<IVirtualMachineService, VirtualMachineService>();
-builder.Services.AddSingleton<IVirtualMachineRequestService, VirtualMachineRequestService>();
+builder.Services.AddScoped<IVirtualMachineService, VirtualMachineService>();
+builder.Services.AddScoped<IVirtualMachineRequestService, VirtualMachineRequestService>();
+builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddSingleton<IClientService, ClientService>();
-builder.Services.AddSingleton<IUsageService, FakeUsageStatsService>();
-builder.Services.AddSingleton<IActivityService, ActivityService>();
+builder.Services.AddScoped<IUsageService, FakeUsageStatsService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
 
 await builder.Build().RunAsync();
+

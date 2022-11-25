@@ -6,12 +6,12 @@ namespace Domain.VirtualMachines;
 public class VirtualMachine : Entity
 {
     // TODO: relation with client domain class
-    private object client = default!;
-    public object Client
+    /*private string client = default!;
+    public string Client
     {
         get => client;
         set => client = Guard.Against.Null(value, nameof(Client));
-    }
+    }*/
 
     private string name = default!;
     public string Name
@@ -27,19 +27,28 @@ public class VirtualMachine : Entity
         set => hostName = Guard.Against.NullOrEmpty(value, nameof(HostName));
     }
 
-
     private DateTime startDate = default!;
     public DateTime StartDate
     {
         get => startDate;
-        set => startDate = Guard.Against.AgainstExpression(d => d < DateTime.Now, value, "StartDate must be later than now");
+        set =>
+            startDate = Guard.Against.AgainstExpression(
+                d => d < DateTime.Now,
+                value,
+                "StartDate must be later than now"
+            );
     }
 
     private DateTime endDate = default!;
     public DateTime EndDate
     {
         get => endDate;
-        set => endDate = Guard.Against.AgainstExpression(d => d < startDate, value, "EndDate must be greater than StartDate");
+        set =>
+            endDate = Guard.Against.AgainstExpression(
+                d => d > startDate,
+                value,
+                "EndDate must be greater than StartDate"
+            );
     }
 
     private string fqdn = default!;
@@ -57,11 +66,11 @@ public class VirtualMachine : Entity
     }
 
     // TODO: relation with template domain class
-    private object template = default!;
-    public object Template
+    private ETemplate template = default!;
+    public ETemplate Template
     {
         get => template;
-        set => template = Guard.Against.Null(value, nameof(Template));
+        set => template = Guard.Against.EnumOutOfRange(value, nameof(Template));
     }
 
     private string host = default!;
@@ -75,21 +84,21 @@ public class VirtualMachine : Entity
     public int CPU
     {
         get => cpu;
-        set => cpu = Guard.Against.Negative(value, nameof(CPU));
+        set => cpu = Guard.Against.NegativeOrZero(value, nameof(CPU));
     }
 
     private int ram = default!;
     public int RAM
     {
         get => ram;
-        set => ram = Guard.Against.Negative(value, nameof(RAM));
+        set => ram = Guard.Against.NegativeOrZero(value, nameof(RAM));
     }
 
     private int storage = default!;
     public int Storage
     {
         get => storage;
-        set => storage = Guard.Against.Negative(value, nameof(Storage));
+        set => storage = Guard.Against.NegativeOrZero(value, nameof(Storage));
     }
 
     private EMode mode = default!;
@@ -121,5 +130,42 @@ public class VirtualMachine : Entity
     /// </summary>
     private VirtualMachine() { }
 
-    // TODO: public constructor
+    public VirtualMachine(
+        // object client,
+        string name,
+        string hostName,
+        DateTime startDate,
+        DateTime endDate,
+        string fqdn,
+        string poorten,
+        ETemplate template,
+        string host,
+        int cpu,
+        int ram,
+        int storage,
+        EMode mode,
+        EBackupFrequency backupFrequency,
+        EDay availability,
+        bool isHighlyAvailable,
+        bool isActive
+    )
+    {
+        // Client = client;
+        Name = name;
+        HostName = hostName;
+        StartDate = startDate;
+        EndDate = endDate;
+        FQDN = fqdn;
+        Poorten = poorten;
+        Template = template;
+        Host = host;
+        CPU = cpu;
+        RAM = ram;
+        Storage = storage;
+        Mode = mode;
+        BackupFrequency = backupFrequency;
+        Availability = availability;
+        IsHighlyAvailable = isHighlyAvailable;
+        IsActive = isActive;
+    }
 }

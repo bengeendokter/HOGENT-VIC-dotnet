@@ -16,6 +16,8 @@
 
 .vm_list {
     container-type: inline-size;
+    display: flex;
+    justify-content: center;
 }
 
 .vm_status {
@@ -55,9 +57,10 @@
 table {
     border-collapse: collapse;
     border-spacing: 0;
-    width: 100%;
     border-radius: 10px;
     color: var(--clr-text-color);
+    overflow-x: auto;
+    display: block;
 }
 
 th {
@@ -111,10 +114,6 @@ tr:nth-child(even) {
 }*/
 
 @container (max-width: 900px) {
-    table {
-        overflow-x: auto;
-        display: block;
-    }
 
     .link {
         min-width: 7ch;

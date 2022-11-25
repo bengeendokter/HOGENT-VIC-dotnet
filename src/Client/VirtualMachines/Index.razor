@@ -17,6 +17,9 @@
                             <button class="sort_button" @onclick="SortByName"><ArrowIcon/>Naam</button>
                         </th>
                         <th>
+                            Template
+                        </th>
+                        <th>
                             <button class="sort_button" @onclick="SortByCPU"><ArrowIcon />CPU</button>
                         </th>
                         <th>
@@ -35,6 +38,9 @@
                             <button class="sort_button" @onclick="SortByKlant"><ArrowIcon/>Klant</button>
                         </th>
                         <th>
+                            Hoge besch.
+                        </th>
+                        <th>
                             <button class="sort_button" @onclick="SortByStatus"><ArrowIcon />Status</button>
                         </th>
                     </tr>
@@ -44,12 +50,14 @@
                     {
                     <tr>
                     <td><a class="link" href=@($"/vm/{@vm.Id}")>@vm.Name</a></td>
+                        <td>AI</td>
                         <td>@vm.CPU cores</td>
                         <td>@vm.RAM GB</td>
                         <td>@vm.Storage GB</td>
                         <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         <td>HoGent</td>
+                        <td>Ja</td>
                         <td>
                             <span class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit") </span>
                         </td>
@@ -63,9 +71,10 @@
 
 @code {
     private List<VirtualMachineDto.Index> list = new();
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
-        list = VMService.GetAll();
+        list = await VMService.GetIndexAsync();
     }
 
     public void SortByName()

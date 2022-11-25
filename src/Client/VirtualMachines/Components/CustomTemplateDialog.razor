@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿@using Microsoft.Extensions.Logging
+@inject ILogger<Manage> Logger
 
 <div class="dialog-container">
     <div class="dialog">
@@ -7,32 +8,44 @@
         </div>
         <div class="dialog-body">
           <EditForm Model="@_template" OnValidSubmit="@HandleValidSubmit">
-            <div class="input-group">
-                <label>
-                    Mode
-                    <InputSelect @bind-Value="_template.Mode" class="inputField">
-                        @foreach(EMode m in EMode.GetValues(typeof(EMode))){
-                            <option value=@m>@m</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="@(()=> _template.Mode)"></ValidationMessage>
-                </label>
+                <FluentValidationValidator />
+                <div class="input-group">
+                    <label>
+                        Mode
+                        <InputSelect @bind-Value="_template.Mode" class="inputField">
+                            @foreach(EMode m in EMode.GetValues(typeof(EMode))){
+                                <option value=@m>@m</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> _template.Mode)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    CPU <br/>
-                    <InputNumber @bind-Value="_template.Cpu" class="inputField" />
-                </label>
+                    <label>
+                        Type
+                        <InputSelect @bind-Value="_template.Type" class="inputField">
+                            @foreach(ETemplate m in ETemplate.GetValues(typeof(ETemplate))){
+                                <option value=@m>@m</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> _template.Mode)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Ram <br />
-                    <InputNumber @bind-Value="_template.Ram" class="inputField" />
-                </label>
+                    <label>
+                        CPU <br/>
+                        <InputNumber @bind-Value="_template.CPU" class="inputField" />
+                            <ValidationMessage For="@(()=> _template.CPU)"></ValidationMessage>
+                    </label>
 
-                <label>
-                    Storage <br />
-                    <InputNumber @bind-Value="_template.Storage" class="inputField" />
-                </label>
-            </div>
+                    <label>
+                        Ram <br />
+                        <InputNumber @bind-Value="_template.RAM" class="inputField" />
+                    </label>
+
+                    <label>
+                        Storage <br />
+                        <InputNumber @bind-Value="_template.Storage" class="inputField" />
+                    </label>
+                </div>
 
 
             <button @onclick=OnCancel class="btn-secondary">Annuleer</button>
@@ -49,21 +62,11 @@
         public int Ram { get; set; }
         public int Storage { get; set; }
     }
-    private Temp _template = new();
+    private TemplateDto.Create _template = new();
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public EventCallback<Template> OnConfirm { get; set; }
+    [Parameter] public EventCallback<TemplateDto.Create> OnConfirm { get; set; }
 
     private void HandleValidSubmit(){
-        Template template = new()
-            {
-                Mode = _template.Mode,
-                Stats = new Stats()
-                {
-                    Cpu = _template.Cpu,
-                    Ram = _template.Ram,
-                    Storage = _template.Storage
-                },
-            };
-        OnConfirm.InvokeAsync(template);
+        OnConfirm.InvokeAsync(_template);
     }
 }
