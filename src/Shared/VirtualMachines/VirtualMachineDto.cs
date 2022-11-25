@@ -48,7 +48,7 @@ public static class VirtualMachineDto
                 RuleFor(x => x.StartDate).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.EndDate).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.FQDN).NotEmpty().WithMessage("Dit veld is verplicht");
-                RuleFor(x => x.Template).NotEmpty().WithMessage("Kies een template of maak een nieuwe aan");
+                RuleFor(x => x.Template).IsInEnum().WithMessage("Kies een template of maak een nieuwe aan");
             }
         }
     }
