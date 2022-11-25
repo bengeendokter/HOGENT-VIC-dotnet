@@ -1,8 +1,6 @@
 ﻿@page "/vm/manage"
 @page "/vm/manage/{id:int}"
 @page "/vm/manage/request/{id:int}"
-@using Microsoft.Extensions.Logging
-@inject ILogger<Manage> Logger
 @inject IVirtualMachineService VirtualMachineService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
