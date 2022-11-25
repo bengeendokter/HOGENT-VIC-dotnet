@@ -47,10 +47,10 @@
                                     vm.IsHighlyAvailable ? "Ja" : "Nee"
                         )</td>
                         </tr>
-                        <tr>
+@*                        <tr>
                             <th>Template</th>
                             <td><span lang="en">@vm.Template?.Name</span></td>
-                        </tr>
+                        </tr>*@
                         <tr>
                             <th>Backup</th>
                             <td>@(
@@ -146,10 +146,9 @@
 
     public string TxtType = "password";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        vm = VMService.Get(Id);
+        vm = await VMService.GetDetailAsync(Id);
         if (vm == null) return;
 
         days = new(){

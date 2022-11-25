@@ -24,7 +24,7 @@ public static class VirtualMachineDto
         public string? Poorten { get; set; }
         public Client? Client { get; set; }
         public bool IsHighlyAvailable { get; set; }
-        public Template? Template { get; set; }
+        public ETemplate Template { get; set; }
         public EBackupFrequency BackupFrequency { get; set; }
         public EDay Availability { get; set; }
         public EMode Mode { get; set; }
@@ -46,8 +46,8 @@ public static class VirtualMachineDto
                 RuleFor(x => x.Poorten).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.StartDate).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.EndDate).NotEmpty().WithMessage("Dit veld is verplicht");
-                RuleFor(x => x.Template).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.FQDN).NotEmpty().WithMessage("Dit veld is verplicht");
+                RuleFor(x => x.Template).NotEmpty().WithMessage("Kies een template of maak een nieuwe aan");
             }
         }
     }
