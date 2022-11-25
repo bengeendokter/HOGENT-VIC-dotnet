@@ -1,4 +1,5 @@
 ﻿using Shared.VirtualMachines;
+using Shared.Clients;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shared;
@@ -18,7 +19,7 @@ public class VirtualMachineRequest
 
     [Required]
     public string? ProjectName { get; set; }
-    public Client client { get; set; }
+    public ClientDto.Index client { get; set; }
 
     public ERequestStatus Status { get; set; }
 }

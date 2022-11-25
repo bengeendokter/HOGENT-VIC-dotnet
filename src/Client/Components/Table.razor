@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@typeparam T
 
 <table>
     <thead>
@@ -56,7 +57,7 @@
                             @if (DeleteCallback.HasDelegate)
                             {
                                 <button style="border: none; background: none;"
-                                        @onclick="() => OnDelete(item.GetType().GetFields()[0].GetValue(item))">
+                                        @onclick=ToggleDelete>
                                     <span class="material-icons" style="color: red">
                                         delete
                                     </span>
@@ -75,6 +76,27 @@
                 </td>
                 }
             </tr>
+            @if (isRequestingDelete)
+            {
+                <div class="delete-background">
+                    <div class="delete-window">
+                        <h2>Bent U zeker dat U dit item wil verwijderen?</h2>
+                        <div class="delete-window-buttons">
+                            <button class="btn-delete"
+                            @onclick="() => {
+                                OnDelete(item.GetType().GetFields()[0].GetValue(item));
+                                ToggleDelete();
+                            }">
+                                Verwijderen
+                            </button>
+                            <button class="btn-primary"
+                            @onclick=ToggleDelete>
+                                Annuleren
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
         }
     </tbody>
 </table>
@@ -84,11 +106,18 @@
     //Geef een lijst met objecten mee aan de Table component, deze objects zijn een klasse die alle atributten bevat die je wilt weergeven, De eerste attribuut is het ID en de laatste is de acties die je wilt
     //Kijk naar de Requests page voor een voorbeeld
     //Zorg dat de naam van de attribuut de naam van de kolommen in de tabel met _ als er een spatie moet zijn
-    [Parameter] public ICollection<object> Collection { get; set; } = new List<object>();
+    [Parameter] public ICollection<T> Collection { get; set; } = new List<T>();
     //Als je de gekozen acties hebt meegegeven in een attribuut zal je deze eventcallbacks terugkrijgen met het id zodat je in de parent dit kan implementeren.
     [Parameter] public EventCallback<int> InfoCallback { get; set; }
     [Parameter] public EventCallback<int> DeleteCallback { get; set; }
     [Parameter] public EventCallback<int> EditCallback { get; set; }
+
+    private bool isRequestingDelete = false;
+
+    private void ToggleDelete()
+    {
+        isRequestingDelete = !isRequestingDelete;
+    }
 
     private void OnInfo(object? id) {
         _id = Convert.ToInt32(id);

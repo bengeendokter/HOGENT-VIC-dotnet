@@ -1,0 +1,41 @@
+﻿.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: inline-block;
+    margin: 2em 0em;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0em 3em;
+    gap: 2em;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1em 0em;
+    gap: 1em;
+}
+
+section {
+    width: 256px;
+}
+
+label {
+    min-width: 30%;
+    padding: 2px 0px;
+    margin: 5px 20px 10px 0px;
+}
+
+.field {
+    background-color: var(--clr-primary);
+    border-radius: 2px;
+}

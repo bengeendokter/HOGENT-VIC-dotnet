@@ -25,6 +25,7 @@
     --clr-used-red: #E63462;
     --clr-usage-toggler-arrow: #FFFFFF;
     --clr-usage-toggler-background: #7e7ee6;
+    --clr-deleteBackground: rgb(255, 255, 255, 0.1);
 }
 
     :root.dark_mode {
@@ -47,6 +48,7 @@
         --clr-usage-info-text: #5252ff;
         --clr-usage-toggler-arrow: #4949e3;
         --clr-usage-toggler-background: var(--clr-primary);
+        --clr-deleteBackground: rgb(35, 47, 74, 0.2);
     }
 
 h1 {
@@ -97,25 +99,56 @@ a, .btn-link {
     color: #0071c1;
 }
 
+/*#region Buttons */
 .btn-primary {
-    color: #fff;
-    background-color: var(--clr-CTA);
-    border-color: #1861ac;
-    border: none;
+    text-decoration: none;
+    color: var(--clr-primary);
+    background: var(--clr-CTA);
     border-radius: 5px;
-    font-size: 24px;
-    height: 38px
+    padding: .5em 4em;
+    min-width: 12ch;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
 }
 
 .btn-secondary {
+    text-decoration: none;
     color: var(--clr-CTA);
     background-color: #FFFFFF;
     font-weight: 600;
     border: none;
     border-radius: 5px;
-    font-size: 24px;
-    height: 38px
+    padding: .5em 4em;
+    min-width: 12ch;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
 }
+
+.btn-delete {
+    text-decoration: none;
+    color: var(--clr-primary);
+    background: var(--clr-red);
+    border-radius: 5px;
+    padding: .5em 4em;
+    min-width: 12ch;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+}
+
+.btn-primary:focus-visible, .btn-primary:hover,
+.btn-secondary:focus-visible, .btn-secondary:hover,
+.btn-delete:focus-visible, .btn-delete:hover {
+    transition: outline .3s ease;
+    outline: var(--clr-text-color) solid 1px;
+    outline-offset: .2em;
+}
+/*#endregion */
 
 .content {
 

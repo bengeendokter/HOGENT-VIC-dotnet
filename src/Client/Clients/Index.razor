@@ -1,0 +1,126 @@
+﻿@page "/klanten"
+@inject IClientService ClientService
+@inject NavigationManager NavigationManager
+
+@if (clients == null)
+{
+    <p>Loading...</p>
+    return;
+}
+
+<div class="title-container">
+    <h1>Klanten</h1>
+    <div class="select-container">
+        <!-- Container indien nog sorteer opties moeten worden toegevoegd -->
+        <select @onchange=OnSelectFilter>
+            <option value="all" selected>Alle</option>
+            <option value="internal">Alleen interne</option>3
+            <option value="external">Alleen Externe</option>
+        </select>
+    </div>
+</div>
+<GenericLayout Display=false Title="Klanten">
+    <Content>
+        <div class="button-container">
+            <button class="btn-primary" @onclick=GoToCreateClient>Klant Toevoegen</button>
+        </div>
+
+        <Table 
+            Collection="@filteredClients" 
+            InfoCallback="@GoToClientDetails"
+            EditCallback="@GoToEditClient"
+            DeleteCallback="@DeleteClient"
+        />
+    </Content>
+</GenericLayout>
+
+
+@code{
+    private List<ClientDto.Index> clients = new();
+    private ICollection<Klant> clientObjects = new List<Klant>();
+    public ICollection<Klant> filteredClients = new List<Klant>();
+
+    public class Klant
+    {
+        public int Id;
+        public string? Naam;
+        public string? Type;
+        public string? Telefoon_nummer;
+        public string? Klant_organisatie;
+    }; 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshClients();
+    }
+
+    private void RefreshClients() {
+        ClientRequest.Index request = new();
+        clients = ClientService.GetAll(request);
+        clientObjects.Clear();
+        filteredClients.Clear();
+
+        clients.ForEach(c =>
+        {
+            clientObjects.Add(new Klant
+                {
+                    Id = c.Id,
+                    Naam = c.Name,
+                    Type = ConvertTypeToString(c.ClientType),
+                    Telefoon_nummer = c.PhoneNumber,
+                    Klant_organisatie = c.ClientOrganisation
+                });
+        });
+        filteredClients = clientObjects;
+    }
+
+    private void GoToClientDetails(int id)
+    {
+        NavigationManager.NavigateTo($"/klanten/{id}");
+    }
+
+    private void GoToCreateClient() 
+    {
+        NavigationManager.NavigateTo("/klanten/aanmaken");
+    }
+
+    private void GoToEditClient(int id)
+    {
+        NavigationManager.NavigateTo($"/klanten/wijzigen/{id}");
+    }
+
+    private void DeleteClient(int id)
+    {
+        ClientService.Delete(id);
+        RefreshClients();
+    }
+
+    private void OnSelectFilter(ChangeEventArgs e)
+    {
+        switch (e.Value)
+        {
+            case "all":
+                filteredClients = clientObjects;
+                break;
+            case "internal":
+                filteredClients = clientObjects.Where(c => c.Type == "Intern").ToList();
+                break;
+            case "external":
+                filteredClients = clientObjects.Where(c => c.Type == "Extern").ToList();
+                break;
+            default:
+                filteredClients = clientObjects;
+                break;
+        }
+    }
+
+    private string ConvertTypeToString(EClientType type) {
+        return (type) switch
+        {
+            EClientType.Internal => "Intern",
+            EClientType.External => "Extern",
+            _ => ""
+        };
+    }
+}
