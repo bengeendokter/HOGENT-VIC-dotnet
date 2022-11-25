@@ -3,7 +3,7 @@ using Domain.Common;
 using Domain.VirtualMachines;
 using Shared;
 
-namespace Domain.Users;
+namespace Domain.Clients.Users;
 
 public class User : Entity
 {
@@ -11,33 +11,23 @@ public class User : Entity
     public string Name
     {
         get => name;
-        set => name = Guard.Against.NullOrWhiteSpace(value, nameof(Name));
+        set => name = Guard.Against.NullOrEmpty(value, nameof(Name));
     }
 
-    private string department = default!;
-    public string Department
+    private string email = default!;
+    public string Email
     {
-        get => department;
-        set => department = Guard.Against.NullOrWhiteSpace(value, nameof(Department));
+        get => email;
+        set => email = Guard.Against.NullOrEmpty(value, nameof(Email));
     }
-    private string password = default!;
-    public string Password
-    {
-        get => password;
-        set => password = Guard.Against.NullOrWhiteSpace(value, nameof(Password));
-    }
+
     private ERole role = default!;
     public ERole Role
     {
         get => role;
         set => role = Guard.Against.EnumOutOfRange(value, nameof(Role));
     }
-    private List<VirtualMachine>? virtualMachines = default!;
-    public List<VirtualMachine> VirtualMachines
-    {
-        get => virtualMachines;
-        set => virtualMachines = Guard.Against.Null(value, nameof(virtualMachines));
-    }
+
     private bool isActive = default!;
     public bool IsActive
     {
@@ -45,15 +35,21 @@ public class User : Entity
         set => isActive = Guard.Against.Null(value, nameof(isActive));
     }
 
+    private string password = default!;
+    public string Password
+    {
+        get => password;
+        set => password = Guard.Against.NullOrWhiteSpace(value, nameof(password));
+    }
+
     private User() { }
 
-    public User(string name, string department, string password, ERole role, List<VirtualMachine> virtualMachines, bool isActive)
+    public User(string name, string email, string password, ERole role, bool isActive)
     {
         Name = name;
-        Department = department;
+        Email = email;
         Password = password;
         Role = role;
-        VirtualMachines = virtualMachines;
         IsActive = isActive;
     }
 }

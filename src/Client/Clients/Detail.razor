@@ -1,0 +1,115 @@
+﻿@page "/klanten/{id:int}"
+@inject IClientService ClientService
+@inject NavigationManager NavigationManager
+
+@if (client == null) 
+{
+    <p>Loading...</p>
+    return;
+}
+
+<GenericLayout Display=false Title=@client.Name>
+    <Content>
+        <a href="/klanten">
+            <h2><i class="arrow left"></i>Terug naar klanten</h2>
+        </a>
+        <div class="center-container">
+            <div class="container">
+            <h1 id="client-name">Klant - @client.Name</h1>
+            <section aria-labelledby="client-name">
+                <div class="detail-container">
+                    <!-- Details Algemeen -->
+                    <section>
+                        <h2>Algemeen</h2>
+                        <table>
+                            <tr>
+                                <th>Emailadres</th>
+                                <td>@client.Email</td>
+                            </tr>
+                            <tr>
+                                <th>GSM-nummer</th>
+                                <td>@client.PhoneNumber</td>
+                            </tr>
+                            <tr>
+                                <th>Backup contactpersoon</th>
+                                <td>@client.BackupContact</td>
+                            </tr>
+                        </table>
+                    </section>
+                    <!-- Details Intern/Extern-->
+                    @if (@client.ClientType == EClientType.Internal) {
+                        <section>
+                            <h2>Intern</h2>
+                            <table>
+                                <tr>
+                                    <th>Departement</th>
+                                    <td>@client.ClientOrganisation</td>
+                                </tr>
+                                <tr>
+                                    <th>Opleiding</th>
+                                    <td>@client.Education</td>
+                                </tr>
+                            </table>
+                        </section>
+                    } else if (client.ClientType == EClientType.External) {
+                        <section>
+                            <h2>Extern</h2>
+                            <table>
+                                <tr>
+                                    <th>Naam externe</th>
+                                    <td>@client.ClientOrganisation</td>
+                                </tr>
+                                <tr>
+                                    <th>Type</th>
+                                    <td>@client.ExternalType</td>
+                                </tr>
+                            </table>
+                        </section>
+                    }
+                </div>
+                <!-- Knoppen -->
+                <div class="button-container">
+                    <a href="klanten/wijzigen/@Id" class="btn-primary" >Wijzigen</a>
+                    @if (!isRequestingDelete) 
+                    {
+                        <button class="btn-delete" @onclick="ToggleDelete">Verwijderen</button>
+                    } else 
+                    {
+                        <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
+                        <button class="btn-delete" @onclick="DeleteClient">Verwijderen</button>
+                    }
+
+                </div>
+            </section>
+            </div>
+        </div>
+    </Content>
+</GenericLayout>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private ClientDto.Detail? client;
+    private bool isRequestingDelete = false;
+
+    protected override void OnInitialized() 
+    {
+        base.OnInitialized();
+        Console.WriteLine("test");
+        client = ClientService.GetDetail(Id);
+        Console.WriteLine(client);
+
+        if (client == null)
+            return;
+    }
+
+    private void ToggleDelete() 
+    {
+        isRequestingDelete = !isRequestingDelete;
+    }
+
+    private void DeleteClient() 
+    {
+        ClientService.Delete(Id);
+        NavigationManager.NavigateTo("/klanten");
+    } 
+}

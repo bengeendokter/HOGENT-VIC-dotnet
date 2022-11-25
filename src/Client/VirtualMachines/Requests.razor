@@ -1,10 +1,11 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
 @inject NavigationManager NavigationManager
-
-<GenericLayout Display=false Title="Aanvragen">
-    <Content>
-        <h1>Aanvragen</h1>
+<div class="title-container">
+    <h1>
+        Virtuele machine aanvragen
+    </h1>
+    <div class="filters">
         <select @bind="@_sortFilter" @oninput="@FilterChange">
             <option value="0">Datum oplopend</option>
             <option value="1">Datum aflopend</option>
@@ -18,28 +19,49 @@
             <option value="3">Denied</option>
             <option value="4">Requested</option>
         </select>
+    </div>
+</div>
+<GenericLayout Display=false Title="Aanvragen">
+    <Content>
 
         <Table Collection="filteredObjects" InfoCallback="@RequestInfo"/>
     </Content>
 </GenericLayout>
+@if (_showFilter!=0)
+{
+    <div class="background">
+        <div class="window">
+            <h2>Deze request is al afgehandeld en heeft al een vm, wilt u naar deze VM gaan?</h2>
+            <div class="window-buttons">
+                <button class="btn-primary"
+                    @onclick="RouteToVM">
+                    Ga naar VM
+                </button>
+                <button class="btn-secondary" @onclick="()=>{_showFilter = 0;}">
+                    Annuleren
+                </button>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     public class Request{
         public int Id = 0;
-        public string? Email_aanvrager;
         public string? Projectnaam;
+        public string Klant = "N/A";
         public DateTime? Start_datum;
         public ERequestStatus Status;
         public DateTime? Datum_aanvraag;
-        public int Acties = 1;
     }
 
     public ICollection<Object> requestObjects = new List<Object>();
     public ICollection<Object> filteredObjects = new List<Object>();
-    private List<VirtualMachineRequest> list = new();
+    private List<VirtualMachineRequestDto.Detail> list = new();
+    private int _showFilter = 0;
 
-    private string _sortFilter { get; set; }
-    private string _statusFilter { get; set; }
+    private string? _sortFilter;
+    private string? _statusFilter;
 
     protected override void OnInitialized()
     {
@@ -51,8 +73,7 @@
                 new Request()
                 {
                     Id = request.Id,
-                    Email_aanvrager = request.EmailAanvrager,
-                    Projectnaam = request.ProjectNaam,
+                    Projectnaam = request.ProjectName,
                     Start_datum = request.StartDate,
                     Datum_aanvraag = request.Date,
                     Status = request.Status
@@ -108,8 +129,16 @@
     }
 
     private void RequestInfo(int id){
-        Console.WriteLine($"goind to request with id {id}");
-        NavigationManager.NavigateTo($"/vm/manage/request/{id}");
+        if(list.First(r => r.Id == id).Status == ERequestStatus.Handled){
+            _showFilter = id;
+        }
+        else{
+            NavigationManager.NavigateTo($"/vm/manage/request/{id}");
+        }
+    }
+
+    private void RouteToVM(){
+        //_showFilter is id van request
     }
 
 }

@@ -2,66 +2,74 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Request> Logger
 
+<div class="title-container">
+    <h1>
+        Vm aanvragen
+    </h1>
+</div>
 <GenericLayout Display=false Title="VM - Aanvragen">
     <Content>
-        <div class="form">
+        <div class="requestpage">
             <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
-                <DataAnnotationsValidator />
-                <div class="headerRow">
-                    <h1>Vraag een VM aan</h1>
-                </div>
 
-                <div class="input-group">
-                    <label>
-                        Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
-                        <InputText @bind-Value="vmRequest.ProjectNaam" ></InputText>
-                        <ValidationMessage For="@(()=> vmRequest.ProjectNaam)"></ValidationMessage>
-                    </label>
+                <FluentValidationValidator />
+                    <div class="form">
+                    <div class="input-group">
+                        <label>
+                            Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
+                            <InputText @bind-Value="vmRequest.ProjectName" class="inputField"></InputText>
+                            <ValidationMessage For="@(()=> vmRequest.ProjectName)"></ValidationMessage>
+                        </label>
 
-                    <label>
-                        Start datum<br />
-                        <InputDate @bind-Value="vmRequest.StartDate" ></InputDate>
-                        <ValidationMessage For="@(()=> vmRequest.StartDate)"></ValidationMessage>
-                    </label>
-                    <label>
-                        Eind datum<br />
-                        <InputDate @bind-Value="vmRequest.EndDate"></InputDate>
-                        <ValidationMessage For="@(()=> vmRequest.EndDate)"></ValidationMessage>
-                    </label>
-
-                    <label>
-                        Email van de aanvrager <br/>
-                        <InputText @bind-Value="vmRequest.EmailAanvrager"></InputText>
-                    </label>
-
-                    <label>
-                        Nummer van de aanvrager<br/>
-                        <InputNumber @bind-Value="vmRequest.NummerAanvrager"></InputNumber>
-                    </label>
+                        <label>
+                            Start datum<br />
+                            <InputDate @bind-Value="vmRequest.StartDate" class="inputField"></InputDate>
+                            <ValidationMessage For="@(()=> vmRequest.StartDate)"></ValidationMessage>
+                        </label>
+                        <label>
+                            Eind datum<br />
+                            <InputDate @bind-Value="vmRequest.EndDate" class="inputField"></InputDate>
+                            <ValidationMessage For="@(()=> vmRequest.EndDate)"></ValidationMessage>
+                        </label>
 
 
-                    <label class="reden">
-                       Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor de aanvraag.<br />
-                        <InputTextArea id="reason" @bind-Value="vmRequest.Reason" style="width: 100%" ></InputTextArea>
-                        <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
-                     </label>
+                        <label class="reden">
+                           Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor de aanvraag.<br />
+                            <InputTextArea @bind-Value="vmRequest.Reason" class="inputField"></InputTextArea>
+                            <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
+                         </label>
 
-                    <button type="submit">Submit</button>
+                        <button class="existingClient" @onclick="() => {_existingClient = !_existingClient;}">@(_existingClient? "Ik ben nog geen klant": "Ik ben al een klant")</button>
+                         @if(_existingClient){
+                             <label>
+                                Welke klant bent u 
+                                <InputSelect @bind-Value="vmRequest.Client" class="inputField"></InputSelect>
+                             </label>
+                         }
 
+                    </div>
+                    <button type="submit" class="btn-primary">Submit</button>
                 </div>
             </EditForm>
-        </div>
+
+         </div>
     </Content>
 </GenericLayout>
 
 @code {
-    private VirtualMachineRequest vmRequest = new VirtualMachineRequest();
+    private VirtualMachineRequestDto.Create vmRequest = new();
+    public bool _existingClient = true;
 
+    protected override void OnInitialized(){
+        vmRequest.StartDate = DateTime.Now;
+        vmRequest.EndDate = DateTime.Now;
+    }
 
     private void HandleValidSubmit()
     {
         Console.WriteLine("submit");
         Console.WriteLine(vmRequest.Reason);
     }
+
 
 }

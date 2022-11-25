@@ -1,36 +1,43 @@
 <div class="template">
 
-        <h3>@Template.Key</h3>
+        <h3>@Template?.Type</h3>
         <table>
             <tr>
                 <td>Mode</td>
-                <td>@Template.Value.Mode</td>
+                <td>@Template?.Mode</td>
             </tr>
             <tr>
                 <td>Ram</td>
-                <td>@Template.Value.Stats.Ram</td>
+                <td>@Template?.RAM</td>
             </tr>
             <tr>
                 <td>CPU cores</td>
-                <td>@Template.Value.Stats.Cpu</td>
+                <td>@Template?.CPU</td>
             </tr>
             <tr>
                 <td>Storage</td>
-                <td>@Template.Value.Stats.Storage</td>
+                <td>@Template?.Storage</td>
             </tr>
         </table>
-    @if (Template.Key == ActiveTemplate)
-    {
-            <button @onclick="TemplateClicked" class="active">Selecteer template</button>
+        @if (ActiveTemplate.Equals(Template?.Id))
+        {
+        <button @onclick="handleClick" class="active">Selecteer template</button>
         }
         else{
-            <button @onclick="TemplateClicked" class="inactive">Selecteer template</button>
+        <button @onclick="handleClick" class="inactive">Selecteer template</button>
         }
 
 </div>
 
 @code {
-    [Parameter] public KeyValuePair < ETemplate, Template > Template { get; set; }
-    [Parameter] public ETemplate? ActiveTemplate {get; set;}
+    [Parameter] public TemplateDto.Detail? Template { get; set; }
+    [Parameter] public int? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
+    private bool active = false;
+
+    private void handleClick(){
+        active = !active;
+        TemplateClicked.InvokeAsync();
+    }
+
 }
