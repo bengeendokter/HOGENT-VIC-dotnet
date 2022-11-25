@@ -1,5 +1,6 @@
 ﻿@page "/klanten/{id:int}"
 @inject IClientService ClientService
+@inject NavigationManager NavigationManager
 
 @if (client == null) 
 {
@@ -68,8 +69,16 @@
                 </div>
                 <!-- Knoppen -->
                 <div class="button-container">
-                    <button class="btn-primary">Wijzigen</button>
-                    <button class="btn-delete">Verwijderen</button>
+                    <a href="klanten/wijzigen/@Id" class="btn-primary" >Wijzigen</a>
+                    @if (!isRequestingDelete) 
+                    {
+                        <button class="btn-delete" @onclick="ToggleDelete">Verwijderen</button>
+                    } else 
+                    {
+                        <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
+                        <button class="btn-delete" @onclick="DeleteClient">Verwijderen</button>
+                    }
+
                 </div>
             </section>
             </div>
@@ -80,6 +89,7 @@
 @code {
     [Parameter] public int Id { get; set; }
     private ClientDto.Detail? client;
+    private bool isRequestingDelete = false;
 
     protected override void OnInitialized() 
     {
@@ -90,6 +100,16 @@
 
         if (client == null)
             return;
-
     }
+
+    private void ToggleDelete() 
+    {
+        isRequestingDelete = !isRequestingDelete;
+    }
+
+    private void DeleteClient() 
+    {
+        ClientService.Delete(Id);
+        NavigationManager.NavigateTo("/klanten");
+    } 
 }

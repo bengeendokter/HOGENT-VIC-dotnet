@@ -7,79 +7,89 @@
     <Content>
         <EditForm Model="@_client" OnValidSubmit="OnSubmit" >
             <FluentValidationValidator />
-            <h1>@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")</h1>
-            <div>
-                <label >Naam</label>
-                <div>
-                    <InputText  @bind-Value="_client.Name" />
-                    <ValidationMessage For="() => _client.Name" />
-                </div>
-            </div>
-            <div>
-                <label>Telefoon nr.</label>
-                <div>
-                    <InputText @bind-Value="_client.PhoneNumber" />
-                    <ValidationMessage For="() => _client.PhoneNumber" />
-                </div>
-            </div>
-            <div>
-                <label>Email</label>
-                <div>
-                    <InputText @bind-Value="_client.Email" />
-                    <ValidationMessage For="() => _client.Email" />
-                </div>
-            </div>
-            <div>
-                <label>Backup contact</label>
-                <div>
-                    <InputText @bind-Value="_client.BackupContact" />
-                    <ValidationMessage For="() => _client.BackupContact" />
-                </div>
-            </div>
-            <div>
-                <label>Klant organisatie</label>
-                <div>
-                    <InputText @bind-Value="_client.ClientOrganisation" />
-                    <ValidationMessage For="() => _client.ClientOrganisation" />
-                </div>
-            </div>
-            <div>
-                <label>Type Organisatie</label>
-                <div>
-                    <InputSelect @bind-Value="_client.ClientType">
-                        <option value="@EClientType.Internal">Intern</option>
-                        <option value="@EClientType.External">Extern</option>
-                    </InputSelect>
-                    <ValidationMessage For="() => _client.ClientType" />
-                </div>
-            </div>
-            @if (_client.ClientType == EClientType.Internal) {
-                <div>
-                    <label>Opleiding</label>
-                    <div>
-                        <InputText @bind-Value="_client.Education" />
-                        <ValidationMessage For="() => _client.Education" />
+            <div class="center-container">
+                <div class="container">
+                    <h1>@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")</h1>
+                    <div class="input-container">
+                        <section>
+                            <div class="group">
+                                <label >Naam</label>
+                                <div>
+                                    <InputText  @bind-Value="_client.Name" />
+                                    <ValidationMessage For="() => _client.Name" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Telefoon nr.</label>
+                                <div>
+                                    <InputText @bind-Value="_client.PhoneNumber" />
+                                    <ValidationMessage For="() => _client.PhoneNumber" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Email</label>
+                                <div>
+                                    <InputText @bind-Value="_client.Email" />
+                                    <ValidationMessage For="() => _client.Email" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Backup contact</label>
+                                <div>
+                                    <InputText @bind-Value="_client.BackupContact" />
+                                    <ValidationMessage For="() => _client.BackupContact" />
+                                </div>
+                            </div>
+                        </section>
+                        <section>                        
+                            <div class="group">
+                                <label>Klant organisatie</label>
+                                <div>
+                                    <InputText @bind-Value="_client.ClientOrganisation" />
+                                    <ValidationMessage For="() => _client.ClientOrganisation" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Type Organisatie</label>
+                                <div>
+                                    <InputSelect @bind-Value="_client.ClientType">
+                                        <option value="@EClientType.Internal">Intern</option>
+                                        <option value="@EClientType.External">Extern</option>
+                                    </InputSelect>
+                                    <ValidationMessage For="() => _client.ClientType" />
+                                </div>
+                            </div>
+                            @if (_client.ClientType == EClientType.Internal) {
+                                <div class="group">
+                                    <label>Opleiding</label>
+                                    <div>
+                                        <InputText @bind-Value="_client.Education" />
+                                        <ValidationMessage For="() => _client.Education" />
+                                    </div>
+                                </div>
+                            }
+                            @if (_client.ClientType == EClientType.External) {
+                                <div class="group">
+                                    <label>Extern type</label>
+                                    <div>
+                                        <InputText @bind-Value="_client.ExternalType" />
+                                        <ValidationMessage For="() => _client.ExternalType" />
+                                    </div>
+                                </div>
+                            }
+                        </section>
+                    </div>
+                    <div class="button-container">
+                        @if (IsEdit) 
+                        {
+                            <button type="submit" class="btn-primary">Wijzigen</button>
+                        } else 
+                        {
+                            <button type="submit" class="btn-primary">Toevoegen</button>
+                        }
+                        <a href="/klanten" class="btn-secondary">Annuleren</a>
                     </div>
                 </div>
-            }
-            @if (_client.ClientType == EClientType.External) {
-                <div>
-                    <label>Extern type</label>
-                    <div>
-                        <InputText @bind-Value="_client.ExternalType" />
-                        <ValidationMessage For="() => _client.ExternalType" />
-                    </div>
-                </div>
-            }
-            <div class="button-container">
-                @if (IsEdit) 
-                {
-                    <button type="submit" class="btn-primary">Wijzigen</button>
-                } else 
-                {
-                    <button type="submit" class="btn-primary">Toevoegen</button>
-                }
-                <a href="/klanten" class="btn-secondary">Annuleren</a>
             </div>
         </EditForm>
     </Content>
@@ -114,6 +124,25 @@
 
     private void OnSubmit()
     {
+        if (IsEdit) 
+        {
+            EditClient();
+        } else 
+        {
+            CreateClient();
+        }
+
+    }
+
+    private void CreateClient() 
+    {
+        var response = ClientService.Create(_client);
+        NavigationManager.NavigateTo($"/klanten/{response}");
+    }
+
+    private void EditClient() 
+    {
+        ClientService.Edit(Id.Value, _client);
         NavigationManager.NavigateTo("/klanten");
     }
 }

@@ -1,4 +1,5 @@
-﻿using Radzen;
+﻿using Bogus.DataSets;
+using Shared.Clients;
 
 namespace Client.Users;
 
@@ -23,9 +24,9 @@ public class ClientService : IClientService
         }).ToList();
     }
 
-    public ClientDto.Detail GetDetail(int id)
+    public ClientDto.Detail GetDetail(int clientId)
     {
-        var client = _clients.FirstOrDefault(x => x.Id == id);
+        var client = _clients.FirstOrDefault(x => x.Id == clientId);
         if (client == null) 
             return null;
 
@@ -43,9 +44,49 @@ public class ClientService : IClientService
         };
     }
 
-    public void Delete(int id)
+    public int Create(ClientDto.Mutate model)
     {
-        var client = _clients.FirstOrDefault(x => x.Id == id);
+        if (_clients.Any(x => x.Name == model.Name))
+            throw new Exception();
+
+        int id = _clients.Count + 1;
+        ClientDto.Detail client = new ClientDto.Detail
+        {
+            Id = id,
+            Name = model.Name,
+            PhoneNumber = model.PhoneNumber,
+            Email = model.Email,
+            BackupContact = model.BackupContact,
+            ClientOrganisation = model.ClientOrganisation,
+            ClientType = model.ClientType,
+            Education = model.Education,
+            ExternalType= model.ExternalType,
+        };
+
+        _clients.Add(client);
+        return id;
+    }
+
+    public void Edit(int clientId, ClientDto.Mutate model)
+    {
+        ClientDto.Detail? client = _clients.FirstOrDefault(x => x.Id == clientId);
+        if (client == null)
+            throw new Exception();
+
+        client.Name = model.Name;
+        client.PhoneNumber = model.PhoneNumber;
+        client.Email = model.Email;
+        client.BackupContact = model.BackupContact;
+        client.ClientOrganisation = model.ClientOrganisation;
+        client.ClientType = model.ClientType;
+        client.Education = model.Education;
+        client.ExternalType = model.ExternalType;
+    }
+
+
+    public void Delete(int clientId)
+    {
+        var client = _clients.FirstOrDefault(x => x.Id == clientId);
         if (client == null)
             return;
 
