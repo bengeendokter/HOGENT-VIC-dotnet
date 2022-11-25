@@ -17,21 +17,7 @@
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
             <div class="grid">
-                <div class="templates">
-                    <h2>Templates</h2>
-                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
-                    <div class="wrap">
-                    @foreach (TemplateDto.Detail t in _templates)
-                    {
-                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
-                    }
 
-                    </div>
-                    @if(_customTemplate != null){
-                        <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
-                    }
-                    <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
-                </div>
 
                 <div class="request">
                 @if (_request != null)
@@ -58,6 +44,24 @@
                             <div class="reden">@_request.Reason</div>
                         </label>
                 }
+                </div>
+
+
+                <div class="templates">
+                    <h2>Templates</h2>
+                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
+                    <div class="wrap">
+                    @foreach (TemplateDto.Detail t in _templates)
+                    {
+                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
+                    }
+                        @if (_customTemplate != null)
+                        {
+                            <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
+                        }
+                    </div>
+
+                    <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
 
 
@@ -141,7 +145,7 @@
 @*                        <label>
                             Wanneer moet de VM online staan?<br />
                             @foreach(EDay day in EDay.GetValues(typeof(EDay))){
-                                <InputCheckbox Value=@day @bind-Value="_vm.Availability"></InputCheckbox>
+                                <InputRadio Value="@day" @onchange="() => AddDay(day)"></InputRadio>
                             }
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
                         </label>*@
@@ -173,6 +177,7 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
+    private EDay availability;
 
     [Parameter]
     public int? Id { get; set; }
@@ -247,6 +252,10 @@
         _showCustomTemplate = false;
         _customTemplate = customTemp;
         HandleTemplate(customTemp);
+    }
+
+    private void AddDay(EDay day){
+
     }
 
     private async Task HandleValidSubmit()

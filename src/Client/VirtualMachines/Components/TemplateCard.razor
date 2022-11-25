@@ -3,21 +3,19 @@
         <h3>@Template?.Type</h3>
         <table>
             <tr>
-                <td>Mode</td>
+                <th>Mode</th>
+                <th>Ram</th>
+                <th>CPU</th>
+                <th>Storage</th>
+            </tr>
+            <tr>
+ 
                 <td>@Template?.Mode</td>
-            </tr>
-            <tr>
-                <td>Ram</td>
                 <td>@Template?.RAM</td>
-            </tr>
-            <tr>
-                <td>CPU cores</td>
                 <td>@Template?.CPU</td>
-            </tr>
-            <tr>
-                <td>Storage</td>
                 <td>@Template?.Storage</td>
             </tr>
+
         </table>
         @if (ActiveTemplate.Equals(Template?.Id))
         {
