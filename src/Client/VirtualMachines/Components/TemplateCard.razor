@@ -30,7 +30,7 @@
 </div>
 
 @code {
-    [Parameter] public TemplateDto.Detail Template { get; set; }
+    [Parameter] public TemplateDto.Detail? Template { get; set; }
     [Parameter] public int? ActiveTemplate {get; set;}
     [Parameter] public EventCallback TemplateClicked { get; set; }
     private bool active = false;

@@ -127,6 +127,7 @@
                         <label>
                             Host<br />
                             <InputSelect @bind-Value="_vm.Host" class="inputField">
+                                <option value=null>--selecteer een optie--</option>
                                 <option value="server1">Server 1</option>
                                 <option value="server2">Server 2</option>
                             </InputSelect>
@@ -146,6 +147,14 @@
                             }
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
                         </label>*@
+
+                        <label>
+                            Wanneer moet de VM online staan?<br />
+                            <InputRadioGroup @bind-Value="_vm.Availability">
+                                <InputRadio Value="EDay.Monday">Monday</InputRadio>
+                            </InputRadioGroup>
+                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                        </label>
 
                     </div>
                     <button class="btn-primary" type="submit">Maak VM aan</button>
@@ -173,9 +182,11 @@
     protected override async Task OnInitializedAsync()
     {
         _templates = TemplateService.GetAll();
-        if (!Id.HasValue) return;
-
-        if (NavigationManager.Uri.Contains("request"))
+        if (!Id.HasValue){
+            _vm.StartDate = DateTime.Now;
+            _vm.EndDate = DateTime.Now;
+        }
+        else if (NavigationManager.Uri.Contains("request"))
         {
             _request = VirtualMachineRequestService.Get(Id.Value);
             if (_request == null) return;
@@ -185,7 +196,7 @@
         }
         else
         {
-            var vm = await VirtualMachineService.GetDetailAsync(Id.Value) ?? new();
+            var vm = Id.HasValue ? await VirtualMachineService.GetDetailAsync(Id.Value) : new();
             _vm.Name = vm.Name;
             _vm.CPU = vm.CPU;
             _vm.RAM = vm.RAM;
@@ -243,7 +254,7 @@
         //Aanmaken VM gevolg van aanvraag
         if (_request!=null)
         {
- 
+
         }
         //wijzigen VM
         else if (Id.HasValue && await VirtualMachineService.GetDetailAsync(Id.Value) != null)
@@ -253,7 +264,8 @@
         //Aanmaken VM
         else
         {
-
+            int id = await VirtualMachineService.CreateAsync(_vm);
+            NavigationManager.NavigateTo($"/vm/{id}");
         }   
     }
 }
