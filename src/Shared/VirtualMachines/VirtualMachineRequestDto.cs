@@ -1,9 +1,5 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.Clients;
 
 namespace Shared.VirtualMachines;
 
@@ -14,7 +10,7 @@ public static class VirtualMachineRequestDto
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string? ProjectName { get; set; }
-        public Client? Client { get; set; }
+        public ClientDto.Index? Client { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string? Reason { get; set; }
@@ -23,7 +19,7 @@ public static class VirtualMachineRequestDto
     public class Create
     {
         public string? ProjectName { get; set; }
-        public Client? Client { get; set; }
+        public ClientDto.Index? Client { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string? Reason { get; set; }

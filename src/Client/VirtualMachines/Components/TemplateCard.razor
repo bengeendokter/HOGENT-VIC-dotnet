@@ -1,25 +1,25 @@
 <div class="template">
 
-        <h3>@Template.Type</h3>
+        <h3>@Template?.Type</h3>
         <table>
             <tr>
                 <td>Mode</td>
-                <td>@Template.Mode</td>
+                <td>@Template?.Mode</td>
             </tr>
             <tr>
                 <td>Ram</td>
-                <td>@Template.RAM</td>
+                <td>@Template?.RAM</td>
             </tr>
             <tr>
                 <td>CPU cores</td>
-                <td>@Template.CPU</td>
+                <td>@Template?.CPU</td>
             </tr>
             <tr>
                 <td>Storage</td>
-                <td>@Template.Storage</td>
+                <td>@Template?.Storage</td>
             </tr>
         </table>
-        @if (ActiveTemplate.Equals(Template.Id))
+        @if (ActiveTemplate.Equals(Template?.Id))
         {
         <button @onclick="handleClick" class="active">Selecteer template</button>
         }

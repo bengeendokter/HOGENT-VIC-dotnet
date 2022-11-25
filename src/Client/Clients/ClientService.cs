@@ -1,5 +1,4 @@
 ﻿//using Bogus.DataSets;
-using Shared.Clients;
 
 namespace Client.Users;
 
@@ -26,9 +25,7 @@ public class ClientService : IClientService
 
     public ClientDto.Detail GetDetail(int clientId)
     {
-        var client = _clients.FirstOrDefault(x => x.Id == clientId);
-        if (client == null) 
-            return null;
+        var client = _clients.First(x => x.Id == clientId);
 
         return new ClientDto.Detail
         {
