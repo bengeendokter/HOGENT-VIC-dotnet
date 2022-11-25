@@ -27,3 +27,10 @@
     flex-direction: row;
     gap: .5em;
 }
+
+::deep select {
+    background: white;
+    height: 30px;   
+    border: none;
+    border-radius: 2px;
+}

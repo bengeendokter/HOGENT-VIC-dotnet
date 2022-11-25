@@ -32,12 +32,12 @@ label {
 .existingClient {
     background-color: var(--clr-primary);
     color: var(--clr-CTA);
-    height: 50px;
     font-weight: 600;
     border: none;
     border-radius: 5px;
     margin-right: 10px;
-    width: 100px
+    height: 50px;
+    width: 200px;
 }
 .btn-primary{
     width: 200px;

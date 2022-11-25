@@ -111,6 +111,7 @@ a, .btn-link {
     justify-content: center;
     align-items: center;
     height: fit-content;
+    border: none;
 }
 
 .btn-secondary {

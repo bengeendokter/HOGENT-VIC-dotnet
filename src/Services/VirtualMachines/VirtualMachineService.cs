@@ -59,7 +59,8 @@ public class VirtualMachineService : IVirtualMachineService
             BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)vm.BackupFrequency,
             IsHighlyAvailable = vm.IsHighlyAvailable,
             Mode = (Shared.VirtualMachines.EMode)vm.Mode,
-            Template = (Shared.VirtualMachines.ETemplate)vm.Template
+            Template = (Shared.VirtualMachines.ETemplate)vm.Template,
+            Poorten = vm.Poorten
         };
     }
 

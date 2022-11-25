@@ -125,7 +125,7 @@
                         <label>
                             Host<br />
                             <InputSelect @bind-Value="_vm.Host" class="inputField">
-                                <option value=null>--selecteer een optie--</option>
+                                <option value="">--selecteer een optie--</option>
                                 <option value="server1">Server 1</option>
                                 <option value="server2">Server 2</option>
                             </InputSelect>
@@ -183,6 +183,7 @@
         if (!Id.HasValue){
             _vm.StartDate = DateTime.Now;
             _vm.EndDate = DateTime.Now;
+            _vm.Template = null;
         }
         else if (NavigationManager.Uri.Contains("request"))
         {
@@ -212,6 +213,7 @@
             _vm.Host = vm.Host;
             _vm.Client = vm.Client;
             _vm.Poorten = vm.Poorten;
+            HandleTemplate(_templates.Where(t => t.Type == vm.Template).First());
         }
     }
 
@@ -253,17 +255,21 @@
         if (_request!=null)
         {
 
+            int vmId = await VirtualMachineService.CreateAsync(_vm);
+            NavigationManager.NavigateTo($"/vm/{vmId}");
+
         }
         //wijzigen VM
-        else if (Id.HasValue && await VirtualMachineService.GetDetailAsync(Id.Value) != null)
+        else if (Id.HasValue)
         {
-
+            await VirtualMachineService.EditAsync(Id.Value, _vm);
+            NavigationManager.NavigateTo($"/vm/{Id.Value}");
         }
         //Aanmaken VM
         else
         {
-            int id = await VirtualMachineService.CreateAsync(_vm);
-            NavigationManager.NavigateTo($"/vm/{id}");
+            int vmId = await VirtualMachineService.CreateAsync(_vm);
+            NavigationManager.NavigateTo($"/vm/{vmId}");
         }   
     }
 }
