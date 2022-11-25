@@ -109,6 +109,21 @@ public class VirtualMachineService : IVirtualMachineService
             m1 += maand;
         }
 
+        //maand check
+        var specifiek = DateTime.DaysInMonth(j1, m1);
+        if (d1 > specifiek)
+        {
+            m1 += 1;
+            d1 = d1 % specifiek;
+        }
+
+        //jaar check
+        if (m1 > 12)
+        {
+            m1 = m1 % 12;
+            j1 += 1;
+        }
+
         return new DateTime(j1, m1, d1);
     }
 
