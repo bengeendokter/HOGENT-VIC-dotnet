@@ -119,7 +119,7 @@ public class VirtualMachine : Entity
     public EDay Availability
     {
         get => availability;
-        set => availability = Guard.Against.EnumOutOfRange(value, nameof(Availability));
+        set => availability = (EDay)Guard.Against.OutOfRange((int)value, nameof(EDay), 1, 127);
     }
 
     public bool IsHighlyAvailable { get; set; }
