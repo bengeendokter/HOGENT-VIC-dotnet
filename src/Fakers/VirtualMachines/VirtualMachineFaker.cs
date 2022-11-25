@@ -11,7 +11,7 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
             f =>
                 new VirtualMachine(
                     // client
-                    f.Internet.UserName(),
+                    f.Internet.DomainWord(),
                     f.Internet.DomainName(),
                     f.Date.Past(),
                     f.Date.Future(),
