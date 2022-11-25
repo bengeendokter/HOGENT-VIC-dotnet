@@ -25,7 +25,7 @@ public static class VirtualMachineDto
         public string? FQDN { get; set; }
         public string? Host { get; set; }
         public string? Poorten { get; set; }
-        public Client? Client { get; set; }
+        public ClientDto.Index? Client { get; set; }
         public EBackupFrequency BackupFrequency { get; set; }
         public EDay Availability { get; set; }
         public EMode Mode { get; set; }
