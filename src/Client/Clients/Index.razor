@@ -12,6 +12,7 @@
     <h1>Klanten</h1>
     <div class="select-container">
         <!-- Container indien nog sorteer opties moeten worden toegevoegd -->
+        <Searchbar SearchTerm="@Searchterm" />
         <select @onchange=OnSelectFilter>
             <option value="all" selected>Alle</option>
             <option value="internal">Alleen interne</option>3
@@ -36,6 +37,10 @@
 
 
 @code{
+    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+
     private List<ClientDto.Index> clients = new();
     private ICollection<Klant> clientObjects = new List<Klant>();
     public ICollection<Klant> filteredClients = new List<Klant>();
@@ -54,8 +59,19 @@
         await RefreshClientsAsync();
     }
 
-    private async Task RefreshClientsAsync() {
-        ClientRequest.Index request = new();
+    protected override async Task OnParametersSetAsync()
+    {
+        ClientRequest.Index request = new()
+            {
+                Searchterm = Searchterm,
+                Page = Page.HasValue ? Page.Value : 1,
+                PageSize = PageSize.HasValue ? PageSize.Value : 25,
+            };
+        await RefreshClientsAsync(request);
+    }
+
+    private async Task RefreshClientsAsync(ClientRequest.Index request = null) {
+        if (request == null) request = new();
         clientObjects.Clear();
         filteredClients.Clear();
         clients = await ClientService.GetIndexAsync(request);
