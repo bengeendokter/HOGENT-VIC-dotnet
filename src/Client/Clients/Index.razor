@@ -2,7 +2,7 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-@if (clients == null || !filteredClients.Any())
+@if (clients == null)
 {
     <p>Loading...</p>
     return;
@@ -27,6 +27,7 @@
         </div>
 
         <Table 
+            Object="@(new Klant())"
             Collection="@filteredClients" 
             InfoCallback="@GoToClientDetails"
             EditCallback="@GoToEditClient"
