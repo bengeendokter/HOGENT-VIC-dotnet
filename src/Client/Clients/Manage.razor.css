@@ -31,11 +31,30 @@ section {
 
 label {
     min-width: 30%;
-    padding: 2px 0px;
     margin: 5px 20px 10px 0px;
 }
 
 .field {
     background-color: var(--clr-primary);
+    border-radius: 2px;
+}
+
+::deep select.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+}
+
+::deep input.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
     border-radius: 2px;
 }

@@ -2,9 +2,11 @@ using Persistence;
 using Server.Middleware;
 using Services;
 using Shared.VirtualMachines;
+using Shared.Clients;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,7 @@ builder.Services.AddServices();
 
 // Fluentvalidation
 builder.Services.AddValidatorsFromAssemblyContaining<VirtualMachineDto.Mutate.Validator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ClientDto.Validator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 // Swagger | OAS

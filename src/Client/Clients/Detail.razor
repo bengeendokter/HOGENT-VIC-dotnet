@@ -76,7 +76,7 @@
                     } else 
                     {
                         <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
-                        <button class="btn-delete" @onclick="DeleteClient">Verwijderen</button>
+                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen</button>
                     }
 
                 </div>
@@ -91,15 +91,16 @@
     private ClientDto.Detail? client;
     private bool isRequestingDelete = false;
 
-    protected override void OnInitialized() 
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        Console.WriteLine("test");
-        client = ClientService.GetDetail(Id);
-        Console.WriteLine(client);
+        await GetClientAsync();
+    }
 
-        if (client == null)
-            return;
+    private async Task GetClientAsync()
+    {
+        var response = await ClientService.GetDetailAsync(Id);
+        if (response == null) return;
+        client = response;
     }
 
     private void ToggleDelete() 
@@ -107,9 +108,9 @@
         isRequestingDelete = !isRequestingDelete;
     }
 
-    private void DeleteClient() 
+    private async Task DeleteClientAsync() 
     {
-        ClientService.Delete(Id);
+        await ClientService.DeleteAsync(Id);
         NavigationManager.NavigateTo("/klanten");
     } 
 }
