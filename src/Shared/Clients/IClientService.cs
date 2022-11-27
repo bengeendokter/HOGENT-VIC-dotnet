@@ -2,9 +2,12 @@
 
 public interface IClientService
 {
-    List<ClientDto.Index> GetAll(ClientRequest.Index request);
+    //List<ClientDto.Index> GetAll(ClientRequest.Index request);
+    Task<List<ClientDto.Index>> GetIndexAsync();
+    
     ClientDto.Detail GetDetail(int clientId);
     int Create(ClientDto.Mutate model);
     void Edit(int clientId, ClientDto.Mutate model);
     void Delete(int clientId);
+    
 }

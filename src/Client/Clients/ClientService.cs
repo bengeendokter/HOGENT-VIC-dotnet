@@ -1,16 +1,21 @@
 ﻿//using Bogus.DataSets;
 
-namespace Client.Users;
+using System.Net.Http.Json;
+
+namespace Client.Clients;
 
 public class ClientService : IClientService
 {
-    private readonly List<ClientDto.Detail> _clients = new();
+    //private readonly List<ClientDto.Detail> _clients = new();
+    private readonly HttpClient client;
+    private const string endpoint = "api/user";
 
-    public ClientService()
+    public ClientService(HttpClient client)
     {
-        SetDummyData();
+        this.client = client;
+        //SetDummyData();
     }
-
+    /*
     public List<ClientDto.Index> GetAll(ClientRequest.Index request)
     {
         return _clients.Select(x => new ClientDto.Index
@@ -152,5 +157,30 @@ public class ClientService : IClientService
                 ExternalType = "?"
             }
         });
+    }
+    */
+    public async Task<List<ClientDto.Index>> GetIndexAsync()
+    {
+        return await client.GetFromJsonAsync<List<ClientDto.Index>>(endpoint) ?? new();
+    }
+
+    public ClientDto.Detail GetDetail(int clientId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int Create(ClientDto.Mutate model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Edit(int clientId, ClientDto.Mutate model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(int clientId)
+    {
+        throw new NotImplementedException();
     }
 }

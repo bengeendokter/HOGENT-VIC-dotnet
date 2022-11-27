@@ -52,9 +52,9 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        RefreshClients();
+        //RefreshClients();
     }
-
+    /*
     private void RefreshClients() {
         ClientRequest.Index request = new();
         clients = ClientService.GetAll(request);
@@ -73,7 +73,7 @@
                 });
         });
         filteredClients = clientObjects;
-    }
+    }*/
 
     private void GoToClientDetails(int id)
     {
@@ -92,8 +92,8 @@
 
     private void DeleteClient(int id)
     {
-        ClientService.Delete(id);
-        RefreshClients();
+        //ClientService.Delete(id);
+        //RefreshClients();
     }
 
     private void OnSelectFilter(ChangeEventArgs e)

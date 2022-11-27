@@ -8,8 +8,6 @@ namespace Domain.Clients.Users;
 
 public class Client : User
 {
-    public new ERole Role = ERole.User;
-
     private string phoneNumber = default!;
     public string? PhoneNumber
     {
@@ -39,24 +37,40 @@ public class Client : User
     }
 
     private string clientOrganisation = default!;
-    public string ClientOrganisation
+    public string? ClientOrganisation
     {
         get => clientOrganisation;
         set => Guard.Against.NullOrEmpty(value, nameof(ClientOrganisation));
     }
 
-    public string? ExternalType { get; set; }
-    public string? Education { get; set; }
+    private string externalType = default!;
+    public string? ExternalType
+    {
+        get => externalType;
+        set => externalType = Guard.Against.NullOrWhiteSpace(value, nameof(externalType));
+    }
+
+    private string education = default!;
+    public string? Education
+    {
+        get => education;
+        set => education = Guard.Against.NullOrWhiteSpace(value, nameof(education));
+    }
 
     // Later veranderen naar VirtualMachineRequest
-    public object[]? VirtualMachineRequests { get; set; }
+    // public object[]? VirtualMachineRequests { get; set; }
 
     private readonly List<VirtualMachine> virtualMachines = new();
     public IReadOnlyCollection<VirtualMachine> VirtualMachines => virtualMachines.AsReadOnly();
-
-    public Client(string name, string email, string department, string password, ERole role, bool isActive)
+    public Client(string phoneNumber, string department, string backupContact, EClientType type, string externalType, string education, string clientOrganisation, string name, string email, string password, ERole role, bool isActive)
         : base(name, email, password, role, isActive)
     {
+        PhoneNumber = phoneNumber;
+        BackupContact = backupContact;
+        Type = type;
+        ExternalType = externalType;
+        Education = education;
+        ClientOrganisation = clientOrganisation;
         Name = name;
         Department = department;
         Password = password;

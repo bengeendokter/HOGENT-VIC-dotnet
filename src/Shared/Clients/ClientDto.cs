@@ -11,6 +11,7 @@ public static class ClientDto
         public string? PhoneNumber { get; set; }
         public EClientType ClientType { get; set; }
         public string? ClientOrganisation { get; set; }
+        public ERole Role { get; set; }
     }
 
     public class Detail : Index
