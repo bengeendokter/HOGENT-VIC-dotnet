@@ -8,14 +8,16 @@
     return;
 }
 
+<div class="title-container">
+    <h1 id="client-name">Klant - @client.Name</h1>
+</div>
 <GenericLayout Display=false Title=@client.Name>
     <Content>
         <a href="/klanten">
-            <h2><i class="arrow left"></i>Terug naar klanten</h2>
+            <h2><i class="arrow left"></i>Overzicht klanten</h2>
         </a>
         <div class="center-container">
             <div class="container">
-            <h1 id="client-name">Klant - @client.Name</h1>
             <section aria-labelledby="client-name">
                 <div class="detail-container">
                     <!-- Details Algemeen -->
@@ -76,7 +78,7 @@
                     } else 
                     {
                         <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
-                        <button class="btn-delete" @onclick="DeleteClient">Verwijderen</button>
+                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen</button>
                     }
 
                 </div>
@@ -91,15 +93,16 @@
     private ClientDto.Detail? client;
     private bool isRequestingDelete = false;
 
-    protected override void OnInitialized() 
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        Console.WriteLine("test");
-        client = ClientService.GetDetail(Id);
-        Console.WriteLine(client);
+        await GetClientAsync();
+    }
 
-        if (client == null)
-            return;
+    private async Task GetClientAsync()
+    {
+        var response = await ClientService.GetDetailAsync(Id);
+        if (response == null) return;
+        client = response;
     }
 
     private void ToggleDelete() 
@@ -107,9 +110,9 @@
         isRequestingDelete = !isRequestingDelete;
     }
 
-    private void DeleteClient() 
+    private async Task DeleteClientAsync() 
     {
-        ClientService.Delete(Id);
+        await ClientService.DeleteAsync(Id);
         NavigationManager.NavigateTo("/klanten");
     } 
 }

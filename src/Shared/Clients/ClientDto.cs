@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Text.RegularExpressions;
 
 namespace Shared.Clients;
 
@@ -37,9 +38,15 @@ public static class ClientDto
         public Validator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Dit veld is verplicht");
-            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Dit veld is verplicht");
-            RuleFor(x => x.Email).NotEmpty().WithMessage("Dit veld is verplicht");
-            RuleFor(x => x.BackupContact).NotEmpty().WithMessage("Dit veld is verplicht");
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty().WithMessage("Dit veld is verplicht")
+                .Matches(new Regex(@"^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9])((\s|\s?-\s?)?[0-9])((\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$")).WithMessage("Incorrect formaat");
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("Dit veld is verplicht")
+                .EmailAddress().WithMessage("Geen geldig emailadres");
+            RuleFor(x => x.BackupContact)
+                .NotEmpty().WithMessage("Dit veld is verplicht")
+                .Matches(new Regex(@"^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9])((\s|\s?-\s?)?[0-9])((\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$")).WithMessage("Incorrect formaat");
             RuleFor(x => x.ClientType).IsInEnum().WithMessage("Dit veld is verplicht");
             RuleFor(x => x.ClientOrganisation).NotEmpty().WithMessage("Dit veld is verplicht");
             RuleFor(x => x.Education).NotEmpty()

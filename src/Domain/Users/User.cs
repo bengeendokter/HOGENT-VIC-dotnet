@@ -26,4 +26,11 @@ public class User : Entity
         get => role;
         set => role = Guard.Against.EnumOutOfRange(value, nameof(Role));
     }
+
+    public User(string name, string email, ERole role)
+    {
+        Name = name;
+        Email = email;
+        Role = role;
+    }
 }

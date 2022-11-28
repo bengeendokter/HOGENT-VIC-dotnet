@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Persiste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "src\Services\Services.csproj", "{3FCEFB7A-24E1-4129-8090-7EB86D5051CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fakers", "src\Fakers\Fakers.csproj", "{C9AB79BE-DE20-42FC-B4F1-DA928C705967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fakers", "src\Fakers\Fakers.csproj", "{C9AB79BE-DE20-42FC-B4F1-DA928C705967}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
