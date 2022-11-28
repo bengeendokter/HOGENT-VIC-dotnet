@@ -158,14 +158,12 @@
 .stats {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
     align-items: center;
     margin-bottom: 15px;
-    max-height: 450px;
+    max-height: 500px;
     height: 100%;
     overflow-y: scroll;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .stats::-webkit-scrollbar-track {
