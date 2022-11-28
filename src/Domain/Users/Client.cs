@@ -29,18 +29,18 @@ public class Client : User
         set => backupContact = Guard.Against.NullOrEmpty(value, nameof(BackupContact));
     }
 
-    private EClientType type = default!;
-    public EClientType Type
+    private EClientType clientType = default!;
+    public EClientType ClientType
     {
-        get => type;
-        set => Guard.Against.EnumOutOfRange(value, nameof(Type));
+        get => clientType;
+        set => clientType = Guard.Against.EnumOutOfRange(value, nameof(ClientType));
     }
 
     private string clientOrganisation = default!;
     public string? ClientOrganisation
     {
         get => clientOrganisation;
-        set => Guard.Against.NullOrEmpty(value, nameof(ClientOrganisation));
+        set => clientOrganisation = Guard.Against.NullOrEmpty(value, nameof(ClientOrganisation));
     }
 
     private string externalType = default!;
@@ -58,30 +58,37 @@ public class Client : User
     }
 
     // Later veranderen naar VirtualMachineRequest
-    // public object[]? VirtualMachineRequests { get; set; }
+    //public object[]? VirtualMachineRequests { get; set; }
 
-    private readonly List<VirtualMachine> virtualMachines = new();
-    public IReadOnlyCollection<VirtualMachine> VirtualMachines => virtualMachines.AsReadOnly();
-    public Client(string phoneNumber, string department, string backupContact, EClientType type, string externalType, string education, string clientOrganisation, string name, string email, string password, ERole role, bool isActive)
-        : base(name, email, password, role, isActive)
+    //private VirtualMachine[] virtualMachines = default!;
+    //public VirtualMachine[] VirtualMachines
+    //{
+    //    get => virtualMachines;
+    //    set => virtualMachines = value;
+    //}
+
+    public Client(
+        string name, 
+        string email,
+        string phoneNumber,
+        string backupContact,
+        EClientType clientType,
+        string clientOrganisation,
+        string? education,
+        string? externalType
+    ) : base(name, email, ERole.User)
     {
         PhoneNumber = phoneNumber;
         BackupContact = backupContact;
-        Type = type;
-        ExternalType = externalType;
-        Education = education;
+        ClientType = clientType;
         ClientOrganisation = clientOrganisation;
-        Name = name;
-        Department = department;
-        Password = password;
-        Role = role;
-        IsActive = isActive;
-    }
-
-    public VirtualMachine AddVirtualMachine(VirtualMachine vm)
-    {
-
-        virtualMachines.Add(vm);
-        return vm;
+        if (clientType == EClientType.Internal)
+        {
+            Education = education;
+        } 
+        else if (clientType == EClientType.External)
+        {
+            ExternalType = externalType;
+        }
     }
 }

@@ -1,12 +1,14 @@
 global using Shared;
 global using Shared.VirtualMachines;
-global using Shared.Clients;
+global using Shared.Clients; 
+global using Client.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Client;
 using Client.VirtualMachines;
 using Client.Clients;
 using Client.Analytics;
+
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,7 +23,7 @@ builder.Services.AddScoped<IClientService, ClientService>();
 
 builder.Services.AddScoped<IVirtualMachineRequestService, VirtualMachineRequestService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
-//builder.Services.AddSingleton<IClientService, ClientService>();
+builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IUsageService, FakeUsageStatsService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 

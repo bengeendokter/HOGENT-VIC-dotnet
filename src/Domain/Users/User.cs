@@ -28,28 +28,10 @@ public class User : Entity
         set => role = Guard.Against.EnumOutOfRange(value, nameof(Role));
     }
 
-    private bool isActive = default!;
-    public bool IsActive
-    {
-        get => isActive;
-        set => isActive = Guard.Against.Null(value, nameof(isActive));
-    }
-
-    private string password = default!;
-    public string Password
-    {
-        get => password;
-        set => password = Guard.Against.NullOrWhiteSpace(value, nameof(password));
-    }
-
-    private User() { }
-
-    public User(string name, string email, string password, ERole role, bool isActive)
+    public User(string name, string email, ERole role)
     {
         Name = name;
         Email = email;
-        Password = password;
         Role = role;
-        IsActive = isActive;
     }
 }

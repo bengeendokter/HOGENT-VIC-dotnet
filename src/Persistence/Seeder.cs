@@ -2,6 +2,7 @@ using Domain.Clients.Users;
 using Domain.VirtualMachines;
 using Fakers.Clients;
 using Fakers.VirtualMachines;
+using System.Runtime.CompilerServices;
 
 namespace Persistence;
 
@@ -17,7 +18,6 @@ public class Seeder
     public void Seed()
     {
         SeedVirtualMachines();
-        SeedUsers();
         SeedClients();
     }
 
@@ -28,18 +28,10 @@ public class Seeder
         dbContext.SaveChanges();
     }
 
-    private void SeedUsers()
-    {
-        var users = new UserFaker().AsTransient().Generate(10);
-        dbContext.Users.AddRange(users);
-        //dbContext.Users.AddRange(users);
-        dbContext.SaveChanges();
-    }
-
     private void SeedClients()
     {
         var clients = new ClientFaker().AsTransient().Generate(10);
-        dbContext.Users.AddRange(clients);
+        dbContext.Clients.AddRange(clients);
         dbContext.SaveChanges();
     }
 }

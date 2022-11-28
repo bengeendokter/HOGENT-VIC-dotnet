@@ -1,0 +1,34 @@
+﻿@inject NavigationManager NavigationManager
+
+<div>
+    <div>
+        <input class="input" type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="SearchTermChanged">
+        <!-- <span class="icon is-left">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </span> -->
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string? SearchTerm { get; set; } = default!;
+
+    private string searchTerm = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        searchTerm = SearchTerm;
+    }
+
+    private void SearchTermChanged(ChangeEventArgs args)
+    {
+        searchTerm = args.Value?.ToString();
+        Filter();
+    }
+
+    private void Filter() {
+        Dictionary<string, object?> parameters = new();
+        parameters.Add(nameof(searchTerm), searchTerm);
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}

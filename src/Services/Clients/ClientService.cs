@@ -1,4 +1,6 @@
 using Domain.Clients;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Shared.Clients;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -16,114 +18,94 @@ public class ClientService : IClientService
         this.dbContext = dbContext;
     }
 
-    public async Task<List<ClientDto.Index>> GetIndexAsync()
+    public async Task<List<ClientDto.Index>> GetIndexAsync(ClientRequest.Index request)
     {
-        return await dbContext.Users
-            .Select(
-                v =>
-                    new ClientDto.Index
-                    {
-                        Id = v.Id,
-                        Name = v.Name,
-                        PhoneNumber = (v is Client)
-                        ClientType = (v is Client) ? (EClientType)((Client)v).Type : EClientType.Internal,
-                        ClientOrganisation = (v is Client) ? ((Client)v).ClientOrganisation : null,
-                        Role = v.Role,
+        var query = dbContext.Clients.AsQueryable();
 
-                    }
-            )
-            .ToListAsync();
+        if (!string.IsNullOrWhiteSpace(request.Searchterm))
+        {
+            query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
+        }
+        if (request.ClientType is not null)
+        {
+            query = query.Where(x => x.ClientType.Equals(request.ClientType.Value));
+        }
+
+        var items = await query
+//         .Skip((request.Page - 1) * request.PageSize)
+//         .Take(request.PageSize)
+           .OrderBy(x => x.Id)
+           .Select(x => new ClientDto.Index
+           {
+               Id = x.Id,
+               Name = x.Name,
+               PhoneNumber = x.PhoneNumber,
+               ClientType = (EClientType) x.ClientType,
+               ClientOrganisation = x.ClientOrganisation,
+           })
+           .ToListAsync();
+
+        return items;
     }
 
-    /*
-    public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)
+    public async Task<ClientDto.Detail> GetDetailAsync(int clientId)
     {
-        var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(v => v.Id == virtualMachineId);
+        var client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == clientId);
 
-        if (vm is null)
-            throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
+        if (client is null)
+            throw new EntityNotFoundException(nameof(Client), clientId);
 
-        return new VirtualMachineDto.Detail
+        return new ClientDto.Detail
         {
-            Id = vm.Id,
-            Name = vm.Name,
-            CPU = vm.CPU,
-            RAM = vm.RAM,
-            Storage = vm.Storage,
-            StartDate = vm.StartDate,
-            EndDate = vm.EndDate,
-            IsActive = vm.IsActive,
-            HostName = vm.HostName,
-            FQDN = vm.FQDN,
-            Availability = (Shared.VirtualMachines.EDay)vm.Availability,
-            BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)vm.BackupFrequency,
-            IsHighlyAvailable = vm.IsHighlyAvailable,
-            Mode = (Shared.VirtualMachines.EMode)vm.Mode,
-            Template = (Shared.VirtualMachines.ETemplate)vm.Template
+            Id = client.Id,
+            Name = client.Name,
+            PhoneNumber = client.PhoneNumber,
+            ClientType = (EClientType) client.ClientType,
+            ClientOrganisation = client.ClientOrganisation,
+            Email = client.Email,
+            BackupContact = client.BackupContact,
+            Education = client.Education,
+            ExternalType = client.ExternalType,
         };
     }
 
-    public async Task<int> CreateAsync(VirtualMachineDto.Mutate model)
+    public async Task<int> CreateAsync(ClientDto.Mutate model)
     {
-        if (await dbContext.VirtualMachines.AnyAsync(v => v.Name == model.Name))
-            throw new EntityAlreadyExistsException(
-                nameof(VirtualMachine),
-                nameof(VirtualMachine.Name),
-                model.Name
-            );
+        if (await dbContext.Clients.AnyAsync(x => x.Name == model.Name))
+            throw new EntityAlreadyExistsException(nameof(Client), nameof(Client.Name), model.Name);
 
-        var vm = new VirtualMachine(
-            // model.Client!,
+        Client client = new Client(
             model.Name!,
-            model.HostName!,
-            model.StartDate,
-            model.EndDate,
-            model.FQDN!,
-            model.Poorten!,
-            (Domain.VirtualMachines.ETemplate)model.Template,
-            model.Host!,
-            model.CPU,
-            model.RAM,
-            model.Storage,
-            (Domain.VirtualMachines.EMode)model.Mode,
-            (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency,
-            (Domain.VirtualMachines.EDay)model.Availability,
-            model.IsHighlyAvailable,
-            false
+            model.Email!,
+            model.PhoneNumber!,
+            model.BackupContact!,
+            (Domain.Users.EClientType) model.ClientType,
+            model.ClientOrganisation!,
+            model.Education,
+            model.ExternalType
         );
 
-        dbContext.VirtualMachines.Add(vm);
+        dbContext.Clients.Add(client);
         await dbContext.SaveChangesAsync();
-
-        return vm.Id;
+        
+        return client.Id;
     }
 
-    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model)
+    public async Task EditAsync(int clientId, ClientDto.Mutate model)
     {
-        var vm = await dbContext.VirtualMachines.SingleOrDefaultAsync(
-            v => v.Id == virtualMachineId
-        );
+        Client? client = await dbContext.Clients.SingleOrDefaultAsync(x => x.Id == clientId);
 
-        if (vm is null)
-            throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
+        if (client is null)
+            throw new EntityNotFoundException(nameof(Client), clientId);
 
-        vm.Name = model.Name!;
-        vm.CPU = model.CPU;
-        vm.RAM = model.RAM;
-        vm.Storage = model.Storage;
-        vm.StartDate = model.StartDate;
-        vm.EndDate = model.EndDate;
-        vm.IsActive = model.IsActive;
-        vm.HostName = model.HostName!;
-        vm.FQDN = model.FQDN!;
-        vm.IsHighlyAvailable = model.IsHighlyAvailable;
-        vm.Template = (Domain.VirtualMachines.ETemplate)model.Template!;
-        vm.BackupFrequency = (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency;
-        vm.Availability = (Domain.VirtualMachines.EDay)model.Availability;
-        vm.Mode = (Domain.VirtualMachines.EMode)model.Mode;
-        vm.Host = model.Host!;
-        // vm.Client = model.Client!;
-        vm.Poorten = model.Poorten!;
+        client.Name = model.Name!;
+        client.PhoneNumber = model.PhoneNumber!;
+        client.Email = model.Email!;
+        client.BackupContact = model.BackupContact!;
+        client.ClientOrganisation = model.ClientOrganisation!;
+        client.ClientType = (Domain.Users.EClientType) model.ClientType;
+        client.Education = model.Education;
+        client.ExternalType = model.ExternalType;
 
         await dbContext.SaveChangesAsync();
     }*/
@@ -133,24 +115,17 @@ public class ClientService : IClientService
         throw new NotImplementedException();
     }
 
-    public ClientDto.Detail GetDetail(int clientId)
-    {
-        throw new NotImplementedException();
-    }
 
-    public int Create(ClientDto.Mutate model)
+    public async Task DeleteAsync(int clientId)
     {
-        throw new NotImplementedException();
-    }
+        Client? client = await dbContext.Clients.SingleOrDefaultAsync(x => x.Id == clientId);
 
-    public void Edit(int clientId, ClientDto.Mutate model)
-    {
-        throw new NotImplementedException();
-    }
+        if (client is null)
+            throw new EntityNotFoundException(nameof(Client), clientId);
 
-    public void Delete(int clientId)
-    {
-        throw new NotImplementedException();
+        dbContext.Clients.Remove(client);
+
+        await dbContext.SaveChangesAsync();
     }
-    
+ 
 }

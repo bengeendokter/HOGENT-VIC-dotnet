@@ -1,4 +1,4 @@
-using Domain.Clients.Users;
+using Domain.Clients;
 using Domain.Users;
 using Domain.VirtualMachines;
 using Fakers.Common;
@@ -10,25 +10,16 @@ public class ClientFaker : EntityFaker<Client>
 {
     public ClientFaker(string locale = "nl") : base(locale)
     {
-        //Client c = new Client(phonenumber, department, backupContact, clientType, externaltype, education, clientOrganisation, name, email, passrod, role, active)
-        //User user = new User(name, email, password, role, active)
-        CustomInstantiator(
-            f =>
-                new Client(
-                    // client
-                    f.Phone.PhoneNumber(),
-                    f.Commerce.Department(),
-                    f.Internet.Email(),
-                    f.Random.Enum<EClientType>(),
-                    f.Internet.DomainName(),
-                    f.Name.JobType(),
-                    f.Company.CompanyName(),
-                    f.Internet.UserName(),
-                    f.Internet.Email(),
-                    f.Internet.Password(),
-                    f.Random.Enum<ERole>(),
-                    f.Random.Bool()
-                )
-        ); ;
+        CustomInstantiator(f => new Client(
+                f.Internet.UserName(),          // Name
+                f.Internet.Email(),             // Email
+                f.Phone.PhoneNumber(),          // PhoneNumber
+                f.Phone.PhoneNumber(),          // BackupContact
+                f.Random.Enum<EClientType>(),   // ClientType
+                f.Commerce.Department(),        // ClientOrganisation
+                f.Company.CompanyName(),        // Education
+                f.Company.CompanyName()         // ExternalType
+            )
+        ); 
     }
 }
