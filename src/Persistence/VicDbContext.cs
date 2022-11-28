@@ -2,8 +2,8 @@ using System.Reflection;
 using Domain.VirtualMachines;
 using Persistence.Triggers;
 using Microsoft.EntityFrameworkCore;
-using Domain.Clients;
-using Domain.Clients.Users;
+using Domain;
+using Domain.Users;
 
 namespace Persistence;
 

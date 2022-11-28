@@ -19,7 +19,8 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<List<ClientDto.Index>> GetIndex([FromQuery] ClientRequest.Index request)
     {
-        return await clientService.GetIndexAsync(request);
+        //return await clientService.GetIndexAsync(request);
+        return null;
     }
     /*
     [SwaggerOperation("Returns a specific virtual machine by id.")]

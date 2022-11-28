@@ -1,10 +1,9 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Users;
 using Domain.VirtualMachines;
-using Shared;
 using System.Xml.Linq;
 
-namespace Domain.Clients.Users;
+namespace Domain.Users;
 
 public class Client : User
 {

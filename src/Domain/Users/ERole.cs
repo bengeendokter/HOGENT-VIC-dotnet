@@ -1,4 +1,4 @@
-﻿namespace Shared;
+﻿namespace Domain.Users;
 
 public enum ERole
 {

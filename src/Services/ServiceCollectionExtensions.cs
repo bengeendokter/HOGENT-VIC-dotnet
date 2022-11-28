@@ -3,8 +3,6 @@ using Services.VirtualMachines;
 using Shared.Clients;
 using Services.Clients;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Clients;
-using Services.Clients;
 
 namespace Services;
 

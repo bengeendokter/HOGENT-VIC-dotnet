@@ -1,11 +1,9 @@
-using Domain.Clients;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Shared.Clients;
-using Persistence;
-using Microsoft.EntityFrameworkCore;
-using Domain.Clients.Users;
-using Shared;
+using Domain.Users;
+using EClientType = Domain.Users.EClientType;
 
 namespace Services.Clients;
 
@@ -39,7 +37,7 @@ public class ClientService : IClientService
                Id = x.Id,
                Name = x.Name,
                PhoneNumber = x.PhoneNumber,
-               ClientType = (EClientType) x.ClientType,
+               ClientType = (Shared.Clients.EClientType) x.ClientType,
                ClientOrganisation = x.ClientOrganisation,
            })
            .ToListAsync();
@@ -59,7 +57,7 @@ public class ClientService : IClientService
             Id = client.Id,
             Name = client.Name,
             PhoneNumber = client.PhoneNumber,
-            ClientType = (EClientType) client.ClientType,
+            ClientType = (Shared.Clients.EClientType) client.ClientType,
             ClientOrganisation = client.ClientOrganisation,
             Email = client.Email,
             BackupContact = client.BackupContact,

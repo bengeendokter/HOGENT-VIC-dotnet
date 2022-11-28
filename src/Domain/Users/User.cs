@@ -1,9 +1,8 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Common;
 using Domain.VirtualMachines;
-using Shared;
 
-namespace Domain.Clients.Users;
+namespace Domain.Users;
 
 public class User : Entity
 {
