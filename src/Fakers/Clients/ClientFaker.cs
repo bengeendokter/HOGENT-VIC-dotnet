@@ -14,10 +14,10 @@ public class ClientFaker : EntityFaker<Client>
         CustomInstantiator(f => new Client(
                 f.Internet.UserName(),          // Name
                 f.Internet.Email(),             // Email
-                f.Phone.PhoneNumber(),          // PhoneNumber
-                f.Phone.PhoneNumber(),          // BackupContact
+                f.Phone.PhoneNumber("+## ### ## ## ##"),          // PhoneNumber
+                f.Phone.PhoneNumber("+## ### ## ## ##"),          // BackupContact
                 f.Random.Enum<EClientType>(),   // ClientType
-                f.Commerce.Department(),        // ClientOrganisation
+                f.Company.CompanyName(),        // ClientOrganisation
                 f.Company.CompanyName(),        // Education
                 f.Company.CompanyName()         // ExternalType
             )
