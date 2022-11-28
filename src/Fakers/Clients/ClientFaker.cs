@@ -1,4 +1,5 @@
 using Domain.Clients;
+using Domain.Clients.Users;
 using Domain.Users;
 using Domain.VirtualMachines;
 using Fakers.Common;

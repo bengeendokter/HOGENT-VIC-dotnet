@@ -8,18 +8,18 @@ namespace Server.Controllers.Users;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IClientService clientService;
+    private readonly IUserService userService;
 
     public UserController(IClientService clientService)
     {
-        this.clientService = clientService;
+        this.userService = userService;
     }
     
-    [SwaggerOperation("Returns a list of clients and users.")]
+    [SwaggerOperation("Returns a list of users.")]
     [HttpGet]
-    public async Task<List<ClientDto.Index>> GetIndex()
+    public async Task<List<ClientDto.Index>> GetIndex([FromQuery] ClientRequest.Index request)
     {
-        return await clientService.GetIndexAsync();
+        return await clientService.GetIndexAsync(request);
     }
     /*
     [SwaggerOperation("Returns a specific virtual machine by id.")]

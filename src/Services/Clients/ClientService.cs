@@ -17,7 +17,6 @@ public class ClientService : IClientService
     {
         this.dbContext = dbContext;
     }
-
     public async Task<List<ClientDto.Index>> GetIndexAsync(ClientRequest.Index request)
     {
         var query = dbContext.Clients.AsQueryable();
@@ -108,11 +107,6 @@ public class ClientService : IClientService
         client.ExternalType = model.ExternalType;
 
         await dbContext.SaveChangesAsync();
-    }*/
-
-    public List<ClientDto.Index> GetAll(ClientRequest.Index request)
-    {
-        throw new NotImplementedException();
     }
 
 
@@ -127,5 +121,4 @@ public class ClientService : IClientService
 
         await dbContext.SaveChangesAsync();
     }
- 
 }

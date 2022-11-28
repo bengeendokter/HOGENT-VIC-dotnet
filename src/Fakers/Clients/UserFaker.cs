@@ -17,9 +17,9 @@ public class UserFaker : EntityFaker<User>
                     // client
                     f.Internet.UserName(),
                     f.Internet.Email(),
-                    f.Internet.Password(),
-                    f.Random.Enum<ERole>(),
-                    f.Random.Bool()
+                    //f.Internet.Password(),
+                    f.Random.Enum<ERole>()
+                    //f.Random.Bool()
                 )
         );
     }
