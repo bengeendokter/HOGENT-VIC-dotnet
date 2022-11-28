@@ -8,14 +8,16 @@
     return;
 }
 
+<div class="title-container">
+    <h1 id="client-name">Klant - @client.Name</h1>
+</div>
 <GenericLayout Display=false Title=@client.Name>
     <Content>
         <a href="/klanten">
-            <h2><i class="arrow left"></i>Terug naar klanten</h2>
+            <h2><i class="arrow left"></i>Overzicht klanten</h2>
         </a>
         <div class="center-container">
             <div class="container">
-            <h1 id="client-name">Klant - @client.Name</h1>
             <section aria-labelledby="client-name">
                 <div class="detail-container">
                     <!-- Details Algemeen -->
