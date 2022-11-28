@@ -19,9 +19,9 @@ public class UserService : IUserService
         return await response.Content.ReadFromJsonAsync<int>();
     }
 
-    public Task DeleteAsync(int userId)
+    public async Task DeleteAsync(int userId)
     {
-        throw new NotImplementedException();
+        await client.DeleteAsync($"{endpoint}/{userId}");
     }
 
     public Task EditAsync(int userId, UserDto.Mutate model)

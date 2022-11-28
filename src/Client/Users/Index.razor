@@ -21,13 +21,13 @@
 
 <GenericLayout Display=false Title="Gebruikers">
     <Content>
-        <div class="button-container">
+       <div class="button-container">
             <button class="btn-primary" @onclick=GoToCreateUser>User Toevoegen</button>
         </div>
 
         <Table
             Object="@(new Gebruiker())"
-            Collection="@users"
+            Collection="@filteredUsers"
             EditCallback="@GoToEditUser"
             DeleteCallback="@DeleteUserAsync"
         />

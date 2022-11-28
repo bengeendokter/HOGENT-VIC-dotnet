@@ -8,12 +8,15 @@ public partial class Index
     [Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
+    private string? searchTerm;
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    private int? page;
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+    private int? pageSize;
 
-    private ICollection<UserDto.Index>? users;
-    //private ICollection<Klant> clientObjects = new List<Klant>();
-    //public ICollection<Klant> filteredClients = new List<Klant>();
+    private List<UserDto.Index>? users;
+    public ICollection<Gebruiker> userObjects = new List<Gebruiker>();
+    public ICollection<Gebruiker> filteredUsers = new List<Gebruiker>();
 
     public class Gebruiker
     {
@@ -34,10 +37,49 @@ public partial class Index
             PageSize = PageSize.HasValue ? PageSize.Value : 25,
         };
 
-        var response = await UserService.GetIndexAsync(request);
-        users = response.Users?.ToList();
+        searchTerm = Searchterm;
+        page = Page;
+        pageSize = PageSize;
+
+        await RefreshUsersAsync(request);
     }
 
+    private async Task RefreshUsersAsync(UserRequest.Index request = null)
+
+    {
+        userObjects.Clear();
+        filteredUsers.Clear();
+
+        var response = await UserService.GetIndexAsync(request);
+        users = response.Users?.ToList();
+
+
+        users?.ForEach(c =>
+        {
+            userObjects.Add(new Gebruiker
+            {
+                Id = c.Id,
+                Naam = c.Name,
+                Voornaam = c.Surname,
+                Role = GiveRoleAsString(c.Role),
+                Is_Actief = c.IsActive ? "Ja" : "Neen",
+                Email = c.Email,
+            });
+        });
+
+        filteredUsers = userObjects;
+    }
+
+    private string GiveRoleAsString(ERole role)
+    {
+        return (role) switch
+        {
+            ERole.User => "user",
+            ERole.Moderator => "beheerder",
+            ERole.Admin => "admin",
+            _ => ""
+        };
+    }
     private void GoToCreateUser()
     {
         NavigationManager.NavigateTo("/gebruikers/aanmaken");
@@ -51,7 +93,20 @@ public partial class Index
     private async void DeleteUserAsync(int id)
     {
         await UserService.DeleteAsync(id);
-        NavigationManager.NavigateTo("/gebruikers");
+        await RefreshUsersAsync(new UserRequest.Index());
+    }
+
+    private void FiltersChanged()
+    {
+
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add("searchTerm", searchTerm);
+        parameters.Add("page", page);
+        parameters.Add("pageSize", pageSize);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
     }
 
 }
