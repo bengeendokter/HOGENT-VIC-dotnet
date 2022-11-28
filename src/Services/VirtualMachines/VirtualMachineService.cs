@@ -31,6 +31,7 @@ public class VirtualMachineService : IVirtualMachineService
                         IsActive = v.IsActive,
                         Template = (Shared.VirtualMachines.ETemplate)v.Template,
                         IsHighlyAvailable= v.IsHighlyAvailable,
+                        BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)v.BackupFrequency,
                     }
             )
             .ToListAsync();

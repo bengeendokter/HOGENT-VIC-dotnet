@@ -38,6 +38,9 @@
                             <button class="sort_button" @onclick="SortByKlant">Klant</button>
                         </th>
                         <th>
+                            <button class="sort_button" @onclick="SortByBackUp">Back-up</button>
+                        </th>
+                        <th>
                             <button class="sort_button" @onclick="SortByHighlyAvailable">Hoge besch.</button>
                         </th>
                         <th>
@@ -56,10 +59,15 @@
                         <td>@vm.Storage GB</td>
                         <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
-                            <td>VOKA</td>
+                        <td>VOKA</td>
                             <td>
-                                @(vm.IsHighlyAvailable ? "✔️" : "❌")
+                                @(
+                                    vm.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks"
+                                    )
                             </td>
+                        <td>
+                            @(vm.IsHighlyAvailable ? "✔️" : "❌")
+                        </td>
                         <td>
                             <span class=@(String.Join(" ", new List<string>() {"vm_status", vm.IsActive ? "active" : ""}))>@(vm.IsActive ? "Aan" : "Uit") </span>
                         </td>
@@ -123,6 +131,12 @@
 
     public void SortByKlant()
     {
+    }
+
+    public void SortByBackUp()
+    {
+        list = list.OrderBy(vm => vm.BackupFrequency).ToList();
+        StateHasChanged();
     }
 
 

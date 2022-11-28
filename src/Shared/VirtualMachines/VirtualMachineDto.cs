@@ -17,6 +17,7 @@ public static class VirtualMachineDto
         public bool IsActive { get; set; }
         public bool IsHighlyAvailable { get; set; }
         public ETemplate? Template { get; set; }
+        public EBackupFrequency BackupFrequency { get; set; }
     }
 
     public class Detail : Index
@@ -26,7 +27,6 @@ public static class VirtualMachineDto
         public string? Host { get; set; }
         public string? Poorten { get; set; }
         public ClientDto.Index? Client { get; set; }
-        public EBackupFrequency BackupFrequency { get; set; }
         public EDay Availability { get; set; }
         public EMode Mode { get; set; }
         public DateTime CreatedAt { get; set; }
