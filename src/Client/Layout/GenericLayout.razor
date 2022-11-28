@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="content">
-    <UsageStats display=@Display/>
+    <UsageStats Display="@Display" Title="@StatsTitle" Usages="@Usages" />
     <div class="main_content">
         @Content
     </div>
@@ -18,6 +18,10 @@
     public bool Display { get; set; }
     [Parameter]
     public string? Title { get; set; }
+    [Parameter]
+    public string? StatsTitle { get; set; }
+    [Parameter]
+    public List<UsageDto.Index> Usages { get; set; } = new();
     [Parameter]
     public RenderFragment? Content { get; set; }
     [Parameter]

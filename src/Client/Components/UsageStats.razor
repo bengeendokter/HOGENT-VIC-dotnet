@@ -1,6 +1,6 @@
 ﻿@inject IUsageService UsageService
 
-@if (display)
+@if (Display)
 {
     <div class="usagebar_toggler @UsageTogglerStyleCss" @onclick="ToggleUsageMenu">
         <OpenIcon />
@@ -15,32 +15,29 @@
                     </div>
                 </div>
                 <div class="info">
-                    <p>HUIDIG GEBRUIK</p>
+                    <p>@Title</p>
                 </div>
             </div>
-            @if (usages != null)
-            {
-                <div class="stats">
-                    @foreach (var u in usages)
-                    {
-                        <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used />
-                    }
-                </div>
-            }
+            <div class="stats">
+                @foreach (var u in Usages)
+                {
+                    <UsageStat Type=u.UsageType Unit=u.Unit Total=u.Total Used=u.Used />
+                }
+            </div>
         </div>
     </div>
 }
 
 @code {
-    [Parameter]
-    public bool display { get; set; }
-
-    private IEnumerable<UsageDTO.Index>? usages;
+    [Parameter] public bool Display { get; set; }
+    [Parameter] public string? Title { get; set; } = "HUIDIG GEBRUIK";
+    [Parameter] public List<UsageDto.Index> Usages { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        usages = await UsageService.GetAllUsageStats();
+        if (Usages.Count() > 0) return;
+
+        Usages = await UsageService.GetAllUsageStats();
     }
 
     private bool disappearOptions = false;

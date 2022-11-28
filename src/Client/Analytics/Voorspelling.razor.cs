@@ -7,6 +7,17 @@ namespace Client.Analytics
     {
         [Inject] public IVirtualMachineService VirtualMachineService { get; set; } = default!;
         
+        public List<UsageDto.Index> Usages
+        {
+            get => new()
+            {
+                new UsageDto.Index { UsageType = EUsage.Cpu, Unit = EUsageUnit.Cores, Total = DefinitieftotaalCPU, Used = DefinitiefgebruikCPU },
+                new UsageDto.Index { UsageType = EUsage.Ram, Unit = EUsageUnit.GB, Total = DefinitieftotaalRAM, Used = DefinitiefgebruikRAM },
+                new UsageDto.Index { UsageType = EUsage.Storage, Unit = EUsageUnit.GB, Total = DefinitieftotaalStorage, Used = DefinitiefgebruikStorage }
+            };
+            set => Usages = value;
+        }
+
         private List<VirtualMachineDto.Index> _vms = new();
         private DataItem[] historiek => GrafiekWeergave();
         private DateTime datum = DateTime.Now;

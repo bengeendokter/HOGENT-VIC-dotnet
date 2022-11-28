@@ -1,6 +1,6 @@
 ﻿namespace Shared;
 
-public class UsageDTO
+public class UsageDto
 {
     public class Index
     {

@@ -1,7 +1,7 @@
 ﻿@page "/historiek/voorspelling"
 @using System.Globalization
 
-<GenericLayout Display="true" Title="Voorspelling">
+<GenericLayout Display="true" Title="Voorspelling" StatsTitle=@($"Gebruik op {datum.ToShortDateString()}") Usages="@Usages">
     <Actions>
         <input type="date" id="datum" name="datum"
                 min=@($"{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") 
@@ -20,15 +20,14 @@
     <Content>
         <div class="grafiekcomponent">
             <div class="grafiek">
-                <p>Verbruik CPU, RAM en Opslag:</p>
                 <RadzenChart>
-                    <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik CPU" LineType="LineType.Solid" ValueProperty="CPU">
+                    <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="CPU" LineType="LineType.Solid" ValueProperty="CPU">
                         <RadzenMarkers MarkerType="MarkerType.Circle" />
                     </RadzenLineSeries>
-                    <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik RAM" LineType="LineType.Solid" ValueProperty="RAM">
+                    <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="RAM" LineType="LineType.Solid" ValueProperty="RAM">
                         <RadzenMarkers MarkerType="MarkerType.Circle" />
                     </RadzenLineSeries>
-                    <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Verbruik Opslag" LineType="LineType.Solid" ValueProperty="Storage">
+                    <RadzenLineSeries Smooth="false" Data="@historiek" CategoryProperty="Date" Title="Opslag" LineType="LineType.Solid" ValueProperty="Storage">
                         <RadzenMarkers MarkerType="MarkerType.Circle" />
                     </RadzenLineSeries>
                     <RadzenCategoryAxis Padding="1" Formatter="@FormatAsMonth"/>
