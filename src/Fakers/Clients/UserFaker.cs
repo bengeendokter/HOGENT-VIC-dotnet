@@ -9,17 +9,15 @@ public class UserFaker : EntityFaker<User>
 {
     public UserFaker(string locale = "nl") : base(locale)
     {
-        //User user = new User(name, email, password, role, active)
-        //CustomInstantiator(
-        //    f =>
-        //        new User(
-        //            // client
-        //            f.Internet.UserName(),
-        //            f.Internet.Email(),
-        //            //f.Internet.Password(),
-        //            f.Random.Enum<ERole>()
-        //            //f.Random.Bool()
-        //        )
-        //);
+        CustomInstantiator(
+            f =>
+                new User(
+                    f.Person.LastName!,         // Name
+                    f.Person.FirstName,         // Surname
+                    f.Internet.Email(),         // Email
+                    f.Random.Enum<ERole>(),     // Role
+                    f.Random.Bool()             // IsActive
+                )
+        );
     }
 }

@@ -67,15 +67,17 @@ public class Client : User
     //}
 
     public Client(
-        string name, 
+        string name,
+        string surname,
         string email,
         string phoneNumber,
         string backupContact,
         EClientType clientType,
         string clientOrganisation,
         string? education,
-        string? externalType
-    ) : base(name, email, ERole.User)
+        string? externalType,
+        bool isActive
+    ) : base(name, surname, email, ERole.User, isActive)
     {
         PhoneNumber = phoneNumber;
         BackupContact = backupContact;

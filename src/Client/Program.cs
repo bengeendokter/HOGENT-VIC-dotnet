@@ -8,7 +8,7 @@ using Client;
 using Client.VirtualMachines;
 using Client.Clients;
 using Client.Analytics;
-
+using Client.Users;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +20,7 @@ builder.Services.AddScoped(
 
 builder.Services.AddScoped<IVirtualMachineService, VirtualMachineService>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IVirtualMachineRequestService, VirtualMachineRequestService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();

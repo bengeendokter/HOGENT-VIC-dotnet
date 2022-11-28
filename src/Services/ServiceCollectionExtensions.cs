@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IVirtualMachineService, VirtualMachineService>();
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<IUserService, UserService>();
 
         // Add more services here...
 

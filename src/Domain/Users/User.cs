@@ -13,6 +13,13 @@ public class User : Entity
         set => name = Guard.Against.NullOrEmpty(value, nameof(Name));
     }
 
+    private string surname = default!;
+    public string Surname
+    {
+        get => surname;
+        set => surname = Guard.Against.NullOrEmpty(value, nameof(surname));
+    }
+
     private string email = default!;
     public string Email
     {
@@ -27,10 +34,19 @@ public class User : Entity
         set => role = Guard.Against.EnumOutOfRange(value, nameof(Role));
     }
 
-    public User(string name, string email, ERole role)
+    private bool isActive = default!;
+    public bool IsActive
+    {
+        get => isActive;
+        set => isActive = Guard.Against.Null(value, nameof(isActive));
+    }
+
+    public User(string name, string surname, string email, ERole role, bool isActive)
     {
         Name = name;
+        Surname = surname;
         Email = email;
         Role = role;
+        IsActive = isActive;
     }
 }

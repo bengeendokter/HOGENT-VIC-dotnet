@@ -36,6 +36,7 @@ public class ClientService : IClientService
            {
                Id = x.Id,
                Name = x.Name,
+               Surname = x.Surname,
                PhoneNumber = x.PhoneNumber,
                ClientType = (Shared.Clients.EClientType) x.ClientType,
                ClientOrganisation = x.ClientOrganisation,
@@ -56,6 +57,7 @@ public class ClientService : IClientService
         {
             Id = client.Id,
             Name = client.Name,
+            Surname = client.Surname,
             PhoneNumber = client.PhoneNumber,
             ClientType = (Shared.Clients.EClientType) client.ClientType,
             ClientOrganisation = client.ClientOrganisation,
@@ -73,13 +75,15 @@ public class ClientService : IClientService
 
         Client client = new Client(
             model.Name!,
+            model.Surname!,
             model.Email!,
             model.PhoneNumber!,
             model.BackupContact!,
             (Domain.Users.EClientType) model.ClientType,
             model.ClientOrganisation!,
             model.Education,
-            model.ExternalType
+            model.ExternalType,
+            true
         );
 
         dbContext.Clients.Add(client);
