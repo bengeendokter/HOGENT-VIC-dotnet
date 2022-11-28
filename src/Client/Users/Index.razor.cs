@@ -93,7 +93,12 @@ public partial class Index
     private async Task DeleteUserAsync(int id)
     {
         await UserService.DeleteAsync(id);
-        await RefreshUsersAsync(new UserRequest.Index());
+        await RefreshUsersAsync(new UserRequest.Index()
+        {
+            Page = Page.HasValue ? Page.Value : 1,
+            PageSize = PageSize.HasValue ? PageSize.Value : 25,
+            Searchterm = Searchterm
+        });
     }
 
     private void FiltersChanged()
