@@ -64,14 +64,6 @@ table {
     display: block;
 }
 
-th {
-    font-family: 'Ubuntu', sans-serif;
-}
-
-td {
-    font-family: 'Roboto', sans-serif;
-}
-
 thead {
     border: 3px;
     border-radius: 10px;

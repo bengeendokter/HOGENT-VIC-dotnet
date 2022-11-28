@@ -142,7 +142,6 @@
 
 .info p:first-child {
     color: var(--clr-text-color);
-    font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     font-size: 24px;
     font-size: 100%;
@@ -151,7 +150,6 @@
 
 .info p:last-child {
     color: var(--clr-usage-info-text);
-    font-family: 'Roboto', sans-serif;
     font-weight: bold;
     font-size: 100%;
     margin: 0;
