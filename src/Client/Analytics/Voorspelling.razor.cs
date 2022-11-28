@@ -9,8 +9,7 @@ namespace Client.Analytics
         
         private List<VirtualMachineDto.Index> _vms = new();
         private DataItem[] historiek => GrafiekWeergave();
-        private DateTime activitydatum = DateTime.Now;
-        private DateTime grafiekdatum = DateTime.Now;
+        private DateTime datum = DateTime.Now;
         private int evolutie = 5;
         //totaal
         private int TotaalVMCPU(DateTime datum)
@@ -90,15 +89,15 @@ namespace Client.Analytics
             return (TotaalVMStorage(datum) - VrijVMS(datum)[2]);
         }
 
-        private int DefinitieftotaalCPU => DefinitieftotaalCPUfunc(activitydatum);
-        private int DefinitiefvrijCPU => DefinitiefvrijCPUfunc(activitydatum);
-        private int DefinitiefgebruikCPU => DefinitiefgebruikCPUfunc(activitydatum);
-        private int DefinitieftotaalRAM => DefinitieftotaalRAMfunc(activitydatum);
-        private int DefinitiefvrijRAM => DefinitiefvrijRAMfunc(activitydatum);
-        private int DefinitiefgebruikRAM => DefinitiefgebruikRAMfunc(activitydatum);
-        private int DefinitieftotaalStorage => DefinitieftotaalStoragefunc(activitydatum);
-        private int DefinitiefvrijStorage => DefinitiefvrijStoragefunc(activitydatum);
-        private int DefinitiefgebruikStorage => DefinitiefgebruikStoragefunc(activitydatum);
+        private int DefinitieftotaalCPU => DefinitieftotaalCPUfunc(datum);
+        private int DefinitiefvrijCPU => DefinitiefvrijCPUfunc(datum);
+        private int DefinitiefgebruikCPU => DefinitiefgebruikCPUfunc(datum);
+        private int DefinitieftotaalRAM => DefinitieftotaalRAMfunc(datum);
+        private int DefinitiefvrijRAM => DefinitiefvrijRAMfunc(datum);
+        private int DefinitiefgebruikRAM => DefinitiefgebruikRAMfunc(datum);
+        private int DefinitieftotaalStorage => DefinitieftotaalStoragefunc(datum);
+        private int DefinitiefvrijStorage => DefinitiefvrijStoragefunc(datum);
+        private int DefinitiefgebruikStorage => DefinitiefgebruikStoragefunc(datum);
         /*GRAFIEK*/
         class DataItem
         {
@@ -124,10 +123,10 @@ namespace Client.Analytics
         private DataItem[] GrafiekWeergave()
         {
             //gekozen datum
-            DateTime begin = grafiekdatum;
+            DateTime begin = datum;
             //tot x maanden (evolutie)
             int tot = evolutie;
-            DateTime end = grafiekdatum.AddMonths(tot);
+            DateTime end = datum.AddMonths(tot);
             //alle datums opvullen
             var datums = new List<DateTime>();
             for (var dt = begin; dt <= end; dt = dt.AddMonths(1))
