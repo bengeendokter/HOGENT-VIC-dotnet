@@ -90,7 +90,7 @@ public partial class Index
         NavigationManager.NavigateTo($"/gebruikers/wijzigen/{id}");
     }
 
-    private async void DeleteUserAsync(int id)
+    private async Task DeleteUserAsync(int id)
     {
         await UserService.DeleteAsync(id);
         await RefreshUsersAsync(new UserRequest.Index());
