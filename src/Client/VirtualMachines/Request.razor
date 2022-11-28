@@ -1,17 +1,11 @@
 ﻿@page "/vm/request"
 
-<div class="title-container">
-    <h1>
-        Vm aanvragen
-    </h1>
-</div>
 <GenericLayout Display=false Title="VM - Aanvragen">
     <Content>
         <div class="requestpage">
             <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
-
                 <FluentValidationValidator />
-                    <div class="form">
+                <div class="form">
                     <div class="input-group">
                         <label>
                             Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
@@ -32,22 +26,21 @@
 
 
                         <label class="reden">
-                           Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor de aanvraag.<br />
+                            Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor
+                            de aanvraag.<br />
                             <InputTextArea @bind-Value="vmRequest.Reason" class="inputField"></InputTextArea>
                             <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
-                         </label>
+                        </label>
 
-                         @if(_existingClient){
+                        @if (_existingClient)
+                        {
 
-                         }
-
+                        }
                     </div>
-
                     <button type="submit" class="btn-primary">Submit</button>
                 </div>
             </EditForm>
-
-         </div>
+        </div>
     </Content>
 </GenericLayout>
 
@@ -55,7 +48,8 @@
     private VirtualMachineRequestDto.Create vmRequest = new();
     public bool _existingClient = true;
 
-    protected override void OnInitialized(){
+    protected override void OnInitialized()
+    {
         vmRequest.StartDate = DateTime.Now;
         vmRequest.EndDate = DateTime.Now;
     }
@@ -65,6 +59,4 @@
         Console.WriteLine("submit");
         Console.WriteLine(vmRequest.Reason);
     }
-
-
 }

@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Components;
 using Radzen;
-
 
 namespace Client.Analytics
 {
     public partial class Voorspelling
     {
+        [Inject] public IVirtualMachineService VirtualMachineService { get; set; } = default!;
+        
         private List<VirtualMachineDto.Index> _vms = new();
         private DataItem[] historiek => GrafiekWeergave();
         private DateTime activitydatum = DateTime.Now;
@@ -142,9 +144,9 @@ namespace Client.Analytics
             return data;
         }
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
-            _vms = await VirtualMachineService.GetIndexAsync(); //new();
+            _vms = await VirtualMachineService.GetIndexAsync();
         }
     }
 }

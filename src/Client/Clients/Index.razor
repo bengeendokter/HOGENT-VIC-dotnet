@@ -8,23 +8,16 @@
     return;
 }
 
-<div class="title-container">
-    <h1>Klanten</h1>
-    <div class="select-container">
-        <!-- Container indien nog sorteer opties moeten worden toegevoegd -->
+<GenericLayout Display=false Title="Klanten">
+    <Actions>
         <select @onchange=OnSelectFilter>
             <option value="all" selected>Alle</option>
             <option value="internal">Alleen interne</option>3
             <option value="external">Alleen Externe</option>
         </select>
-    </div>
-</div>
-<GenericLayout Display=false Title="Klanten">
+        <button class="btn-primary" @onclick=GoToCreateClient>Toevoegen</button>
+    </Actions>
     <Content>
-        <div class="button-container">
-            <button class="btn-primary" @onclick=GoToCreateClient>Klant Toevoegen</button>
-        </div>
-
         <Table 
             Collection="@filteredClients" 
             InfoCallback="@GoToClientDetails"

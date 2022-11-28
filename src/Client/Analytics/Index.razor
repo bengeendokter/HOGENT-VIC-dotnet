@@ -3,86 +3,76 @@
 @inject IActivityService ActivityService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 
-<PageTitle>Rapportering</PageTitle>
+<GenericLayout Display="false" Title="Historiek">
+    <Actions>
+        <select @onchange="@OnSelect">
+            <option value="" selected disabled hidden>Sorteer op</option>
+            <option value="date">Datum</option>
+            <option value="name">Naam</option>
+            <option value="vcpu"># CPU</option>
+            <option value="ram"># RAM</option>
+            <option value="storage"># Storage</option>
+        </select>
+        <a href="/historiek/voorspelling" class="btn-primary">
+            Voorspelling
+        </a>
+    </Actions>
+    <Content>
+        <div class="analytics-container">
+            <!--
+            <div class="currentUse-container">
+            </div>
+            -->
+            <div class="table-container"> 
+                <table>
+                    <thead> 
+                        <tr>
+                            <th></th>
+                            <th>Virtual Machine</th>
+                            <th>Activiteit</th>
+                            <th># CPU</th>
+                            <th># RAM</th>
+                            <th># Storage</th>
+                            <th>Activiteit Datum</th>
+                            <th>Klant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var id = 1;}
+                        @foreach (Activity activity in _activities) 
+                        {
+                            var vm = activity.VirtualMachine;
+                            @if (vm == null) continue;
 
-<div class="title-container">
-    <h1>Historiek</h1>
-    <select @onchange="@OnSelect">
-        <option value="" selected disabled hidden>Sorteer op</option>
-        <option value="date">Datum</option>
-        <option value="name">Naam</option>
-        <option value="vcpu"># CPU</option>
-        <option value="ram"># RAM</option>
-        <option value="storage"># Storage</option>
-    </select>
-</div>
-<div class="analytics-container">
-    <!--
-    <div class="currentUse-container">
-    </div>
-    -->
-    <div class="table-container"> 
-        <table>
-            <thead> 
-                <tr>
-                    <th></th>
-                    <th>Virtual Machine</th>
-                    <th>Activiteit</th>
-                    <th># CPU</th>
-                    <th># RAM</th>
-                    <th># Storage</th>
-                    <th>Activiteit Datum</th>
-                    <th>Klant</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{var id = 1;}
-                @foreach (Activity activity in _activities) 
-                {
-                    var vm = activity.VirtualMachine;
-                    @if (vm == null) continue;
-
-                    <tr>
-                        <td>@(id++)</td>
-                        <td>@vm.Name</td>
-                        @switch (activity.Type) {
-                            case EActivity.Added:
-                                <td>VM toegevoegd</td>
-                                <td class="added">+ @vm.CPU Cores</td>
-                                <td class="added">+ @vm.RAM GB</td>
-                                <td class="added">+ @vm.Storage GB</td>
-                                break;
-                            case EActivity.Deleted:
-                                <td>VM verwijderd</td>
-                                <td class="deleted">- @vm.CPU Cores</td>
-                                <td class="deleted">- @vm.RAM GB</td>
-                                <td class="deleted">- @vm.Storage GB</td>
-                                break;
-                            default:
-                                break;
+                            <tr>
+                                <td>@(id++)</td>
+                                <td>@vm.Name</td>
+                                @switch (activity.Type) {
+                                    case EActivity.Added:
+                                        <td>VM toegevoegd</td>
+                                        <td class="added">+ @vm.CPU Cores</td>
+                                        <td class="added">+ @vm.RAM GB</td>
+                                        <td class="added">+ @vm.Storage GB</td>
+                                        break;
+                                    case EActivity.Deleted:
+                                        <td>VM verwijderd</td>
+                                        <td class="deleted">- @vm.CPU Cores</td>
+                                        <td class="deleted">- @vm.RAM GB</td>
+                                        <td class="deleted">- @vm.Storage GB</td>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                <td>VOKA</td>
+                            </tr>
                         }
-                        <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                        <td>VOKA</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-<div class="voorspelling_link">
-    Klik om voorspellingen te doen met data:
-    <NavLink href="/historiek/voorspelling" Match=NavLinkMatch.All>
-        <div>
-            <span class="material-icons" style="color: var(--clr-CTA)">
-                trending_up
-            </span> Voorspelling
-        </div>     
-    </NavLink>
-</div>
-
-
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </Content>
+</GenericLayout>
 
 @code {
     private List<Activity> _activities = new();

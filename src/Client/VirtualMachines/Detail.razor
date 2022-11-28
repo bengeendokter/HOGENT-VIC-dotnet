@@ -8,14 +8,11 @@
     return;
 }
 
-<GenericLayout Display=false Title=@vm.Name> 
+<GenericLayout Display=false Title="@vm.Name"> 
+    <Actions>
+        <a class="link" href=@($"/vm/manage/{Id}")>Bewerken</a>
+    </Actions>
     <Content>
-
-        <div class="main_heading">
-            <h1 id="vm-title"><a class="breadcrumb" href="/vm"><i class="arrow left"></i>Virtuele Machine</a> - (@vm.Name)</h1>
-            @*TODO move wijzigen to top right*@
-            <a class="link" href=@($"/vm/manage/{Id}")>Bewerken</a>
-        </div>
         <section aria-labelledby="vm-title" class="details">
             <div class="details_group">
                 <section class="details_item">

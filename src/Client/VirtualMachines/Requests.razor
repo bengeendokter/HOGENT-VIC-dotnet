@@ -1,11 +1,9 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
 @inject NavigationManager NavigationManager
-<div class="title-container">
-    <h1>
-        Virtuele machine aanvragen
-    </h1>
-    <div class="filters">
+
+<GenericLayout Display=false Title="Aanvragen">
+    <Actions>
         <select @bind="@_sortFilter" @oninput="@FilterChange">
             <option value="0">Datum oplopend</option>
             <option value="1">Datum aflopend</option>
@@ -19,11 +17,8 @@
             <option value="3">Denied</option>
             <option value="4">Requested</option>
         </select>
-    </div>
-</div>
-<GenericLayout Display=false Title="Aanvragen">
+    </Actions>
     <Content>
-
         <Table Collection="filteredObjects" InfoCallback="@RequestInfo"/>
     </Content>
 </GenericLayout>

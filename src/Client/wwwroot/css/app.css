@@ -150,10 +150,6 @@ a, .btn-link {
 }
 /*#endregion */
 
-.content {
-
-}
-
 .valid.modified:not([type=checkbox]) {
     background: #E1F8E6 !important;
 }
@@ -223,6 +219,7 @@ a, .btn-link {
 }
 
 .title-container {
+    display: flex;
     background-color: var(--clr-background-title);
     height: 50px;
     height: 50px;
@@ -232,11 +229,21 @@ a, .btn-link {
     padding-right: 20px;
     justify-content: space-between;
 }
-title-container filters {
-    display: flex;
 
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-self: end;
+    align-items: center;
 }
 
+.actions > button, .actions > a {
+    text-align: center;
+    vertical-align: middle;
+    width: auto;
+    height: 2rem;
+    padding: 0px 10px;
+}
 
 @media (min-width: 1080px) {
 
