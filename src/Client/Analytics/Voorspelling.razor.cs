@@ -142,9 +142,9 @@ namespace Client.Analytics
             return data;
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
-            _vms = /*await VirtualMachineService.GetIndexAsync();*/ new();
+            _vms = await VirtualMachineService.GetIndexAsync(); //new();
         }
     }
 }
