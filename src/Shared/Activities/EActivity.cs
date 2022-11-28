@@ -1,4 +1,4 @@
-﻿namespace Shared;
+﻿namespace Shared.Activities;
 
 public enum EActivity
 {

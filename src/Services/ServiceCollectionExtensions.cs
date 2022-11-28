@@ -2,6 +2,9 @@ using Shared.VirtualMachines;
 using Services.VirtualMachines;
 using Shared.Clients;
 using Services.Clients;
+using Shared.Activities;
+using Services.Activities;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Services;
@@ -17,6 +20,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IVirtualMachineService, VirtualMachineService>();
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<IActivityService, ActivityService>();
 
         // Add more services here...
 

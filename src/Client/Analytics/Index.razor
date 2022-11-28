@@ -1,5 +1,5 @@
 ﻿@page "/historiek"
-@using System.Globalization
+@    using System.Globalization
 @inject IActivityService ActivityService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 
@@ -37,7 +37,7 @@
             </thead>
             <tbody>
                 @{var id = 1;}
-                @foreach (Activity activity in _activities) 
+                @foreach (ActivityDto.Index activity in _activities) 
                 {
                     var vm = activity.VirtualMachine;
                     @if (vm == null) continue;
@@ -85,6 +85,10 @@
 
 
 @code {
+    [Parameter, SupplyParameterFromQuery] public string? SortingParameters { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+
     private List<Activity> _activities = new();
 
     /* Sorteren via Select Tag */
@@ -124,5 +128,24 @@
     {
         /* Sorteren op datum in back-end*/
         _activities = ActivityService.GetAll();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshActivitiesAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ActivityRequest.Index request = new()
+            {
+                Page = Page.HasValue ? Page.Value : 1,
+                PageSize = PageSize.HasValue ? PageSize.Value : 25,
+            };
+        await RefreshClientsAsync(request);
+    }
+
+    private async Task RefreshActivitiesAsync() {
+
     }
 }
