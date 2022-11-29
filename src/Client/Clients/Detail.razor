@@ -8,7 +8,10 @@
     return;
 }
 
-<GenericLayout Display=false Title=@($"Klant - {client.Name}")>
+<div class="title-container">
+    <h1 id="client-name">Klant - @client.Name</h1>
+</div>
+<GenericLayout Display=false Title=@client.Name>
     <Actions>
         <a href="/klanten" class="btn-primary">
             Annuleren

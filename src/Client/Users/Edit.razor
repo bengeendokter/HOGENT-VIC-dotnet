@@ -1,6 +1,9 @@
 ﻿@page "/gebruikers/wijzigen/{id:int}"
 
-<GenericLayout Display=false Title=@($"User Wijzigen - {user.Surname} {user.Name}")>
+<div class="title-container">
+    <h1>User Wijzigen - @user.Surname @user.Name</h1>
+</div>
+<GenericLayout Display=false Title="User aanmaken">
     <Content>
         <EditForm Model="@user" OnValidSubmit="@EditUserAsync" >
             <FluentValidationValidator />
