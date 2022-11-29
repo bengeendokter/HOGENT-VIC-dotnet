@@ -1,7 +1,7 @@
 ﻿@page "/gebruikers/wijzigen/{id:int}"
 
 <div class="title-container">
-    <h1>User aanmaken</h1>
+    <h1>User Wijzigen - @user.Surname @user.Name</h1>
 </div>
 <GenericLayout Display=false Title="User aanmaken">
     <Content>
@@ -12,17 +12,17 @@
                     <div class="input-container">
                         <section>
                             <div class="group">
-                                <label>Naam</label>
-                                <div>
-                                    <InputText @bind-Value="user.Name" class="inputField" />
-                                    <ValidationMessage For="() => user.Name" />
-                                </div>
-                            </div>
-                            <div class="group">
                                 <label>Voornaam</label>
                                 <div>
                                     <InputText @bind-Value="user.Surname" class="inputField" />
                                     <ValidationMessage For="() => user.Surname" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Naam</label>
+                                <div>
+                                    <InputText @bind-Value="user.Name" class="inputField" />
+                                    <ValidationMessage For="() => user.Name" />
                                 </div>
                             </div>
                             <div class="group">
@@ -34,7 +34,10 @@
                                         <option          value="@ERole.Admin">admin</option>
                                     </InputSelect>
                                     <ValidationMessage For="() => user.Role" />
+                                </div>
                             </div>
+                            </section>
+                            <section>
                             <div class="group">
                                 <label>Email</label>
                                 <div>
@@ -45,15 +48,15 @@
                             <div class="group">
                                 <label>Account actief</label>
                                 <div>
-                                    <InputCheckbox @bind-Value="user.IsActive" class="inputField" />
+                                    <InputCheckbox @bind-Value="user.IsActive" class="inputField checkbox" />
                                     <ValidationMessage For="() => user.IsActive" />
                                 </div>
-                            </div>
-                            </div>
+                            </div> 
                         </section>                     
                     </div>
                     <div class="button-container">
                         <button type="submit" class="btn-primary">Bijwerken</button>
+                        <a href="/gebruikers" class="btn-secondary">Annuleren</a>
                     </div>
                 </div>
             </div>

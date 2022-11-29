@@ -16,6 +16,13 @@
                     <div class="input-container">
                         <section>
                             <div class="group">
+                                <label>Voornaam</label>
+                                <div>
+                                    <InputText @bind-Value="_client.Surname" class="inputField" />
+                                    <ValidationMessage For="() => _client.Surname" />
+                                </div>
+                            </div>
+                            <div class="group">
                                 <label>Naam</label>
                                 <div>
                                     <InputText @bind-Value="_client.Name" class="inputField" />
@@ -114,6 +121,7 @@
             _clientName = response?.Name;
             _client = new ClientDto.Mutate
             {
+                Surname = response.Surname,
                 Name = response.Name,
                 PhoneNumber = response.PhoneNumber,
                 ClientType = response.ClientType,

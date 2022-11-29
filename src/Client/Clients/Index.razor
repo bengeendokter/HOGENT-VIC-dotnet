@@ -49,6 +49,7 @@
     public class Klant
     {
         public int Id;
+        public string? Voornaam;
         public string? Naam;
         public string? Type;
         public string? Telefoon_nummer;
@@ -82,6 +83,7 @@
             clientObjects.Add(new Klant
                 {
                     Id = c.Id,
+                    Voornaam = c.Surname,
                     Naam = c.Name,
                     Type = ConvertTypeToString(c.ClientType),
                     Telefoon_nummer = c.PhoneNumber,

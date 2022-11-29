@@ -10,11 +10,9 @@ public static class ClientDto
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
-
         public string? PhoneNumber { get; set; }
         public EClientType ClientType { get; set; }
         public string? ClientOrganisation { get; set; }
-        public ERole Role { get; set; }
     }
 
     public class Detail : Index
@@ -28,7 +26,6 @@ public static class ClientDto
     {
         public string? Name { get; set; }
         public string? Surname { get; set; }
-
         public string? PhoneNumber { get; set; }
         public EClientType ClientType { get; set; }
         public string? ClientOrganisation { get; set; }
@@ -36,7 +33,6 @@ public static class ClientDto
         public string? BackupContact { get; set; }
         public string? Education { get; set; }
         public string? ExternalType { get; set; }
-        public bool? isActive { get; set; }
     }
 
     public class Validator : AbstractValidator<Mutate>

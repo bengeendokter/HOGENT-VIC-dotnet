@@ -12,17 +12,17 @@
                     <div class="input-container">
                         <section>
                             <div class="group">
-                                <label>Naam</label>
-                                <div>
-                                    <InputText @bind-Value="user.Name" class="inputField" />
-                                    <ValidationMessage For="() => user.Name" />
-                                </div>
-                            </div>
-                            <div class="group">
                                 <label>Voornaam</label>
                                 <div>
                                     <InputText @bind-Value="user.Surname" class="inputField" />
                                     <ValidationMessage For="() => user.Surname" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Naam</label>
+                                <div>
+                                    <InputText @bind-Value="user.Name" class="inputField" />
+                                    <ValidationMessage For="() => user.Name" />
                                 </div>
                             </div>
                             <div class="group">
@@ -47,6 +47,7 @@
                     </div>
                     <div class="button-container">
                         <button type="submit" class="btn-primary">Toevoegen</button>
+                        <a href="/gebruikers" class="btn-secondary">Annuleren</a>
                     </div>
                 </div>
             </div>
