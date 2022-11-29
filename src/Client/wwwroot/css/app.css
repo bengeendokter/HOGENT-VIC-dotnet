@@ -24,7 +24,7 @@
     --clr-used-red: #E63462;
     --clr-usage-toggler-arrow: #FFFFFF;
     --clr-usage-toggler-background: #7e7ee6;
-    --clr-deleteBackground: rgb(255, 255, 255, 0.1);
+    --clr-deleteBackground: rgb(255, 255, 255, 0.5);
 }
 
     :root.dark_mode {

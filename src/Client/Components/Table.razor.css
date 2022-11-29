@@ -1,8 +1,32 @@
-﻿table {
+﻿section {
+    container-type: inline-size;
+    height: 58vh;
+    max-width: 1500px;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin: 15px auto;
+}
+
+section::-webkit-scrollbar-track {
+    background-color: var(--clr-background-blue);
+}
+
+section::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+section::-webkit-scrollbar-thumb {
+    background: var(--clr-text-color);
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+table {
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
-    border-radius: 10em;
     color: var(--clr-text-color);
 }
 
@@ -10,6 +34,8 @@ thead {
     border: 3px;
     border-color: #E0E0E0;
     border-radius: 100px;
+    position:sticky;
+    top: 0;
 }
 
 thead tr th:first-child {
@@ -50,7 +76,8 @@ tr:nth-child(even) {
     align-items: center;
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
+    z-index: 1000;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

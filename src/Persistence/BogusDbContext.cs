@@ -1,28 +1,23 @@
-using System.Reflection;
-using Domain.VirtualMachines;
-using Persistence.Triggers;
+﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Domain;
-using Domain.Users;
 
 namespace Persistence;
 
-public class VicDbContext : DbContext
+public class BogusDbContext : DbContext
 {
-    public DbSet<VirtualMachine> VirtualMachines => Set<VirtualMachine>();
-    public DbSet<Client> Clients => Set<Client>();
-    public DbSet<User> Users => Set<User>();
-
+    //public DbSet<Use> Products => Set<Product>();
+    //public DbSet<Tag> Tags => Set<Tag>();
+    //public DbSet<Customer> Customers => Set<Customer>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.EnableDetailedErrors();
         optionsBuilder.EnableSensitiveDataLogging();
-        optionsBuilder.UseInMemoryDatabase(databaseName: "VIC");
+        optionsBuilder.UseInMemoryDatabase(databaseName: "BogusDb");
         optionsBuilder.UseTriggers(options =>
         {
-            options.AddTrigger<EntityBeforeSaveTrigger>();
+            //options.AddTrigger<EntityBeforeSaveTrigger>();
         });
     }
 
@@ -32,3 +27,4 @@ public class VicDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
+
