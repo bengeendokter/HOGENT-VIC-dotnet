@@ -3,10 +3,8 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-<div class="title-container">
-    <h1>@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")</h1>
-</div>
-<GenericLayout Display=false Title="Klant aanmaken of wijzigen">
+
+<GenericLayout Display=false Title=@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")>
     <Content>
         <EditForm Model="@_client" OnValidSubmit="OnSubmit" >
             <FluentValidationValidator />

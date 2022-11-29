@@ -1,4 +1,5 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 :root {
     color-scheme: light;
@@ -221,8 +222,7 @@ a, .btn-link {
 .title-container {
     display: flex;
     background-color: var(--clr-background-title);
-    height: 50px;
-    height: 50px;
+    min-height: 50px;
     display: flex;
     align-items: center;
     padding-left: 20px;
