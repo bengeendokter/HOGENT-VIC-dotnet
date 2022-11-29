@@ -1,6 +1,27 @@
 ﻿@using System.Globalization
 @typeparam T
 
+@if (isRequestingDelete)
+{
+    <div class="delete-background">
+        <div class="delete-window">
+            <h2>Bent U zeker dat U dit item wil verwijderen?</h2>
+            <div class="delete-window-buttons">
+                <button class="btn-delete"
+            @onclick="() => {
+                OnDelete(_id);
+                SetDeleteFalse();
+            }">
+                    Verwijderen
+                </button>
+                <button class="btn-primary"
+            @onclick=SetDeleteFalse>
+                    Annuleren
+                </button>
+            </div>
+        </div>
+    </div>
+}
 <section>
     <table>
         <thead>
@@ -58,7 +79,7 @@
                                 @if (DeleteCallback.HasDelegate)
                                 {
                                     <button style="border: none; background: none;"
-                                            @onclick=ToggleDelete>
+                                            @onclick="() => SetDeleteTrue(item.GetType().GetFields()[0].GetValue(item))">
                                         <span class="material-icons" style="color: red">
                                             delete
                                         </span>
@@ -77,27 +98,6 @@
                     </td>
                     }
                 </tr>
-                @if (isRequestingDelete)
-                {
-                    <div class="delete-background">
-                        <div class="delete-window">
-                            <h2>Bent U zeker dat U dit item wil verwijderen?</h2>
-                            <div class="delete-window-buttons">
-                                <button class="btn-delete"
-                                @onclick="() => {
-                                    OnDelete(item.GetType().GetFields()[0].GetValue(item));
-                                    ToggleDelete();
-                                }">
-                                    Verwijderen
-                                </button>
-                                <button class="btn-primary"
-                                @onclick=ToggleDelete>
-                                    Annuleren
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                }
             }
         </tbody>
     </table>
@@ -116,9 +116,15 @@
 
     private bool isRequestingDelete = false;
 
-    private void ToggleDelete()
+    private void SetDeleteTrue(object? id)
     {
-        isRequestingDelete = !isRequestingDelete;
+        _id = Convert.ToInt32(id);
+        isRequestingDelete = true;
+    }
+    private void SetDeleteFalse()
+    {
+        isRequestingDelete = false;
+        _id = -1;
     }
 
     private void OnInfo(object? id) {
