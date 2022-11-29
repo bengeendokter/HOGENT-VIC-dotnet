@@ -32,7 +32,10 @@ public static class UserDto
                 RuleFor(x => x.Surname).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.Role).IsInEnum().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.IsActive).NotNull().WithMessage("Dit veld is verplicht");
-                RuleFor(x => x.Email).NotEmpty().WithMessage("Dit veld is verplicht");
+                RuleFor(x => x.Email)
+                    .NotEmpty().WithMessage("Dit veld is verplicht")
+                    .EmailAddress().WithMessage("Geen geldig email adres");
+
             }
         }
     }

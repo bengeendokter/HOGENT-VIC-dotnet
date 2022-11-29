@@ -14,6 +14,8 @@ public partial class Index
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
     private int? pageSize;
 
+    private string? uri = "/gebruikers";
+
     private List<UserDto.Index>? users;
     public ICollection<Gebruiker> userObjects = new List<Gebruiker>();
     public ICollection<Gebruiker> filteredUsers = new List<Gebruiker>();
@@ -40,13 +42,14 @@ public partial class Index
         searchTerm = Searchterm;
         page = Page;
         pageSize = PageSize;
-
         await RefreshUsersAsync(request);
     }
 
     private async Task RefreshUsersAsync(UserRequest.Index request = null)
 
     {
+        FiltersChanged();
+
         userObjects.Clear();
         filteredUsers.Clear();
 
@@ -110,8 +113,8 @@ public partial class Index
         parameters.Add("page", page);
         parameters.Add("pageSize", pageSize);
 
-        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
-        NavigationManager.NavigateTo(uri);
+        uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        //NavigationManager.NavigateTo(uri);
     }
 
 }
