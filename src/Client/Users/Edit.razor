@@ -1,0 +1,63 @@
+﻿@page "/gebruikers/wijzigen/{id:int}"
+
+<div class="title-container">
+    <h1>User aanmaken</h1>
+</div>
+<GenericLayout Display=false Title="User aanmaken">
+    <Content>
+        <EditForm Model="@user" OnValidSubmit="@EditUserAsync" >
+            <FluentValidationValidator />
+            <div class="center-container">
+                <div class="container">
+                    <div class="input-container">
+                        <section>
+                            <div class="group">
+                                <label>Naam</label>
+                                <div>
+                                    <InputText @bind-Value="user.Name" class="inputField" />
+                                    <ValidationMessage For="() => user.Name" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Voornaam</label>
+                                <div>
+                                    <InputText @bind-Value="user.Surname" class="inputField" />
+                                    <ValidationMessage For="() => user.Surname" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Role</label>
+                                <div>
+                                    <InputSelect @bind-Value="user.Role" class="inputField" >
+                                        <option selected value="@ERole.User">user</option>
+                                        <option          value="@ERole.Moderator">beheerder</option>
+                                        <option          value="@ERole.Admin">admin</option>
+                                    </InputSelect>
+                                    <ValidationMessage For="() => user.Role" />
+                            </div>
+                            <div class="group">
+                                <label>Email</label>
+                                <div>
+                                    <InputText @bind-Value="user.Email" class="inputField" />
+                                    <ValidationMessage For="() => user.Email" />
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Account actief</label>
+                                <div>
+                                    <InputCheckbox @bind-Value="user.IsActive" class="inputField" />
+                                    <ValidationMessage For="() => user.IsActive" />
+                                </div>
+                            </div>
+                            </div>
+                        </section>                     
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="btn-primary">Bijwerken</button>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </Content>
+</GenericLayout>
+

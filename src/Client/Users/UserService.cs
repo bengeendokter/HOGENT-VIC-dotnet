@@ -24,19 +24,20 @@ public class UserService : IUserService
         await client.DeleteAsync($"{endpoint}/{userId}");
     }
 
-    public Task EditAsync(int userId, UserDto.Mutate model)
+    public async Task EditAsync(int userId, UserDto.Mutate model)
     {
-        throw new NotImplementedException();
+        await client.PutAsJsonAsync($"{endpoint}/{userId}", model);
     }
 
-    public Task<UserDto.Detail> GetDetailAsync(int userId)
+    public async Task<UserDto.Detail> GetDetailAsync(int userId)
     {
-        throw new NotImplementedException();
+        var response = await client.GetFromJsonAsync<UserDto.Detail>($"{endpoint}/{userId}");
+        return response;
     }
 
     public async Task<UserResult.Index> GetIndexAsync(UserRequest.Index request)
     {
-        var response = await client.GetFromJsonAsync<UserResult.Index>($"{endpoint}?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}");
+        var response = await client.GetFromJsonAsync<UserResult.Index>($"{endpoint}?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}&role={request.Role}");
         return response;
     }
 }

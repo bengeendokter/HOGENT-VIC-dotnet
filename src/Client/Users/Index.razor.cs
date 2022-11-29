@@ -13,6 +13,8 @@ public partial class Index
     private int? page;
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
     private int? pageSize;
+    [Parameter, SupplyParameterFromQuery] public string? Role{ get; set; }
+    private string? role;
 
     private string? uri = "/gebruikers";
 
@@ -35,21 +37,32 @@ public partial class Index
         UserRequest.Index request = new()
         {
             Searchterm = Searchterm,
-            Page = Page.HasValue ? Page.Value : 1,
-            PageSize = PageSize.HasValue ? PageSize.Value : 25,
+            Page = Page ?? 1,
+            PageSize = PageSize ?? 25,
+            Role = Role,
         };
 
         searchTerm = Searchterm;
         page = Page;
         pageSize = PageSize;
+        role = Role;
+
         await RefreshUsersAsync(request);
     }
 
     private async Task RefreshUsersAsync(UserRequest.Index request = null)
 
     {
-        FiltersChanged();
-
+        if (request == null)
+        {
+            request = new UserRequest.Index()
+            {
+                Page = Page ?? 1,
+                PageSize = PageSize ?? 25,
+                Searchterm = Searchterm,
+                Role = Role,
+            };
+        }    
         userObjects.Clear();
         filteredUsers.Clear();
 
@@ -96,12 +109,7 @@ public partial class Index
     private async Task DeleteUserAsync(int id)
     {
         await UserService.DeleteAsync(id);
-        await RefreshUsersAsync(new UserRequest.Index()
-        {
-            Page = Page.HasValue ? Page.Value : 1,
-            PageSize = PageSize.HasValue ? PageSize.Value : 25,
-            Searchterm = Searchterm
-        });
+        await RefreshUsersAsync();
     }
 
     private void FiltersChanged()
@@ -112,9 +120,22 @@ public partial class Index
         parameters.Add("searchTerm", searchTerm);
         parameters.Add("page", page);
         parameters.Add("pageSize", pageSize);
+        parameters.Add("role", role);
+
 
         uri = NavigationManager.GetUriWithQueryParameters(parameters);
-        //NavigationManager.NavigateTo(uri);
+        NavigationManager.NavigateTo(uri);
     }
 
+    private void OnSearchtermChanged(ChangeEventArgs args)
+    {
+        searchTerm = args.Value?.ToString();
+        FiltersChanged();
+    }
+
+    private void OnRoleChanged(ChangeEventArgs args)
+    {
+        role = args.Value?.ToString();
+        FiltersChanged();
+    }
 }

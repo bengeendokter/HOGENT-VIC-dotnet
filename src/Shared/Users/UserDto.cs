@@ -24,6 +24,11 @@ public static class UserDto
         public bool IsActive { get; set; }
         public string? Email { get; set; }
 
+        public static implicit operator Mutate(Detail v)
+        {
+            throw new NotImplementedException();
+        }
+
         public class Validator : AbstractValidator<Mutate>
         {
             public Validator()

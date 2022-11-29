@@ -11,10 +11,22 @@ namespace Services.Clients;
 public class UserService : IUserService
 {
     private readonly VicDbContext dbContext;
+    private readonly List<string> roles = new() { "User", "Moderator", "Admin" };
 
     public UserService(VicDbContext dbContext)
     {
         this.dbContext = dbContext;
+    }
+
+    public ERole? GiveRoleFromString(string role)
+    {
+        return (role) switch
+        {
+            "User" => ERole.User,
+            "Moderator" => ERole.Moderator,
+            "Admin" => ERole.Admin,
+            _ => null
+        };
     }
     public async Task<UserResult.Index> GetIndexAsync(UserRequest.Index request)
     {
@@ -28,11 +40,14 @@ public class UserService : IUserService
 
         if (request.Role is not null)
         {
-            query = query.Where(x => x.Role.Equals(request.Role));
+            ERole? givenRole = GiveRoleFromString(request.Role);
+            query = query.Where(x => x.Role.Equals(givenRole));
+            
+
         }
 
         var items = await query
-           .OrderBy(x => x.Id)
+           .OrderByDescending(x => x.CreatedAt)
            .Skip((request.Page - 1) * request.PageSize)
            .Take(request.PageSize)
            .Select(x => new UserDto.Index
