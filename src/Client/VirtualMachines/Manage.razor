@@ -261,7 +261,12 @@
     }
 
     private void AddDay(EDay day){
-        _vm.Availability = day;
+        if(_vm.Availability.HasFlag(day)){
+            _vm.Availability &= ~day;
+        }
+        else{
+            _vm.Availability |= day;
+        }
 
     }
 
