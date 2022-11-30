@@ -26,6 +26,8 @@ public class Seeder
     {
         var vms = new VirtualMachineFaker().AsTransient().Generate(20);
         dbContext.VirtualMachines.AddRange(vms);
+        var requests = new VirtualMachineRequestFaker().AsTransient().Generate(10);
+        dbContext.VirtualMachineRequests.AddRange(requests);
         dbContext.SaveChanges();
     }
 

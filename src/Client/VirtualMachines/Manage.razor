@@ -132,21 +132,31 @@
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                         </label>
 
-@*                        <label>
+                        <label>
                             Wanneer moet de VM online staan?<br />
+                            <div class="availability">
                             @foreach(EDay day in EDay.GetValues(typeof(EDay))){
-                                <InputRadio Value="@day" @onchange="() => AddDay(day)"></InputRadio>
+                                {
+                                    <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
+                                        <button class="daybtn" @onclick="(()=> AddDay(day))">
+                                        <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
+                                        <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet ")}beschikbaar")</span>
+                                        </button>
+                                    </div>
+                                }
                             }
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>*@
-
+                            </div>
+                        </label>
+@*
                         <label>
                             Wanneer moet de VM online staan?<br />
                             <InputRadioGroup @bind-Value="_vm.Availability">
                                 <InputRadio Value="EDay.Monday">Monday</InputRadio>
                             </InputRadioGroup>
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>
+                        </label>*@
+
                     </div>
                     <button class="btn-primary" type="submit">Maak VM aan</button>
                 </div>
@@ -183,7 +193,7 @@
         }
         else if (NavigationManager.Uri.Contains("request"))
         {
-            _request = VirtualMachineRequestService.Get(Id.Value);
+            _request = await VirtualMachineRequestService.Get(Id.Value);
             if (_request == null) return;
 
             _vm.StartDate = _request.StartDate;
@@ -250,8 +260,8 @@
         HandleTemplate(customTemp);
     }
 
-    private void AddDay(EDay day)
-    {
+    private void AddDay(EDay day){
+        _vm.Availability = day;
 
     }
 

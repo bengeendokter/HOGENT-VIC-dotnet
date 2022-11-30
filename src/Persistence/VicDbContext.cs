@@ -13,6 +13,7 @@ public class VicDbContext : DbContext
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<User> Users => Set<User>();
 
+    public DbSet<VirtualMachineRequest> VirtualMachineRequests => Set<VirtualMachineRequest>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

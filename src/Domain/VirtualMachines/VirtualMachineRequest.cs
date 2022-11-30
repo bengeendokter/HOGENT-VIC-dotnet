@@ -10,45 +10,62 @@ public class VirtualMachineRequest : Entity
     public DateTime StartDate
     {
         get => startDate;
-        set => startDate = Guard.Against.AgainstExpression(d => d < DateTime.Now, value, "StartDate must be later than now");
+        set => startDate = Guard.Against.AgainstExpression(d => d > DateTime.Now, value, "StartDate must be later than now");
     }
 
     private DateTime endDate = default!;
     public DateTime EndDate
     {
         get => endDate;
-        set => endDate = Guard.Against.AgainstExpression(d => d < startDate, value, "EndDate must be greater than StartDate");
+        set => endDate = Guard.Against.AgainstExpression(d => d > startDate, value, "EndDate must be greater than StartDate");
     }
 
     private string reason = default!;
     public string Reason
     {
-        get => Reason;
-        set => Reason = Guard.Against.NullOrEmpty(value, nameof(Reason));
+        get => reason;
+        set => reason = Guard.Against.NullOrEmpty(value, nameof(Reason));
     }
 
 
     private string projectName = default!;
     public string ProjectName
     {
-        get => ProjectName;
-        set => ProjectName = Guard.Against.NullOrEmpty(value, nameof(ProjectName));
+        get => projectName;
+        set => projectName = Guard.Against.NullOrEmpty(value, nameof(ProjectName));
     }
 
-    private object client = default!;
-    public object Client
-    {
-        get => client;
-        set => client = Guard.Against.Null(value, nameof(Client));
-    }
+    //private Client client = default!;
+    //public Client Client
+    //{
+    //    get => client;
+    //    set => client = Guard.Against.Null(value, nameof(Client));
+    //}
 
 
     private ERequestStatus status = default!;
     public ERequestStatus Status
     {
-        get => Status;
-        set => Status = Guard.Against.EnumOutOfRange(value, nameof(Status));
+        get => status;
+        set => status = Guard.Against.EnumOutOfRange(value, nameof(Status));
     }
 
     private VirtualMachineRequest() { }
+
+    public VirtualMachineRequest(
+        DateTime startDate, 
+        DateTime endDate, 
+        string reason, 
+        string projectName, 
+        //Client client, 
+        ERequestStatus status
+        )
+    {
+        StartDate = startDate;
+        EndDate = endDate;
+        Reason = reason;
+        ProjectName = projectName;
+        //Client = client;
+        Status = status;
+    }
 }

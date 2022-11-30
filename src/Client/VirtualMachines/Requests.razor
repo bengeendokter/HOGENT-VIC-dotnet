@@ -19,7 +19,11 @@
         </select>
     </Actions>
     <Content>
-        <Table Object="new Request()" Collection="filteredObjects" InfoCallback="@RequestInfo"/>
+        @if (filteredObjects.Count > 0)
+        {
+            <Table Object="@(new Request())" Collection="filteredObjects" InfoCallback="@RequestInfo" />
+        }
+
     </Content>
 </GenericLayout>
 @if (_showFilter!=0)
@@ -58,21 +62,29 @@
     private string? _sortFilter;
     private string? _statusFilter;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        list = VMRequestService.GetAll();
+        await RefreshRequestsAsync();
+    }
+
+
+    private async Task RefreshRequestsAsync(){
+        requestObjects.Clear();
+        filteredObjects.Clear();
+
+        list = await VMRequestService.GetAll();
 
         list.ForEach(request =>
         {
             requestObjects.Add(
                 new Request()
-                {
-                    Id = request.Id,
-                    Projectnaam = request.ProjectName,
-                    Start_datum = request.StartDate,
-                    Datum_aanvraag = request.Date,
-                    Status = request.Status
-                });
+                    {
+                        Id = request.Id,
+                        Projectnaam = request.ProjectName,
+                        Start_datum = request.StartDate,
+                        Datum_aanvraag = request.Date,
+                        Status = request.Status
+                    });
         });
         filteredObjects = requestObjects;
     }

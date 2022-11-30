@@ -1,5 +1,13 @@
 ﻿@page "/vm/request"
+@inject IVirtualMachineRequestService VirtualMachineRequestService
+@inject NavigationManager NavigationManager
+@inject IClientService ClientService
 
+<div class="title-container">
+    <h1>
+        Vm aanvragen
+    </h1>
+</div>
 <GenericLayout Display=false Title="VM - Aanvragen">
     <Content>
         <div class="requestpage">
@@ -44,9 +52,27 @@
     </Content>
 </GenericLayout>
 
+@if (_confirmMsg)
+{
+    <div class="background">
+        <div class="window">
+            <h2>Aanvraag werd succesvol aangemaakt</h2>
+@*            <p>@($"Klant: {vmRequest.Client.Name}, Naam: {vmRequest.ProjectName}")</p>
+*@            <div class="window-buttons">
+                <button class="btn-primary"
+                    @onclick="RouteToHome">
+                    Begrepen
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
 @code {
     private VirtualMachineRequestDto.Create vmRequest = new();
     public bool _existingClient = true;
+    private bool _confirmMsg = false;
 
     protected override void OnInitialized()
     {
@@ -54,9 +80,14 @@
         vmRequest.EndDate = DateTime.Now;
     }
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         Console.WriteLine("submit");
         Console.WriteLine(vmRequest.Reason);
+    }
+
+    private void RouteToHome(){
+        _confirmMsg = false;
+        NavigationManager.NavigateTo("");
     }
 }

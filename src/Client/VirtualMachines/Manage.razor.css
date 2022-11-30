@@ -22,9 +22,10 @@ label {
     width: 31%;
     min-width: 200px;
 }
-.field{
+.field {
     background-color: var(--clr-primary);
     border-radius: 2px;
+    padding: 5px;
 }
 
 .form{
@@ -32,10 +33,7 @@ label {
 }
 
 
-.input-group label div{
-    background-color: var(--clr-primary);
-    padding: 5px;
-}
+
 .reden {
     background-color: var(--clr-primary);
     padding: 5px;
@@ -60,4 +58,35 @@ label {
     border-radius: 0;
     border: none;
     border-radius: 2px;
+}
+
+.availability {
+    display: flex;
+    gap: 1em;
+}
+
+.day {
+    background: white;
+    --outline: none;
+    --text-decoration: line-through;
+    text-decoration: var(--text-decoration);
+    border-radius: 50% !important;
+    outline: var(--outline);
+    aspect-ratio: 1;
+    width: 3.5ch;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.available {
+    --outline: 2px solid var(--clr-text-color);
+    --text-decoration: none;
+}
+
+.daybtn {
+    border: none;
+    background-color: none;
+    background: none;
+    color: none;
 }
