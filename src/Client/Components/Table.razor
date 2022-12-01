@@ -1,106 +1,107 @@
 ﻿@using System.Globalization
 @typeparam T
 
-<table>
-    <thead>
-        <tr>
-            @foreach (var fieldInfo in Object!.GetType().GetFields())
-            {
-                var name = fieldInfo.Name;
-                @*name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));*@
-                name = String.Join(" ", name.Split("_").ToArray());
-                if (!name.Equals("Id"))
-                {
-                    <th>@name</th>
-                }
-            }
-
-            @if (InfoCallback.HasDelegate || DeleteCallback.HasDelegate || EditCallback.HasDelegate)
-            {
-                <th>Acties</th>
-            }
-        </tr>
-    </thead>
-
-    <tbody>
-
-        @foreach (var item in Collection)
-        {
+@if (isRequestingDelete)
+{
+    <div class="delete-background">
+        <div class="delete-window">
+            <h2>Bent U zeker dat U dit item wil verwijderen?</h2>
+            <div class="delete-window-buttons">
+                <button class="btn-delete"
+            @onclick="() => {
+                OnDelete(_id);
+                SetDeleteFalse();
+            }">
+                    Verwijderen
+                </button>
+                <button class="btn-primary"
+            @onclick=SetDeleteFalse>
+                    Annuleren
+                </button>
+            </div>
+        </div>
+    </div>
+}
+<section>
+    <table>
+        <thead>
             <tr>
-                @foreach (var fieldInfo in item.GetType().GetFields())
+                @foreach (var fieldInfo in Object!.GetType().GetFields())
                 {
-                    var key = fieldInfo.Name;
-                    var value = fieldInfo.GetValue(item);
-
-                    if(value is DateTime dateTime){
-                        <td>@dateTime.ToString("dd/MM/yyyy")</td>
-                    }
-                    else if (!key.Equals("Id"))
+                    var name = fieldInfo.Name;
+                    @*name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));*@
+                    name = String.Join(" ", name.Split("_").ToArray());
+                    if (!name.Equals("Id"))
                     {
-                        <td>@value</td>
+                        <th>@name</th>
                     }
                 }
 
                 @if (InfoCallback.HasDelegate || DeleteCallback.HasDelegate || EditCallback.HasDelegate)
                 {
-                    <td>
-                        <div>
-                            @if (EditCallback.HasDelegate)
-                            {
-                                <button style="border: none; background: none;">
-                                    <span class="material-icons" style="color: slategray"
-                                        @onclick="() => OnEdit(item.GetType().GetFields()[0].GetValue(item))">
-                                        edit
-                                    </span>
-                                </button>
-                            }
-                            @if (DeleteCallback.HasDelegate)
-                            {
-                                <button style="border: none; background: none;"
-                                        @onclick=ToggleDelete>
-                                    <span class="material-icons" style="color: red">
-                                        delete
-                                    </span>
-                                </button>
-                            }
-                            @if (InfoCallback.HasDelegate)
-                            {
-                                <button style="border: none; background: none;"
-                                    @onclick="() => OnInfo(item.GetType().GetFields()[0].GetValue(item))">
-                                    <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">
-                                        info
-                                    </span>
-                                </button>
-                            }
-                     </div>
-                </td>
+                    <th>Acties</th>
                 }
             </tr>
-            @if (isRequestingDelete)
-            {
-                <div class="delete-background">
-                    <div class="delete-window">
-                        <h2>Bent U zeker dat U dit item wil verwijderen?</h2>
-                        <div class="delete-window-buttons">
-                            <button class="btn-delete"
-                            @onclick="() => {
-                                OnDelete(item.GetType().GetFields()[0].GetValue(item));
-                                ToggleDelete();
-                            }">
-                                Verwijderen
-                            </button>
-                            <button class="btn-primary"
-                            @onclick=ToggleDelete>
-                                Annuleren
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-    </tbody>
-</table>
+        </thead>
 
+        <tbody>
+
+            @foreach (var item in Collection)
+            {
+                <tr>
+                    @foreach (var fieldInfo in item.GetType().GetFields())
+                    {
+                        var key = fieldInfo.Name;
+                        var value = fieldInfo.GetValue(item);
+
+                        if(value is DateTime dateTime){
+                            <td>@dateTime.ToString("dd/MM/yyyy")</td>
+                        }
+                        else if (!key.Equals("Id"))
+                        {
+                            <td>@value</td>
+                        }
+                    }
+
+                    @if (InfoCallback.HasDelegate || DeleteCallback.HasDelegate || EditCallback.HasDelegate)
+                    {
+                        <td>
+                            <div>
+                                @if (EditCallback.HasDelegate)
+                                {
+                                    <button style="border: none; background: none;">
+                                        <span class="material-icons" style="color: slategray"
+                                            @onclick="() => OnEdit(item.GetType().GetFields()[0].GetValue(item))">
+                                            edit
+                                        </span>
+                                    </button>
+                                }
+                                @if (DeleteCallback.HasDelegate)
+                                {
+                                    <button style="border: none; background: none;"
+                                            @onclick="() => SetDeleteTrue(item.GetType().GetFields()[0].GetValue(item))">
+                                        <span class="material-icons" style="color: red">
+                                            delete
+                                        </span>
+                                    </button>
+                                }
+                                @if (InfoCallback.HasDelegate)
+                                {
+                                    <button style="border: none; background: none;"
+                                        @onclick="() => OnInfo(item.GetType().GetFields()[0].GetValue(item))">
+                                        <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">
+                                            info
+                                        </span>
+                                    </button>
+                                }
+                         </div>
+                    </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
 @code {
     private int _id { get; set; }
     //Geef een lijst met objecten mee aan de Table component, deze objects zijn een klasse die alle atributten bevat die je wilt weergeven, De eerste attribuut is het ID en de laatste is de acties die je wilt
@@ -115,9 +116,15 @@
 
     private bool isRequestingDelete = false;
 
-    private void ToggleDelete()
+    private void SetDeleteTrue(object? id)
     {
-        isRequestingDelete = !isRequestingDelete;
+        _id = Convert.ToInt32(id);
+        isRequestingDelete = true;
+    }
+    private void SetDeleteFalse()
+    {
+        isRequestingDelete = false;
+        _id = -1;
     }
 
     private void OnInfo(object? id) {

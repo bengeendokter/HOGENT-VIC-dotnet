@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Json;
 
-namespace Client.Users;
+using System.Net.Http.Json;
+
+namespace Client.Clients;
 
 public class ClientService : IClientService
 {

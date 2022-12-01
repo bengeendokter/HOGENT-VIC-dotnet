@@ -1,3 +1,4 @@
+using Domain.Users;
 using Domain.VirtualMachines;
 using Domain.Activities;
 using Fakers.Clients;
@@ -19,18 +20,24 @@ public class Seeder
     {
         SeedVirtualMachines();
         SeedClients();
+        SeedUsers();
     }
 
     private void SeedVirtualMachines()
     {
+        // Vms
         var vms = new VirtualMachineFaker().AsTransient().Generate(20);
         dbContext.VirtualMachines.AddRange(vms);
 
+        // Activities
         Random random = new();
         var types = Enum.GetValues(typeof(EActivity));
         var activities = vms.Select(vm => new Activity(vm, (EActivity) types.GetValue(random.Next(types.Length))));
-
         dbContext.Activities.AddRange(activities);
+
+        // Requests
+        var requests = new VirtualMachineRequestFaker().AsTransient().Generate(10);
+        dbContext.VirtualMachineRequests.AddRange(requests);
         dbContext.SaveChanges();
     }
 
@@ -41,4 +48,10 @@ public class Seeder
         dbContext.SaveChanges();
     }
 
+    private void SeedUsers()
+    {
+        var users = new UserFaker().AsTransient().Generate(10);
+        dbContext.Users.AddRange(users);
+        dbContext.SaveChanges();
+    }
 }

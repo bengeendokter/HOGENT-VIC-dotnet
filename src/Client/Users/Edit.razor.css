@@ -1,0 +1,93 @@
+﻿.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.container {
+    display: inline-block;
+    margin: 2em 0em;
+    
+}
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0em 3em;
+    gap: 2em;
+    
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1em 0em;
+    gap: 1em;
+}
+
+section {
+    min-width: 256px;
+}
+
+.group {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    margin: 1em;
+}
+
+    .group > label {
+        grid-column: 1 / 2;
+        font-weight: 600;
+    }
+
+    .group > div {
+        grid-column: 3 / 6;
+        margin: 5px 0px;
+    }
+
+::deep select.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+}
+
+::deep input.inputField {
+    background: white;
+    width: 100%;
+    padding: 5px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: none;
+    border-radius: 2px;
+}
+
+::deep input[type=checkbox]{
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 720px) {
+    .button-container {
+        flex-direction: column;
+    }
+
+    .input-container {
+        flex-direction: column;
+        gap: 0em;
+    }
+
+    .group {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
+}

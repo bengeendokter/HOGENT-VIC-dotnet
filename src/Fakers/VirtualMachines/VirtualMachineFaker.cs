@@ -13,8 +13,8 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
                     // client
                     f.Internet.DomainWord(),
                     f.Internet.DomainName(),
-                    f.Date.Past(),
-                    f.Date.Future(),
+                   f.Date.Future(1, DateTime.Now.AddDays(1)),
+                   f.Date.Future(1, DateTime.Now.AddYears(1)),
                     f.Internet.Ip(),
                     "80, 443",
                     f.Random.Enum<ETemplate>(),

@@ -3,7 +3,8 @@ using Domain.VirtualMachines;
 using Domain.Activities;
 using Persistence.Triggers;
 using Microsoft.EntityFrameworkCore;
-using Domain.Clients;
+using Domain;
+using Domain.Users;
 
 namespace Persistence;
 
@@ -12,6 +13,8 @@ public class VicDbContext : DbContext
     public DbSet<VirtualMachine> VirtualMachines => Set<VirtualMachine>();
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<Activity> Activities => Set<Activity>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<VirtualMachineRequest> VirtualMachineRequests => Set<VirtualMachineRequest>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

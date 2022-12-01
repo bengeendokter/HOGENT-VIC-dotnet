@@ -1,12 +1,15 @@
 ﻿<PageTitle>@Title</PageTitle>
 
+<div class="title-container">
+    <h1>@Title</h1>
+    <div class="actions">
+        @Actions
+    </div>
+</div>
 <div class="content">
-    <UsageStats display=@Display/>
+    <UsageStats Display="@Display" Title="@StatsTitle" Usages="@Usages" />
     <div class="main_content">
-        @if (@Content != null)
-        {
-            @Content
-        }
+        @Content
     </div>
 </div>
 
@@ -16,6 +19,12 @@
     [Parameter]
     public string? Title { get; set; }
     [Parameter]
+    public string? StatsTitle { get; set; }
+    [Parameter]
+    public List<UsageDto.Index> Usages { get; set; } = new();
+    [Parameter]
     public RenderFragment? Content { get; set; }
+    [Parameter]
+    public RenderFragment? Actions { get; set; }
 
 }

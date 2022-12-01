@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿ using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace Shared.Clients;
@@ -8,7 +8,8 @@ public static class ClientDto
     public class Index 
     {
         public int Id { get; set; }
-        public string? Name { get; set; }   
+        public string? Name { get; set; }
+        public string? Surname { get; set; }
         public string? PhoneNumber { get; set; }
         public EClientType ClientType { get; set; }
         public string? ClientOrganisation { get; set; }
@@ -24,6 +25,7 @@ public static class ClientDto
     public class Mutate
     {
         public string? Name { get; set; }
+        public string? Surname { get; set; }
         public string? PhoneNumber { get; set; }
         public EClientType ClientType { get; set; }
         public string? ClientOrganisation { get; set; }
@@ -38,6 +40,7 @@ public static class ClientDto
         public Validator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Dit veld is verplicht");
+            RuleFor(x => x.Surname).NotEmpty().WithMessage("Dit veld is verplicht");
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty().WithMessage("Dit veld is verplicht")
                 .Matches(new Regex(@"^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9])((\s|\s?-\s?)?[0-9])((\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$")).WithMessage("Incorrect formaat");

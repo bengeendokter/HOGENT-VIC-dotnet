@@ -1,0 +1,32 @@
+﻿@page "/gebruikers"
+
+@if (users == null)
+{
+        <p>Loading...</p>
+    return;
+}
+
+<GenericLayout Display=false Title="Gebruikers">
+    <Content>
+        <div class="searchAndCreate">
+            <input type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="OnSearchtermChanged"/>
+            <button @onclick=GoToCreateUser>Toevoegen</button>
+        </div>
+        <div class="optioneleFilters">
+            <select class="filterRole" value=@role @onchange="OnRoleChanged">
+                <option value="">Kies een rol</option>
+                <option value="@ERole.User">user</option>
+                <option value="@ERole.Moderator">beheerder</option>
+                <option value="@ERole.Admin">admin</option>
+            </select>
+        </div>
+        <Table
+            Object="@(new Gebruiker())"
+            Collection="@filteredUsers"
+            EditCallback="@GoToEditUser"
+            DeleteCallback="@DeleteUserAsync"
+        />
+    </Content>
+</GenericLayout>
+
+

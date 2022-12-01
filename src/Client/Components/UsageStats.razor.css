@@ -142,7 +142,6 @@
 
 .info p:first-child {
     color: var(--clr-text-color);
-    font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     font-size: 24px;
     font-size: 100%;
@@ -151,7 +150,6 @@
 
 .info p:last-child {
     color: var(--clr-usage-info-text);
-    font-family: 'Roboto', sans-serif;
     font-weight: bold;
     font-size: 100%;
     margin: 0;
@@ -160,14 +158,12 @@
 .stats {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
     align-items: center;
     margin-bottom: 15px;
-    max-height: 450px;
+    max-height: 500px;
     height: 100%;
     overflow-y: scroll;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .stats::-webkit-scrollbar-track {

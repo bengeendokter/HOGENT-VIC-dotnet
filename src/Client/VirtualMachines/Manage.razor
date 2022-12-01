@@ -5,56 +5,48 @@
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
 @inject ITemplateService TemplateService
+@inject IClientService ClientService
 
-<div class="title-container">
-    <h1>
-        VM @(Id.HasValue && !NavigationManager.Uri.Contains("request") ? $"Wijzigen - {_vm.Name}" :
-         "Aanmaken")
-    </h1>
-</div>
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
             <div class="grid">
-
-
                 <div class="request">
-                @if (_request != null)
-                {
-                    <h2>Informatie van de aanvrager</h2>
-                        <div class="input-group">
-                        <label>
-                            Projectnaam:<br/>
-                            <div class="field">@_request.ProjectName</div>
-                        </label>
-                        <label>
-                            Start datum:<br/>
-                                <div class="field">@_request.StartDate.ToString("dd/MM/yyyy")</div>
-                        </label>
-                        <label>
-                            Eind datum:<br/>
-                                <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
-                        </label>
+                    @if (_request != null)
+                    {
+                        <h2>Informatie van de aanvrager</h2>
+                            <div class="input-group">
+                            <label>
+                                Projectnaam:<br/>
+                                <div class="field">@_request.ProjectName</div>
+                            </label>
+                            <label>
+                                Start datum:<br/>
+                                    <div class="field">@_request.StartDate.ToString("dd/MM/yyyy")</div>
+                            </label>
+                            <label>
+                                Eind datum:<br/>
+                                    <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
+                            </label>
 
 
-                    </div>
-                        <label>
-                            Extra info over de aanvraag:<br />
-                            <div class="reden">@_request.Reason</div>
-                        </label>
-                }
+                        </div>
+                            <label>
+                                Extra info over de aanvraag:<br />
+                                <div class="reden">@_request.Reason</div>
+                            </label>
+                    }
                 </div>
-
 
                 <div class="templates">
                     <h2>Templates</h2>
                     <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
-                    @foreach (TemplateDto.Detail t in _templates)
-                    {
+                        @foreach (TemplateDto.Detail t in _templates)
+                        {
                             <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
-                    }
+                        }
                         @if (_customTemplate != null)
                         {
                             <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
@@ -63,7 +55,6 @@
 
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
-
 
                 <div class="form">
                     <h2> Algemene informatie</h2>
@@ -142,20 +133,21 @@
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                         </label>
 
-@*                        <label>
-                            Wanneer moet de VM online staan?<br />
-                            @foreach(EDay day in EDay.GetValues(typeof(EDay))){
-                                <InputRadio Value="@day" @onchange="() => AddDay(day)"></InputRadio>
-                            }
-                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>*@
-
                         <label>
                             Wanneer moet de VM online staan?<br />
-                            <InputRadioGroup @bind-Value="_vm.Availability">
-                                <InputRadio Value="EDay.Monday">Monday</InputRadio>
-                            </InputRadioGroup>
+                            <div class="availability">
+                            @foreach(EDay day in EDay.GetValues(typeof(EDay))){
+                                {
+                                    <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
+                                        <button class="daybtn" @onclick="(()=> AddDay(day))">
+                                        <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
+                                        <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet ")}beschikbaar")</span>
+                                        </button>
+                                    </div>
+                                }
+                            }
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                            </div>
                         </label>
 
                     </div>
@@ -164,9 +156,10 @@
                 
             </div>
             </EditForm>
-        @if(_showCustomTemplate){
-            <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
-        }
+            @if(_showCustomTemplate)
+            {
+                <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
+            }
     </Content>
 </GenericLayout>
 
@@ -177,22 +170,25 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private EDay availability;
+    private List<ClientDto.Index> _clients;
 
     [Parameter]
     public int? Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        ClientRequest.Index request = new(){ };
+        _clients = await ClientService.GetIndexAsync(request);
         _templates = TemplateService.GetAll();
-        if (!Id.HasValue){
+        if (!Id.HasValue)
+        {
             _vm.StartDate = DateTime.Now;
             _vm.EndDate = DateTime.Now;
             _vm.Template = null;
         }
         else if (NavigationManager.Uri.Contains("request"))
         {
-            _request = VirtualMachineRequestService.Get(Id.Value);
+            _request = await VirtualMachineRequestService.Get(Id.Value);
             if (_request == null) return;
 
             _vm.StartDate = _request.StartDate;
@@ -222,7 +218,8 @@
         }
     }
 
-    private void HandleTemplate(TemplateDto.Detail template){
+    private void HandleTemplate(TemplateDto.Detail template)
+    {
         _activeTemplate = template.Id;
         _vm.Template = template.Type;
         _vm.CPU = template.CPU;
@@ -230,24 +227,28 @@
         _vm.Storage = template.Storage;
         _vm.Mode = template.Mode;
     }
-    private void CustomTemplate(){
+
+    private void CustomTemplate()
+    {
         _showCustomTemplate = true;
     }
+
     private void CancelCustomTemp()
     {
         _showCustomTemplate = false;
     }
-    private void ConfirmCustomTemp(TemplateDto.Create template){
 
+    private void ConfirmCustomTemp(TemplateDto.Create template)
+    {
         TemplateDto.Detail customTemp = new()
-            {
-                Id = -1,
-                Mode = template.Mode,
-                Type = template.Type,
-                RAM = template.RAM,
-                CPU = template.CPU,
-                Storage = template.Storage
-            };
+        {
+            Id = -1,
+            Mode = template.Mode,
+            Type = template.Type,
+            RAM = template.RAM,
+            CPU = template.CPU,
+            Storage = template.Storage
+        };
 
         _showCustomTemplate = false;
         _customTemplate = customTemp;
@@ -255,6 +256,12 @@
     }
 
     private void AddDay(EDay day){
+        if(_vm.Availability.HasFlag(day)){
+            _vm.Availability &= ~day;
+        }
+        else{
+            _vm.Availability |= day;
+        }
 
     }
 
@@ -263,7 +270,6 @@
         //Aanmaken VM gevolg van aanvraag
         if (_request!=null)
         {
-
             int vmId = await VirtualMachineService.CreateAsync(_vm);
             NavigationManager.NavigateTo($"/vm/{vmId}");
 

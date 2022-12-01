@@ -3,10 +3,8 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-<div class="title-container">
-    <h1>@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")</h1>
-</div>
-<GenericLayout Display=false Title="Klant aanmaken of wijzigen">
+
+<GenericLayout Display=false Title=@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")>
     <Content>
         <EditForm Model="@_client" OnValidSubmit="OnSubmit" >
             <FluentValidationValidator />
@@ -15,6 +13,13 @@
 
                     <div class="input-container">
                         <section>
+                            <div class="group">
+                                <label>Voornaam</label>
+                                <div>
+                                    <InputText @bind-Value="_client.Surname" class="inputField" />
+                                    <ValidationMessage For="() => _client.Surname" />
+                                </div>
+                            </div>
                             <div class="group">
                                 <label>Naam</label>
                                 <div>
@@ -114,6 +119,7 @@
             _clientName = response?.Name;
             _client = new ClientDto.Mutate
             {
+                Surname = response.Surname,
                 Name = response.Name,
                 PhoneNumber = response.PhoneNumber,
                 ClientType = response.ClientType,

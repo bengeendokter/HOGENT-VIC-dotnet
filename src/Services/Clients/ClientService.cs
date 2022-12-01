@@ -1,7 +1,9 @@
-﻿using Domain.Clients;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Shared.Clients;
+using Domain.Users;
+using EClientType = Domain.Users.EClientType;
 
 namespace Services.Clients;
 
@@ -13,7 +15,6 @@ public class ClientService : IClientService
     {
         this.dbContext = dbContext;
     }
-
     public async Task<List<ClientDto.Index>> GetIndexAsync(ClientRequest.Index request)
     {
         var query = dbContext.Clients.AsQueryable();
@@ -35,8 +36,9 @@ public class ClientService : IClientService
            {
                Id = x.Id,
                Name = x.Name,
+               Surname = x.Surname,
                PhoneNumber = x.PhoneNumber,
-               ClientType = (EClientType) x.ClientType,
+               ClientType = (Shared.Clients.EClientType) x.ClientType,
                ClientOrganisation = x.ClientOrganisation,
            })
            .ToListAsync();
@@ -55,8 +57,9 @@ public class ClientService : IClientService
         {
             Id = client.Id,
             Name = client.Name,
+            Surname = client.Surname,
             PhoneNumber = client.PhoneNumber,
-            ClientType = (EClientType) client.ClientType,
+            ClientType = (Shared.Clients.EClientType) client.ClientType,
             ClientOrganisation = client.ClientOrganisation,
             Email = client.Email,
             BackupContact = client.BackupContact,
@@ -72,13 +75,15 @@ public class ClientService : IClientService
 
         Client client = new Client(
             model.Name!,
+            model.Surname!,
             model.Email!,
             model.PhoneNumber!,
             model.BackupContact!,
             (Domain.Users.EClientType) model.ClientType,
             model.ClientOrganisation!,
             model.Education,
-            model.ExternalType
+            model.ExternalType,
+            true
         );
 
         dbContext.Clients.Add(client);
@@ -118,5 +123,4 @@ public class ClientService : IClientService
 
         await dbContext.SaveChangesAsync();
     }
- 
 }

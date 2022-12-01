@@ -1,11 +1,9 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
 @inject NavigationManager NavigationManager
-<div class="title-container">
-    <h1>
-        Virtuele machine aanvragen
-    </h1>
-    <div class="filters">
+
+<GenericLayout Display=false Title="Aanvragen">
+    <Actions>
         <select @bind="@_sortFilter" @oninput="@FilterChange">
             <option value="0">Datum oplopend</option>
             <option value="1">Datum aflopend</option>
@@ -19,12 +17,13 @@
             <option value="3">Denied</option>
             <option value="4">Requested</option>
         </select>
-    </div>
-</div>
-<GenericLayout Display=false Title="Aanvragen">
+    </Actions>
     <Content>
+        @if (filteredObjects.Count > 0)
+        {
+            <Table Object="@(new Request())" Collection="filteredObjects" InfoCallback="@RequestInfo" />
+        }
 
-        <Table Collection="filteredObjects" InfoCallback="@RequestInfo"/>
     </Content>
 </GenericLayout>
 @if (_showFilter!=0)
@@ -63,21 +62,29 @@
     private string? _sortFilter;
     private string? _statusFilter;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        list = VMRequestService.GetAll();
+        await RefreshRequestsAsync();
+    }
+
+
+    private async Task RefreshRequestsAsync(){
+        requestObjects.Clear();
+        filteredObjects.Clear();
+
+        list = await VMRequestService.GetAll();
 
         list.ForEach(request =>
         {
             requestObjects.Add(
                 new Request()
-                {
-                    Id = request.Id,
-                    Projectnaam = request.ProjectName,
-                    Start_datum = request.StartDate,
-                    Datum_aanvraag = request.Date,
-                    Status = request.Status
-                });
+                    {
+                        Id = request.Id,
+                        Projectnaam = request.ProjectName,
+                        Start_datum = request.StartDate,
+                        Datum_aanvraag = request.Date,
+                        Status = request.Status
+                    });
         });
         filteredObjects = requestObjects;
     }

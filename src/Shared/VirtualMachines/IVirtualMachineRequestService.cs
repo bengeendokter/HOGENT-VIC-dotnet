@@ -2,9 +2,11 @@
 
 public interface IVirtualMachineRequestService
 {
-    List<VirtualMachineRequestDto.Detail> GetAll();
+    Task<List<VirtualMachineRequestDto.Detail>> GetAll();
 
-    VirtualMachineRequestDto.Detail? Get(int id);
+    Task<VirtualMachineRequestDto.Detail> Get(int id);
 
-    VirtualMachineRequestDto.Detail? Update(int id, VirtualMachineRequestDto.Detail request);
+    Task<int> CreateAsync(VirtualMachineRequestDto.Create model);
+
+    Task EditAsync(int id, VirtualMachineRequestDto.Detail request);
 }

@@ -1,9 +1,9 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Users;
 using Domain.VirtualMachines;
-using Shared;
+using System.Xml.Linq;
 
-namespace Domain.Clients;
+namespace Domain.Users;
 
 public class Client : User
 {
@@ -12,6 +12,13 @@ public class Client : User
     {
         get => phoneNumber; 
         set => phoneNumber = Guard.Against.NullOrEmpty(value, nameof(PhoneNumber));
+    }
+
+    private string department = default!;
+    public string? Department
+    {
+        get => department;
+        set => department = Guard.Against.NullOrEmpty(value, nameof(department));
     }
 
     private string backupContact = default!;
@@ -35,8 +42,19 @@ public class Client : User
         set => clientOrganisation = Guard.Against.NullOrEmpty(value, nameof(ClientOrganisation));
     }
 
-    public string? ExternalType { get; set; }
-    public string? Education { get; set; }
+    private string externalType = default!;
+    public string? ExternalType
+    {
+        get => externalType;
+        set => externalType = Guard.Against.NullOrWhiteSpace(value, nameof(externalType));
+    }
+
+    private string education = default!;
+    public string? Education
+    {
+        get => education;
+        set => education = Guard.Against.NullOrWhiteSpace(value, nameof(education));
+    }
 
     // Later veranderen naar VirtualMachineRequest
     //public object[]? VirtualMachineRequests { get; set; }
@@ -49,15 +67,17 @@ public class Client : User
     //}
 
     public Client(
-        string name, 
+        string name,
+        string surname,
         string email,
         string phoneNumber,
         string backupContact,
         EClientType clientType,
         string clientOrganisation,
         string? education,
-        string? externalType
-    ) : base(name, email, ERole.User)
+        string? externalType,
+        bool isActive
+    ) : base(name, surname, email, ERole.User, isActive)
     {
         PhoneNumber = phoneNumber;
         BackupContact = backupContact;
