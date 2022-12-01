@@ -29,5 +29,8 @@ public class VicDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.Entity<Activity>()
+            .HasOne(a => a.VirtualMachine);
     }
 }

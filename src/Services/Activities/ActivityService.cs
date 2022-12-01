@@ -28,17 +28,17 @@ public class ActivityService : IActivityService
                 case "cpu":
                     query = query
                         .OrderBy(x => sortingList.IndexOf((EActivity)x.Type))
-                        .OrderBy(x => x.VirtualMachine!.CPU);
+                        .ThenByDescending(x => x.VirtualMachine!.CPU);
                     break;
                 case "ram":
                     query = query
                         .OrderBy(x => sortingList.IndexOf((EActivity)x.Type))
-                        .OrderBy(x => x.VirtualMachine!.RAM);
+                        .ThenByDescending(x => x.VirtualMachine!.RAM);
                     break;
                 case "storage":
                     query = query
                         .OrderBy(x => sortingList.IndexOf((EActivity) x.Type))
-                        .OrderBy(x => x.VirtualMachine!.Storage);
+                        .ThenByDescending(x => x.VirtualMachine!.Storage);
                     break;
                 default:
                     break;

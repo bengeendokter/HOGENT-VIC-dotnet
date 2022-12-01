@@ -17,7 +17,7 @@ public class ActivityController : ControllerBase
 
     [SwaggerOperation("Returns a list of activities.")]
     [HttpGet]
-    public async Task<List<ActivityDto.Index>> GetIndex(ActivityRequest.Index request)
+    public async Task<List<ActivityDto.Index>> GetIndex([FromQuery] ActivityRequest.Index request)
     {
         return await activityService.GetIndexAsync(request);
     }

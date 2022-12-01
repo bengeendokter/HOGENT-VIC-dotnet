@@ -1,4 +1,5 @@
 using Domain.VirtualMachines;
+using Domain.Activities;
 using Shared.VirtualMachines;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +96,7 @@ public class VirtualMachineService : IVirtualMachineService
         );
 
         dbContext.VirtualMachines.Add(vm);
+        dbContext.Activities.Add(new Activity(vm, EActivity.Added));
         await dbContext.SaveChangesAsync();
 
         return vm.Id;

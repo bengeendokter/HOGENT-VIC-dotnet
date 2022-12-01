@@ -1,7 +1,8 @@
 ﻿@page "/historiek"
-@    using System.Globalization
+@using System.Globalization
 @inject IActivityService ActivityService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Rapportering</PageTitle>
 
@@ -16,102 +17,103 @@
         <option value="storage"># Storage</option>
     </select>
 </div>
-<div class="analytics-container">
-    <!--
-    <div class="currentUse-container">
-    </div>
-    -->
-    <div class="table-container"> 
-        <table>
-            <thead> 
-                <tr>
-                    <th></th>
-                    <th>Virtual Machine</th>
-                    <th>Activiteit</th>
-                    <th># CPU</th>
-                    <th># RAM</th>
-                    <th># Storage</th>
-                    <th>Activiteit Datum</th>
-                    <th>Klant</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{var id = 1;}
-                @foreach (ActivityDto.Index activity in _activities) 
-                {
-                    var vm = activity.VirtualMachine;
-                    @if (vm == null) continue;
-
+<GenericLayout Display=false Title="Klanten">
+        <Content>
+        <div class="table-container">
+            <table>
+                <thead>
                     <tr>
-                        <td>@(id++)</td>
-                        <td>@vm.Name</td>
-                        @switch (activity.Type) {
-                            case EActivity.Added:
-                                <td>VM toegevoegd</td>
-                                <td class="added">+ @vm.CPU Cores</td>
-                                <td class="added">+ @vm.RAM GB</td>
-                                <td class="added">+ @vm.Storage GB</td>
-                                break;
-                            case EActivity.Deleted:
-                                <td>VM verwijderd</td>
-                                <td class="deleted">- @vm.CPU Cores</td>
-                                <td class="deleted">- @vm.RAM GB</td>
-                                <td class="deleted">- @vm.Storage GB</td>
-                                break;
-                            default:
-                                break;
-                        }
-                        <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                        <td>VOKA</td>
+                        <th></th>
+                        <th>Virtual Machine</th>
+                        <th>Activiteit</th>
+                        <th># CPU</th>
+                        <th># RAM</th>
+                        <th># Storage</th>
+                        <th>Activiteit Datum</th>
+                        <th>Klant</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                </thead>
+                <tbody>
+                    @{
+                        var id = 1;
+                    }
+                    @foreach (ActivityDto.Index activity in activities)
+                    {
+                        var vm = activity.VirtualMachine;
+                        @if (vm == null) continue;
 
-
-<div class="voorspelling_link">
-    Klik om voorspellingen te doen met data:
-    <NavLink href="/historiek/voorspelling" Match=NavLinkMatch.All>
-        <div>
-            <span class="material-icons" style="color: var(--clr-CTA)">
-                trending_up
-            </span> Voorspelling
-        </div>     
-    </NavLink>
-</div>
-
+                        <tr>
+                            <td>@(id++)</td>
+                            <td>@vm.Name</td>
+                            @switch (activity.Type)
+                            {
+                                case EActivity.Added:
+                                    <td>VM toegevoegd</td>
+                                    <td class="added">+ @vm.CPU Cores</td>
+                                    <td class="added">+ @vm.RAM GB</td>
+                                    <td class="added">+ @vm.Storage GB</td>
+                                    break;
+                                case EActivity.Deleted:
+                                    <td>VM verwijderd</td>
+                                    <td class="deleted">- @vm.CPU Cores</td>
+                                    <td class="deleted">- @vm.RAM GB</td>
+                                    <td class="deleted">- @vm.Storage GB</td>
+                                    break;
+                                default:
+                                    break;
+                            }
+                            <td>@activity.CreatedAt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                            <td>VOKA</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="voorspelling_link">
+            Klik om voorspellingen te doen met data:
+            <NavLink href="/historiek/voorspelling" Match=NavLinkMatch.All>
+                <div>
+                    <span class="material-icons" style="color: var(--clr-CTA)">
+                        trending_up
+                    </span> Voorspelling
+                </div>
+            </NavLink>
+        </div>
+        </Content>
+</GenericLayout>
 
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public string? SortingParameters { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? SortingParameter { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
 
-    private List<Activity> _activities = new();
+    private List<ActivityDto.Index> activities = new();
 
     /* Sorteren via Select Tag */
     private void OnSelect(ChangeEventArgs e) {
+        Dictionary<string, object?> parameters = new();
         switch (e?.Value?.ToString()) {
             case "date":
-                _activities = _activities.OrderByDescending(a => a.Date).ToList();
+                parameters.Add(nameof(SortingParameter), "date");
                 break;
             case "name":
-                _activities = _activities.OrderBy(a => a.VirtualMachine?.Name).ToList();
+                parameters.Add(nameof(SortingParameter), "name");
                 break;
             case "vcpu":
-                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine?.CPU ?? 0)).ToList();
+                parameters.Add(nameof(SortingParameter), "cpu");
                 break;
             case "ram":
-                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine?.RAM ?? 0)).ToList();
+                parameters.Add(nameof(SortingParameter), "ram");
                 break;
             case "storage":
-                _activities = _activities.OrderByDescending(a => ValueSignByActivityType(a.Type, a.VirtualMachine?.Storage ?? 0)).ToList();
+                parameters.Add(nameof(SortingParameter), "storage");
                 break;
             default:
                 break;
         }
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
     }
 
     /* Hulpfunctie voor sorteren gebaseerd op EActivity type */
@@ -124,12 +126,6 @@
         };
     }
 
-    protected override void OnInitialized()
-    {
-        /* Sorteren op datum in back-end*/
-        _activities = ActivityService.GetAll();
-    }
-
     protected override async Task OnInitializedAsync()
     {
         await RefreshActivitiesAsync();
@@ -139,13 +135,17 @@
     {
         ActivityRequest.Index request = new()
             {
+                SortingParameter = SortingParameter,
                 Page = Page.HasValue ? Page.Value : 1,
                 PageSize = PageSize.HasValue ? PageSize.Value : 25,
             };
-        await RefreshClientsAsync(request);
+        await RefreshActivitiesAsync(request);
     }
 
-    private async Task RefreshActivitiesAsync() {
+    private async Task RefreshActivitiesAsync(ActivityRequest.Index request = null) {
 
+        if (request == null) request = new();
+        var response = await ActivityService.GetIndexAsync(request);
+        activities = response;
     }
 }
