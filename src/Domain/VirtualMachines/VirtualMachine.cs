@@ -33,7 +33,7 @@ public class VirtualMachine : Entity
         get => startDate;
         set =>
             startDate = Guard.Against.AgainstExpression(
-                d => d < DateTime.Now,
+                d => d > DateTime.Now,
                 value,
                 "StartDate must be later than now"
             );

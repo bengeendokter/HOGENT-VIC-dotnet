@@ -2,13 +2,9 @@
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
 @inject IClientService ClientService
+@inject IVirtualMachineRequestService VirtualMachineRequestService
 
-<div class="title-container">
-    <h1>
-        Vm aanvragen
-    </h1>
-</div>
-<GenericLayout Display=false Title="VM - Aanvragen">
+<GenericLayout Display=false Title="VM Aanvragen">
     <Content>
         <div class="requestpage">
             <EditForm Model="@vmRequest" OnValidSubmit="@HandleValidSubmit">
@@ -57,11 +53,11 @@
     <div class="background">
         <div class="window">
             <h2>Aanvraag werd succesvol aangemaakt</h2>
-@*            <p>@($"Klant: {vmRequest.Client.Name}, Naam: {vmRequest.ProjectName}")</p>
-*@            <div class="window-buttons">
+            <p>@($"Aanvraag voor {vmRequest.ProjectName} succesvol aangemaakt.")</p>
+            <div class="window-buttons">
                 <button class="btn-primary"
                     @onclick="RouteToHome">
-                    Begrepen
+                    Terug naar homescreen
                 </button>
             </div>
         </div>
@@ -80,10 +76,10 @@
         vmRequest.EndDate = DateTime.Now;
     }
 
-    private async void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
-        Console.WriteLine("submit");
-        Console.WriteLine(vmRequest.Reason);
+        int id = await VirtualMachineRequestService.CreateAsync(vmRequest);
+        _confirmMsg = true;
     }
 
     private void RouteToHome(){

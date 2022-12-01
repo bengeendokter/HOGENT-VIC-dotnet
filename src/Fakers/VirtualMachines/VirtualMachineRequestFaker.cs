@@ -1,4 +1,5 @@
-﻿using Domain.VirtualMachines;
+﻿using Bogus;
+using Domain.VirtualMachines;
 using Fakers.Common;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ public class VirtualMachineRequestFaker: EntityFaker<VirtualMachineRequest>
                    f.Lorem.Paragraph(),
                    f.Lorem.Word(),
                    //Client
-                   f.Random.Enum<ERequestStatus>()
+                   f.Random.Enum<ERequestStatus>(),
+                   f.Lorem.Paragraph()
                    )
         );
     }

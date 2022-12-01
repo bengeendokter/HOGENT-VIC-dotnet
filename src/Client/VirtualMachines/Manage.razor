@@ -5,6 +5,7 @@
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
 @inject ITemplateService TemplateService
+@inject IClientService ClientService
 
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
@@ -148,14 +149,6 @@
                             <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
                             </div>
                         </label>
-@*
-                        <label>
-                            Wanneer moet de VM online staan?<br />
-                            <InputRadioGroup @bind-Value="_vm.Availability">
-                                <InputRadio Value="EDay.Monday">Monday</InputRadio>
-                            </InputRadioGroup>
-                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
-                        </label>*@
 
                     </div>
                     <button class="btn-primary" type="submit">Maak VM aan</button>
@@ -177,13 +170,15 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private EDay availability;
+    private List<ClientDto.Index> _clients;
 
     [Parameter]
     public int? Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        ClientRequest.Index request = new(){ };
+        _clients = await ClientService.GetIndexAsync(request);
         _templates = TemplateService.GetAll();
         if (!Id.HasValue)
         {

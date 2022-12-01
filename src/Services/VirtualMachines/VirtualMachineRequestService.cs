@@ -18,13 +18,13 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public async Task<int> CreateAsync(VirtualMachineRequestDto.Create model)
     {
-
         var request = new VirtualMachineRequest(
             model.StartDate!,
             model.EndDate!,
             model.Reason!,
             model.ProjectName!,
-            Domain.VirtualMachines.ERequestStatus.Requested!
+            Domain.VirtualMachines.ERequestStatus.Requested!,
+            model.ClientInfo!
         );
 
         dbContext.VirtualMachineRequests.Add(request);

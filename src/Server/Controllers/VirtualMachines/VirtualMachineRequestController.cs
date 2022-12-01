@@ -31,10 +31,10 @@ public class VirtualMachineRequestController : ControllerBase
 
     [SwaggerOperation("Creates a new request.")]
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(VirtualMachineRequestDto.Create model)
+    public async Task<IActionResult> Create(VirtualMachineRequestDto.Create model)
     {
         var id = await virtualMachineRequestService.CreateAsync(model);
-        return CreatedAtAction(nameof(CreateAsync), id);
+        return CreatedAtAction(nameof(Create), id);
     }
 
     [SwaggerOperation("Edites an existing request.")]
