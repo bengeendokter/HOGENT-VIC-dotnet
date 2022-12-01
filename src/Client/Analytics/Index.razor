@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         @{var id = 1;}
-                        @foreach (Activity activity in activities) 
+                        @foreach (ActivityDto.Index activity in activities) 
                         {
                             var vm = activity.VirtualMachine;
                             @if (vm == null) continue;
@@ -64,7 +64,7 @@
                                     default:
                                         break;
                                 }
-                                <td>@activity.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                <td>@activity.CreatedAt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                 <td>VOKA</td>
                             </tr>
                         }
