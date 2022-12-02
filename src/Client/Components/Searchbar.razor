@@ -1,13 +1,8 @@
 ﻿@inject NavigationManager NavigationManager
 
-<div>
-    <div>
-        <input class="input" type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="SearchTermChanged">
-        <!-- <span class="icon is-left">
-            <i class="fas fa-search" aria-hidden="true"></i>
-        </span> -->
-    </div>
-</div>
+
+<input type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="SearchTermChanged">
+
 
 @code {
     [Parameter, EditorRequired] public string? SearchTerm { get; set; } = default!;

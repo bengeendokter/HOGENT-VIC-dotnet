@@ -10,7 +10,7 @@
 
 <GenericLayout Display=false Title="Klanten">
     <Actions>
-        <Searchbar SearchTerm="@Searchterm" />
+
         <select @onchange=OnSelectFilter>
             <option value="all" selected>Alle</option>
             <option value="internal">Alleen interne</option>3
@@ -18,10 +18,10 @@
         </select>
     </Actions>
     <Content>
-        <div class="button-container">
-            <button class="btn-primary" @onclick=GoToCreateClient>Klant Toevoegen</button>
+        <div class="searchAndCreate">
+            <Searchbar SearchTerm="@Searchterm" />
+            <button @onclick=GoToCreateClient>Klant Toevoegen</button>
         </div>
-
         <Table 
             Object="@(new Klant())"
             Collection="@filteredClients" 
