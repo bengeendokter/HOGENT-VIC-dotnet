@@ -1,6 +1,7 @@
 ﻿@page "/"
+@using System.Globalization
 
-<GenericLayout Display=true Title="Dashboard">
+<GenericLayout Display=true Title="Dashboard" StatsTitle="@($"Gebruik op {(DateTime.Now).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}")">
     <Content>
         
     </Content>
