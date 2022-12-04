@@ -17,7 +17,7 @@ public class VirtualMachineRequestController : ControllerBase
 
     [SwaggerOperation("Returns a list of requests.")]
     [HttpGet]
-    public async Task<List<VirtualMachineRequestDto.Detail>> GetAll()
+    public async Task<List<VirtualMachineRequestDto.Index>> GetAll()
     {
         return await virtualMachineRequestService.GetAll();
     }

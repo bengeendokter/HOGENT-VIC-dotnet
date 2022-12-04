@@ -56,7 +56,7 @@
 
     public ICollection<Object> requestObjects = new List<Object>();
     public ICollection<Object> filteredObjects = new List<Object>();
-    private List<VirtualMachineRequestDto.Detail> list = new();
+    private List<VirtualMachineRequestDto.Index> list = new();
     private int _showFilter = 0;
 
     private string? _sortFilter;
@@ -81,6 +81,7 @@
                     {
                         Id = request.Id,
                         Projectnaam = request.ProjectName,
+                        Klant = request.Client!=null ? request.Client.Name + " " + request.Client.Surname: "N/A",
                         Start_datum = request.StartDate,
                         Datum_aanvraag = request.Date,
                         Status = request.Status

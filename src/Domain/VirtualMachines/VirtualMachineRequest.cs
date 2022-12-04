@@ -1,6 +1,7 @@
 ﻿
 using Ardalis.GuardClauses;
 using Domain.Common;
+using Domain.Users;
 
 namespace Domain.VirtualMachines;
 
@@ -35,13 +36,20 @@ public class VirtualMachineRequest : Entity
         set => projectName = Guard.Against.NullOrEmpty(value, nameof(ProjectName));
     }
 
-    //private Client client = default!;
-    //public Client Client
-    //{
-    //    get => client;
-    //    set => client = Guard.Against.Null(value, nameof(Client));
-    //}
+    private Client? client = default!;
+    public Client? Client
+    {
+        get => client;
+        set => client = Client;
+    }
 
+    private VirtualMachine? virtualMachine = default!;
+
+    public VirtualMachine? VirtualMachine
+    {
+        get => virtualMachine;
+        set => virtualMachine = VirtualMachine;
+    }
 
     private ERequestStatus status = default!;
     public ERequestStatus Status
@@ -64,16 +72,18 @@ public class VirtualMachineRequest : Entity
         DateTime endDate,
         string reason,
         string projectName,
-        //Client client, 
+        Client? client,
+        VirtualMachine? virtualMachine,
         ERequestStatus status,
-        string clientInfo
+        string? clientInfo
         )
     {
         StartDate = startDate;
         EndDate = endDate;
         Reason = reason;
         ProjectName = projectName;
-        //Client = client;
+        Client = client;
+        VirtualMachine = virtualMachine;
         Status = status;
         ClientInfo = clientInfo;
     }
