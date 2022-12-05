@@ -19,7 +19,8 @@
                             <div class="input-group">
                                 <div class="form-group">
                                     <label>
-                                        Projectnaam</label>
+                                        Projectnaam
+                                    </label>
                                     <div class="field">@_request.ProjectName</div>
                                 </div>
                                 <div class="form-group">
@@ -34,7 +35,28 @@
                                     </label>
                                     <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
                                 </div>
-                            </div>
+                                @if(_request.Client is not null){
+                                <div class="form-group">
+                                    <label>
+                                        Klant
+                                    </label>
+                                    <div class="field">@_request.Client.Name @_request.Client.Surname</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Contactnummer van de klant
+                                    </label>
+                                    <div class="field">@_request.Client.PhoneNumber</div>
+                                </div>
+                                }
+
+@*                            <div class="form-group">
+                                <label>
+                                    Contactnummer van de klant
+                                </label>
+                                <div class="field">@_request.Client.PhoneNumber</div>
+                            </div>*@
+                        </div>
                         <label>
                             Extra info over de aanvraag:<br />
                             <div class="reden">@_request.Reason</div>
@@ -168,7 +190,7 @@
                                 {
                                     {
                                         <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
-                                            <button class="daybtn" @onclick="(()=> AddDay(day))">
+                                            <button type="button" class="daybtn" @onclick="(()=> AddDay(day))">
                                                 <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
                                                 <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet")}beschikbaar")</span>
                                             </button>
@@ -199,15 +221,12 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private List<ClientDto.Index> _clients;
 
     [Parameter]
     public int? Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        ClientRequest.Index request = new() { };
-        _clients = await ClientService.GetIndexAsync(request);
         _templates = TemplateService.GetAll();
         if (!Id.HasValue)
         {
@@ -222,6 +241,8 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
+@*            if(_request.Client is not null)
+                _vm.Client = _request.Client;*@
         }
         else
         {
@@ -303,6 +324,9 @@
         if (_request != null)
         {
             int vmId = await VirtualMachineService.CreateAsync(_vm);
+            _request.VirtualMachineId = vmId;
+            _request.Status = ERequestStatus.Handled;
+            await VirtualMachineRequestService.EditAsync(_request.Id, _request);
             NavigationManager.NavigateTo($"/vm/{vmId}");
 
         }

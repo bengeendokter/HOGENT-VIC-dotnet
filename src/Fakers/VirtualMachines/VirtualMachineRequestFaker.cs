@@ -23,9 +23,9 @@ public class VirtualMachineRequestFaker: EntityFaker<VirtualMachineRequest>
                    f.Date.Future(1, DateTime.Now.AddYears(1)),
                    f.Lorem.Paragraph(),
                    f.Lorem.Word(),
-                   new Client(f.Person.FirstName,f.Person.LastName,"test","test", "test",EClientType.Internal,"test","test", "test",true),
+                   new Client(f.Person.FirstName,f.Person.LastName,"test", f.Phone.PhoneNumber("+## ### ## ## ##") , "test",EClientType.Internal,"test","test", "test",true),
                    null,
-                   f.Random.Enum<ERequestStatus>(),
+                   ERequestStatus.Requested,
                    f.Lorem.Paragraph()
                    )
         );

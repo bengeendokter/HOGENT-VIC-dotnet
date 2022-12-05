@@ -40,7 +40,7 @@ public class VirtualMachineRequest : Entity
     public Client? Client
     {
         get => client;
-        set => client = Client;
+        set => client = value;
     }
 
     private VirtualMachine? virtualMachine = default!;

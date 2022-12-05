@@ -44,26 +44,12 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
     {
-        var request = await dbContext.VirtualMachineRequests.FirstOrDefaultAsync(v => v.Id == id);
-        ClientDto.Index client = null;
-        VirtualMachineDto.Index vm = null;
-
+        var request = await dbContext.VirtualMachineRequests.Include(c => c.Client).FirstOrDefaultAsync(v => v.Id == id);
 
         if (request is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), id);
 
-        if (request.Client != null)
-        {
-            client = new ClientDto.Index
-            {
-                Id = request.Client.Id,
-                Name = request.Client.Name,
-                Surname = request.Client.Surname,
-                PhoneNumber = request.Client.PhoneNumber,
-                ClientType = (Shared.Clients.EClientType)request.Client.ClientType,
-                ClientOrganisation = request.Client.ClientOrganisation
-            };
-        }
+
 
         return new VirtualMachineRequestDto.Detail
         {
@@ -74,14 +60,23 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
             EndDate = request.EndDate,
             Reason = request.Reason,
             Status = (Shared.VirtualMachines.ERequestStatus)request.Status,
-            Client = client,
-            VirtualMachineId = request.VirtualMachine != null? request.VirtualMachine.Id: null
+            Client = request.Client != null ? new ClientDto.Index
+            {
+                Id = request.Client.Id,
+                Name = request.Client.Name,
+                Surname = request.Client.Surname,
+                PhoneNumber = request.Client.PhoneNumber,
+                ClientType = (Shared.Clients.EClientType)request.Client.ClientType,
+                ClientOrganisation = request.Client.ClientOrganisation
+            } : null,
+            VirtualMachineId = request.VirtualMachine != null ? request.VirtualMachine.Id : null,
+            ClientInfo = request.ClientInfo,
         };
     }
 
     public async Task<List<VirtualMachineRequestDto.Index>> GetAll()
     {
-        return await dbContext.VirtualMachineRequests
+        return await dbContext.VirtualMachineRequests.Include(x=> x.Client)
             .Select(
                 r =>
                     new VirtualMachineRequestDto.Index
@@ -109,11 +104,15 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     public async Task EditAsync(int id, VirtualMachineRequestDto.Detail request)
     {
         var r = await dbContext.VirtualMachineRequests.SingleOrDefaultAsync(v => v.Id == id);
+        var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(v => v.Id == id);
 
+        if(vm is null)
+            throw new EntityNotFoundException(nameof(VirtualMachine), id);
         if (r is null)
             throw new EntityNotFoundException(nameof(VirtualMachineRequest), id);
 
         r.Status = (Domain.VirtualMachines.ERequestStatus)request.Status;
+        r.VirtualMachine = vm;
 
         await dbContext.SaveChangesAsync();
     }

@@ -48,7 +48,7 @@
     public class Request{
         public int Id = 0;
         public string? Projectnaam;
-        public string Klant = "N/A";
+        public string Klant = "Onbepaalde klant";
         public DateTime? Start_datum;
         public ERequestStatus Status;
         public DateTime? Datum_aanvraag;
@@ -76,12 +76,13 @@
 
         list.ForEach(request =>
         {
+            Console.WriteLine(request.Client);
             requestObjects.Add(
                 new Request()
                     {
                         Id = request.Id,
                         Projectnaam = request.ProjectName,
-                        Klant = request.Client!=null ? request.Client.Name + " " + request.Client.Surname: "N/A",
+                        Klant = request.Client != null ? request.Client.Name + " " + request.Client.Surname : "Onbepaalde klant",
                         Start_datum = request.StartDate,
                         Datum_aanvraag = request.Date,
                         Status = request.Status
@@ -146,7 +147,7 @@
     }
 
     private void RouteToVM(){
-        //_showFilter is id van request
+        NavigationManager.NavigateTo($"/vm/{_showFilter}");
     }
 
 }
