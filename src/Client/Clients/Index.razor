@@ -4,13 +4,19 @@
 
 @if (clients == null)
 {
-    <p>Loading...</p>
+    <Loading Title="Klanten"/>
+    return;
+} 
+
+@if (error)
+{
+    <Error Title="Klanten" ErrorMessage="@errorMessage"/>
     return;
 }
 
+
 <GenericLayout Display=false Title="Klanten">
     <Actions>
-
         <select @onchange=OnSelectFilter>
             <option value="all" selected>Alle</option>
             <option value="internal">Alleen interne</option>3
@@ -42,6 +48,8 @@
     private List<ClientDto.Index> clients = new();
     private ICollection<Klant> clientObjects = new List<Klant>();
     public ICollection<Klant> filteredClients = new List<Klant>();
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     public class Klant
     {
@@ -73,7 +81,18 @@
         if (request == null) request = new();
         clientObjects.Clear();
         filteredClients.Clear();
-        clients = await ClientService.GetIndexAsync(request);
+
+        try
+        {
+            error = false;
+            clients = await ClientService.GetIndexAsync(request);
+        } 
+        catch(Exception ex) 
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
+
 
         clients.ForEach(c =>
         {

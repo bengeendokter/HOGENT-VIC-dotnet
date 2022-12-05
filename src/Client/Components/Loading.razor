@@ -1,0 +1,10 @@
+﻿<GenericLayout Display=false Title="@Title">
+    <Content>
+        <div class="loading-container">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </Content>
+</GenericLayout>
+@code {
+    [Parameter] public string Title { get; set; }
+}

@@ -1,0 +1,15 @@
+﻿<GenericLayout Display=false Title="@Title">
+    <Content>
+        <div class="error-container">
+            <ErrorIcon />
+            <h2>Er is iets fout gelopen...</h2>
+            <p>@ErrorMessage</p>
+        </div>
+    </Content>
+</GenericLayout>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string ErrorMessage { get; set; }
+
+}

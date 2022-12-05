@@ -1,0 +1,4 @@
+﻿.main {
+    height: 256px; width: 256px;
+    fill: var(--clr-text-color);
+}
