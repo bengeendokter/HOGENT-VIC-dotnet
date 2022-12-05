@@ -70,6 +70,8 @@ tr:nth-child(even) {
     /*primary*/
 }
 
+/*#region Deleting*/
+
 .delete-background {
     display: flex;
     justify-content: center;
@@ -101,3 +103,5 @@ tr:nth-child(even) {
     flex-direction: row;
     gap: .5em;
 }
+
+/*#endregion*/

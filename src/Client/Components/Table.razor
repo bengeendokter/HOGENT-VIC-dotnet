@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @typeparam T
 
+
 @if (isRequestingDelete)
 {
     <div class="delete-background">
@@ -102,6 +103,10 @@
         </tbody>
     </table>
 </section>
+@if (EnablePaging) {
+    <TablePaging />
+}
+
 @code {
     private int _id { get; set; }
     //Geef een lijst met objecten mee aan de Table component, deze objects zijn een klasse die alle atributten bevat die je wilt weergeven, De eerste attribuut is het ID en de laatste is de acties die je wilt
@@ -114,8 +119,12 @@
     [Parameter] public EventCallback<int> DeleteCallback { get; set; }
     [Parameter] public EventCallback<int> EditCallback { get; set; }
 
+    [Parameter] public bool EnablePaging { get; set; } = false;
+
     private bool isRequestingDelete = false;
 
+
+    // Delete confirmation
     private void SetDeleteTrue(object? id)
     {
         _id = Convert.ToInt32(id);
@@ -127,6 +136,7 @@
         _id = -1;
     }
 
+    // Callbacks
     private void OnInfo(object? id) {
         _id = Convert.ToInt32(id);
         InfoCallback.InvokeAsync(_id);

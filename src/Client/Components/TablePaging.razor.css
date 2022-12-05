@@ -1,0 +1,43 @@
+﻿.table-paging {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-paging div {
+    display: inline-block;
+    background-color: var(--clr-primary);
+    padding: .7em 1em;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.page {
+    margin: 0em 1em;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+}
+
+.arrow:hover {
+    border-width: 0 4px 4px 0;
+}
+
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+a:link {
+    text-decoration: none;
+}

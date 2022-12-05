@@ -19,59 +19,54 @@
         </a>
     </Actions>
     <Content>
-        <div class="analytics-container">
-            <!--
-            <div class="currentUse-container">
-            </div>
-            -->
-            <div class="table-container"> 
-                <table>
-                    <thead> 
-                        <tr>
-                            <th></th>
-                            <th>Virtual Machine</th>
-                            <th>Activiteit</th>
-                            <th># CPU</th>
-                            <th># RAM</th>
-                            <th># Storage</th>
-                            <th>Activiteit Datum</th>
-                            <th>Klant</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{var id = 1;}
-                        @foreach (ActivityDto.Index activity in activities) 
-                        {
-                            var vm = activity.VirtualMachine;
-                            @if (vm == null) continue;
+        <section> 
+            <table>
+                <thead> 
+                    <tr>
+                        <th></th>
+                        <th>Virtual Machine</th>
+                        <th>Activiteit</th>
+                        <th># CPU</th>
+                        <th># RAM</th>
+                        <th># Storage</th>
+                        <th>Activiteit Datum</th>
+                        <th>Klant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{var id = 1;}
+                    @foreach (ActivityDto.Index activity in activities) 
+                    {
+                        var vm = activity.VirtualMachine;
+                        @if (vm == null) continue;
 
-                            <tr>
-                                <td>@(id++)</td>
-                                <td>@vm.Name</td>
-                                @switch (activity.Type) {
-                                    case EActivity.Added:
-                                        <td>VM toegevoegd</td>
-                                        <td class="added">+ @vm.CPU Cores</td>
-                                        <td class="added">+ @vm.RAM GB</td>
-                                        <td class="added">+ @vm.Storage GB</td>
-                                        break;
-                                    case EActivity.Deleted:
-                                        <td>VM verwijderd</td>
-                                        <td class="deleted">- @vm.CPU Cores</td>
-                                        <td class="deleted">- @vm.RAM GB</td>
-                                        <td class="deleted">- @vm.Storage GB</td>
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                <td>@activity.CreatedAt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                                <td>VOKA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                        <tr>
+                            <td>@(id++)</td>
+                            <td>@vm.Name</td>
+                            @switch (activity.Type) {
+                                case EActivity.Added:
+                                    <td>VM toegevoegd</td>
+                                    <td class="added">+ @vm.CPU Cores</td>
+                                    <td class="added">+ @vm.RAM GB</td>
+                                    <td class="added">+ @vm.Storage GB</td>
+                                    break;
+                                case EActivity.Deleted:
+                                    <td>VM verwijderd</td>
+                                    <td class="deleted">- @vm.CPU Cores</td>
+                                    <td class="deleted">- @vm.RAM GB</td>
+                                    <td class="deleted">- @vm.Storage GB</td>
+                                    break;
+                                default:
+                                    break;
+                            }
+                            <td>@activity.CreatedAt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                            <td>VOKA</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    <TablePaging />
     </Content>
 </GenericLayout>
 
@@ -80,6 +75,7 @@
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
 
+    private int? page = 1;
     private List<ActivityDto.Index> activities = new();
 
     /* Sorteren via Select Tag */
@@ -129,7 +125,7 @@
             {
                 SortingParameter = SortingParameter,
                 Page = Page.HasValue ? Page.Value : 1,
-                PageSize = PageSize.HasValue ? PageSize.Value : 25,
+                PageSize = PageSize.HasValue ? PageSize.Value : 10,
             };
         await RefreshActivitiesAsync(request);
     }
@@ -139,5 +135,27 @@
         if (request == null) request = new();
         var response = await ActivityService.GetIndexAsync(request);
         activities = response;
+    }
+
+    private void GoToNextPage() 
+    {
+        Dictionary<string, object?> parameters = new();
+        parameters.Add(nameof(Page), ++page);
+        NavigateToUriWithParameters(parameters);
+    }
+
+    private void GoToPreviousPage()
+    {
+        Dictionary<string, object?> parameters = new();
+        if (page > 1) {
+            parameters.Add(nameof(Page), --page);
+            NavigateToUriWithParameters(parameters);
+        }
+    }
+
+    private void NavigateToUriWithParameters(Dictionary<string, object?> parameters) 
+    {
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
     }
 }

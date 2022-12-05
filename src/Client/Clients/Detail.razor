@@ -11,13 +11,10 @@
 <GenericLayout Display=false Title=@($"Klant - {client.Name}")>
     <Actions>
         <a href="/klanten" class="btn-primary">
-            Annuleren
+            Terug naar overzicht
         </a>
     </Actions>
     <Content>
-        <a href="/klanten">
-            <h2><i class="arrow left"></i>Overzicht klanten</h2>
-        </a>
         <div class="center-container">
             <div class="container">
             <section aria-labelledby="client-name">
@@ -80,7 +77,7 @@
                     } else 
                     {
                         <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
-                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen</button>
+                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen bevestigen</button>
                     }
 
                 </div>

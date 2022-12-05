@@ -1,0 +1,43 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="table-paging">
+    <div>
+        <i class="arrow left" @onclick="GoToPreviousPage"></i>
+        <span class="page">@(page)</span>
+        <i class="arrow right" @onclick="GoToNextPage"></i>
+    </div>
+</div>
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+
+    private int? page = 1;
+
+    protected override void OnParametersSet()
+    {
+        page = Page.HasValue ? Page.Value : 1;
+    }
+
+    private void GoToNextPage()
+    {
+        Dictionary<string, object?> parameters = new();
+        parameters.Add(nameof(Page), ++page);
+        NavigateToUriWithParameters(parameters);
+    }
+
+    private void GoToPreviousPage()
+    {
+        Dictionary<string, object?> parameters = new();
+        if (page > 1)
+        {
+            parameters.Add(nameof(Page), --page);
+            NavigateToUriWithParameters(parameters);
+        }
+    }
+
+    private void NavigateToUriWithParameters(Dictionary<string, object?> parameters)
+    {
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}
