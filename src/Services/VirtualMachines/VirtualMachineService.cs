@@ -2,6 +2,8 @@ using Domain.VirtualMachines;
 using Shared.VirtualMachines;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Domain.Users;
+using Shared.Clients;
 
 namespace Services.VirtualMachines;
 
@@ -30,8 +32,17 @@ public class VirtualMachineService : IVirtualMachineService
                         EndDate = v.EndDate,
                         IsActive = v.IsActive,
                         Template = (Shared.VirtualMachines.ETemplate)v.Template,
-                        IsHighlyAvailable= v.IsHighlyAvailable,
+                        IsHighlyAvailable = v.IsHighlyAvailable,
                         BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)v.BackupFrequency,
+                        Client = (v.Client != null) ? new ClientDto.Index() {
+                            Id = v.Client.Id,
+                            Name = v.Client.Name,
+                            Surname = v.Client.Surname,
+                            ClientOrganisation = v.Client.ClientOrganisation,
+                            ClientType = (Shared.Clients.EClientType)v.Client.ClientType,
+                            PhoneNumber = v.Client.PhoneNumber
+                        } :
+                         null
                     }
             )
             .ToListAsync();
@@ -39,10 +50,26 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)
     {
-        var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(v => v.Id == virtualMachineId);
+        var vm = await dbContext.VirtualMachines.Include(x => x.Client).FirstOrDefaultAsync(v => v.Id == virtualMachineId);
 
         if (vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
+
+        var vmClient = vm.Client;
+
+        ClientDto.Index? client = vmClient is null ?
+            null
+            :
+            new ClientDto.Index()
+            {
+                Id = vmClient.Id,
+                ClientOrganisation = vmClient.ClientOrganisation,
+                ClientType = (Shared.Clients.EClientType)vmClient.ClientType,
+                Name = vmClient.Name,
+                Surname = vmClient.Surname,
+                PhoneNumber = vmClient.PhoneNumber
+            };
+
 
         return new VirtualMachineDto.Detail
         {
@@ -61,9 +88,11 @@ public class VirtualMachineService : IVirtualMachineService
             IsHighlyAvailable = vm.IsHighlyAvailable,
             Mode = (Shared.VirtualMachines.EMode)vm.Mode,
             Template = (Shared.VirtualMachines.ETemplate)vm.Template,
-            Poorten = vm.Poorten
-        };
-    }
+            Poorten = vm.Poorten,
+            Client = vmClient is not null ? client : null,
+            Host = vm.Host
+    };
+}
 
     public async Task<int> CreateAsync(VirtualMachineDto.Mutate model)
     {
@@ -75,7 +104,6 @@ public class VirtualMachineService : IVirtualMachineService
             );
 
         var vm = new VirtualMachine(
-            // model.Client!,
             model.Name!,
             model.HostName!,
             model.StartDate,
@@ -91,7 +119,9 @@ public class VirtualMachineService : IVirtualMachineService
             (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency,
             (Domain.VirtualMachines.EDay)model.Availability,
             model.IsHighlyAvailable,
-            false
+            false,
+            null
+            //model.Client!,
         );
 
         dbContext.VirtualMachines.Add(vm);
@@ -100,14 +130,16 @@ public class VirtualMachineService : IVirtualMachineService
         return vm.Id;
     }
 
-    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model)
+    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model, int? clientId = -1)
     {
         var vm = await dbContext.VirtualMachines.SingleOrDefaultAsync(
             v => v.Id == virtualMachineId
         );
 
         if (vm is null)
+        {
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
+        }
 
         vm.Name = model.Name!;
         vm.CPU = model.CPU;
@@ -124,8 +156,23 @@ public class VirtualMachineService : IVirtualMachineService
         vm.Availability = (Domain.VirtualMachines.EDay)model.Availability;
         vm.Mode = (Domain.VirtualMachines.EMode)model.Mode;
         vm.Host = model.Host!;
-        // vm.Client = model.Client!;
         vm.Poorten = model.Poorten!;
+
+        int clientID = model.ClientId;
+
+        if (clientID != 0)
+        {
+            var client = await dbContext.Clients.SingleOrDefaultAsync(c => c.Id == clientID);
+
+            if (client is null)
+            {
+                throw new EntityNotFoundException(nameof(Client), clientID);
+            }
+
+            client.AddVM(vm);
+            vm.Client = client;
+
+        }
 
         await dbContext.SaveChangesAsync();
     }

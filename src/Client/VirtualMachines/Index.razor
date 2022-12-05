@@ -54,7 +54,7 @@
                         <td>@vm.Storage GB</td>
                         <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
-                        <td>VOKA</td>
+                        <td>@(vm.Client is not null? $"{@vm.Client.Surname} {@vm.Client.Name}" : "Geen klant")</td>
                         <td>
                             @(
                                 vm.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks"

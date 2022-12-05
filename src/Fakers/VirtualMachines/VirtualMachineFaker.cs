@@ -1,4 +1,5 @@
 using Domain.VirtualMachines;
+using Fakers.Clients;
 using Fakers.Common;
 
 namespace Fakers.VirtualMachines;
@@ -26,7 +27,8 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
                     f.Random.Enum<EBackupFrequency>(),
                     (EDay)f.Random.Int(1, 127),
                     f.Random.Bool(),
-                    f.Random.Bool()
+                    f.Random.Bool(),
+                    new ClientFaker(locale).AsTransient()
                 )
         );
     }

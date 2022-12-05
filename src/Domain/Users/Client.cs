@@ -56,6 +56,24 @@ public class Client : User
         set => education = Guard.Against.NullOrWhiteSpace(value, nameof(education));
     }
 
+    private readonly List<VirtualMachine> virtualMachines = new();
+    public IReadOnlyCollection<VirtualMachine> VirtualMachines => virtualMachines.AsReadOnly();
+    public void AddVM(VirtualMachine vm)
+    {
+        if (!IsEnabled)
+            throw new ApplicationException($"{nameof(Client)} is not active, could not add virtual machine.");
+
+        virtualMachines.Add(vm); 
+    }
+
+    public void RemoveVM(VirtualMachine vm)
+    {
+        if (!IsEnabled)
+            throw new ApplicationException($"{nameof(Client)} is not active, could not remove virtual machine.");
+
+        virtualMachines.Remove(vm);
+    }
+
     // Later veranderen naar VirtualMachineRequest
     //public object[]? VirtualMachineRequests { get; set; }
 

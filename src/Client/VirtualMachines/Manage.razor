@@ -79,11 +79,15 @@
 
                         <label>
                             Klant<br />
-                            <InputSelect @bind-Value="_vm.Client" class="inputField">
-                                <!--
-                                <option value="" selected> Option 1</option>
-                                <option value=""         > Option 2</option>
-                                -->
+                            <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
+                            <InputSelect @bind-Value="_vm.ClientId" class="inputField">
+                                <option value="">Geen Klant</option>
+                                @if (_clients != null){
+                                    @foreach(var client in FilteredClients())
+                                    {
+                                            <option value="@client.Id">@client.Surname @client.Name</option>
+                                    }
+                                }
                             </InputSelect>
                         </label>
 
@@ -118,6 +122,7 @@
                         </label>
 
                         <label>
+                            <p>@_vm.Host</p>
                             Host<br />
                             <InputSelect @bind-Value="_vm.Host" class="inputField">
                                 <option value="">--selecteer een optie--</option>
@@ -151,7 +156,7 @@
                         </label>
 
                     </div>
-                    <button class="btn-primary" type="submit">Maak VM aan</button>
+                    <button class="btn-primary" type="submit">@(Id is null? "Maak VM aan" : "Wijzig VM" )</button>
                 </div>
                 
             </div>
@@ -171,9 +176,20 @@
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
     private List<ClientDto.Index> _clients;
+    private string? searchClientString { get; set; } = "";
 
     [Parameter]
     public int? Id { get; set; }
+
+    private void OnSearchClientStringChanged(ChangeEventArgs args)
+    {
+        searchClientString = args.Value?.ToString();
+    }
+
+    private IEnumerable<ClientDto.Index> FilteredClients()
+    {
+        return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -212,7 +228,7 @@
             _vm.Availability = vm.Availability;
             _vm.Mode = vm.Mode;
             _vm.Host = vm.Host;
-            _vm.Client = vm.Client;
+            _vm.ClientId = vm.Client is not null? vm.Client.Id : 0;
             _vm.Poorten = vm.Poorten;
             HandleTemplate(_templates.Where(t => t.Type == vm.Template).First());
         }

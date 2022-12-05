@@ -48,10 +48,22 @@ public class ClientService : IClientService
 
     public async Task<ClientDto.Detail> GetDetailAsync(int clientId)
     {
-        var client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == clientId);
+        var client = await dbContext.Clients.Include(x => x.VirtualMachines).FirstOrDefaultAsync(x => x.Id == clientId);
 
         if (client is null)
             throw new EntityNotFoundException(nameof(Client), clientId);
+
+        List<ClientVMDto.Index> lijst = new();
+
+        foreach (var vm in client.VirtualMachines)
+        {
+            ClientVMDto.Index v = new()
+            {
+                Id = vm.Id,
+                Name = vm.Name
+            };
+            lijst.Add(v);
+        }
 
         return new ClientDto.Detail
         {
@@ -59,12 +71,13 @@ public class ClientService : IClientService
             Name = client.Name,
             Surname = client.Surname,
             PhoneNumber = client.PhoneNumber,
-            ClientType = (Shared.Clients.EClientType) client.ClientType,
+            ClientType = (Shared.Clients.EClientType)client.ClientType,
             ClientOrganisation = client.ClientOrganisation,
             Email = client.Email,
             BackupContact = client.BackupContact,
             Education = client.Education,
             ExternalType = client.ExternalType,
+            VmList = lijst,
         };
     }
 

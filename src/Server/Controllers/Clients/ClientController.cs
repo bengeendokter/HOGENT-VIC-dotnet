@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Clients;
+using Shared.VirtualMachines;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Server.Controllers.Clients;
@@ -9,10 +10,12 @@ namespace Server.Controllers.Clients;
 public class ClientController : ControllerBase
 {
     private readonly IClientService clientService;
+    private readonly IVirtualMachineService virtualMachineService;
 
-    public ClientController(IClientService clientService)
+    public ClientController(IClientService clientService, IVirtualMachineService virtualMachineService)
     {
         this.clientService = clientService;
+        this.virtualMachineService = virtualMachineService;
     }
 
     [SwaggerOperation("Returns a list of clients.")]
@@ -50,6 +53,15 @@ public class ClientController : ControllerBase
     public async Task<IActionResult> Delete(int clientId)
     {
         await clientService.DeleteAsync(clientId);
+        return NoContent();
+    }
+
+    [SwaggerOperation("Adds a virtual machine to an existing client.")]
+    [HttpPut("{clientId}/add-vm/{vmId}")]
+    public async Task<IActionResult> AddVM(int clientId, int vmId)
+    {
+        await virtualMachineService.EditAsync(vmId, null, clientId);
+        //await clientService.DeleteAsync(clientId);
         return NoContent();
     }
 }
