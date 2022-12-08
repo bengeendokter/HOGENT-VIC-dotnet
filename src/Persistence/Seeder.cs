@@ -1,9 +1,9 @@
 using Domain.Users;
 using Domain.VirtualMachines;
-using Domain.Activities;
 using Fakers.Clients;
 using Fakers.VirtualMachines;
 using System.Runtime.CompilerServices;
+using Fakers.Activities;
 
 namespace Persistence;
 
@@ -21,6 +21,7 @@ public class Seeder
         SeedVirtualMachines();
         SeedClients();
         SeedUsers();
+        SeedActivities();
     }
 
     private void SeedVirtualMachines()
@@ -28,12 +29,6 @@ public class Seeder
         // Vms
         var vms = new VirtualMachineFaker().AsTransient().Generate(20);
         dbContext.VirtualMachines.AddRange(vms);
-
-        // Activities
-        Random random = new();
-        var types = Enum.GetValues(typeof(EActivity));
-        var activities = vms.Select(vm => new Activity(vm, (EActivity) types.GetValue(random.Next(types.Length))));
-        dbContext.Activities.AddRange(activities);
 
         // Requests
         var requests = new VirtualMachineRequestFaker().AsTransient().Generate(10);
@@ -52,6 +47,13 @@ public class Seeder
     {
         var users = new UserFaker().AsTransient().Generate(10);
         dbContext.Users.AddRange(users);
+        dbContext.SaveChanges();
+    }
+
+    private void SeedActivities()
+    {
+        var activities = new ActivityFaker().AsTransient().Generate(25);
+        dbContext.Activities.AddRange(activities);
         dbContext.SaveChanges();
     }
 }
