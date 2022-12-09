@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using static Client.VirtualMachines.Requests;
 
 namespace Client.VirtualMachines;
 
@@ -12,9 +13,9 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         this.client = client;
     }
 
-    public async Task<List<VirtualMachineRequestDto.Detail>> GetAll()
+    public async Task<List<VirtualMachineRequestDto.Index>> GetAll()
     {
-        return await client.GetFromJsonAsync<List<VirtualMachineRequestDto.Detail>>(endpoint) ?? new();
+        return await client.GetFromJsonAsync<List<VirtualMachineRequestDto.Index>>(endpoint) ?? new();
     }
 
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
@@ -34,6 +35,12 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     public async Task EditAsync(int id, VirtualMachineRequestDto.Detail request)
     {
         await client.PutAsJsonAsync($"{endpoint}/{id}", request);
+    }
+
+    public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int clientId)
+    {
+        var response = await client.GetFromJsonAsync<List<VirtualMachineRequestDto.Index>>($"{endpoint}/client/{clientId}");
+        return response!;
     }
 
 

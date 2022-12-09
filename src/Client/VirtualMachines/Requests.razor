@@ -1,5 +1,6 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
+@inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
 <GenericLayout Display=false Title="Aanvragen">
@@ -48,7 +49,7 @@
     public class Request{
         public int Id = 0;
         public string? Projectnaam;
-        public string Klant = "N/A";
+        public string Klant = "Onbepaalde klant";
         public DateTime? Start_datum;
         public ERequestStatus Status;
         public DateTime? Datum_aanvraag;
@@ -56,7 +57,7 @@
 
     public ICollection<Object> requestObjects = new List<Object>();
     public ICollection<Object> filteredObjects = new List<Object>();
-    private List<VirtualMachineRequestDto.Detail> list = new();
+    private List<VirtualMachineRequestDto.Index> list = new();
     private int _showFilter = 0;
 
     private string? _sortFilter;
@@ -73,14 +74,19 @@
         filteredObjects.Clear();
 
         list = await VMRequestService.GetAll();
+        //ClientRequest.Index r = new();
+        //ClientDto.Index client = (await ClientService.GetIndexAsync(r)).First();
+        //list = await VMRequestService.GetRequestsFromClient(client.Id);
 
         list.ForEach(request =>
         {
+            Console.WriteLine(request.Client);
             requestObjects.Add(
                 new Request()
                     {
                         Id = request.Id,
                         Projectnaam = request.ProjectName,
+                        Klant = request.Client != null ? request.Client.Name + " " + request.Client.Surname : "Onbepaalde klant",
                         Start_datum = request.StartDate,
                         Datum_aanvraag = request.Date,
                         Status = request.Status
@@ -145,7 +151,7 @@
     }
 
     private void RouteToVM(){
-        //_showFilter is id van request
+        NavigationManager.NavigateTo($"/vm/{_showFilter}");
     }
 
 }

@@ -5,7 +5,7 @@
     <Actions>
         <input type="date" id="datum" name="datum"
                 min=@($"{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") 
-                max=@($"{DateTime.Now.AddYears(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") 
+                max=@($"{DateTime.Now.AddYears(2).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") 
                 @bind-value="datum" 
                 @bind-value:event="oninput"
         />

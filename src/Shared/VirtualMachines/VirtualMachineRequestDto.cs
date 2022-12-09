@@ -5,23 +5,34 @@ namespace Shared.VirtualMachines;
 
 public static class VirtualMachineRequestDto
 {
+    public class Index
+    {
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public string? ProjectName { get; set; }
+        public ClientDto.Index? Client { get; set; }
+        public int? VirtualMachineId { get; set; }
+        public DateTime StartDate { get; set; }
+        public ERequestStatus Status { get; set; }
+    }
     public class Detail
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string? ProjectName { get; set; }
-        //public ClientDto.Index? Client { get; set; }
+        public ClientDto.Index? Client { get; set; }
+        public int? VirtualMachineId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string? Reason { get; set; }
         public ERequestStatus Status { get; set; }
         public string? ClientInfo { get; set; }
-
     }
     public class Create
     {
         public string? ProjectName { get; set; }
-        //public ClientDto.Index? Client { get; set; }
+        public ClientDto.Index? Client { get; set; }
+        public int? VirtualMachineId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string? Reason { get; set; }

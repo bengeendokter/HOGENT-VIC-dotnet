@@ -17,7 +17,7 @@ public class VirtualMachineRequestController : ControllerBase
 
     [SwaggerOperation("Returns a list of requests.")]
     [HttpGet]
-    public async Task<List<VirtualMachineRequestDto.Detail>> GetAll()
+    public async Task<List<VirtualMachineRequestDto.Index>> GetAll()
     {
         return await virtualMachineRequestService.GetAll();
     }
@@ -27,6 +27,13 @@ public class VirtualMachineRequestController : ControllerBase
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
     {
         return await virtualMachineRequestService.Get(id);
+    }
+
+    [SwaggerOperation("Returns requests from a client.")]
+    [HttpGet("client/{id}")]
+    public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int id)
+    {
+        return await virtualMachineRequestService.GetRequestsFromClient(id);
     }
 
     [SwaggerOperation("Creates a new request.")]

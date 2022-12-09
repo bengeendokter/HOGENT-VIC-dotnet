@@ -17,25 +17,50 @@
                     {
                         <h2>Informatie van de aanvrager</h2>
                             <div class="input-group">
-                            <label>
-                                Projectnaam:<br/>
-                                <div class="field">@_request.ProjectName</div>
-                            </label>
-                            <label>
-                                Start datum:<br/>
+                                <div class="form-group">
+                                    <label>
+                                        Projectnaam
+                                    </label>
+                                    <div class="field">@_request.ProjectName</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Start datum
+                                    </label>
                                     <div class="field">@_request.StartDate.ToString("dd/MM/yyyy")</div>
-                            </label>
-                            <label>
-                                Eind datum:<br/>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Eind datum
+                                    </label>
                                     <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
-                            </label>
+                                </div>
+                                @if(_request.Client is not null){
+                                <div class="form-group">
+                                    <label>
+                                        Klant
+                                    </label>
+                                    <div class="field">@_request.Client.Name @_request.Client.Surname</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Contactnummer van de klant
+                                    </label>
+                                    <div class="field">@_request.Client.PhoneNumber</div>
+                                </div>
+                                }
 
-
+@*                            <div class="form-group">
+                                <label>
+                                    Contactnummer van de klant
+                                </label>
+                                <div class="field">@_request.Client.PhoneNumber</div>
+                            </div>*@
                         </div>
-                            <label>
-                                Extra info over de aanvraag:<br />
-                                <div class="reden">@_request.Reason</div>
-                            </label>
+                        <label>
+                            Extra info over de aanvraag:<br />
+                            <div class="reden">@_request.Reason</div>
+                        </label>
                     }
                 </div>
 
@@ -45,11 +70,13 @@
                     <div class="wrap">
                         @foreach (TemplateDto.Detail t in _templates)
                         {
-                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
+                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate"
+                            TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
                         }
                         @if (_customTemplate != null)
                         {
-                            <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate" TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
+                            <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate"
+                            TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
                         }
                     </div>
 
@@ -59,107 +86,131 @@
                 <div class="form">
                     <h2> Algemene informatie</h2>
                     <div class="input-group">
-                        <label>
-                            Naam<br />
+                        <div class="form-group">
+                            <label>
+                                Naam
+                            </label>
                             <InputText @bind-Value="_vm.Name" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            Hostname<br />
+                        <div class="form-group">
+                            <label>
+                                Hostname
+                            </label>
                             <InputText @bind-Value="_vm.HostName" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            FQDN<br />
+                        <div class="form-group">
+                            <label>
+                                FQDN
+                            </label>
                             <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                        </label>
 
-                        <label>
-                            Klant<br />
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Klant
+                            </label>
                             <InputSelect @bind-Value="_vm.Client" class="inputField">
                                 <!--
                                 <option value="" selected> Option 1</option>
                                 <option value=""         > Option 2</option>
                                 -->
                             </InputSelect>
-                        </label>
+                        </div>
 
-                        <label>
-                            Start datum<br />
+                        <div class="form-group">
+                            <label>
+                                Start datum
+                            </label>
                             <InputDate @bind-Value="_vm.StartDate" class="inputField"></InputDate>
                             <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            Eind datum<br />
+                        <div class="form-group">
+                            <label>
+                                Eind datum
+                            </label>
                             <InputDate @bind-Value="_vm.EndDate" class="inputField"></InputDate>
                             <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            Moet de VM altijd besckikbaar zijn?<br />
+                        <div class="form-group">
+                            <label>
+                                Moet de VM altijd besckikbaar zijn?
+                            </label>
                             <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
                                 <option value=true> Ja</option>
                                 <option value=false> Nee</option>
                             </InputSelect>
                             <ValidationMessage For="@(()=> _vm.IsHighlyAvailable)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            Hoeveelheid backups<br />
+                        <div class="form-group">
+                            <label>
+                                Hoeveelheid backups
+                            </label>
                             <InputSelect @bind-Value="_vm.BackupFrequency" class="inputField">
                                 <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
                                 <option value="@EBackupFrequency.Daily"> Dagelijks</option>
                             </InputSelect>
                             <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            Host<br />
+                        <div class="form-group">
+                            <label>
+                                Host
+                            </label>
                             <InputSelect @bind-Value="_vm.Host" class="inputField">
                                 <option value="">--selecteer een optie--</option>
                                 <option value="server1">Server 1</option>
                                 <option value="server2">Server 2</option>
                             </InputSelect>
                             <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
-                        </label>
-       
-                        <label>
-                            Poorten:<br />
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Poorten
+                            </label>
                             <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
-                        </label>
+                        </div>
 
-                        <label>
-                            Wanneer moet de VM online staan?<br />
+                        <div class="form-group">
+                            <label>
+                                Wanneer moet de VM online staan?
+                            </label>
                             <div class="availability">
-                            @foreach(EDay day in EDay.GetValues(typeof(EDay))){
+                                @foreach (EDay day in EDay.GetValues(typeof(EDay)))
                                 {
-                                    <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
-                                        <button class="daybtn" @onclick="(()=> AddDay(day))">
-                                        <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
-                                        <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet ")}beschikbaar")</span>
-                                        </button>
-                                    </div>
+                                    {
+                                        <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
+                                            <button type="button" class="daybtn" @onclick="(()=> AddDay(day))">
+                                                <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
+                                                <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet")}beschikbaar")</span>
+                                            </button>
+                                        </div>
+                                    }
                                 }
-                            }
-                            <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                                <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
                             </div>
-                        </label>
+                        </div>
 
                     </div>
                     <button class="btn-primary" type="submit">Maak VM aan</button>
                 </div>
-                
+
             </div>
-            </EditForm>
-            @if(_showCustomTemplate)
-            {
-                <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
-            }
+        </EditForm>
+        @if (_showCustomTemplate)
+        {
+            <CustomTemplateDialog OnCancel="@CancelCustomTemp" OnConfirm="@ConfirmCustomTemp"></CustomTemplateDialog>
+        }
     </Content>
 </GenericLayout>
 
@@ -170,15 +221,12 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private List<ClientDto.Index> _clients;
 
     [Parameter]
     public int? Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        ClientRequest.Index request = new(){ };
-        _clients = await ClientService.GetIndexAsync(request);
         _templates = TemplateService.GetAll();
         if (!Id.HasValue)
         {
@@ -193,6 +241,8 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
+@*            if(_request.Client is not null)
+                _vm.Client = _request.Client;*@
         }
         else
         {
@@ -255,11 +305,14 @@
         HandleTemplate(customTemp);
     }
 
-    private void AddDay(EDay day){
-        if(_vm.Availability.HasFlag(day)){
+    private void AddDay(EDay day)
+    {
+        if (_vm.Availability.HasFlag(day))
+        {
             _vm.Availability &= ~day;
         }
-        else{
+        else
+        {
             _vm.Availability |= day;
         }
 
@@ -268,9 +321,12 @@
     private async Task HandleValidSubmit()
     {
         //Aanmaken VM gevolg van aanvraag
-        if (_request!=null)
+        if (_request != null)
         {
             int vmId = await VirtualMachineService.CreateAsync(_vm);
+            _request.VirtualMachineId = vmId;
+            _request.Status = ERequestStatus.Handled;
+            await VirtualMachineRequestService.EditAsync(_request.Id, _request);
             NavigationManager.NavigateTo($"/vm/{vmId}");
 
         }
@@ -285,6 +341,6 @@
         {
             int vmId = await VirtualMachineService.CreateAsync(_vm);
             NavigationManager.NavigateTo($"/vm/{vmId}");
-        }   
+        }
     }
 }
