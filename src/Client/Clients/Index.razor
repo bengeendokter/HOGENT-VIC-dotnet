@@ -86,27 +86,27 @@
         {
             error = false;
             clients = await ClientService.GetIndexAsync(request);
+
+            clients.ForEach(c =>
+            {
+                clientObjects.Add(new Klant
+                    {
+                        Id = c.Id,
+                        Voornaam = c.Surname,
+                        Naam = c.Name,
+                        Type = ConvertTypeToString(c.ClientType),
+                        Telefoon_nummer = c.PhoneNumber,
+                        Klant_organisatie = c.ClientOrganisation
+                    }
+                );
+            });
+            filteredClients = clientObjects;
         } 
         catch(Exception ex) 
         {
             error = true;
             errorMessage = ex.Message;
         }
-
-
-        clients.ForEach(c =>
-        {
-            clientObjects.Add(new Klant
-                {
-                    Id = c.Id,
-                    Voornaam = c.Surname,
-                    Naam = c.Name,
-                    Type = ConvertTypeToString(c.ClientType),
-                    Telefoon_nummer = c.PhoneNumber,
-                    Klant_organisatie = c.ClientOrganisation
-                });
-        });
-        filteredClients = clientObjects;
     }
 
     private void GoToClientDetails(int id)
