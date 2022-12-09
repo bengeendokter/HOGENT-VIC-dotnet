@@ -78,6 +78,7 @@
 
     private async Task HandleValidSubmit()
     {
+        //TODO client moet de ingelogde client zijn
         ClientRequest.Index r = new();
         vmRequest.Client = (await ClientService.GetIndexAsync(r)).First();
         Console.WriteLine(vmRequest.Client.Id);

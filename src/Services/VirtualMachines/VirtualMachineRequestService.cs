@@ -79,7 +79,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int clientId)
     {
-        var client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == clientId);
+        var client = await dbContext.Clients.Include(x => x.Requests).FirstOrDefaultAsync(x => x.Id == clientId);
 
         if (client is null)
             throw new EntityNotFoundException(nameof(Client), clientId);
