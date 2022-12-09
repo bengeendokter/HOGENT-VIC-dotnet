@@ -55,13 +55,4 @@ public class ClientController : ControllerBase
         await clientService.DeleteAsync(clientId);
         return NoContent();
     }
-
-    [SwaggerOperation("Adds a virtual machine to an existing client.")]
-    [HttpPut("{clientId}/add-vm/{vmId}")]
-    public async Task<IActionResult> AddVM(int clientId, int vmId)
-    {
-        await virtualMachineService.EditAsync(vmId, null, clientId);
-        //await clientService.DeleteAsync(clientId);
-        return NoContent();
-    }
 }

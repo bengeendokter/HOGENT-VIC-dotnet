@@ -130,7 +130,7 @@ public class VirtualMachineService : IVirtualMachineService
         return vm.Id;
     }
 
-    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model, int? clientId = -1)
+    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model)
     {
         var vm = await dbContext.VirtualMachines.SingleOrDefaultAsync(
             v => v.Id == virtualMachineId
@@ -173,6 +173,18 @@ public class VirtualMachineService : IVirtualMachineService
             vm.Client = client;
 
         }
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int virtualMachineId)
+    {
+        VirtualMachine? vm = await dbContext.VirtualMachines.SingleOrDefaultAsync(x => x.Id == virtualMachineId);
+
+        if (vm is null)
+            throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
+
+        dbContext.VirtualMachines.Remove(vm);
 
         await dbContext.SaveChangesAsync();
     }

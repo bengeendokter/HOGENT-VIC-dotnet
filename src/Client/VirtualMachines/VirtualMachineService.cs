@@ -31,8 +31,13 @@ public class VirtualMachineService : IVirtualMachineService
         return await response.Content.ReadFromJsonAsync<int>();
     }
 
-    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model, int? clientId)
+    public async Task EditAsync(int virtualMachineId, VirtualMachineDto.Mutate model)
     {
         await client.PutAsJsonAsync($"{endpoint}/{virtualMachineId}", model);
+    }
+
+    public async Task DeleteAsync(int virtualMachineId)
+    {
+        await client.DeleteAsync($"{endpoint}/{virtualMachineId}");
     }
 }

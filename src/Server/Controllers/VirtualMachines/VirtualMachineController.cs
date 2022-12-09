@@ -44,4 +44,12 @@ public class VirtualMachineController : ControllerBase
         await virtualMachineService.EditAsync(virtualMachineId, model);
         return NoContent();
     }
+
+    [SwaggerOperation("Deletes an existing virtual machine.")]
+    [HttpDelete("{virtualMachineId}")]
+    public async Task<IActionResult> Delete(int virtualMachineId)
+    {
+        await virtualMachineService.DeleteAsync(virtualMachineId);
+        return NoContent();
+    }
 }
