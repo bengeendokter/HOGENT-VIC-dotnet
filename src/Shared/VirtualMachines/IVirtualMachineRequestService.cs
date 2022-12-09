@@ -9,4 +9,6 @@ public interface IVirtualMachineRequestService
     Task<int> CreateAsync(VirtualMachineRequestDto.Create model);
 
     Task EditAsync(int id, VirtualMachineRequestDto.Detail request);
+
+    Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int clientId);
 }

@@ -29,6 +29,13 @@ public class VirtualMachineRequestController : ControllerBase
         return await virtualMachineRequestService.Get(id);
     }
 
+    [SwaggerOperation("Returns requests from a client.")]
+    [HttpGet("client/{id}")]
+    public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int id)
+    {
+        return await virtualMachineRequestService.GetRequestsFromClient(id);
+    }
+
     [SwaggerOperation("Creates a new request.")]
     [HttpPost]
     public async Task<IActionResult> Create(VirtualMachineRequestDto.Create model)

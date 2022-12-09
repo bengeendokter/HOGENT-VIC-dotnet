@@ -1,5 +1,6 @@
 ﻿@page "/vm/request/list"
 @inject IVirtualMachineRequestService VMRequestService
+@inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
 <GenericLayout Display=false Title="Aanvragen">
@@ -73,6 +74,9 @@
         filteredObjects.Clear();
 
         list = await VMRequestService.GetAll();
+        //ClientRequest.Index r = new();
+        //ClientDto.Index client = (await ClientService.GetIndexAsync(r)).First();
+        //list = await VMRequestService.GetRequestsFromClient(client.Id);
 
         list.ForEach(request =>
         {

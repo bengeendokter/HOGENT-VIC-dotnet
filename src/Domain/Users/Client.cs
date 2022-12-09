@@ -56,6 +56,19 @@ public class Client : User
         set => education = Guard.Against.NullOrWhiteSpace(value, nameof(education));
     }
 
+    private readonly List<VirtualMachineRequest> requests = new();
+    public IReadOnlyCollection<VirtualMachineRequest> Requests => requests.AsReadOnly();
+    public void AddRequest(VirtualMachineRequest request)
+    {
+        requests.Add(request);
+    }
+
+    public void RemoveRequest(VirtualMachineRequest request)
+    {
+        requests.Remove(request);
+    }
+
+
     // Later veranderen naar VirtualMachineRequest
     //public object[]? VirtualMachineRequests { get; set; }
 
