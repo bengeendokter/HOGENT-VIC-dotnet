@@ -60,7 +60,7 @@ public class VirtualMachineService : IVirtualMachineService
             Availability = (Shared.VirtualMachines.EDay)vm.Availability,
             BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)vm.BackupFrequency,
             IsHighlyAvailable = vm.IsHighlyAvailable,
-            Mode = (Shared.VirtualMachines.EMode)vm.Mode,
+            Software = (Shared.VirtualMachines.ESoftware)vm.Software,
             Template = (Shared.VirtualMachines.ETemplate)vm.Template,
             Poorten = vm.Poorten
         };
@@ -88,7 +88,7 @@ public class VirtualMachineService : IVirtualMachineService
             model.CPU,
             model.RAM,
             model.Storage,
-            (Domain.VirtualMachines.EMode)model.Mode,
+            (Domain.VirtualMachines.ESoftware)model.Software,
             (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency,
             (Domain.VirtualMachines.EDay)model.Availability,
             model.IsHighlyAvailable,
@@ -124,7 +124,7 @@ public class VirtualMachineService : IVirtualMachineService
         vm.Template = (Domain.VirtualMachines.ETemplate)model.Template!;
         vm.BackupFrequency = (Domain.VirtualMachines.EBackupFrequency)model.BackupFrequency;
         vm.Availability = (Domain.VirtualMachines.EDay)model.Availability;
-        vm.Mode = (Domain.VirtualMachines.EMode)model.Mode;
+        vm.Software = (Domain.VirtualMachines.ESoftware)model.Software;
         vm.Host = model.Host!;
         // vm.Client = model.Client!;
         vm.Poorten = model.Poorten!;

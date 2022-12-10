@@ -22,7 +22,7 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
                     f.Random.Int(1, 64),
                     f.Random.Int(2, 256),
                     f.Random.Int(24, 512),
-                    f.Random.Enum<EMode>(),
+                    f.Random.Enum<ESoftware>(),
                     f.Random.Enum<EBackupFrequency>(),
                     (EDay)f.Random.Int(1, 127),
                     f.Random.Bool(),

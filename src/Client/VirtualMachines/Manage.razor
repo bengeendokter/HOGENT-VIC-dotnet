@@ -260,7 +260,7 @@
             _vm.Template = vm.Template;
             _vm.BackupFrequency = vm.BackupFrequency;
             _vm.Availability = vm.Availability;
-            _vm.Mode = vm.Mode;
+            _vm.Software = vm.Software;
             _vm.Host = vm.Host;
             _vm.Client = vm.Client;
             _vm.Poorten = vm.Poorten;
@@ -275,7 +275,7 @@
         _vm.CPU = template.CPU;
         _vm.RAM = template.RAM;
         _vm.Storage = template.Storage;
-        _vm.Mode = template.Mode;
+        _vm.Software = template.Software;
     }
 
     private void CustomTemplate()
@@ -293,7 +293,7 @@
         TemplateDto.Detail customTemp = new()
         {
             Id = -1,
-            Mode = template.Mode,
+            Software = template.Software,
             Type = template.Type,
             RAM = template.RAM,
             CPU = template.CPU,

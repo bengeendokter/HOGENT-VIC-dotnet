@@ -101,11 +101,11 @@ public class VirtualMachine : Entity
         set => storage = Guard.Against.NegativeOrZero(value, nameof(Storage));
     }
 
-    private EMode mode = default!;
-    public EMode Mode
+    private ESoftware software = default!;
+    public ESoftware Software
     {
-        get => mode;
-        set => mode = Guard.Against.EnumOutOfRange(value, nameof(Mode));
+        get => software;
+        set => software = Guard.Against.EnumOutOfRange(value, nameof(Software));
     }
 
     private EBackupFrequency backupFrequency = default!;
@@ -143,7 +143,7 @@ public class VirtualMachine : Entity
         int cpu,
         int ram,
         int storage,
-        EMode mode,
+        ESoftware software,
         EBackupFrequency backupFrequency,
         EDay availability,
         bool isHighlyAvailable,
@@ -162,7 +162,7 @@ public class VirtualMachine : Entity
         CPU = cpu;
         RAM = ram;
         Storage = storage;
-        Mode = mode;
+        Software = software;
         BackupFrequency = backupFrequency;
         Availability = availability;
         IsHighlyAvailable = isHighlyAvailable;

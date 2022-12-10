@@ -58,12 +58,6 @@ public class VirtualMachineRequest : Entity
         set => status = Guard.Against.EnumOutOfRange(value, nameof(Status));
     }
 
-    private string? clientInfo = default!;
-    public string? ClientInfo
-    {
-        get => clientInfo;
-        set => clientInfo = ClientInfo;
-    }
 
     private VirtualMachineRequest() { }
 
@@ -74,8 +68,7 @@ public class VirtualMachineRequest : Entity
         string projectName,
         Client? client,
         VirtualMachine? virtualMachine,
-        ERequestStatus status,
-        string? clientInfo
+        ERequestStatus status
         )
     {
         StartDate = startDate;
@@ -85,6 +78,5 @@ public class VirtualMachineRequest : Entity
         Client = client;
         VirtualMachine = virtualMachine;
         Status = status;
-        ClientInfo = clientInfo;
     }
 }

@@ -7,8 +7,8 @@ public class TemplateService : ITemplateService
         new ()
         {
             Id = 1,
-            Type = ETemplate.ArtificialIntelligence,
-            Mode = EMode.PaaS,
+            Type = ETemplate.Database,
+            Software = ESoftware.Windows | ESoftware.MongoDB,
             CPU = 2,
             RAM = 32,
             Storage = 8
@@ -16,8 +16,8 @@ public class TemplateService : ITemplateService
         new ()
         {
             Id = 2,
-            Type = ETemplate.Database,
-            Mode = EMode.IaaS,
+            Type = ETemplate.MachineLearning,
+            Software = ESoftware.Windows | ESoftware.Docker,
             CPU = 4,
             RAM = 4,
             Storage = 200
@@ -26,7 +26,16 @@ public class TemplateService : ITemplateService
         {
             Id = 3,
             Type = ETemplate.MachineLearning,
-            Mode = EMode.SaaS,
+            Software = ESoftware.Linux | ESoftware.Docker,
+            CPU = 8,
+            RAM = 64,
+            Storage = 80
+        },
+        new ()
+        {
+            Id = 3,
+            Type = ETemplate.Database,
+            Software = ESoftware.Windows | ESoftware.MySQL,
             CPU = 8,
             RAM = 64,
             Storage = 80
@@ -45,7 +54,7 @@ public class TemplateService : ITemplateService
         {
             Id = lastTemplate!.Id + 1,
             Type = template.Type,
-            Mode = template.Mode,
+            Software = template.Software,
             CPU = template.CPU,
             RAM = template.RAM,
             Storage = template.Storage,

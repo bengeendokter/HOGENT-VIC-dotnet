@@ -26,7 +26,6 @@ public static class VirtualMachineRequestDto
         public DateTime EndDate { get; set; }
         public string? Reason { get; set; }
         public ERequestStatus Status { get; set; }
-        public string? ClientInfo { get; set; }
     }
     public class Create
     {
@@ -36,7 +35,6 @@ public static class VirtualMachineRequestDto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string? Reason { get; set; }
-        public string? ClientInfo { get; set; }
 
         public class Validator : AbstractValidator<Create>
         {

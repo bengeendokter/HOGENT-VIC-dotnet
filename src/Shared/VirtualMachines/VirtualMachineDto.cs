@@ -28,7 +28,7 @@ public static class VirtualMachineDto
         public string? Poorten { get; set; }
         public ClientDto.Index? Client { get; set; }
         public EDay Availability { get; set; }
-        public EMode Mode { get; set; }
+        public ESoftware Software { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 

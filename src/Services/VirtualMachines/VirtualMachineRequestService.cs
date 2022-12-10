@@ -45,7 +45,6 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
                 ClientOrganisation = request.Client.ClientOrganisation
             } : null,
             VirtualMachineId = request.VirtualMachine != null ? request.VirtualMachine.Id : null,
-            ClientInfo = request.ClientInfo,
         };
     }
 
@@ -128,8 +127,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
             model.ProjectName!,
             client!,
             vm!,
-            Domain.VirtualMachines.ERequestStatus.Requested!,
-            model.ClientInfo!
+            Domain.VirtualMachines.ERequestStatus.Requested!
         );
 
         if(client is not null)
