@@ -3,28 +3,26 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
+@if (list == null)
+{
+    <Loading Title="Aanvragen"/>
+    return;
+} 
+
 <GenericLayout Display=false Title="Aanvragen">
     <Actions>
-        <select @bind="@_sortFilter" @oninput="@FilterChange">
-            <option value="0">Datum oplopend</option>
-            <option value="1">Datum aflopend</option>
-            <option value="2">Projectnaam oplopend</option>
-            <option value="3">Projectnaam aflopend</option>
-        </select>
-        <select @bind="@_statusFilter" @oninput="@StatusChange">
-            <option value="0">Alle</option>
-            <option value="1">Accepted</option>
-            <option value="2">Handled</option>
-            <option value="3">Denied</option>
-            <option value="4">Requested</option>
-        </select>
+        <RequestFilter 
+            SortBy="@SortBy"
+            Status="@Status"
+        />
     </Actions>
     <Content>
-        @if (filteredObjects.Count > 0)
-        {
-            <Table Object="@(new Request())" Collection="filteredObjects" InfoCallback="@RequestInfo" />
-        }
-
+        <Table
+            Object="@(new Request())"
+            Collection="requestObjects"
+            InfoCallback="@RequestInfo"
+            EnablePaging="true" 
+        />
     </Content>
 </GenericLayout>
 @if (_showFilter!=0)
@@ -55,25 +53,35 @@
         public DateTime? Datum_aanvraag;
     }
 
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? Status { get; set; }
+
     public ICollection<Object> requestObjects = new List<Object>();
-    public ICollection<Object> filteredObjects = new List<Object>();
     private List<VirtualMachineRequestDto.Index> list = new();
     private int _showFilter = 0;
 
-    private string? _sortFilter;
-    private string? _statusFilter;
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync() 
     {
-        await RefreshRequestsAsync();
+        Console.WriteLine($"{Page}, {Status}, {SortBy}");
+        VirtualMachineRequestReq.Index request = new()
+            {
+
+                Page = Page.HasValue ? Page.Value : 1,
+                PageSize = PageSize.HasValue ? PageSize.Value : 15,
+                Status = Status,
+                SortBy = SortBy
+            };
+        await RefreshRequestsAsync(request);
+
     }
 
-
-    private async Task RefreshRequestsAsync(){
+    private async Task RefreshRequestsAsync(VirtualMachineRequestReq.Index request = null){
+        if (request == null) request = new();
         requestObjects.Clear();
-        filteredObjects.Clear();
 
-        list = await VMRequestService.GetAll();
+        list = await VMRequestService.GetAll(request);
         //ClientRequest.Index r = new();
         //ClientDto.Index client = (await ClientService.GetIndexAsync(r)).First();
         //list = await VMRequestService.GetRequestsFromClient(client.Id);
@@ -92,53 +100,6 @@
                         Status = request.Status
                     });
         });
-        filteredObjects = requestObjects;
-    }
-
-    private void FilterChange(ChangeEventArgs changeEvent)
-    {
-
-        switch (changeEvent.Value)
-        {
-            case "0":
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Datum_aanvraag).ToList();
-                break;
-            case "1":
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Datum_aanvraag).Reverse().ToList();
-                break;
-            case "2":
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Projectnaam).ToList();
-                break;
-            case "3":
-                filteredObjects = filteredObjects.OrderBy(o => ((Request)o).Projectnaam).Reverse().ToList();
-                break;
-            default:
-                break;
-        }
-    }
-    private void StatusChange(ChangeEventArgs changeEvent)
-    {
-
-        switch(changeEvent.Value){
-            case "0":
-                filteredObjects = requestObjects;
-                break;
-            case "1":
-                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Accepted).ToList();
-                break;
-            case "2":
-                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Handled).ToList();
-                break;
-            case "3":
-                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Denied).ToList();
-                break;
-            case "4":
-                filteredObjects = requestObjects.Where(o => ((Request)o).Status == ERequestStatus.Requested).ToList();
-                break;
-            default:
-                filteredObjects = requestObjects;
-                break;
-        }
     }
 
     private void RequestInfo(int id){

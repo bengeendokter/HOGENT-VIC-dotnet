@@ -13,9 +13,10 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         this.client = client;
     }
 
-    public async Task<List<VirtualMachineRequestDto.Index>> GetAll()
+    public async Task<List<VirtualMachineRequestDto.Index>> GetAll(VirtualMachineRequestReq.Index request)
     {
-        return await client.GetFromJsonAsync<List<VirtualMachineRequestDto.Index>>(endpoint) ?? new();
+        var response = await client.GetFromJsonAsync<List<VirtualMachineRequestDto.Index>>($"{endpoint}?{request.GetQueryString()}");
+        return response;
     }
 
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)

@@ -2,7 +2,7 @@
 
 public interface IVirtualMachineRequestService
 {
-    Task<List<VirtualMachineRequestDto.Index>> GetAll();
+    Task<List<VirtualMachineRequestDto.Index>> GetAll(VirtualMachineRequestReq.Index request);
 
     Task<VirtualMachineRequestDto.Detail> Get(int id);
 

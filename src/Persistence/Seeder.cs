@@ -31,7 +31,7 @@ public class Seeder
         dbContext.VirtualMachines.AddRange(vms);
 
         // Requests
-        var requests = new VirtualMachineRequestFaker().AsTransient().Generate(10);
+        var requests = new VirtualMachineRequestFaker().AsTransient().Generate(20);
         dbContext.VirtualMachineRequests.AddRange(requests);
         dbContext.SaveChanges();
     }

@@ -6,16 +6,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Domain.Users;
 using Shared.Clients;
+using System.Globalization;
 
 namespace Services.VirtualMachines;
 
 public class VirtualMachineRequestService : IVirtualMachineRequestService
 {
     private readonly VicDbContext dbContext;
+    // private readonly ClaimsPrincipal claimsPrincipal;
 
-    public VirtualMachineRequestService(VicDbContext dbContext)
+    public VirtualMachineRequestService(VicDbContext dbContext /*, ClaimsPrincipal claimsPrincipal*/)
     {
         this.dbContext = dbContext;
+        // this.claimsPrincipal = claimsPrincipal
     }
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
     {
@@ -23,8 +26,6 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
         if (request is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), id);
-
-
 
         return new VirtualMachineRequestDto.Detail
         {
@@ -49,9 +50,23 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         };
     }
 
-    public async Task<List<VirtualMachineRequestDto.Index>> GetAll()
+    public async Task<List<VirtualMachineRequestDto.Index>> GetAll(VirtualMachineRequestReq.Index request)
     {
-        return await dbContext.VirtualMachineRequests.Include(x => x.Client)
+        var query = dbContext.VirtualMachineRequests.Include(x => x.Client).AsQueryable();
+        
+        if (request.Status is not null)
+        {
+            var status = Enum.Parse<Domain.VirtualMachines.ERequestStatus>(request.Status, true);
+            query = query.Where(x => x.Status.Equals(status));
+        } 
+        if (!string.IsNullOrWhiteSpace(request.SortBy))
+        {
+            query = SortRequestQuery(request.SortBy, query);
+        }
+        
+        var items = await query
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
             .Select(
                 r =>
                     new VirtualMachineRequestDto.Index
@@ -74,8 +89,9 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
                     }
             )
             .ToListAsync();
-    }
 
+        return items;
+    }
 
     public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int clientId)
     {
@@ -157,4 +173,15 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         await dbContext.SaveChangesAsync();
     }
 
+    private IQueryable<VirtualMachineRequest> SortRequestQuery(string? sortby, IQueryable<VirtualMachineRequest> query)
+    {
+        return (sortby) switch
+        {
+            "date" => query.OrderBy(x => x.CreatedAt),
+            "dateDesc" => query.OrderByDescending(x => x.CreatedAt),
+            "project" => query.OrderBy(x => x.ProjectName),
+            "projectDesc" => query.OrderByDescending(x => x.ProjectName),
+            _ => query
+        };
+    }
 }

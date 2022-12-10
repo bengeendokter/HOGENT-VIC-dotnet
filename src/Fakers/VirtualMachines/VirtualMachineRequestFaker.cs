@@ -25,7 +25,7 @@ public class VirtualMachineRequestFaker: EntityFaker<VirtualMachineRequest>
                    f.Lorem.Word(),
                    new Client(f.Person.FirstName,f.Person.LastName,"test", f.Phone.PhoneNumber("+## ### ## ## ##") , "test",EClientType.Internal,"test","test", "test",true),
                    null,
-                   ERequestStatus.Requested,
+                   f.Random.Enum<ERequestStatus>(),
                    f.Lorem.Paragraph()
                    )
         );

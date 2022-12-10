@@ -1,0 +1,54 @@
+﻿@inject NavigationManager NavigationManager
+
+<select @onchange="SortChanged">
+    <option value="date" selected>Datum oplopend</option>
+    <option value="dateDesc">Datum aflopend</option>
+    <option value="project">Projectnaam oplopend</option>
+    <option value="projectDesc">Projectnaam aflopend</option>
+</select>
+<select @onchange="StatusChanged">
+    <option value="" selected>Alle</option>
+    <option value="accepted">Accepted</option>
+    <option value="handled">Handled</option>
+    <option value="denied">Denied</option>
+    <option value="requested">Requested</option>
+</select>
+
+@code {
+    [Parameter, EditorRequired] public string? SortBy { get; set; } = default!;
+    [Parameter, EditorRequired] public string? Status { get; set; } = default!;
+
+    private string? sortBy;
+    private string? status;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        sortBy = SortBy;
+        status = Status;
+    }
+
+    private void SortChanged(ChangeEventArgs args)
+    {
+
+        sortBy = args.Value?.ToString();
+        FilterRequest();
+    }
+
+    private void StatusChanged(ChangeEventArgs args)
+    {
+        status = args.Value?.ToString();
+        FilterRequest();
+    }
+
+    private void FilterRequest()
+    {
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add(nameof(sortBy), sortBy);
+        parameters.Add(nameof(status), status);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}
