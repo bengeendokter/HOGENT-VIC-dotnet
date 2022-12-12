@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Clients\ClientFilter.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.FluentValidation" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	  <PackageReference Include="FluentValidation" Version="10.4.0" />
@@ -17,6 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Clients\Components\ClientFilter.razor" />
   </ItemGroup>
 
 </Project>

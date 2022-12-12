@@ -23,9 +23,10 @@ public class ClientService : IClientService
         {
             query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
         }
-        if (request.ClientType is not null)
+        if (!string.IsNullOrWhiteSpace(request.ClientType))
         {
-            query = query.Where(x => x.ClientType.Equals(request.ClientType.Value));
+            var type = Enum.Parse<EClientType>(request.ClientType, true);
+            query = query.Where(x => x.ClientType.Equals(type));
         }
 
         var items = await query

@@ -1,0 +1,36 @@
+﻿@inject NavigationManager NavigationManager
+
+<select @onchange="TypeChanged">
+    <option value="" selected>Alle</option>
+    <option value="internal">Alleen interne</option>
+    <option value="external">Alleen Externe</option>
+</select>
+
+@code {
+    [Parameter, EditorRequired] public string? ClientType { get; set; } = default!;
+
+    private string? clientType;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        clientType = ClientType;
+    }
+
+    private void TypeChanged(ChangeEventArgs args)
+    {
+
+        clientType = args.Value?.ToString();
+        FilterClient();
+    }
+
+    private void FilterClient()
+    {
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add(nameof(clientType), clientType);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}
