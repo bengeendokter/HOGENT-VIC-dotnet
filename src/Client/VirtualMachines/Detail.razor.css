@@ -165,6 +165,15 @@ tr:nth-child(even) {
     background-color: var(--clr-background-blue);
 }
 
+.actionButton {
+    margin: 15px auto;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
 @container (max-width: 1000px) {
     .details_group {
         flex-direction: column;

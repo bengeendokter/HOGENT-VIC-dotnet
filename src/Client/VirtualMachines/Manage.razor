@@ -122,13 +122,8 @@
                         </label>
 
                         <label>
-                            <p>@_vm.Host</p>
                             Host<br />
-                            <InputSelect @bind-Value="_vm.Host" class="inputField">
-                                <option value="">--selecteer een optie--</option>
-                                <option value="server1">Server 1</option>
-                                <option value="server2">Server 2</option>
-                            </InputSelect>
+                            <InputText @bind-Value="_vm.Host" class="inputField" placeholder="Zoals aaaa-111.hogent.be..."></InputText>
                             <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
                         </label>
        

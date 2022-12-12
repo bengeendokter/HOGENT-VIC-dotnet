@@ -11,41 +11,59 @@ public class VirtualMachineService : IVirtualMachineService
 {
     private readonly VicDbContext dbContext;
 
-    public VirtualMachineService(VicDbContext dbContext)
+    public VirtualMachineService(VicDbContext dbContext)    
     {
         this.dbContext = dbContext;
     }
 
-    public async Task<List<VirtualMachineDto.Index>> GetIndexAsync()
+    public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(Shared.VirtualMachines.VirtualMachineRequest.Index request)
     {
-        return await dbContext.VirtualMachines
-            .Select(
-                v =>
-                    new VirtualMachineDto.Index
-                    {
-                        Id = v.Id,
-                        Name = v.Name,
-                        CPU = v.CPU,
-                        RAM = v.RAM,
-                        Storage = v.Storage,
-                        StartDate = v.StartDate,
-                        EndDate = v.EndDate,
-                        IsActive = v.IsActive,
-                        Template = (Shared.VirtualMachines.ETemplate)v.Template,
-                        IsHighlyAvailable = v.IsHighlyAvailable,
-                        BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)v.BackupFrequency,
-                        Client = (v.Client != null) ? new ClientDto.Index() {
-                            Id = v.Client.Id,
-                            Name = v.Client.Name,
-                            Surname = v.Client.Surname,
-                            ClientOrganisation = v.Client.ClientOrganisation,
-                            ClientType = (Shared.Clients.EClientType)v.Client.ClientType,
-                            PhoneNumber = v.Client.PhoneNumber
-                        } :
-                         null
-                    }
-            )
-            .ToListAsync();
+        var query = dbContext.VirtualMachines.Include(x => x.Client).AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(request.Searchterm))
+        {
+            query = query.Where(x => 
+            x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) || 
+            x.Client.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+            x.Client.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+            x.Template.ToString().Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+
+        var items = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+                .Select(
+                    v =>
+                        new VirtualMachineDto.Index
+                        {
+                            Id = v.Id,
+                            Name = v.Name,
+                            CPU = v.CPU,
+                            RAM = v.RAM,
+                            Storage = v.Storage,
+                            StartDate = v.StartDate,
+                            EndDate = v.EndDate,
+                            IsActive = v.IsActive,
+                            Template = (Shared.VirtualMachines.ETemplate)v.Template,
+                            IsHighlyAvailable = v.IsHighlyAvailable,
+                            BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)v.BackupFrequency,
+                            Client = (v.Client != null) ? new ClientDto.Index()
+                            {
+                                Id = v.Client.Id,
+                                Name = v.Client.Name,
+                                Surname = v.Client.Surname,
+                                ClientOrganisation = v.Client.ClientOrganisation,
+                                ClientType = (Shared.Clients.EClientType)v.Client.ClientType,
+                                PhoneNumber = v.Client.PhoneNumber
+                            } :
+                                null
+                        }
+                )
+                .ToListAsync();
+
+        return items;
     }
 
     public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)

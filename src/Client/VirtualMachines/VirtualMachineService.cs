@@ -12,9 +12,9 @@ public class VirtualMachineService : IVirtualMachineService
         this.client = client;
     }
 
-    public async Task<List<VirtualMachineDto.Index>> GetIndexAsync()
+    public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(VirtualMachineRequest.Index request)
     {
-        return await client.GetFromJsonAsync<List<VirtualMachineDto.Index>>(endpoint) ?? new();
+        return await client.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}");
     }
 
     public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)

@@ -18,7 +18,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public async Task<int> CreateAsync(VirtualMachineRequestDto.Create model)
     {
-        var request = new VirtualMachineRequest(
+        var request = new Domain.VirtualMachines.VirtualMachineRequest(
             model.StartDate!,
             model.EndDate!,
             model.Reason!,
@@ -76,7 +76,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         var r = await dbContext.VirtualMachineRequests.SingleOrDefaultAsync(v => v.Id == id);
 
         if (r is null)
-            throw new EntityNotFoundException(nameof(VirtualMachineRequest), id);
+            throw new EntityNotFoundException(nameof(Domain.VirtualMachines.VirtualMachineRequest), id);
 
         r.Status = (Domain.VirtualMachines.ERequestStatus)request.Status;
 

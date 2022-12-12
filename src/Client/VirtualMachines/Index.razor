@@ -4,6 +4,10 @@
 
 <GenericLayout Display=false Title="Virtuele Machines">
     <Content>
+        <div class="searchAndCreate">
+            <input type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="OnSearchtermChanged"/>
+            <button @onclick=GoToCreateVM>Toevoegen</button>
+        </div>
         <section aria-labelledby="vm-title" class="vm_list">
             <table>
                 <thead>
@@ -54,7 +58,12 @@
                         <td>@vm.Storage GB</td>
                         <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
-                        <td>@(vm.Client is not null? $"{@vm.Client.Surname} {@vm.Client.Name}" : "Geen klant")</td>
+                            <td>@if (vm.Client is not null) {
+                                    <a href="/klanten/@vm.Client?.Id"> @vm.Client?.Surname @vm.Client?.Name</a >
+                                }else {
+                                    <p>Geen klant</p>
+                                }
+                            </td>
                         <td>
                             @(
                                 vm.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks"
@@ -78,10 +87,60 @@
 
 @code {
     private List<VirtualMachineDto.Index> list = new();
+    // public ICollection<Gebruiker> userObjects = new List<Gebruiker>();
+    // public ICollection<Gebruiker> filteredUsers = new List<Gebruiker>();
 
-    protected override async Task OnInitializedAsync()
+    [Inject] public IVirtualMachineService virtualMachineService { get; set; } = default!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
+    private string? searchTerm;
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    private int? page;
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+    private int? pageSize;
+
+    private string? uri = "/vm";
+
+    protected override async Task OnParametersSetAsync()
     {
-        list = await VMService.GetIndexAsync();
+        VirtualMachineRequest.Index request = new()
+        {
+            Searchterm = Searchterm,
+            Page = Page ?? 1,
+            PageSize = PageSize ?? 25,
+        };
+
+        searchTerm = Searchterm;
+        page = Page;
+        pageSize = PageSize;
+
+        list = await VMService.GetIndexAsync(request);
+    }
+
+    private void GoToCreateVM()
+    {
+        NavigationManager.NavigateTo("/vm/manage");
+    }
+
+    private void FiltersChanged()
+    {
+
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add("searchTerm", searchTerm);
+        parameters.Add("page", page);
+        parameters.Add("pageSize", pageSize);
+
+
+        uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+
+    private void OnSearchtermChanged(ChangeEventArgs args)
+    {
+        searchTerm = args.Value?.ToString();
+        FiltersChanged();
     }
 
     public void SortByName()
