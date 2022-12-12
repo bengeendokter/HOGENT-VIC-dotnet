@@ -15,7 +15,7 @@
             <option value="storage"># Storage</option>
         </select>
         <a href="/historiek/voorspelling" class="btn-primary">
-            Voorspelling
+            Resource Planner
         </a>
     </Actions>
     <Content>
@@ -46,13 +46,13 @@
                             @switch (activity.Type) {
                                 case EActivity.Added:
                                     <td>VM toegevoegd</td>
-                                    <td class="added">+ @vm.CPU Cores</td>
+                                    <td class="added">+ @vm.CPU vCPU</td>
                                     <td class="added">+ @vm.RAM GB</td>
                                     <td class="added">+ @vm.Storage GB</td>
                                     break;
                                 case EActivity.Deleted:
                                     <td>VM verwijderd</td>
-                                    <td class="deleted">- @vm.CPU Cores</td>
+                                    <td class="deleted">- @vm.CPU vCPU</td>
                                     <td class="deleted">- @vm.RAM GB</td>
                                     <td class="deleted">- @vm.Storage GB</td>
                                     break;
