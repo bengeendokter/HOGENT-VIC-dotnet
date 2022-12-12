@@ -1,4 +1,38 @@
-﻿.link {
+﻿.searchAndCreate {
+    max-width: 1500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    min-height: 40px;
+    max-height: max-content;
+}
+
+    .searchAndCreate input {
+        flex: 1 1 80%;
+        padding-left: 10px;
+        height: 40px;
+        border: 2px solid var(--clr-background-title);
+        border-radius: 5px;
+    }
+
+    .searchAndCreate button {
+        text-decoration: none;
+        color: var(--clr-primary);
+        background: var(--clr-CTA);
+        min-width: 12ch;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1 1 20%;
+        border: none;
+        border-radius: 5px;
+        height: 38px;
+    }
+
+.link {
     text-decoration: none;
     color: var(--clr-primary);
     background: var(--clr-CTA);
@@ -16,8 +50,53 @@
 
 .vm_list {
     container-type: inline-size;
+    height: 58vh;
+    max-width: 1500px;
+    overflow-x: auto;
+    overflow-y: auto;
+    margin: 15px auto;
     display: flex;
     justify-content: center;
+}
+
+    .vm_list table::-webkit-scrollbar-track {
+        background-color: var(--clr-background-blue);
+    }
+
+    .vm_list table::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .vm_list table::-webkit-scrollbar-thumb {
+        background: var(--clr-text-color);
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: var(--clr-text-color);
+}
+
+thead {
+    border: 3px;
+    border-color: #E0E0E0;
+    border-radius: 100px;
+    position: sticky;
+    top: 0;
+}
+
+thead tr th:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .vm_status {
@@ -110,5 +189,24 @@ tr:nth-child(even) {
 
     .link {
         min-width: 7ch;
+    }
+}
+
+@media (min-width: 560px) {
+    .searchAndCreate {
+        gap: 0;
+    }
+
+        .searchAndCreate input {
+            border-right: none;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .searchAndCreate button {
+            border-radius: 0 5px 5px 0;
+        }
+
+    .optioneleFilters .filterRole {
+        max-width: 250px;
     }
 }

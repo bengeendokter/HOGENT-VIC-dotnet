@@ -21,6 +21,7 @@ public static class ClientDto
         public string? BackupContact { get; set; }
         public string? Education { get; set; }
         public string? ExternalType { get; set; }
+        public ICollection<ClientVMDto.Index>? VmList { get; set; }
     }
     public class Mutate
     {

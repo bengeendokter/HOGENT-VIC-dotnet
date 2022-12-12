@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Shared.VirtualMachines;
+using Shared.Clients;
 
 namespace Server.Controllers.VirtualMachines;
 
@@ -17,9 +18,9 @@ public class VirtualMachineController : ControllerBase
 
     [SwaggerOperation("Returns a list of virtual machines.")]
     [HttpGet]
-    public async Task<List<VirtualMachineDto.Index>> GetIndex()
+    public async Task<List<VirtualMachineDto.Index>> GetIndex([FromQuery] VirtualMachineRequest.Index request)
     {
-        return await virtualMachineService.GetIndexAsync();
+        return await virtualMachineService.GetIndexAsync(request);
     }
 
     [SwaggerOperation("Returns a specific virtual machine by id.")]
@@ -42,6 +43,14 @@ public class VirtualMachineController : ControllerBase
     public async Task<IActionResult> Edit(int virtualMachineId, VirtualMachineDto.Mutate model)
     {
         await virtualMachineService.EditAsync(virtualMachineId, model);
+        return NoContent();
+    }
+
+    [SwaggerOperation("Deletes an existing virtual machine.")]
+    [HttpDelete("{virtualMachineId}")]
+    public async Task<IActionResult> Delete(int virtualMachineId)
+    {
+        await virtualMachineService.DeleteAsync(virtualMachineId);
         return NoContent();
     }
 }

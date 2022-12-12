@@ -1,4 +1,5 @@
 using Domain.VirtualMachines;
+using Fakers.Clients;
 using Fakers.Common;
 
 namespace Fakers.VirtualMachines;
@@ -18,7 +19,7 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
                     f.Internet.Ip(),
                     "80, 443",
                     f.Random.Enum<ETemplate>(),
-                    f.Internet.Ip(),
+                    $"{f.Address.Country().Substring(0, 4)}-{f.Random.Int(0, 500)}.hogent.be",
                     f.Random.Int(1, 64),
                     f.Random.Int(2, 256),
                     f.Random.Int(24, 512),
@@ -26,7 +27,8 @@ public class VirtualMachineFaker : EntityFaker<VirtualMachine>
                     f.Random.Enum<EBackupFrequency>(),
                     (EDay)f.Random.Int(1, 127),
                     f.Random.Bool(),
-                    f.Random.Bool()
+                    f.Random.Bool(),
+                    new ClientFaker(locale).AsTransient()
                 )
         );
     }

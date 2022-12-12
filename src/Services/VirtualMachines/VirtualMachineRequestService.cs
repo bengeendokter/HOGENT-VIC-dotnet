@@ -147,7 +147,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         if(vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), id);
         if (r is null)
-            throw new EntityNotFoundException(nameof(VirtualMachineRequest), id);
+            throw new EntityNotFoundException(nameof(Domain.VirtualMachines.VirtualMachineRequest), id);
 
         r.Status = (Domain.VirtualMachines.ERequestStatus)request.Status;
         r.VirtualMachine = vm;
