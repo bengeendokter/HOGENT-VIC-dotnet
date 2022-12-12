@@ -108,9 +108,10 @@
                             </label>
                             <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
+                        <div>
 
-                        <label>
-                            Klant<br />
+                        <div class="form-group">
+                            <label>Klant</label>
                             <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
                             <InputSelect @bind-Value="_vm.ClientId" class="inputField">
                                 <option value="">Geen Klant</option>
@@ -161,8 +162,8 @@
                             <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
                         </div>
 
-                        <label>
-                            Host<br />
+                        <div class="form-group">
+                            <label>Host</label>
                             <InputText @bind-Value="_vm.Host" class="inputField" placeholder="Zoals aaaa-111.hogent.be..."></InputText>
                             <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
                         </div>
@@ -199,6 +200,8 @@
                     <button class="btn-primary" type="submit">@(Id is null? "Maak VM aan" : "Wijzig VM" )</button>
                 </div>
 
+            </div>
+            </div>
             </div>
         </EditForm>
         @if (_showCustomTemplate)

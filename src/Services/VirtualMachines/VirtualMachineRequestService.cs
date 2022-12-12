@@ -120,7 +120,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
             client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == model.Client.Id);
         var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(x => x.Id == model.VirtualMachineId);
 
-        var request = new VirtualMachineRequest(
+        var request = new Domain.VirtualMachines.VirtualMachineRequest(
             model.StartDate!,
             model.EndDate!,
             model.Reason!,

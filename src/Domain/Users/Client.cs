@@ -74,6 +74,18 @@ public class Client : User
         virtualMachines.Remove(vm);
     }
 
+    private readonly List<VirtualMachineRequest> requests = new();
+    public IReadOnlyCollection<VirtualMachineRequest> Requests => requests.AsReadOnly();
+    public void AddRequest(VirtualMachineRequest request)
+    {
+        requests.Add(request);
+    }
+
+    public void RemoveRequest(VirtualMachineRequest request)
+    {
+        requests.Remove(request);
+    }
+
     // Later veranderen naar VirtualMachineRequest
     //public object[]? VirtualMachineRequests { get; set; }
 

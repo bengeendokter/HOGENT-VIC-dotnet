@@ -50,7 +50,7 @@ public static class VirtualMachineDto
         public string? Host { get; set; }
         public string? Poorten { get; set; }
         public EDay Availability { get; set; }
-        public EMode Mode { get; set; }
+        public ESoftware Software { get; set; }
         public DateTime CreatedAt { get; set; }
         public int ClientId { get; set; }
 
