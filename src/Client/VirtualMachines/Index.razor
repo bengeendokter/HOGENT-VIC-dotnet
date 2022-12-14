@@ -1,6 +1,7 @@
 ﻿@page "/vm"
 @using System.Globalization
 @inject IVirtualMachineService VMService
+@inject NavigationManager NavigationManager
 
 <GenericLayout Display=false Title="Virtuele Machines">
     <Content>
@@ -77,17 +78,30 @@
 </GenericLayout>
 
 @code {
-    private List<VirtualMachineDto.Index> list = new();
+    [Parameter, SupplyParameterFromQuery] public string SortBy { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    private List<VirtualMachineDto.Index> list = new();
+    private string sortBy = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        sortBy = SortBy; 
+        RefreshVirtualMachinesAsync(new());
+    }
+
+    private async Task RefreshVirtualMachinesAsync(VirtualMachineReq.Index request) 
     {
         list = await VMService.GetIndexAsync();
     }
 
+    public void SortVirtualMachines() { }
+
     public void SortByName()
     {
-        list = list.OrderBy(vm => vm.Name).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "name" ? "nameDesc" : "name";
+        SortVirtualMachines();
+
     }
 
     public void SortByTemplate()
