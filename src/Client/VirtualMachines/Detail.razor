@@ -1,6 +1,7 @@
 ﻿@page "/vm/{id:int}"
 @using System.Globalization
 @inject IVirtualMachineService VMService
+@inject NavigationManager NavigationManager
 
 @if (vm == null)
 {
@@ -56,7 +57,7 @@
                         </tr>
                         <tr>
                             <th>Modus</th>
-                            <td>@vm.Mode</td>
+                            <td>@vm.Software</td>
                         </tr>
                         <tr>
                             <th>Dagen besschikbaar</th>
@@ -131,6 +132,17 @@
                 </div>
             </div>
         </section>
+        @if (!isRequestingDelete)
+        {
+                <button class="actionButton btn-delete" @onclick="SetDeleteTrue">Verwijderen</button>
+        }
+        else
+        {
+            <div class="actionButton">
+                <button class="btn-secondary" @onclick="SetDeleteFalse">Annuleren</button>
+                <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen</button>
+            </div>
+        }
 
     </Content>
 </GenericLayout>
@@ -142,6 +154,7 @@
     private Dictionary<String, bool>? days;
 
     public string TxtType = "password";
+    private bool isRequestingDelete = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -169,5 +182,20 @@
         {
             this.TxtType = "password";
         }
+    }
+
+    private void SetDeleteTrue()
+    {
+        isRequestingDelete = true;
+    }
+    private void SetDeleteFalse()
+    {
+        isRequestingDelete = false;
+    }
+
+    private async Task DeleteClientAsync()
+    {
+        await VMService.DeleteAsync(Id);
+        NavigationManager.NavigateTo("/vm");
     } 
 }

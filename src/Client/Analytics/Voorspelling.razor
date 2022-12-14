@@ -1,7 +1,7 @@
 ﻿@page "/historiek/voorspelling"
 @using System.Globalization
 
-<GenericLayout Display="true" Title="Voorspelling" StatsTitle=@($"Gebruik op {datum.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}") Usages="@Usages">
+<GenericLayout Display="true" Title="Resource Planner" StatsTitle=@($"Gebruik op {datum.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}") Usages="@Usages">
     <Actions>
         <input type="date" id="datum" name="datum"
                 min=@($"{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}") 

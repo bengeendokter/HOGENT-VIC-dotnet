@@ -12,11 +12,11 @@ public class Template : Entity
         set => type = Guard.Against.EnumOutOfRange(value, nameof(Type));
     }
 
-    private EMode mode = default!;
-    public EMode Mode
+    private ESoftware software = default!;
+    public ESoftware Software
     {
-        get => mode;
-        set => mode = Guard.Against.EnumOutOfRange(value, nameof(Mode));
+        get => software;
+        set => software = Guard.Against.EnumOutOfRange(value, nameof(Software));
     }
 
     private int cpu = default!;

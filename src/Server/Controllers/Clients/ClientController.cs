@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Clients;
+using Shared.VirtualMachines;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Server.Controllers.Clients;
@@ -9,10 +10,12 @@ namespace Server.Controllers.Clients;
 public class ClientController : ControllerBase
 {
     private readonly IClientService clientService;
+    private readonly IVirtualMachineService virtualMachineService;
 
-    public ClientController(IClientService clientService)
+    public ClientController(IClientService clientService, IVirtualMachineService virtualMachineService)
     {
         this.clientService = clientService;
+        this.virtualMachineService = virtualMachineService;
     }
 
     [SwaggerOperation("Returns a list of clients.")]

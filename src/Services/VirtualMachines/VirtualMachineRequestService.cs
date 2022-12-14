@@ -46,7 +46,6 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
                 ClientOrganisation = request.Client.ClientOrganisation
             } : null,
             VirtualMachineId = request.VirtualMachine != null ? request.VirtualMachine.Id : null,
-            ClientInfo = request.ClientInfo,
         };
     }
 
@@ -137,15 +136,14 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
             client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == model.Client.Id);
         var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(x => x.Id == model.VirtualMachineId);
 
-        var request = new VirtualMachineRequest(
+        var request = new Domain.VirtualMachines.VirtualMachineRequest(
             model.StartDate!,
             model.EndDate!,
             model.Reason!,
             model.ProjectName!,
             client!,
             vm!,
-            Domain.VirtualMachines.ERequestStatus.Requested!,
-            model.ClientInfo!
+            Domain.VirtualMachines.ERequestStatus.Requested!
         );
 
         if(client is not null)
@@ -165,7 +163,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         if(vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), id);
         if (r is null)
-            throw new EntityNotFoundException(nameof(VirtualMachineRequest), id);
+            throw new EntityNotFoundException(nameof(Domain.VirtualMachines.VirtualMachineRequest), id);
 
         r.Status = (Domain.VirtualMachines.ERequestStatus)request.Status;
         r.VirtualMachine = vm;

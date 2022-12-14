@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Common;
+using Domain.Users;
 
 namespace Domain.VirtualMachines;
 
@@ -101,11 +102,11 @@ public class VirtualMachine : Entity
         set => storage = Guard.Against.NegativeOrZero(value, nameof(Storage));
     }
 
-    private EMode mode = default!;
-    public EMode Mode
+    private ESoftware software = default!;
+    public ESoftware Software
     {
-        get => mode;
-        set => mode = Guard.Against.EnumOutOfRange(value, nameof(Mode));
+        get => software;
+        set => software = Guard.Against.EnumOutOfRange(value, nameof(Software));
     }
 
     private EBackupFrequency backupFrequency = default!;
@@ -125,13 +126,26 @@ public class VirtualMachine : Entity
     public bool IsHighlyAvailable { get; set; }
     public bool IsActive { get; set; }
 
+    private Client? client = default!;
+    public Client? Client
+    {
+        get => client;
+        set => client = value;
+    }
+
+    //private Client? client;
+    //public Client? Client
+    //{
+    //    get => client;
+    //    set => client = Guard.Against.Null(value, nameof(Client));
+    //}
+
     /// <summary>
     /// Database Constructor
     /// </summary>
     private VirtualMachine() { }
 
     public VirtualMachine(
-        // object client,
         string name,
         string hostName,
         DateTime startDate,
@@ -143,14 +157,15 @@ public class VirtualMachine : Entity
         int cpu,
         int ram,
         int storage,
-        EMode mode,
+        ESoftware software,
         EBackupFrequency backupFrequency,
         EDay availability,
         bool isHighlyAvailable,
-        bool isActive
+        bool isActive,
+        Client? client
     )
     {
-        // Client = client;
+        Client = client;
         Name = name;
         HostName = hostName;
         StartDate = startDate;
@@ -162,7 +177,7 @@ public class VirtualMachine : Entity
         CPU = cpu;
         RAM = ram;
         Storage = storage;
-        Mode = mode;
+        Software = software;
         BackupFrequency = backupFrequency;
         Availability = availability;
         IsHighlyAvailable = isHighlyAvailable;
