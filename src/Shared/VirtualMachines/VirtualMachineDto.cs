@@ -72,7 +72,8 @@ public static class VirtualMachineDto
                 RuleFor(x => x.EndDate).GreaterThan(DateTime.Now).WithMessage("Startdatum moet in de toekomst liggen");
                 RuleFor(x => x.FQDN).NotEmpty().WithMessage("Dit veld is verplicht");
                 RuleFor(x => x.Template).NotNull().WithMessage("Kies een template of maak een nieuwe aan");
-                RuleFor(x => x.ClientId).Must(x => x >= 0).NotNull().WithMessage("Dit veld is verplicht");   
+                RuleFor(x => x.ClientId).Must(x => x >= 0).NotNull().WithMessage("Dit veld is verplicht");
+                RuleFor(x => x.Software).IsInEnum().WithMessage("Ongeldig mode");
 
             }
         }
