@@ -66,6 +66,7 @@
 
                 <div class="templates">
                     <h2>Templates</h2>
+
                     <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
                         @foreach (TemplateDto.Detail t in _templates)
@@ -108,19 +109,19 @@
                             </label>
                             <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
                             <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                        <div>
+                        </div>
 
                         <div class="form-group">
                             <label>Klant</label>
-                            <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
-                            <InputSelect @bind-Value="_vm.ClientId" class="inputField">
-                                <option value="">Geen Klant</option>
+@*                            <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
+*@                            <InputSelect @bind-Value="_vm.ClientId" class="inputField">
+@*                                <option value="">Geen Klant</option>
                                 @if (_clients != null){
                                     @foreach(var client in FilteredClients())
                                     {
                                             <option value="@client.Id">@client.Surname @client.Name</option>
                                     }
-                                }
+                                }*@
                             </InputSelect>
                         </div>
 
@@ -197,11 +198,8 @@
                         </div>
 
                     </div>
-                    <button class="btn-primary" type="submit">@(Id is null? "Maak VM aan" : "Wijzig VM" )</button>
+                    <button class="btn-primary" type="submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
                 </div>
-
-            </div>
-            </div>
             </div>
         </EditForm>
         @if (_showCustomTemplate)
@@ -251,7 +249,7 @@
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
 @*            if(_request.Client is not null)
-                _vm.Client = _request.Client;*@
+                _vm.ClientId = _request.Client.Id;*@
         }
         else
         {

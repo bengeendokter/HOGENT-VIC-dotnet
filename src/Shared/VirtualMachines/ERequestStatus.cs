@@ -1,9 +1,10 @@
 ﻿namespace Shared.VirtualMachines;
 
+[Flags]
 public enum ERequestStatus
 {
-    Accepted,
-    Denied,
-    Handled,
-    Requested
+    Accepted = 1,
+    Denied = 2,
+    Handled = 4,
+    Requested = 8
 }

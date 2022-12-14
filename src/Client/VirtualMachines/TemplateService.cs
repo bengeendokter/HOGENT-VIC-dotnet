@@ -33,7 +33,7 @@ public class TemplateService : ITemplateService
         },
         new ()
         {
-            Id = 3,
+            Id = 4,
             Type = ETemplate.Database,
             Software = ESoftware.Windows | ESoftware.MySQL,
             CPU = 8,
