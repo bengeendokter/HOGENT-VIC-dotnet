@@ -17,7 +17,7 @@ public class VirtualMachineService : IVirtualMachineService
         this.dbContext = dbContext;
     }
 
-    public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(Shared.VirtualMachines.VirtualMachineRequest.Index request)
+    public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(VirtualMachineReq.Index request)
     {
         var query = dbContext.VirtualMachines.Include(x => x.Client).AsQueryable();
 
@@ -31,8 +31,17 @@ public class VirtualMachineService : IVirtualMachineService
             );
         }
 
+        if (!string.IsNullOrEmpty(request.Status))
+        {
+
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.SortBy))
+        {
+            query = SortRequestQuery(request.SortBy, query);
+        }
+
         var items = await query
-            .OrderByDescending(x => x.CreatedAt)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
                 .Select(
@@ -207,5 +216,14 @@ public class VirtualMachineService : IVirtualMachineService
         dbContext.VirtualMachines.Remove(vm);
 
         await dbContext.SaveChangesAsync();
+    }
+
+    private IQueryable<VirtualMachine> SortRequestQuery(string? sortby, IQueryable<VirtualMachine> query)
+    {
+        return (sortby) switch
+        {
+            "" => query,
+            _ => query
+        };
     }
 }

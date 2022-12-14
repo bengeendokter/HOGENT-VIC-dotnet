@@ -21,7 +21,7 @@
     private void GoToNextPage()
     {
         Dictionary<string, object?> parameters = new();
-        parameters.Add(nameof(Page), ++page);
+        parameters.Add(nameof(page), ++page);
         NavigateToUriWithParameters(parameters);
     }
 
@@ -30,7 +30,7 @@
         Dictionary<string, object?> parameters = new();
         if (page > 1)
         {
-            parameters.Add(nameof(Page), --page);
+            parameters.Add(nameof(page), --page);
             NavigateToUriWithParameters(parameters);
         }
     }

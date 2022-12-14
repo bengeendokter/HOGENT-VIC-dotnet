@@ -5,10 +5,10 @@
 
 <GenericLayout Display=false Title="Virtuele Machines">
     <Content>
-        <div class="searchAndCreate">
-            <input type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="OnSearchtermChanged"/>
-            <button @onclick=GoToCreateVM>Toevoegen</button>
-        </div>
+        <SearchAndCreate 
+            SearchTerm="@Searchterm"
+            CreateCallback="() => NavigationManager.NavigateTo(createUri)"
+        />
         <section aria-labelledby="vm-title" class="vm_list">
             <table>
                 <thead>
@@ -87,89 +87,56 @@
 </GenericLayout>
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public string SortBy { get; set; } = default!;
-
-    private List<VirtualMachineDto.Index> list = new();
-    private string sortBy = string.Empty;
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        sortBy = SortBy; 
-        RefreshVirtualMachinesAsync(new());
-    }
-
-    private async Task RefreshVirtualMachinesAsync(VirtualMachineReq.Index request) 
-    private List<VirtualMachineDto.Index> list = new();
-    // public ICollection<Gebruiker> userObjects = new List<Gebruiker>();
-    // public ICollection<Gebruiker> filteredUsers = new List<Gebruiker>();
-
-    [Inject] public IVirtualMachineService virtualMachineService { get; set; } = default!;
-    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
-
-    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
-    private string? searchTerm;
+    [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; } = default!;
+    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; } = default!;
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
-    private int? page;
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
-    private int? pageSize;
 
-    private string? uri = "/vm";
+    private string? sortBy = string.Empty;
+
+    private List<VirtualMachineDto.Index> list = new();
+    private string createUri = "/vm/manage";
 
     protected override async Task OnParametersSetAsync()
     {
-        VirtualMachineRequest.Index request = new()
+        VirtualMachineReq.Index request = new()
         {
             Searchterm = Searchterm,
-            Page = Page ?? 1,
-            PageSize = PageSize ?? 25,
+            SortBy = SortBy,
+            Page = Page.HasValue ? Page.Value : 1,
+            PageSize = PageSize.HasValue ? PageSize.Value : 25,
         };
 
-        searchTerm = Searchterm;
-        page = Page;
-        pageSize = PageSize;
+        sortBy = SortBy;
 
-        list = await VMService.GetIndexAsync(request);
+        await RefreshVirtualMachinesAsync(request);
     }
 
-    private void GoToCreateVM()
+    private async Task RefreshVirtualMachinesAsync(VirtualMachineReq.Index request)
     {
-        NavigationManager.NavigateTo("/vm/manage");
+        list = await VMService.GetIndexAsync(request);
     }
 
     private void FiltersChanged()
     {
-
         Dictionary<string, object?> parameters = new();
 
-        parameters.Add("searchTerm", searchTerm);
-        parameters.Add("page", page);
-        parameters.Add("pageSize", pageSize);
+        parameters.Add(nameof(sortBy), sortBy);
 
-
-        uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
         NavigationManager.NavigateTo(uri);
     }
-
-    private void OnSearchtermChanged(ChangeEventArgs args)
-    {
-        searchTerm = args.Value?.ToString();
-        FiltersChanged();
-    }
-
-    public void SortVirtualMachines() { }
 
     public void SortByName()
     {
         sortBy = sortBy == "name" ? "nameDesc" : "name";
-        SortVirtualMachines();
-
+        FiltersChanged();
     }
 
     public void SortByTemplate()
     {
-        list = list.OrderBy(vm => vm.Template).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "template" ? "templateDesc" : "template";
+        FiltersChanged();
     }
 
     public void SortByCPU()

@@ -44,6 +44,7 @@
 }
 
 @code {
+    // Class voor Table Component
     public class Request{
         public int Id = 0;
         public string? Projectnaam;
@@ -53,18 +54,20 @@
         public DateTime? Datum_aanvraag;
     }
 
+    // QueryParameters
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
     [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; }
     [Parameter, SupplyParameterFromQuery] public string? Status { get; set; }
 
+    // Andere
     public ICollection<Object> requestObjects = new List<Object>();
     private List<VirtualMachineRequestDto.Index> list = new();
     private int _showFilter = 0;
 
+    // Methoden
     protected override async Task OnParametersSetAsync() 
     {
-        Console.WriteLine($"{Page}, {Status}, {SortBy}");
         VirtualMachineRequestReq.Index request = new()
             {
 
@@ -77,8 +80,7 @@
 
     }
 
-    private async Task RefreshRequestsAsync(VirtualMachineRequestReq.Index request = null){
-        if (request == null) request = new();
+    private async Task RefreshRequestsAsync(VirtualMachineRequestReq.Index request){
         requestObjects.Clear();
 
         list = await VMRequestService.GetAll(request);

@@ -2,31 +2,31 @@
 
 @if (users == null)
 {
-        <p>Loading...</p>
+    <Loading Title="Gebruikers" />
+    return;
+}
+
+@if (error)
+{
+    <Error Title="Gebruikers" ErrorMessage="@errorMessage" />
     return;
 }
 
 <GenericLayout Display=false Title="Gebruikers">
     <Actions>
-        <div class="optioneleFilters">
-            <select class="filterRole" value=@role @onchange="OnRoleChanged">
-                <option value="">Kies een rol</option>
-                <option value="@ERole.User">user</option>
-                <option value="@ERole.Moderator">beheerder</option>
-                <option value="@ERole.Admin">admin</option>
-            </select>
-        </div>
+        <UserFilter Role="@Role" />
     </Actions>
     <Content>
-        <div class="searchAndCreate">
-            <input type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="OnSearchtermChanged"/>
-            <button @onclick=GoToCreateUser>Toevoegen</button>
-        </div>
+        <SearchAndCreate 
+            SearchTerm="@Searchterm"
+            CreateCallback="() => NavigationManager.NavigateTo(createUri)"
+        />
         <Table
             Object="@(new Gebruiker())"
-            Collection="@filteredUsers"
+            Collection="@userObjects"
             EditCallback="@GoToEditUser"
             DeleteCallback="@DeleteUserAsync"
+            EnablePaging="true"
         />
     </Content>
 </GenericLayout>

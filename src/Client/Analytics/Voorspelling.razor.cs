@@ -156,7 +156,10 @@ namespace Client.Analytics
 
         protected override async Task OnInitializedAsync()
         {
-            VirtualMachineRequest.Index request = new();
+            VirtualMachineReq.Index request = new() 
+            { 
+                PageSize = 1000,
+            };
 
             _vms = await VirtualMachineService.GetIndexAsync(request);
         }

@@ -1,6 +1,6 @@
 ﻿@inject NavigationManager NavigationManager
 
-<select @onchange="TypeChanged">
+<select @value="@clientType" @onchange="TypeChanged">
     <option value="" selected>Alle</option>
     <option value="internal">Alleen interne</option>
     <option value="external">Alleen Externe</option>
@@ -19,7 +19,6 @@
 
     private void TypeChanged(ChangeEventArgs args)
     {
-
         clientType = args.Value?.ToString();
         FilterClient();
     }

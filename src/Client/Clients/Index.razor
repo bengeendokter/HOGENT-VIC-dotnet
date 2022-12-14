@@ -20,10 +20,10 @@
         <ClientFilter  ClientType="@ClientType"/>
     </Actions>
     <Content>
-        <div class="searchAndCreate">
-            <Searchbar SearchTerm="@Searchterm" />
-            <button @onclick=GoToCreateClient>Klant Toevoegen</button>
-        </div>
+        <SearchAndCreate 
+            SearchTerm="@Searchterm"    
+            CreateCallback="() => NavigationManager.NavigateTo(createUri)"
+        />
         <Table 
             Object="@(new Klant())"
             Collection="@clientObjects" 
@@ -36,18 +36,8 @@
 </GenericLayout>
 
 
-@code{
-    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
-    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
-    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
-    [Parameter, SupplyParameterFromQuery] public string? ClientType { get; set; }
-
-    private List<ClientDto.Index> clients = new();
-    private ICollection<Klant> clientObjects = new List<Klant>();
-
-    private bool error = false;
-    private string errorMessage = string.Empty;
-
+@code {
+    // Class voor Table Component
     public class Klant
     {
         public int Id;
@@ -56,8 +46,23 @@
         public string? Type;
         public string? Telefoon_nummer;
         public string? Klant_organisatie;
-    }; 
+    };
 
+    // QueryParameters
+    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? ClientType { get; set; }
+
+    // Andere
+    private List<ClientDto.Index> clients = new();
+    private ICollection<Klant> clientObjects = new List<Klant>();
+    private readonly string createUri = "/klanten/aanmaken";
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
+    // Methoden
     protected override async Task OnParametersSetAsync()
     {
         ClientRequest.Index request = new()
@@ -102,11 +107,6 @@
     private void GoToClientDetails(int id)
     {
         NavigationManager.NavigateTo($"/klanten/{id}");
-    }
-
-    private void GoToCreateClient() 
-    {
-        NavigationManager.NavigateTo("/klanten/aanmaken");
     }
 
     private void GoToEditClient(int id)

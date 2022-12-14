@@ -53,7 +53,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     {
         var query = dbContext.VirtualMachineRequests.Include(x => x.Client).AsQueryable();
         
-        if (request.Status is not null)
+        if (!string.IsNullOrWhiteSpace(request.Status))
         {
             var status = Enum.Parse<Domain.VirtualMachines.ERequestStatus>(request.Status, true);
             query = query.Where(x => x.Status.Equals(status));

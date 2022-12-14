@@ -1,0 +1,38 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="optionele-filters">
+    <select class="filter-role" value="@role" @onchange="RoleChanged">
+        <option value="" selected>Kies een rol</option>
+        <option value="@ERole.User">user</option>
+        <option value="@ERole.Moderator">beheerder</option>
+        <option value="@ERole.Admin">admin</option>
+    </select>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string? Role { get; set; } = default!;
+
+    private string? role;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        role = Role;
+    }
+
+    private void RoleChanged(ChangeEventArgs args)
+    {
+        role = args.Value?.ToString();
+        FilterRole();
+    }
+
+    private void FilterRole()
+    {
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add(nameof(role), role);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}
