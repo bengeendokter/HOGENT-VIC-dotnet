@@ -24,16 +24,17 @@ public class VirtualMachineService : IVirtualMachineService
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
             query = query.Where(x => 
-            x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) || 
-            x.Client.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-            x.Client.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-            x.Template.ToString().Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase)
+                x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) || 
+                x.Client.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+                x.Client.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+                x.Template.ToString().Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase)
             );
         }
 
         if (!string.IsNullOrEmpty(request.Status))
         {
-
+            var status = request.Status == "on";
+            query = query.Where(x => x.IsActive == status);
         }
 
         if (!string.IsNullOrWhiteSpace(request.SortBy))
@@ -44,34 +45,34 @@ public class VirtualMachineService : IVirtualMachineService
         var items = await query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-                .Select(
-                    v =>
-                        new VirtualMachineDto.Index
+            .Select(
+                v =>
+                    new VirtualMachineDto.Index
+                    {
+                        Id = v.Id,
+                        Name = v.Name,
+                        CPU = v.CPU,
+                        RAM = v.RAM,
+                        Storage = v.Storage,
+                        StartDate = v.StartDate,
+                        EndDate = v.EndDate,
+                        IsActive = v.IsActive,
+                        Template = (Shared.VirtualMachines.ETemplate)v.Template,
+                        IsHighlyAvailable = v.IsHighlyAvailable,
+                        BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)v.BackupFrequency,
+                        Client = (v.Client != null) ? new ClientDto.Index()
                         {
-                            Id = v.Id,
-                            Name = v.Name,
-                            CPU = v.CPU,
-                            RAM = v.RAM,
-                            Storage = v.Storage,
-                            StartDate = v.StartDate,
-                            EndDate = v.EndDate,
-                            IsActive = v.IsActive,
-                            Template = (Shared.VirtualMachines.ETemplate)v.Template,
-                            IsHighlyAvailable = v.IsHighlyAvailable,
-                            BackupFrequency = (Shared.VirtualMachines.EBackupFrequency)v.BackupFrequency,
-                            Client = (v.Client != null) ? new ClientDto.Index()
-                            {
-                                Id = v.Client.Id,
-                                Name = v.Client.Name,
-                                Surname = v.Client.Surname,
-                                ClientOrganisation = v.Client.ClientOrganisation,
-                                ClientType = (Shared.Clients.EClientType)v.Client.ClientType,
-                                PhoneNumber = v.Client.PhoneNumber
-                            } :
-                                null
-                        }
-                )
-                .ToListAsync();
+                            Id = v.Client.Id,
+                            Name = v.Client.Name,
+                            Surname = v.Client.Surname,
+                            ClientOrganisation = v.Client.ClientOrganisation,
+                            ClientType = (Shared.Clients.EClientType)v.Client.ClientType,
+                            PhoneNumber = v.Client.PhoneNumber
+                        } :
+                            null
+                    }
+            )
+            .ToListAsync();
 
         return items;
     }
@@ -222,7 +223,26 @@ public class VirtualMachineService : IVirtualMachineService
     {
         return (sortby) switch
         {
-            "" => query,
+            "name" => query.OrderBy(x => x.Name),
+            "nameDesc" => query.OrderByDescending(x => x.Name),
+            "template" => query.OrderBy(x => x.Template), 
+            "templateDesc" => query.OrderByDescending(x => x.Template),
+            "cpu" => query.OrderBy(x => x.CPU),
+            "cpuDesc" => query.OrderByDescending(x => x.CPU),
+            "ram" => query.OrderBy(x => x.RAM),
+            "ramDesc" => query.OrderByDescending(x => x.RAM),
+            "storage" => query.OrderBy(x => x.Storage),
+            "storageDesc" => query.OrderByDescending(x => x.Storage),
+            "startdate" => query.OrderBy(x => x.StartDate),
+            "startdateDesc" => query.OrderByDescending(x => x.StartDate),
+            "enddate" => query.OrderBy(x => x.EndDate),
+            "enddateDesc" => query.OrderByDescending(x => x.EndDate),
+            "client" => query.OrderBy(x => x.Client.Name),
+            "clientDesc" => query.OrderByDescending(x => x.Client.Name),
+            "backup" => query.OrderBy(x => x.BackupFrequency),
+            "backupDesc" => query.OrderByDescending(x => x.BackupFrequency),
+            "highav" => query.OrderBy(x => x.IsHighlyAvailable),
+            "highavDesc" => query.OrderByDescending(x => x.IsHighlyAvailable),
             _ => query
         };
     }

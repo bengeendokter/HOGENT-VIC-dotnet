@@ -5,7 +5,7 @@
     flex-wrap: wrap;
 }
 
-    .optionele-filters .filter-role {
+    .optionele-filters .filter {
         height: 40px;
         width: 100%;
         flex: 1 1 80%;
@@ -17,7 +17,7 @@
     }
 
 @media (min-width: 560px) {
-    .optionele-filters .filter-role {
+    .optionele-filters .filter {
         max-width: 250px;
     }
 }

@@ -1,10 +1,12 @@
 ﻿@inject NavigationManager NavigationManager
 
-<select @value="@clientType" @onchange="TypeChanged">
-    <option value="" selected>Alle</option>
-    <option value="internal">Alleen interne</option>
-    <option value="external">Alleen Externe</option>
-</select>
+<div class="optionele-filters">
+    <select class="filter" value="@clientType" @onchange="TypeChanged">
+        <option value="" selected>Alle</option>
+        <option value="internal">Interne</option>
+        <option value="external">Externe</option>
+    </select>
+</div>
 
 @code {
     [Parameter, EditorRequired] public string? ClientType { get; set; } = default!;

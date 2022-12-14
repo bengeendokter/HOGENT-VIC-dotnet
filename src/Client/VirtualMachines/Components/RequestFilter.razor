@@ -1,18 +1,20 @@
 ﻿@inject NavigationManager NavigationManager
 
-<select @onchange="SortChanged">
-    <option value="date" selected>Datum oplopend</option>
-    <option value="dateDesc">Datum aflopend</option>
-    <option value="project">Projectnaam oplopend</option>
-    <option value="projectDesc">Projectnaam aflopend</option>
-</select>
-<select @onchange="StatusChanged">
-    <option value="" selected>Alle</option>
-    <option value="accepted">Accepted</option>
-    <option value="handled">Handled</option>
-    <option value="denied">Denied</option>
-    <option value="requested">Requested</option>
-</select>
+<div class="optionele-filters">
+    <select class="filter" value="@sortBy" @onchange="SortChanged">
+        <option value="date" selected>Datum oplopend</option>
+        <option value="dateDesc">Datum aflopend</option>
+        <option value="project">Projectnaam oplopend</option>
+        <option value="projectDesc">Projectnaam aflopend</option>
+    </select>
+    <select class="filter" value="@status" @onchange="StatusChanged">
+        <option value="" selected>Alle</option>
+        <option value="accepted">Accepted</option>
+        <option value="handled">Handled</option>
+        <option value="denied">Denied</option>
+        <option value="requested">Requested</option>
+    </select>
+</div>
 
 @code {
     [Parameter, EditorRequired] public string? SortBy { get; set; } = default!;

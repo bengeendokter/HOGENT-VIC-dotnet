@@ -1,38 +1,4 @@
-﻿.searchAndCreate {
-    max-width: 1500px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap-reverse;
-    align-items: center;
-    gap: 10px;
-    margin: 0 auto;
-    min-height: 40px;
-    max-height: max-content;
-}
-
-    .searchAndCreate input {
-        flex: 1 1 80%;
-        padding-left: 10px;
-        height: 40px;
-        border: 2px solid var(--clr-background-title);
-        border-radius: 5px;
-    }
-
-    .searchAndCreate button {
-        text-decoration: none;
-        color: var(--clr-primary);
-        background: var(--clr-CTA);
-        min-width: 12ch;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        flex: 1 1 20%;
-        border: none;
-        border-radius: 5px;
-        height: 38px;
-    }
-
-.link {
+﻿.link {
     text-decoration: none;
     color: var(--clr-primary);
     background: var(--clr-CTA);
@@ -189,24 +155,5 @@ tr:nth-child(even) {
 
     .link {
         min-width: 7ch;
-    }
-}
-
-@media (min-width: 560px) {
-    .searchAndCreate {
-        gap: 0;
-    }
-
-        .searchAndCreate input {
-            border-right: none;
-            border-radius: 5px 0 0 5px;
-        }
-
-        .searchAndCreate button {
-            border-radius: 0 5px 5px 0;
-        }
-
-    .optioneleFilters .filterRole {
-        max-width: 250px;
     }
 }

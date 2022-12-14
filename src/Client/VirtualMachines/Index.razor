@@ -44,7 +44,7 @@
                             <button title="Hoge beschikbaarheid" aria-label="Hoge beschikbaarheid" class="sort_button" @onclick="SortByHighlyAvailable">Hoge besch.</button>
                         </th>
                         <th>
-                            <button class="sort_button" @onclick="SortByStatus">Status</button>
+                            <button class="sort_button" @onclick="FilterByStatus">Status</button>
                         </th>
                     </tr>
                 </thead>
@@ -83,31 +83,39 @@
                 </tbody>
             </table>
         </section>
+        <TablePaging Page="@Page" />
     </Content>
 </GenericLayout>
 
 @code {
+    // QueryParameters
     [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; } = default!;
+    [Parameter, SupplyParameterFromQuery] public string? Status { get; set; } = default!;
     [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; } = default!;
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
 
-    private string? sortBy = string.Empty;
-
+    // Andere
     private List<VirtualMachineDto.Index> list = new();
     private string createUri = "/vm/manage";
 
+    private string? sortBy = string.Empty;
+    private string? status = string.Empty;
+
+    // Methodes
     protected override async Task OnParametersSetAsync()
     {
         VirtualMachineReq.Index request = new()
         {
             Searchterm = Searchterm,
             SortBy = SortBy,
+            Status = Status,
             Page = Page.HasValue ? Page.Value : 1,
             PageSize = PageSize.HasValue ? PageSize.Value : 25,
         };
 
         sortBy = SortBy;
+        status = Status;
 
         await RefreshVirtualMachinesAsync(request);
     }
@@ -122,6 +130,7 @@
         Dictionary<string, object?> parameters = new();
 
         parameters.Add(nameof(sortBy), sortBy);
+        parameters.Add(nameof(status), status);
 
         var uri = NavigationManager.GetUriWithQueryParameters(parameters);
         NavigationManager.NavigateTo(uri);
@@ -141,54 +150,56 @@
 
     public void SortByCPU()
     {
-        list = list.OrderBy(vm => vm.CPU).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "cpu" ? "cpuDesc" : "cpu";
+        FiltersChanged();
     }
 
     public void SortByRam()
     {
-        list = list.OrderBy(vm => vm.RAM).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "ram" ? "ramDesc" : "ram";
+        FiltersChanged();
     }
 
     public void SortByOpslag()
     {
-        list = list.OrderBy(vm => vm.Storage).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "storage" ? "storageDesc" : "storage";
+        FiltersChanged();
     }
 
     public void SortByStartDatum()
     {
-        list = list.OrderBy(vm => vm.StartDate).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "startdate" ? "startdateDesc" : "startdate";
+        FiltersChanged();
     }
 
     public void SortByEindDatum()
     {
-        list = list.OrderBy(vm => vm.EndDate).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "enddate" ? "enddateDesc" : "enddate";
+        FiltersChanged();
     }
 
     public void SortByKlant()
     {
+        sortBy = sortBy == "client" ? "clientDesc" : "client";
+        FiltersChanged();
     }
 
     public void SortByBackUp()
     {
-        list = list.OrderBy(vm => vm.BackupFrequency).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "backup" ? "backupDesc" : "backup";
+        FiltersChanged();
     }
 
 
     public void SortByHighlyAvailable()
     {
-        list = list.OrderBy(vm => vm.IsHighlyAvailable).ToList();
-        StateHasChanged();
+        sortBy = sortBy == "highav" ? "highavDesc" : "highav";
+        FiltersChanged();
     }
 
-    public void SortByStatus()
+    public void FilterByStatus()
     {
-        list = list.OrderBy(vm => vm.IsActive).ToList();
-        StateHasChanged();
+        status = string.IsNullOrEmpty(status) ? ("on") : (status == "on" ? "off" : "");
+        FiltersChanged();
     }
 }

@@ -1,11 +1,13 @@
 ﻿.optionele-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     min-height: 40px;
     max-width: 1500px;
     margin: 10px auto;
-    flex-wrap: wrap;
 }
 
-    .optionele-filters .filter-role {
+    .optionele-filters .filter {
         height: 40px;
         width: 100%;
         flex: 1 1 80%;
@@ -17,7 +19,10 @@
     }
 
 @media (min-width: 560px) {
-    .optionele-filters .filter-role {
+    .optionele-filters {
+        flex-direction: row;
+    }
+    .optionele-filters .filter {
         max-width: 250px;
     }
 }
