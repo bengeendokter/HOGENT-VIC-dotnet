@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Domain.Activities;
 using Shared.Activities;
 using Shared.VirtualMachines;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Services.Activities;
 public class ActivityService : IActivityService
@@ -15,34 +17,18 @@ public class ActivityService : IActivityService
 
     public async Task<List<ActivityDto.Index>> GetIndexAsync(ActivityRequest.Index request)
     {
-        var query = dbContext.Activities.AsQueryable();
-        var sortingList = new List<EActivity> { EActivity.Added, EActivity.Deleted };
+        var query = dbContext.Activities.Include(x => x.VirtualMachine).Include(x => x.VirtualMachine.Client).AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(request.SortingParameter))
+
+        if (!string.IsNullOrEmpty(request.Status))
         {
-            switch(request.SortingParameter)
-            {
-                case "date":
-                    query = query.OrderBy(x => x.CreatedAt);
-                    break;
-                case "cpu":
-                    query = query
-                        .OrderBy(x => sortingList.IndexOf((EActivity)x.Type))
-                        .ThenByDescending(x => x.VirtualMachine!.CPU);
-                    break;
-                case "ram":
-                    query = query
-                        .OrderBy(x => sortingList.IndexOf((EActivity)x.Type))
-                        .ThenByDescending(x => x.VirtualMachine!.RAM);
-                    break;
-                case "storage":
-                    query = query
-                        .OrderBy(x => sortingList.IndexOf((EActivity) x.Type))
-                        .ThenByDescending(x => x.VirtualMachine!.Storage);
-                    break;
-                default:
-                    break;
-            }
+            var status = Enum.Parse<Domain.Activities.EActivity>(request.Status, true);
+            query = query.Where(x => x.Type.Equals(status));
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.SortBy))
+        {
+            query = SortActivityQuery(request.SortBy, query);
         }
 
         var items = await query
@@ -66,10 +52,47 @@ public class ActivityService : IActivityService
                     IsHighlyAvailable = a.VirtualMachine.IsHighlyAvailable,
                     BackupFrequency = (EBackupFrequency) a.VirtualMachine.BackupFrequency
                 },
-                Type = (EActivity) a.Type
+                Type = (Shared.Activities.EActivity) a.Type
             })
             .ToListAsync();
 
         return items;
+    }
+
+    private IQueryable<Activity> SortActivityQuery(string? sortby, IQueryable<Activity> query)
+    {
+
+        var sortingList = new List<Domain.Activities.EActivity> 
+        { 
+            Domain.Activities.EActivity.Added, 
+            Domain.Activities.EActivity.Deleted
+        };
+
+
+        return (sortby) switch
+        {
+            "date" => query.OrderBy(x => x.CreatedAt),
+            "name" => query.OrderBy(x => x.VirtualMachine.Name),
+            "nameDesc" => query.OrderByDescending(x => x.VirtualMachine.Name),
+            "cpu" => query
+                    .OrderBy(x => sortingList.IndexOf(x.Type))
+                    .ThenByDescending(x => x.VirtualMachine!.CPU),
+            "cpuDesc" => query
+                    .OrderByDescending(x => sortingList.IndexOf(x.Type))
+                    .ThenByDescending(x => x.VirtualMachine!.CPU),
+            "ram" => query
+                    .OrderBy(x => sortingList.IndexOf(x.Type))
+                    .ThenByDescending(x => x.VirtualMachine!.RAM),
+            "ramDesc" => query
+                    .OrderByDescending(x => sortingList.IndexOf(x.Type))
+                    .ThenByDescending(x => x.VirtualMachine!.RAM),
+            "storage" => query
+                    .OrderBy(x => sortingList.IndexOf(x.Type))
+                    .ThenByDescending(x => x.VirtualMachine!.Storage),
+            "storageDesc" => query
+                    .OrderByDescending(x => sortingList.IndexOf(x.Type))
+                    .ThenByDescending(x => x.VirtualMachine!.Storage),
+            _ => query
+        };
     }
 }

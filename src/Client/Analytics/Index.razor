@@ -4,16 +4,24 @@
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
 
+@if (activities == null)
+{
+    <Loading Title="Historiek"/>
+    return;
+} 
+
+@if (error)
+{
+    <Error Title="Historiek" ErrorMessage="@errorMessage"/>
+    return;
+}
+
 <GenericLayout Display="false" Title="Historiek">
     <Actions>
-        <select @onchange="@OnSelect">
-            <option value="" selected disabled hidden>Sorteer op</option>
-            <option value="date">Datum</option>
-            <option value="name">Naam</option>
-            <option value="vcpu"># CPU</option>
-            <option value="ram"># RAM</option>
-            <option value="storage"># Storage</option>
-        </select>
+        <AnalyticFilter 
+            SortBy="@SortBy"
+            Status="@Status"
+        />
         <a href="/historiek/voorspelling" class="btn-primary">
             Resource Planner
         </a>
@@ -60,7 +68,7 @@
                                     break;
                             }
                             <td>@activity.CreatedAt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                            <td>VOKA</td>
+                            <td>@vm.Client?.Surname @vm.Client?.Name</td>
                         </tr>
                     }
                 </tbody>
@@ -71,91 +79,51 @@
 </GenericLayout>
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public string? SortingParameter { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? Status { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
 
-    private int? page = 1;
     private List<ActivityDto.Index> activities = new();
 
-    /* Sorteren via Select Tag */
-    private void OnSelect(ChangeEventArgs e) {
-        Dictionary<string, object?> parameters = new();
-        switch (e?.Value?.ToString()) {
-            case "date":
-                parameters.Add(nameof(SortingParameter), "date");
-                break;
-            case "name":
-                parameters.Add(nameof(SortingParameter), "name");
-                break;
-            case "vcpu":
-                parameters.Add(nameof(SortingParameter), "cpu");
-                break;
-            case "ram":
-                parameters.Add(nameof(SortingParameter), "ram");
-                break;
-            case "storage":
-                parameters.Add(nameof(SortingParameter), "storage");
-                break;
-            default:
-                break;
-        }
-        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
-        NavigationManager.NavigateTo(uri);
-    }
-
-    /* Hulpfunctie voor sorteren gebaseerd op EActivity type */
-    private int ValueSignByActivityType(EActivity type, int value) {
-        return type switch
-        {
-            EActivity.Added => value,
-            EActivity.Deleted => - value,
-            _ => value
-        };
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshActivitiesAsync();
-    }
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
         ActivityRequest.Index request = new()
             {
-                SortingParameter = SortingParameter,
+                SortBy = SortBy,
+                Status = Status,
                 Page = Page.HasValue ? Page.Value : 1,
                 PageSize = PageSize.HasValue ? PageSize.Value : 15,
             };
         await RefreshActivitiesAsync(request);
     }
 
-    private async Task RefreshActivitiesAsync(ActivityRequest.Index request = null) {
+    private async Task RefreshActivitiesAsync(ActivityRequest.Index request) {
 
-        if (request == null) request = new();
-        var response = await ActivityService.GetIndexAsync(request);
-        activities = response;
-    }
-
-    private void GoToNextPage() 
-    {
-        Dictionary<string, object?> parameters = new();
-        parameters.Add(nameof(Page), ++page);
-        NavigateToUriWithParameters(parameters);
-    }
-
-    private void GoToPreviousPage()
-    {
-        Dictionary<string, object?> parameters = new();
-        if (page > 1) {
-            parameters.Add(nameof(Page), --page);
-            NavigateToUriWithParameters(parameters);
+        try
+        {
+            error = false;
+            var response = await ActivityService.GetIndexAsync(request);
+            activities = response;
+        }
+        catch (Exception ex) 
+        {
+            error = true;
+            errorMessage = ex.Message;
         }
     }
 
-    private void NavigateToUriWithParameters(Dictionary<string, object?> parameters) 
+    /* Hulpfunctie voor sorteren gebaseerd op EActivity type */
+    private int ValueSignByActivityType(EActivity type, int value)
     {
-        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
-        NavigationManager.NavigateTo(uri);
+        return type switch
+        {
+            EActivity.Added => value,
+            EActivity.Deleted => -value,
+            _ => value
+        };
     }
 }
