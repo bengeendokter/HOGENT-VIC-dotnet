@@ -7,7 +7,7 @@ public class TemplateService : ITemplateService
         new ()
         {
             Id = 1,
-            Type = ETemplate.Database,
+            Type = ETemplate.MongoDB,
             Software = ESoftware.Windows | ESoftware.MongoDB,
             CPU = 2,
             RAM = 32,
@@ -16,7 +16,7 @@ public class TemplateService : ITemplateService
         new ()
         {
             Id = 2,
-            Type = ETemplate.MachineLearning,
+            Type = ETemplate.DockerWindows,
             Software = ESoftware.Windows | ESoftware.Docker,
             CPU = 4,
             RAM = 4,
@@ -25,7 +25,7 @@ public class TemplateService : ITemplateService
         new ()
         {
             Id = 3,
-            Type = ETemplate.MachineLearning,
+            Type = ETemplate.DockerLinux,
             Software = ESoftware.Linux | ESoftware.Docker,
             CPU = 8,
             RAM = 64,
@@ -34,7 +34,7 @@ public class TemplateService : ITemplateService
         new ()
         {
             Id = 4,
-            Type = ETemplate.Database,
+            Type = ETemplate.MySQLDatabase,
             Software = ESoftware.Windows | ESoftware.MySQL,
             CPU = 8,
             RAM = 64,
