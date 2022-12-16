@@ -2,7 +2,8 @@
 
 public enum ETemplate
 {
-    ArtificialIntelligence,
-    Database,
-    MachineLearning,
+    MySQLDatabase,
+    MongoDB,
+    DockerLinux,
+    DockerWindows,
 }
