@@ -122,10 +122,24 @@
                         </tr>
                         <tr>
                             <th>Klant</th>
-                                <td>VOKA</td>
+                                <td>
+                                    @if (vm.Client is not null)
+                                    {
+                                        @($"{vm.Client?.Surname} {vm.Client?.Name}")
+                                    }
+                                    else
+                                    {
+                                        <p>Geen klant</p>
+                                    }
+                                </td>
                         </tr>
                         <tr>
-                                <td colspan="2"><a class="link" href=@($"/klanten/5")>Meer info</a></td>
+                                <td colspan="2">
+                                    @if (vm.Client is not null)
+                                    {
+                                        <a class="link" href=@($"/klanten/{vm.Client?.Id}")>Meer info</a>
+                                    }
+                                </td>
                         </tr>
                     </table>
                 </secion>
