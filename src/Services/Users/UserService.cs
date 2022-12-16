@@ -35,7 +35,7 @@ public class UserService : IUserService
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
             query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase)
-            || x.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
+            || x.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) || x.Email.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
         }
 
         if (request.Role is not null)
