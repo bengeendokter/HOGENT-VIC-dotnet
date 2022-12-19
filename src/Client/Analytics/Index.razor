@@ -3,6 +3,19 @@
 @inject IActivityService ActivityService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+@if (activities == null)
+{
+        <Loading Title="Historiek"/>
+    return;
+} 
+
+@if (error)
+{
+    <Error Title="Historiek" ErrorMessage="@errorMessage"/>
+    return;
+}
 
 <GenericLayout Display="false" Title="Historiek">
     <Actions>
@@ -78,6 +91,9 @@
     private int? page = 1;
     private List<ActivityDto.Index> activities = new();
 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
     /* Sorteren via Select Tag */
     private void OnSelect(ChangeEventArgs e) {
         Dictionary<string, object?> parameters = new();
@@ -132,9 +148,15 @@
 
     private async Task RefreshActivitiesAsync(ActivityRequest.Index request = null) {
 
-        if (request == null) request = new();
-        var response = await ActivityService.GetIndexAsync(request);
-        activities = response;
+        try {
+            if (request == null) request = new();
+            var response = await ActivityService.GetIndexAsync(request);
+            activities = response;
+        } catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 
     private void GoToNextPage() 

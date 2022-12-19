@@ -22,6 +22,10 @@ namespace Client.Analytics
         private DataItem[] historiek => GrafiekWeergave();
         private DateTime datum = DateTime.Now;
         private int evolutie = 5;
+
+        private bool error = false;
+        private string errorMessage = string.Empty;
+        private bool loading = false;
         //totaal
         private int TotaalVMCPU(DateTime datum)
         {
@@ -156,12 +160,23 @@ namespace Client.Analytics
 
         protected override async Task OnInitializedAsync()
         {
+
             VirtualMachineReq.Index request = new() 
             { 
                 PageSize = 1000,
             };
 
-            _vms = await VirtualMachineService.GetIndexAsync(request);
+            try
+            {
+                loading = true;
+                _vms = await VirtualMachineService.GetIndexAsync(request);
+                loading = false;
+            } catch (Exception ex)
+            {
+                loading = false;
+                error = true;
+                errorMessage = ex.Message;
+            }
         }
     }
 }

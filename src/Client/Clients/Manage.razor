@@ -2,6 +2,7 @@
 @page "/klanten/wijzigen/{id:int}"
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 
 <GenericLayout Display=false Title=@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")>

@@ -6,7 +6,7 @@ using Shared.Clients;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +42,29 @@ builder.Services.AddDbContext<VicDbContext>();
     .AddAuthentication("Fake Authentication")
     .AddScheme<AuthenticationSchemeOptions, FakeAuthenticationHandler>("Fake Authentication", null);*/
 
+// Auth0 Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["Auth0:Authority"];
+    options.Audience = builder.Configuration["Auth0:ApiIdentifier"];
+});
+//
+
+// Management API jwt token
+builder.Services.AddAuth0AuthenticationClient(config =>
+{
+    config.Domain = builder.Configuration["Auth0:Authority"];
+    config.ClientId = builder.Configuration["Auth0:ClientId"];
+    config.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+});
+
+builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
+//
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -67,8 +90,8 @@ app.UseStaticFiles();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseRouting();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers(); //.RequireAuthorization();

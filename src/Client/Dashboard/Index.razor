@@ -3,6 +3,20 @@
 
 <GenericLayout Display=true Title="Dashboard" StatsTitle="@($"Gebruik op {(DateTime.Now).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}")">
     <Content>
-        
+        <AuthorizeView>
+            <Authorized>
+                        @foreach (var claim in context.User.Claims)
+                        {
+                        <p>@claim.Type - @claim.Value</p>
+                        }
+            </Authorized>
+            <NotAuthorized>
+                Please login to see all the claims, <a href="authentication/login">Log in</a>
+            </NotAuthorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Administrator">
+            Only Administrators can see this.
+        </AuthorizeView>
     </Content>
 </GenericLayout>

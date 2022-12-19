@@ -2,12 +2,19 @@
 @inject IVirtualMachineRequestService VMRequestService
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 @if (list == null)
 {
     <Loading Title="Aanvragen"/>
     return;
 } 
+
+@if (error)
+{
+    <Error Title="Aanvragen" ErrorMessage="@errorMessage"/>
+    return;
+}
 
 <GenericLayout Display=false Title="Aanvragen">
     <Actions>
@@ -65,6 +72,9 @@
     private List<VirtualMachineRequestDto.Index> list = new();
     private int _showFilter = 0;
 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
     // Methoden
     protected override async Task OnParametersSetAsync() 
     {
@@ -81,27 +91,34 @@
     }
 
     private async Task RefreshRequestsAsync(VirtualMachineRequestReq.Index request){
-        requestObjects.Clear();
 
-        list = await VMRequestService.GetAll(request);
-        //ClientRequest.Index r = new();
-        //ClientDto.Index client = (await ClientService.GetIndexAsync(r)).First();
-        //list = await VMRequestService.GetRequestsFromClient(client.Id);
+        try {
+            requestObjects.Clear();
 
-        list.ForEach(request =>
+            list = await VMRequestService.GetAll(request);
+            //ClientRequest.Index r = new();
+            //ClientDto.Index client = (await ClientService.GetIndexAsync(r)).First();
+            //list = await VMRequestService.GetRequestsFromClient(client.Id);
+
+            list.ForEach(request =>
+            {
+                Console.WriteLine(request.Client);
+                requestObjects.Add(
+                    new Request()
+                        {
+                            Id = request.Id,
+                            Projectnaam = request.ProjectName,
+                            Klant = request.Client != null ? request.Client.Name + " " + request.Client.Surname : "Onbepaalde klant",
+                            Start_datum = request.StartDate,
+                            Datum_aanvraag = request.Date,
+                            Status = request.Status
+                        });
+            });
+        } catch (Exception ex)
         {
-            Console.WriteLine(request.Client);
-            requestObjects.Add(
-                new Request()
-                    {
-                        Id = request.Id,
-                        Projectnaam = request.ProjectName,
-                        Klant = request.Client != null ? request.Client.Name + " " + request.Client.Surname : "Onbepaalde klant",
-                        Start_datum = request.StartDate,
-                        Datum_aanvraag = request.Date,
-                        Status = request.Status
-                    });
-        });
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 
     private void RequestInfo(int id){

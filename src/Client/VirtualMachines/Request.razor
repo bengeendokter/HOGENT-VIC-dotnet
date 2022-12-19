@@ -3,6 +3,13 @@
 @inject NavigationManager NavigationManager
 @inject IClientService ClientService
 @inject IVirtualMachineRequestService VirtualMachineRequestService
+@attribute [Authorize]
+
+@if (error)
+{
+    <Error Title="VM Aanvragen" ErrorMessage="@errorMessage"/>
+    return;
+}
 
 <GenericLayout Display=false Title="VM Aanvragen">
     <Content>
@@ -70,6 +77,9 @@
     public bool _existingClient = true;
     private bool _confirmMsg = false;
 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
     protected override void OnInitialized()
     {
         vmRequest.StartDate = DateTime.Now;
@@ -79,11 +89,18 @@
     private async Task HandleValidSubmit()
     {
         //TODO client moet de ingelogde client zijn
-        ClientRequest.Index r = new();
-        vmRequest.Client = (await ClientService.GetIndexAsync(r)).First();
-        Console.WriteLine(vmRequest.Client.Id);
-        int id = await VirtualMachineRequestService.CreateAsync(vmRequest);
-        _confirmMsg = true;
+        try{
+            ClientRequest.Index r = new();
+            vmRequest.Client = (await ClientService.GetIndexAsync(r)).First();
+            Console.WriteLine(vmRequest.Client.Id);
+            int id = await VirtualMachineRequestService.CreateAsync(vmRequest);
+            _confirmMsg = true;
+        } catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
+
     }
 
     private void RouteToHome(){

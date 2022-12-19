@@ -2,6 +2,7 @@
 @using System.Globalization
 @inject IVirtualMachineService VMService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 @if (vm == null)
 {

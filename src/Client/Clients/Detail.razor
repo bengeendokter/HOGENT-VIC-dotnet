@@ -1,6 +1,7 @@
 ﻿@page "/klanten/{id:int}"
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 @if (client == null) 
 {

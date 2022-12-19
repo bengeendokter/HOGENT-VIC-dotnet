@@ -1,0 +1,78 @@
+﻿@page "/gebruikers/wijzigen/{id}/rol"
+@using Shared.AuthUsers
+@inject HttpClient Http
+
+@if (loading)
+{
+    <Loading Title="Gebruiker wijzigen (Rol)"/>
+    return;
+}
+
+@if (error)
+{
+    <Error Title="Gebruiker wijzigen (Rol)" ErrorMessage="@errorMessage"/>
+    return;
+}
+
+<GenericLayout Display=false Title=@($"Gebruiker Wijzigen (Rol)")>
+    <Content>
+        <EditForm Model="@_userRole" OnValidSubmit="@OnSubmit">
+            <FluentValidationValidator />
+            <InputSelect @bind-Value="_userRole.UserRoleId">
+                <option value="">---Kies een rol---</option>
+                @foreach(var role in roles)
+                {
+                    <option value="@role.Id">@role.Role</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="() => _userRole.UserRoleId" />
+                    <div>
+                    @if (rolInfo is not null)
+                    {
+                        @foreach (var rol in rolInfo)
+                        {
+                                <p>@($"Id = {rol.Id} | Name Role = {rol.Role}")</p>
+                        }
+                    }
+        </div>
+        </EditForm>
+
+
+    </Content>
+</GenericLayout>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+
+    private IEnumerable<AuthUserDto.Detail.UserRole>? rolInfo;
+    private IEnumerable<AuthUserDto.Detail.UserRole>? roles;
+
+    private AuthUserDto.Mutate.Role _userRole = new();
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
+    private bool loading = false;
+
+    protected async override Task OnParametersSetAsync()
+    {
+
+        try {
+            loading = true;
+            await base.OnParametersSetAsync();
+            var response = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/rol/{Id}");
+            roles = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/roles");
+            rolInfo = response;
+            loading = false;
+        } catch (Exception ex)
+        {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void OnSubmit()
+    {
+
+    }
+}

@@ -1,5 +1,18 @@
 ﻿@page "/historiek/voorspelling"
 @using System.Globalization
+@attribute [Authorize(Roles = "Administrator, Moderator")]
+
+@if (loading)
+{
+    <Loading Title="Resource Planner"/>
+    return;
+} 
+
+@if (error)
+{
+    <Error Title="Resource Planner" ErrorMessage="@errorMessage"/>
+    return;
+}
 
 <GenericLayout Display="true" Title="Resource Planner" StatsTitle=@($"Gebruik op {datum.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}") Usages="@Usages">
     <Actions>

@@ -1,6 +1,7 @@
-﻿@page "/gebruikers/wijzigen/{id:int}"
+﻿@page "/gebruikers/wijzigen/{id}/algemeen"
+@attribute [Authorize (Roles = "Administrator, Moderator")]
 
-<GenericLayout Display=false Title=@($"Gebruiker Wijzigen - {user.Surname} {user.Name}")>
+@*<GenericLayout Display=false Title=@($"Gebruiker Wijzigen - {user.Surname} {user.Name}")>
     <Content>
         <EditForm Model="@user" OnValidSubmit="@EditUserAsync" >
             <FluentValidationValidator />
@@ -59,5 +60,5 @@
             </div>
         </EditForm>
     </Content>
-</GenericLayout>
+</GenericLayout>*@
 

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Shared.VirtualMachines;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers.VirtualMachines;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class VirtualMachineRequestController : ControllerBase
 {
     private readonly IVirtualMachineRequestService virtualMachineRequestService;
@@ -15,6 +17,7 @@ public class VirtualMachineRequestController : ControllerBase
         this.virtualMachineRequestService = virtualMachineRequestService;
     }
 
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Returns a list of requests.")]
     [HttpGet]
     public async Task<List<VirtualMachineRequestDto.Index>> GetAll([FromQuery] VirtualMachineRequestReq.Index request)
@@ -22,6 +25,7 @@ public class VirtualMachineRequestController : ControllerBase
         return await virtualMachineRequestService.GetAll(request);
     }
 
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Returns a specific request by id.")]
     [HttpGet("{id}")]
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)

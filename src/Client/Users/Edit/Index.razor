@@ -1,0 +1,44 @@
+﻿@page "/gebruikers/wijzigen/{id}"
+@attribute [Authorize(Roles = "Administrator, Moderator")]
+
+@using Shared.AuthUsers
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+@if (user is null){
+    <Loading Title="Gebruiker wijzigen"/>
+    return;
+}
+
+<GenericLayout Display=false Title=@($"Gebruiker Wijzigen - {user.FirstName} {user.LastName}")>
+    <Content>
+        <div>
+            <h2>Wat wil u wijzigen?</h2>
+            <button @onclick="GoToEditGeneral">Algemene informatie</button>
+            <button @onclick="GoToEditRole">Rol</button>
+
+        </div>
+    </Content>
+</GenericLayout>
+
+@code {
+
+    [Parameter] public string? Id { get; set; }
+    private AuthUserDto.Detail.General? user;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        user = await Http.GetFromJsonAsync<AuthUserDto.Detail.General>($"AuthUser/{Id}");
+    }
+
+    private void GoToEditGeneral()
+    {
+        NavigationManager.NavigateTo($"gebruikers/wijzigen/{Id}/algemeen");
+    }
+
+    private void GoToEditRole()
+    {
+        NavigationManager.NavigateTo($"gebruikers/wijzigen/{Id}/rol");
+    }
+}

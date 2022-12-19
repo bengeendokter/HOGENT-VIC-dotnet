@@ -16,9 +16,11 @@
         @*
         ########## Om link te maken met andere pagina vervang "/" met "/*pagina_naam*" ##########
         *@
-            <NavLink href="/gebruikers" class="nav_link" Match=NavLinkMatch.All>
-                <div>Gebruikers</div>
-            </NavLink>
+            <AuthorizeView Roles="Administrator">
+                <NavLink href="/gebruikers" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Gebruikers</div>
+                </NavLink>
+            </AuthorizeView>
             <NavLink href="/klanten" class="nav_link" Match=NavLinkMatch.All>
                 <div>Klanten</div>
             </NavLink>
@@ -37,6 +39,7 @@
             <NavLink href="/logoutbuttonlink" class="nav_link icon_link" Match=NavLinkMatch.All>
                 <div><LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span></div>
             </NavLink>
+            <Client.AuthShared.AccessControl />
     </div>
 </div>
 

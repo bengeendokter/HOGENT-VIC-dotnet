@@ -61,6 +61,11 @@
                         else if (!key.Equals("Id"))
                         {
                             <td>@value</td>
+
+                        }
+
+                        if (key.Equals("Id")){
+                            Console.WriteLine("Id = ", fieldInfo.GetValue(item));
                         }
                     }
 
@@ -73,6 +78,15 @@
                                     <button style="border: none; background: none;">
                                         <span class="material-icons" style="color: slategray"
                                             @onclick="() => OnEdit(item.GetType().GetFields()[0].GetValue(item))">
+                                            edit
+                                        </span>
+                                    </button>
+                                }
+                                @if (EditCallbackWithString.HasDelegate)
+                                {
+                                    <button style="border: none; background: none;">
+                                        <span class="material-icons" style="color: slategray"
+                                            @onclick="() => OnEditWithString(item.GetType().GetFields()[0].GetValue(item))">
                                             edit
                                         </span>
                                     </button>
@@ -118,6 +132,8 @@
     [Parameter] public EventCallback<int> InfoCallback { get; set; }
     [Parameter] public EventCallback<int> DeleteCallback { get; set; }
     [Parameter] public EventCallback<int> EditCallback { get; set; }
+    [Parameter] public EventCallback<string> EditCallbackWithString { get; set; }
+
 
     [Parameter] public bool EnablePaging { get; set; } = false;
 
@@ -144,6 +160,14 @@
     private void OnEdit(object? id) {
         _id = Convert.ToInt32(id);
         EditCallback.InvokeAsync(_id);
+    }
+
+    private void OnEditWithString(object? id)
+    {
+        Console.WriteLine("Id is = ", id);
+        string stringId = id?.ToString() ?? "qds";
+        Console.WriteLine(stringId);
+        EditCallbackWithString.InvokeAsync(stringId);
     }
     private void OnDelete(object? id)
     {

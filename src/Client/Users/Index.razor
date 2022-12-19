@@ -1,16 +1,17 @@
 ﻿@page "/gebruikers"
+@attribute [Authorize(Roles = "Administrator, Moderator")]
 
-@if (users == null)
+@if (loading)
 {
     <Loading Title="Gebruikers" />
     return;
 }
 
-@if (error)
+@*@if (error)
 {
     <Error Title="Gebruikers" ErrorMessage="@errorMessage" />
     return;
-}
+}*@
 
 <GenericLayout Display=false Title="Gebruikers">
     <Actions>
@@ -24,7 +25,7 @@
         <Table
             Object="@(new Gebruiker())"
             Collection="@userObjects"
-            EditCallback="@GoToEditUser"
+            EditCallbackWithString="@GoToEditUser"
             DeleteCallback="@DeleteUserAsync"
             EnablePaging="true"
         />
