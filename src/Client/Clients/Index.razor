@@ -55,7 +55,7 @@
     [Parameter, SupplyParameterFromQuery] public string? ClientType { get; set; }
 
     // Andere
-    private List<ClientDto.Index> clients = new();
+    private List<ClientDto.Index>? clients;
     private ICollection<Klant> clientObjects = new List<Klant>();
     private readonly string createUri = "/klanten/aanmaken";
 

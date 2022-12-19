@@ -84,7 +84,7 @@
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
 
-    private List<ActivityDto.Index> activities = new();
+    private List<ActivityDto.Index>? activities;
 
     private bool error = false;
     private string errorMessage = string.Empty;

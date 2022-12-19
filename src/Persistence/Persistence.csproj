@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Fakers\Fakers.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configurations\" />
-  </ItemGroup>
-
 </Project>

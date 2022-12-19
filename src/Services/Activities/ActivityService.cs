@@ -3,7 +3,7 @@ using Persistence;
 using Domain.Activities;
 using Shared.Activities;
 using Shared.VirtualMachines;
-using System.Security.Cryptography.X509Certificates;
+using Shared.Clients;
 
 namespace Services.Activities;
 public class ActivityService : IActivityService
@@ -17,7 +17,7 @@ public class ActivityService : IActivityService
 
     public async Task<List<ActivityDto.Index>> GetIndexAsync(ActivityRequest.Index request)
     {
-        var query = dbContext.Activities.Include(x => x.VirtualMachine).Include(x => x.VirtualMachine.Client).AsQueryable();
+        var query = dbContext.Activities.AsQueryable();
 
 
         if (!string.IsNullOrEmpty(request.Status))
@@ -50,7 +50,13 @@ public class ActivityService : IActivityService
                     IsActive = a.VirtualMachine.IsActive,
                     Template = (ETemplate) a.VirtualMachine.Template,
                     IsHighlyAvailable = a.VirtualMachine.IsHighlyAvailable,
-                    BackupFrequency = (EBackupFrequency) a.VirtualMachine.BackupFrequency
+                    BackupFrequency = (EBackupFrequency) a.VirtualMachine.BackupFrequency,
+                    Client = new ClientDto.Index
+                    {
+                        Name = a.VirtualMachine.Client.Name,
+                        Surname = a.VirtualMachine.Client.Surname
+                    }
+
                 },
                 Type = (Shared.Activities.EActivity) a.Type
             })

@@ -19,7 +19,7 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(VirtualMachineReq.Index request)
     {
-        var query = dbContext.VirtualMachines.Include(x => x.Client).AsQueryable();
+        var query = dbContext.VirtualMachines.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
@@ -79,7 +79,7 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)
     {
-        var vm = await dbContext.VirtualMachines.Include(x => x.Client).FirstOrDefaultAsync(v => v.Id == virtualMachineId);
+        var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(v => v.Id == virtualMachineId);
 
         if (vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
@@ -215,6 +215,7 @@ public class VirtualMachineService : IVirtualMachineService
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
 
         dbContext.VirtualMachines.Remove(vm);
+        dbContext.Activities.Add(new Activity(vm, EActivity.Deleted));
 
         await dbContext.SaveChangesAsync();
     }

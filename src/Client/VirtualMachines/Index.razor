@@ -3,6 +3,18 @@
 @inject IVirtualMachineService VMService
 @inject NavigationManager NavigationManager
 
+@if (list == null)
+{
+    <Loading Title="Virtuele Machines"/>
+    return;
+} 
+
+@if (error)
+{
+    <Error Title="Virtuele Machiens" ErrorMessage="@errorMessage"/>
+    return;
+}
+
 <GenericLayout Display=false Title="Virtuele Machines">
     <Content>
         <SearchAndCreate 
@@ -102,6 +114,9 @@
     private string? sortBy = string.Empty;
     private string? status = string.Empty;
 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
     // Methodes
     protected override async Task OnParametersSetAsync()
     {
@@ -122,7 +137,16 @@
 
     private async Task RefreshVirtualMachinesAsync(VirtualMachineReq.Index request)
     {
-        list = await VMService.GetIndexAsync(request);
+        try
+        {
+            error = false;
+            list = await VMService.GetIndexAsync(request);
+        }
+        catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 
     private void FiltersChanged()

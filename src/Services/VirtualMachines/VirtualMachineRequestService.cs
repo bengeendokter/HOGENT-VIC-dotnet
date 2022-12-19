@@ -22,7 +22,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     }
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
     {
-        var request = await dbContext.VirtualMachineRequests.Include(c => c.Client).FirstOrDefaultAsync(v => v.Id == id);
+        var request = await dbContext.VirtualMachineRequests.FirstOrDefaultAsync(v => v.Id == id);
 
         if (request is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), id);
@@ -51,7 +51,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public async Task<List<VirtualMachineRequestDto.Index>> GetAll(VirtualMachineRequestReq.Index request)
     {
-        var query = dbContext.VirtualMachineRequests.Include(x => x.Client).AsQueryable();
+        var query = dbContext.VirtualMachineRequests.AsQueryable();
         
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
@@ -94,7 +94,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
 
     public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int clientId)
     {
-        var client = await dbContext.Clients.Include(x => x.Requests).FirstOrDefaultAsync(x => x.Id == clientId);
+        var client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == clientId);
 
         if (client is null)
             throw new EntityNotFoundException(nameof(Client), clientId);

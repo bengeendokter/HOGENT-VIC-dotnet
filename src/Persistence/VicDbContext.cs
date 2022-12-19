@@ -31,9 +31,6 @@ public class VicDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        modelBuilder.Entity<Activity>()
-            .HasOne(a => a.VirtualMachine);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(VicDbContext).Assembly);
     }
 }

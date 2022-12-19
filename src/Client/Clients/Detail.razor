@@ -90,7 +90,10 @@
 @code {
     [Parameter] public int Id { get; set; }
     private ClientDto.Detail? client;
+
     private bool isRequestingDelete = false;
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
