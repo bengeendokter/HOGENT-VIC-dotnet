@@ -10,5 +10,6 @@ public class VirtualMachineConfiguration : IEntityTypeConfiguration<VirtualMachi
     {
         builder.HasOne(vm => vm.Client)
             .WithMany(c => c.VirtualMachines);
+        builder.Navigation(vm => vm.Client).AutoInclude();
     }
 }

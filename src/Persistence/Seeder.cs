@@ -18,10 +18,10 @@ public class Seeder
 
     public void Seed()
     {
-        //SeedVirtualMachines();
-        //SeedClients();
-        //SeedUsers();
-        //SeedActivities();
+        SeedVirtualMachines();
+        SeedClients();
+        SeedUsers();
+        SeedActivities();
     }
 
     private void SeedVirtualMachines()

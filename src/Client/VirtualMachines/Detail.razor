@@ -120,27 +120,25 @@
                             <th>Wachtwoord</th>
                             <td><input class="password" readonly type=@TxtType value="wachtwoord" /><button class="button" type="button" @onclick="ShowPassword"><EyeIcon /></button></td>
                         </tr>
-                        <tr>
-                            <th>Klant</th>
-                                <td>
-                                    @if (vm.Client is not null)
-                                    {
-                                        @($"{vm.Client?.Surname} {vm.Client?.Name}")
-                                    }
-                                    else
-                                    {
-                                        <p>Geen klant</p>
-                                    }
-                                </td>
-                        </tr>
-                        <tr>
-                                <td colspan="2">
-                                    @if (vm.Client is not null)
-                                    {
-                                        <a class="link" href=@($"/klanten/{vm.Client?.Id}")>Meer info</a>
-                                    }
-                                </td>
-                        </tr>
+                        @if (vm.Client is not null)
+                        {
+                            <tr>
+                                <th>Klant</th>
+                                <td>@(
+                                        $"{vm.Client?.Surname} {vm.Client?.Name}"
+                                        )</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><a class="link" href=@($"/klanten/{vm.Client?.Id}")>Meer info</a></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th>Klant</th>
+                                <td><p>Geen klant</p></td>
+                            </tr>
+                        }
                     </table>
                 </secion>
                 </div>
