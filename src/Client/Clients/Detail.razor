@@ -8,6 +8,12 @@
     return;
 }
 
+@if (error)
+{
+    <Error Title="Klant" ErrorMessage="@errorMessage" />
+    return;
+}
+
 <GenericLayout Display=false Title=@($"Klant - {client.Name}")>
     <Actions>
         <a href="/klanten" class="btn-primary">
