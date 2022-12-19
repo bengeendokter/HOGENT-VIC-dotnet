@@ -21,7 +21,10 @@ public class ClientService : IClientService
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
-            query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+            x.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+            x.ClientOrganisation.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
+            x.PhoneNumber.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
         }
         if (!string.IsNullOrWhiteSpace(request.ClientType))
         {

@@ -1,7 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 
 <div class="search-and-create">
-    <input type="search" placeholder="Zoeken..." value="@searchTerm" @onchange="SearchTermChanged" />
+    <input type="search" placeholder="Zoeken..." value="@searchTerm" @oninput="SearchTermChanged" />
     <button @onclick="GoToCreate">Toevoegen</button>
 </div>
 
