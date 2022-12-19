@@ -10,5 +10,6 @@ public class VirtualMachineRequestConfiguration : IEntityTypeConfiguration<Virtu
     {
         builder.HasOne(vmr => vmr.Client)
             .WithMany(c => c.Requests);
+        builder.Navigation(vmr => vmr.Client).AutoInclude();
     }
 }

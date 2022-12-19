@@ -3,5 +3,6 @@
 public enum EActivity
 {
     Deleted,
-    Added
+    Added,
+    Edited
 }

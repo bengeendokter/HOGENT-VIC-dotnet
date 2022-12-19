@@ -34,41 +34,26 @@
                         <th></th>
                         <th>Virtual Machine</th>
                         <th>Activiteit</th>
-                        <th># CPU</th>
-                        <th># RAM</th>
-                        <th># Storage</th>
+                        <th>CPU</th>
+                        <th>RAM</th>
+                        <th>Storage</th>
                         <th>Activiteit Datum</th>
                         <th>Klant</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @{var id = 1;}
                     @foreach (ActivityDto.Index activity in activities) 
                     {
-                        var vm = activity.VirtualMachine;
-                        @if (vm == null) continue;
-
+                        var color = GetActivityCSS(activity.Type);
                         <tr>
-                            <td>@(id++)</td>
-                            <td>@vm.Name</td>
-                            @switch (activity.Type) {
-                                case EActivity.Added:
-                                    <td>VM toegevoegd</td>
-                                    <td class="added">+ @vm.CPU vCPU</td>
-                                    <td class="added">+ @vm.RAM GB</td>
-                                    <td class="added">+ @vm.Storage GB</td>
-                                    break;
-                                case EActivity.Deleted:
-                                    <td>VM verwijderd</td>
-                                    <td class="deleted">- @vm.CPU vCPU</td>
-                                    <td class="deleted">- @vm.RAM GB</td>
-                                    <td class="deleted">- @vm.Storage GB</td>
-                                    break;
-                                default:
-                                    break;
-                            }
+                            <td>@activity.Id</td>
+                            <td>@activity.VMName</td>
+                            <td class="@color">@EActivityExtensions.ToDisplayName(activity.Type)</td>
+                            <td class="@color">@activity.CPU.ToString("+0;-#") vCPU</td>
+                            <td class="@color">@activity.RAM.ToString("+0;-#") GB</td>
+                            <td class="@color">@activity.Storage.ToString("+0;-#") GB</td>
                             <td>@activity.CreatedAt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                            <td>@vm.Client?.Surname @vm.Client?.Name</td>
+                            <td>@activity.ClientName</td>
                         </tr>
                     }
                 </tbody>
@@ -116,14 +101,14 @@
         }
     }
 
-    /* Hulpfunctie voor sorteren gebaseerd op EActivity type */
-    private int ValueSignByActivityType(EActivity type, int value)
+    private string GetActivityCSS(EActivity type) 
     {
-        return type switch
+        return (type) switch
         {
-            EActivity.Added => value,
-            EActivity.Deleted => -value,
-            _ => value
+            EActivity.Added => "added",
+            EActivity.Deleted => "deleted",
+            EActivity.Edited => "edited",
+            _ => ""
         };
     }
 }

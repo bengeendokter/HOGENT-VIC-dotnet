@@ -102,6 +102,10 @@ tr:nth-child(even) {
     color: var(--clr-red);
 }
 
+.edited {
+    color: orange;
+}
+
 .voorspelling_link {
     margin: 0 auto;
     display: flex;
