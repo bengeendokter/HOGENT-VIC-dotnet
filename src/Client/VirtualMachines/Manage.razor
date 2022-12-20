@@ -12,10 +12,14 @@
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
             <div class="grid">
+
+            @if (_request != null)
+            {
+                <h2>Informatie van de aanvrager <button class="showHideBtn" @onclick="(() => _showRequest = !_showRequest)">@(_showRequest ? "Verberg" : "Toon")</button></h2>
+                <div class="line" />
+                @if(_showRequest){
                 <div class="request">
-                    @if (_request != null)
-                    {
-                        <h2>Informatie van de aanvrager</h2>
+
                             <div class="input-group">
                                 <div class="form-group">
                                     <label>
@@ -61,11 +65,14 @@
                             Extra info over de aanvraag:<br />
                             <div class="reden">@_request.Reason</div>
                         </label>
-                    }
-                </div>
+                    </div>
+                }
+            }
 
+                <h2>Templates <button class="showHideBtn" @onclick="(() => _showTemplates = !_showTemplates)">@(_showTemplates ? "Verberg" : "Toon")</button></h2>
+                <div class="line" />
+                @if(_showTemplates){
                 <div class="templates">
-                    <h2>Templates</h2>
 
                     <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
@@ -83,9 +90,13 @@
 
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
+                }
 
+                <h2>Informatie van de VM <button class="showHideBtn" @onclick="(() => _showForm = !_showForm)">@(_showForm ? "Verberg" : "Toon")</button></h2>
+                <div class="line" />
+                @if(_showForm){
                 <div class="form">
-                    <h2> Algemene informatie</h2>
+
                     <div class="input-group">
                         <div class="form-group">
                             <label>
@@ -200,6 +211,7 @@
                     </div>
                     <button class="btn-primary" type="submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
                 </div>
+                }
             </div>
         </EditForm>
         @if (_showCustomTemplate)
@@ -218,6 +230,10 @@
     private int? _activeTemplate;
     private List<ClientDto.Index> _clients;
     private string? searchClientString { get; set; } = "";
+
+    private bool _showRequest = true;
+    private bool _showTemplates = true;
+    private bool _showForm = true;
 
     [Parameter]
     public int? Id { get; set; }
@@ -248,7 +264,7 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
-@*            if(_request.Client is not null)
+    @*            if(_request.Client is not null)
                 _vm.ClientId = _request.Client.Id;*@
         }
         else

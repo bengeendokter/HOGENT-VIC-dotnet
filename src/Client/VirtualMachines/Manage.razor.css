@@ -28,9 +28,6 @@ label {
     padding: 5px;
 }
 
-.form{
-    margin-top: 30px;
-}
 
 .form-group {
     display: flex;
@@ -47,7 +44,8 @@ label {
 .reden {
     background-color: var(--clr-primary);
     padding: 5px;
-    margin: 5px 45px 10px 0px;
+    margin-top: 10px;
+    margin-right: 50px;
 }
 
 ::deep select.inputField {
@@ -99,4 +97,23 @@ label {
     background-color: none;
     background: none;
     color: none;
+}
+
+.line {
+    border-top: solid var(--clr-text-color) 2px;
+    height: 2px;
+    width: 100%;
+}
+
+.templates{
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.showHideBtn {
+    border: none;
+    background: none;
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--clr-text-color);   
 }

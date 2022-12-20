@@ -5,6 +5,7 @@
     padding: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
+    min-width: 315px;
 }
 button {
     font-weight: 600;
