@@ -60,18 +60,10 @@ public class AuthUserDto
 
         public class Role
         {
-            public string UserRoleId { get; set; }
-
-            public class Validator : AbstractValidator<Role>
-            {
-                public Validator()
-                {
-                    RuleFor(x => x.UserRoleId)
-                        .NotNull()
-                        .NotEmpty()
-                        .WithMessage("Rol moet gekozen zijn");
-                }
-            }
+            public bool IsUser { get; set; }
+            public bool IsCustomer { get; set; }
+            public bool IsModerator { get; set; }
+            public bool IsAdministrator { get; set; }
 
         }
     }

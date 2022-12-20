@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shared;
 using Shared.AuthUsers;
 using static Shared.AuthUsers.AuthUserDto.Mutate;
+using Role = Auth0.ManagementApi.Models.Role;
 
 namespace Server.Controllers
 {
@@ -70,11 +71,83 @@ namespace Server.Controllers
             });
         }
 
-        [HttpGet("verwijder_rol/{userId}")]
-        public async Task<IActionResult> DeleteRoles(string userId, [FromBody] AuthUserRequest.Roles request)
+        [HttpPost("wijzig/rollen/{userId}")]
+        public async Task<AuthUserResponse.Create.Role> WijzigRoles(string userId, [FromBody] AuthUserRequest.Roles request)
         {
-            await _managementApiClient.Users.RemoveRolesAsync(userId, new AssignRolesRequest() { Roles = request.roles });
-            return NoContent();
+            var allRoles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
+
+            var adminRole = allRoles.First(x => x.Name == "Administrator");
+            var modRole = allRoles.First(x => x.Name == "Moderator");
+            var customerRole = allRoles.First(x => x.Name == "Customer");
+            var userRole = allRoles.First(x => x.Name == "User");
+
+            List<Role> ToBeAssignedRoles = new();
+            List<Role> ToBeDeletedRoles = new();
+
+            if (request.IsAdministrator)
+            {
+                ToBeAssignedRoles.Add(adminRole);
+            } else
+            {
+                ToBeDeletedRoles.Add(adminRole);
+            }
+
+            if (request.IsModerator)
+            {
+                ToBeAssignedRoles.Add(modRole);
+            }
+            else
+            {
+                ToBeDeletedRoles.Add(modRole);
+            }
+
+            if (request.IsCustomer)
+            {
+                ToBeAssignedRoles.Add(customerRole);
+            }
+            else
+            {
+                ToBeDeletedRoles.Add(customerRole);
+            }
+
+            if (request.IsUser)
+            {
+                ToBeAssignedRoles.Add(userRole);
+            }
+            else
+            {
+                ToBeDeletedRoles.Add(userRole);
+            }
+
+
+            var assignRoleRequest = new AssignRolesRequest
+            {
+                Roles = ToBeAssignedRoles.Select(x => x.Id).ToArray()
+            };
+
+            if (ToBeAssignedRoles.Count >= 1)
+            {
+                await _managementApiClient.Users.AssignRolesAsync(userId, assignRoleRequest);
+            }
+
+            assignRoleRequest.Roles = ToBeDeletedRoles.Select(x => x.Id).ToArray();
+
+            if (ToBeDeletedRoles.Count >= 1)
+            {
+                await _managementApiClient.Users.RemoveRolesAsync(userId, assignRoleRequest);
+            }
+
+            var response =  await _managementApiClient.Users.GetRolesAsync(userId);
+            var rollen = response.Select(x => new AuthUserDto.Detail.UserRole()
+            {
+                Id = x.Id,
+                Role = x.Name
+            });
+
+            return new AuthUserResponse.Create.Role()
+            {
+                rollen = rollen
+            };
         }
     }
 }

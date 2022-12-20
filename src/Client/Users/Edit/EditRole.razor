@@ -1,6 +1,8 @@
 ﻿@page "/gebruikers/wijzigen/{id}/rol"
 @using Shared.AuthUsers
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
+
 
 @if (loading)
 {
@@ -18,23 +20,41 @@
     <Content>
         <EditForm Model="@_userRole" OnValidSubmit="@OnSubmit">
             <FluentValidationValidator />
-            <InputSelect @bind-Value="_userRole.UserRoleId">
-                <option value="">---Kies een rol---</option>
-                @foreach(var role in roles)
+            <div class="group">
+                <label>User</label>
+                <div>
+                    <InputCheckbox @bind-Value="_userRole.IsUser" class="inputField checkbox" />
+                </div>
+            </div>
+            <div class="group">
+                <label>Klant</label>
+                <div>
+                    <InputCheckbox @bind-Value="_userRole.IsCustomer" class="inputField checkbox" />
+                </div>
+            </div>
+            <div class="group">
+                <label>Beheerder</label>
+                <div>
+                    <InputCheckbox @bind-Value="_userRole.IsModerator" class="inputField checkbox" />
+                </div>
+            </div>
+            <div class="group">
+                <label>Admin</label>
+                <div>
+                    <InputCheckbox @bind-Value="_userRole.IsAdministrator" class="inputField checkbox" />
+                </div>
+            </div>
+
+            <div>
+                @if (rolInfo is not null)
                 {
-                    <option value="@role.Id">@role.Role</option>
-                }
-            </InputSelect>
-            <ValidationMessage For="() => _userRole.UserRoleId" />
-                    <div>
-                    @if (rolInfo is not null)
+                    @foreach (var rol in rolInfo)
                     {
-                        @foreach (var rol in rolInfo)
-                        {
-                                <p>@($"Id = {rol.Id} | Name Role = {rol.Role}")</p>
-                        }
+                            <p>@($"Id = {rol.Id} | Name Role = {rol.Role}")</p>
                     }
-        </div>
+                }
+            </div>
+            <button type="submit">Submit the form brudda</button>
         </EditForm>
 
 
@@ -43,11 +63,10 @@
 
 @code {
     [Parameter] public string? Id { get; set; }
+    private AuthUserDto.Mutate.Role _userRole = new();
 
     private IEnumerable<AuthUserDto.Detail.UserRole>? rolInfo;
     private IEnumerable<AuthUserDto.Detail.UserRole>? roles;
-
-    private AuthUserDto.Mutate.Role _userRole = new();
 
     private bool error = false;
     private string errorMessage = string.Empty;
@@ -57,11 +76,13 @@
     {
 
         try {
+
             loading = true;
             await base.OnParametersSetAsync();
             var response = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/rol/{Id}");
             roles = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/roles");
             rolInfo = response;
+            SetRolesInForm();
             loading = false;
         } catch (Exception ex)
         {
@@ -71,8 +92,36 @@
         }
     }
 
-    private void OnSubmit()
-    {
+    private void SetRolesInForm(){
+        _userRole.IsUser = rolInfo.Any(x => x.Id == GiveIdOfRoleByName("User"));
+        _userRole.IsCustomer = rolInfo.Any(x => x.Id == GiveIdOfRoleByName("Customer"));
+        _userRole.IsModerator = rolInfo.Any(x => x.Id == GiveIdOfRoleByName("Moderator"));
+        _userRole.IsAdministrator = rolInfo.Any(x => x.Id == GiveIdOfRoleByName("Administrator"));
+    }
 
+    private string GiveIdOfRoleByName(string name){
+        return roles.First(x => x.Role == name).Id;
+    }
+
+    private async void OnSubmit()
+    {
+        try {
+            loading = true;
+            var request = new AuthUserRequest.Roles()
+                {
+                    IsAdministrator = _userRole.IsAdministrator,
+                    IsModerator = _userRole.IsModerator,
+                    IsCustomer = _userRole.IsCustomer,
+                    IsUser = _userRole.IsUser
+                };
+
+            await Http.PostAsJsonAsync($"/AuthUser/wijzig/rollen/{Id}", request);
+            loading = false;
+            NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
+        } catch (Exception ex){
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 }
