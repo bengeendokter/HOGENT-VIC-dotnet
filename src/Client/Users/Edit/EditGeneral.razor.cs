@@ -1,38 +1,85 @@
 using Microsoft.AspNetCore.Components;
 using Shared.AuthUsers;
+using System.Net;
 using System.Net.Http.Json;
+using static Shared.AuthUsers.AuthUserDto.Detail;
+using static Shared.AuthUsers.AuthUserRequest;
 
 namespace Client.Users.Edit;
 
-public partial class Edit
+public partial class EditGeneral
 {
     [Parameter] public string? Id { get; set; }
-    [Inject] public IUserService UserService { get; set; } = default!;
+    //[Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public HttpClient Http { get; set; } = default!;
 
+    private AuthUserDto.Mutate.General? _userGeneralInfoMutate = new();
+    private AuthUserDto.Detail.General? _userGeneralInfo = new();
 
-    private UserDto.Mutate user = new();
+    private bool error = false;
+    private string errorMessage = string.Empty;
+    private bool loading = false;
 
-/*    protected async override Task OnParametersSetAsync()
+    protected async override Task OnParametersSetAsync()
+    { 
+        try
+        {
+
+            loading = true;
+            await base.OnParametersSetAsync();
+            var response = await Http.GetFromJsonAsync<AuthUserDto.Detail.General>($"AuthUser/{Id}");
+            _userGeneralInfo = response;
+            SetDetailsInUser();
+            loading = false;
+        }
+        catch (Exception ex)
+        {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void SetDetailsInUser()
     {
-        //await base.OnParametersSetAsync();
-        //var response = await UserService.GetDetailAsync(Id);
-        var response = await Http.GetFromJsonAsync<AuthUserDto.Index[]>("AuthUser");
-        *//*        UserDto.Detail detailUser = response;
-                user = new UserDto.Mutate()
-                {
-                    Email = detailUser.Email,
-                    IsActive = detailUser.IsActive,
-                    Name = detailUser.Name,
-                    Surname = detailUser.Surname,
-                    Role = detailUser.Role
-                };*//*
-    }*/
+        _userGeneralInfoMutate.Email = _userGeneralInfo.Email;
+        _userGeneralInfoMutate.FirstName = _userGeneralInfo.FirstName;
+        _userGeneralInfoMutate.LastName = _userGeneralInfo.LastName;
+        _userGeneralInfoMutate.ScreenName = _userGeneralInfo.ScreenName;
+        _userGeneralInfoMutate.Blocked = !_userGeneralInfo.Blocked;
+    }
 
-    private async Task EditUserAsync()
+    private async Task OnSubmit()
     {
-        //await UserService.EditAsync(Id, user);
-        NavigationManager.NavigateTo("/gebruikers");
+
+        try
+        {
+            loading = true;
+
+            var request = new AuthUserRequest.General()
+            {
+                Blocked = !_userGeneralInfoMutate.Blocked,
+                Email = _userGeneralInfoMutate.Email,
+                FirstName = _userGeneralInfoMutate.FirstName,
+                LastName = _userGeneralInfoMutate.LastName,
+                ScreenName = _userGeneralInfoMutate.ScreenName
+            };
+
+            var response = await Http.PutAsJsonAsync($"/AuthUser/{Id}", request);
+
+            loading = false;
+            if (response.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
+            }
+
+
+        } catch (WebException ex)
+        {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        } 
     }
 }

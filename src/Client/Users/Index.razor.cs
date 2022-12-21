@@ -9,12 +9,6 @@ public partial class Index
     // Class voor Table Component
     public class Gebruiker
     {
-        /*        public int Id;
-                public string? Voornaam;
-                public string? Naam;
-                public string? Role;
-                public string? Is_Actief;
-                public string? Email;*/
         public string? Id;
         public string? Voornaam;
         public string? Achternaam;
@@ -47,18 +41,18 @@ public partial class Index
     // Methoden
     protected override async Task OnParametersSetAsync()
     {
-        UserRequest.Index request = new()
+        AuthUserRequest.Index request = new()
         {
             Searchterm = Searchterm,
-            Page = Page.HasValue ? Page.Value : 1,  
-            PageSize = PageSize.HasValue ? PageSize.Value : 25,
+            Page = Page ?? 0,  
+            PageSize = PageSize ?? 25,
             Role = Role,
         };
 
         await RefreshUsersAsync(request);
     }
 
-    private async Task RefreshUsersAsync(UserRequest.Index request)
+    private async Task RefreshUsersAsync(AuthUserRequest.Index request)
     {
         userObjects.Clear();
 
@@ -67,7 +61,7 @@ public partial class Index
             loading = true;
             error = false;
             //var response = await UserService.GetIndexAsync(request);
-            var response = await Http.GetFromJsonAsync<AuthUserDto.Index[]>($"{endpoint}");
+            var response = await Http.GetFromJsonAsync<List<AuthUserDto.Index>>($"{endpoint}/?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}");
             users = response;
 
             users?.ToList().ForEach(c =>

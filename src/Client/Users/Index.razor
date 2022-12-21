@@ -7,11 +7,11 @@
     return;
 }
 
-@*@if (error)
+@if (error)
 {
     <Error Title="Gebruikers" ErrorMessage="@errorMessage" />
     return;
-}*@
+}
 
 <GenericLayout Display=false Title="Gebruikers">
     <Actions>
@@ -21,6 +21,7 @@
         <SearchAndCreate 
             SearchTerm="@Searchterm"
             CreateCallback="() => NavigationManager.NavigateTo(createUri)"
+            IsAuthUserScherm=true
         />
         <Table
             Object="@(new Gebruiker())"

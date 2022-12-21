@@ -1,64 +1,60 @@
 ﻿@page "/gebruikers/wijzigen/{id}/algemeen"
 @attribute [Authorize (Roles = "Administrator, Moderator")]
 
-@*<GenericLayout Display=false Title=@($"Gebruiker Wijzigen - {user.Surname} {user.Name}")>
+
+@if (loading)
+{
+    <Loading Title="Gebruiker wijzigen (Algemeen)"/>
+    return;
+}
+
+@if (error)
+{
+    <Error Title="Gebruiker wijzigen (Algemeen)" ErrorMessage="@errorMessage"/>
+    return;
+}
+
+<GenericLayout Display=false Title=@($"Gebruiker Wijzigen - {_userGeneralInfo.FirstName} {_userGeneralInfo.LastName}")>
     <Content>
-        <EditForm Model="@user" OnValidSubmit="@EditUserAsync" >
+        <p>*Indien formulier niet ingediend kan worden, probeer een ander email / controleer je connectie</p>
+        <EditForm Model="@_userGeneralInfoMutate" OnValidSubmit="@OnSubmit" >
             <FluentValidationValidator />
-            <div class="center-container">
-                <div class="container">
-                    <div class="input-container">
-                        <section>
-                            <div class="group">
-                                <label>Voornaam</label>
-                                <div>
-                                    <InputText @bind-Value="user.Surname" class="inputField" />
-                                    <ValidationMessage For="() => user.Surname" />
-                                </div>
-                            </div>
-                            <div class="group">
-                                <label>Naam</label>
-                                <div>
-                                    <InputText @bind-Value="user.Name" class="inputField" />
-                                    <ValidationMessage For="() => user.Name" />
-                                </div>
-                            </div>
-                            <div class="group">
-                                <label>Role</label>
-                                <div>
-                                    <InputSelect @bind-Value="user.Role" class="inputField" >
-                                        <option selected value="@ERole.User">user</option>
-                                        <option          value="@ERole.Moderator">beheerder</option>
-                                        <option          value="@ERole.Admin">admin</option>
-                                    </InputSelect>
-                                    <ValidationMessage For="() => user.Role" />
-                                </div>
-                            </div>
-                            </section>
-                            <section>
-                            <div class="group">
-                                <label>Email</label>
-                                <div>
-                                    <InputText @bind-Value="user.Email" class="inputField" />
-                                    <ValidationMessage For="() => user.Email" />
-                                </div>
-                            </div>
-                            <div class="group">
-                                <label>Account actief</label>
-                                <div>
-                                    <InputCheckbox @bind-Value="user.IsActive" class="inputField checkbox" />
-                                    <ValidationMessage For="() => user.IsActive" />
-                                </div>
-                            </div> 
-                        </section>                     
-                    </div>
-                    <div class="button-container">
-                        <button type="submit" class="btn-primary">Bijwerken</button>
-                        <a href="/gebruikers" class="btn-secondary">Annuleren</a>
-                    </div>
+            <div>
+                <label>Voornaam</label>
+                <div>
+                    <InputText @bind-Value="_userGeneralInfoMutate.FirstName"/>
+                    <ValidationMessage For="() => _userGeneralInfoMutate.FirstName"/>
                 </div>
             </div>
+            <div>
+                <label>Achternaam</label>
+                <div>
+                    <InputText @bind-Value="_userGeneralInfoMutate.LastName"/>
+                    <ValidationMessage For="() => _userGeneralInfoMutate.LastName"/>
+                </div>
+            </div>
+            <div>
+                <label>Email</label>
+                <div>
+                    <InputText @bind-Value="_userGeneralInfoMutate.Email"/>
+                    <ValidationMessage For="() => _userGeneralInfoMutate.Email"/>
+                </div>
+            </div>
+            <div>
+                <label>Actief</label>
+                <div>
+                    <InputCheckbox @bind-Value="_userGeneralInfoMutate.Blocked"/>
+                </div>
+            </div>
+            <div>
+                <label>Schermnaam (Hoe wilt u dat we u noemen wanneer ingelogd)</label>
+                <div>
+                    <InputText @bind-Value="_userGeneralInfoMutate.ScreenName"/>
+                    <ValidationMessage For="() => _userGeneralInfoMutate.ScreenName"/>
+                </div>
+            </div>
+            <button type="submit">Submit form</button>
         </EditForm>
     </Content>
-</GenericLayout>*@
+</GenericLayout>
 

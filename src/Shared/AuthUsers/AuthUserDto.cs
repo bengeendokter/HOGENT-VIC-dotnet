@@ -21,7 +21,15 @@ public class AuthUserDto
 
     public class Detail
     {
-        public class General : Index { }
+        public class General
+        {
+            public string Id { get; set; }
+            public bool Blocked { get; set; }
+            public string Email { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string ScreenName { get; set; }
+        }
         public class UserRole
         {
             public string Id { get; set; }
@@ -33,10 +41,16 @@ public class AuthUserDto
     {
         public class General
         {
+            public bool Blocked { get; set; }
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public bool Blocked { get; set; }
+            public string ScreenName { get; set; }
+
+            public class Secret
+            { 
+                public string Password { get; set; }
+            }
 
             public class Validator : AbstractValidator<General>
             {

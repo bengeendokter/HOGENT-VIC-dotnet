@@ -1,19 +1,21 @@
 ﻿using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
+using Auth0Net.DependencyInjection.Cache;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
 using Shared.AuthUsers;
 using static Shared.AuthUsers.AuthUserDto.Mutate;
 using Role = Auth0.ManagementApi.Models.Role;
+using Microsoft.Extensions.Configuration;
+using System.Net;
 
 namespace Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Roles = "Administrator, Moderator")]
-
     public class AuthUserController : ControllerBase
     {
         private readonly IManagementApiClient _managementApiClient;
@@ -24,9 +26,27 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<AuthUserDto.Index>> GetUsers()
+        public async Task<IEnumerable<AuthUserDto.Index>> GetUsers([FromQuery] AuthUserRequest.Index request)
         {
-            var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
+            string searchQueryString = "";
+
+            if (!String.IsNullOrWhiteSpace(request.Searchterm))
+            {
+                string searchTerm = request.Searchterm;
+                if (searchTerm.Length >= 3)
+                {
+                    searchQueryString += $"email:*{searchTerm}* OR ";
+                    searchQueryString += $"name:*{searchTerm}* OR ";
+                    searchQueryString += $"family_name:*{searchTerm}* OR ";
+                    searchQueryString += $"given_name:*{searchTerm}*";
+                }
+            }
+            var userRequest = new GetUsersRequest()
+            {
+                Query = searchQueryString
+            };
+
+            var users = await _managementApiClient.Users.GetAllAsync(userRequest, new PaginationInfo(request.Page, request.PageSize));
             return users.Select(x => new AuthUserDto.Index
             {
                 Id = x.UserId,
@@ -34,6 +54,7 @@ namespace Server.Controllers
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Blocked = x.Blocked ?? false,
+                
             });
         }
         [HttpGet("{userId}")]
@@ -47,8 +68,49 @@ namespace Server.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 Blocked = user.Blocked ?? false,
+                ScreenName = user.FullName
             };
         }
+
+        [HttpPut("{userId}")]
+        public async Task<AuthUserDto.Detail.General> UpdateUser(string userId, [FromBody] AuthUserRequest.General request)
+        {
+            // get Client_id from appsettings.json
+            var clientId = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Auth0")["ClientId"];
+
+            // Get possible users using given email
+            IEnumerable<User> possibleUser = await _managementApiClient.Users.GetUsersByEmailAsync(request.Email);
+
+            // Check if email is already used
+            if (possibleUser.Any() && possibleUser.Where(x => x.UserId == userId).ToList().Count == 0)
+            {
+                throw new Exception($"Account with email {request.Email} already exists.");
+            }
+
+
+            var updateRequest = new UserUpdateRequest()
+            {
+                Blocked = request.Blocked,
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                FullName = request.ScreenName,
+                ClientId = clientId
+            };
+
+            // Update user
+            var user = await _managementApiClient.Users.UpdateAsync(userId, updateRequest);
+            return new AuthUserDto.Detail.General()
+            {
+                Id = userId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Blocked = user.Blocked ?? false,
+                ScreenName = user.FullName
+            };
+        }
+
         [HttpGet("rol/{userId}")]
         public async Task<IEnumerable<AuthUserDto.Detail.UserRole>> GetRolesFromUser(string userId)
         {

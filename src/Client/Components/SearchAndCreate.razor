@@ -1,13 +1,14 @@
 ﻿@inject NavigationManager NavigationManager
 
 <div class="search-and-create">
-    <input type="search" placeholder="Zoeken..." value="@searchTerm" @oninput="SearchTermChanged" />
+    <input type="search" placeholder=@($"Zoeken... {(IsAuthUserScherm? "(Minimum 3 karakters)": "")} ") value="@searchTerm" @onchange="SearchTermChanged" />
     <button @onclick="GoToCreate">Toevoegen</button>
 </div>
 
 @code {
     [Parameter] public EventCallback CreateCallback { get; set; }
     [Parameter, EditorRequired] public string? SearchTerm { get; set; } = default!;
+    [Parameter] public bool IsAuthUserScherm { get; set; } = false;
 
     private string searchTerm = string.Empty;
 
