@@ -14,6 +14,8 @@ public class VicDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<VirtualMachineRequest> VirtualMachineRequests => Set<VirtualMachineRequest>();
 
+    public VicDbContext(DbContextOptions<VicDbContext> options) : base(options) { }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
