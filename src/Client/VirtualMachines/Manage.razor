@@ -102,7 +102,7 @@
                             <label>
                                 Naam
                             </label>
-                            <InputText @bind-Value="_vm.Name" class="inputField"></InputText>
+                                <InputText @bind-Value="_vm.Name" class="inputField" data-test-id="input-name"></InputText>
                             <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
                         </div>
 
@@ -110,7 +110,7 @@
                             <label>
                                 Hostname
                             </label>
-                            <InputText @bind-Value="_vm.HostName" class="inputField"></InputText>
+                                <InputText @bind-Value="_vm.HostName" class="inputField" data-test-id="input-hostname"></InputText>
                             <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
                         </div>
 
@@ -118,7 +118,7 @@
                             <label>
                                 FQDN
                             </label>
-                            <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
+                                <InputText @bind-Value="_vm.FQDN" class="inputField" data-test-id="input-fqdn"></InputText>
                             <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
                         </div>
 
@@ -140,7 +140,7 @@
                             <label>
                                 Start datum
                             </label>
-                            <InputDate @bind-Value="_vm.StartDate" class="inputField"></InputDate>
+                                <InputDate @bind-Value="_vm.StartDate" class="inputField" data-test-id="input-startdate"></InputDate>
                             <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
                         </div>
 
@@ -148,7 +148,7 @@
                             <label>
                                 Eind datum
                             </label>
-                            <InputDate @bind-Value="_vm.EndDate" class="inputField"></InputDate>
+                            <InputDate @bind-Value="_vm.EndDate" class="inputField" data-test-id="input-enddate"></InputDate>
                             <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
                         </div>
 
@@ -156,7 +156,7 @@
                             <label>
                                 Moet de VM altijd besckikbaar zijn?
                             </label>
-                            <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
+                            <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField" >
                                 <option value=true> Ja</option>
                                 <option value=false> Nee</option>
                             </InputSelect>
@@ -176,7 +176,7 @@
 
                         <div class="form-group">
                             <label>Host</label>
-                            <InputText @bind-Value="_vm.Host" class="inputField" placeholder="Zoals aaaa-111.hogent.be..."></InputText>
+                                <InputText @bind-Value="_vm.Host" class="inputField" placeholder="Zoals aaaa-111.hogent.be..." data-test-id="input-host"></InputText>
                             <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
                         </div>
 
@@ -184,7 +184,7 @@
                             <label>
                                 Poorten
                             </label>
-                            <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
+                                <InputText @bind-Value="_vm.Poorten" class="inputField" data-test-id="input-ports"></InputText>
                             <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
                         </div>
 
@@ -197,7 +197,7 @@
                                 {
                                     {
                                         <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
-                                            <button type="button" class="daybtn" @onclick="(()=> AddDay(day))">
+                                                <button type="button" class="daybtn" @onclick="(()=> AddDay(day))" data-test-id="btn-day">
                                                 <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
                                                 <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet")}beschikbaar")</span>
                                             </button>
@@ -209,7 +209,7 @@
                         </div>
 
                     </div>
-                    <button class="btn-primary" type="submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
+                        <button class="btn-primary" type="submit" data-test-id="btn-submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
                 </div>
                 }
             </div>

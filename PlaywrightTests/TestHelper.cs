@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VIC.IntegraionTests
+namespace VIC.IntegrationTests;
+
+public static class TestHelper
 {
-    public static class TestHelper
-    {
-        public static string BaseUri = "https://localhost:7257";
-    }
+    public static string BaseUri = "https://localhost:7257";
 }

@@ -1,10 +1,14 @@
-using Microsoft.Playwright.NUnit;
+﻿using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace VIC.IntegraionTests;
-
+namespace VIC.IntegrationTests.Requests;
 [Parallelizable(ParallelScope.Self)]
-public class CreateVmRequestTest : PageTest
+public class CreateRequestTest: PageTest
 {
     [Test]
     public async Task Create_VMRequest()
@@ -21,5 +25,4 @@ public class CreateVmRequestTest : PageTest
         await Page.Locator("data-test-id=msg-succes").IsVisibleAsync();
 
     }
-
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using VIC.IntegraionTests;
+using VIC.IntegrationTests;
 
 namespace VIC.IntegrationTests.User;
 

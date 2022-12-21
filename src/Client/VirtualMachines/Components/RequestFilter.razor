@@ -7,7 +7,7 @@
         <option value="project">Projectnaam oplopend</option>
         <option value="projectDesc">Projectnaam aflopend</option>
     </select>
-    <select class="filter" value="@status" @onchange="StatusChanged">
+    <select class="filter" data-test-id="filter-status" value="@status" @onchange="StatusChanged">
         <option value="" selected>Alle</option>
         <option value="accepted">Accepted</option>
         <option value="handled">Handled</option>
