@@ -21,4 +21,15 @@ public class VirtualMachineList : PageTest
         var amount = await Page.Locator("data-test-id=table-row").CountAsync();
         amount.Equals(20);
     }
+
+    //[Test]
+    //public async Task Show_virtualmachines_filtered()
+    //{
+    //    await Page.GotoAsync($"{TestHelper.BaseUri}/vm/");
+
+    //    var cpu = await Page.Locator("data-test-id=table-row").First.TextContentAsync();
+    //    var cpu2 = await Page.Locator("data-test-id=txt-cpu").Last.TextContentAsync();
+    //    Assert.GreaterOrEqual(cpu, cpu2);
+
+    //}
 }
