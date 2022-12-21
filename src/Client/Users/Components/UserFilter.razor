@@ -1,23 +1,41 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using Shared.AuthUsers
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 <div class="optionele-filters">
     <select class="filter-role" value="@role" @onchange="RoleChanged">
-        <option value="" selected>Alle</option>
-        <option value="@ERole.User">Users</option>
-        <option value="@ERole.Moderator">Beheerders</option>
-        <option value="@ERole.Admin">Admins</option>
+        @if (roles is null){
+            <option value="" selected>Aan het laden...</option>
+        } else {
+            <option value="" selected>Alle</option>
+            @foreach(var r in roles){
+                <option value="@r.Id">@giveRoleNameDutch(r.Role)</option>
+
+            }
+        }
     </select>
 </div>
 
 @code {
-    [Parameter, EditorRequired] public string? Role { get; set; } = default!;
 
+    [Parameter, EditorRequired] public string? Role { get; set; } = default!;
     private string? role;
+
+    private IEnumerable<AuthUserDto.Detail.UserRole>? roles;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        roles = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/roles");
+    }
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         role = Role;
+
     }
 
     private void RoleChanged(ChangeEventArgs args)
@@ -34,5 +52,16 @@
 
         var uri = NavigationManager.GetUriWithQueryParameters(parameters);
         NavigationManager.NavigateTo(uri);
+    }
+
+    private string giveRoleNameDutch(string name){
+        return name switch
+        {
+            "Administrator" => "Administrator",
+            "Moderator" => "Beheerder",
+            "Customer" => "Klant",
+            "User" => "Gebruiker",
+            _ => "Onbekend"
+        };
     }
 }

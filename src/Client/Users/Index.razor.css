@@ -1,1 +1,68 @@
-﻿
+﻿.minorError_container {
+    max-width: 1500px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    padding: 0px;
+    min-height: 40px;
+    max-height: max-content;
+    background-color: var(--clr-primary);
+    border-radius: 5px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.minorError_container div:first-child {
+    padding: 15px;
+    border: 2px solid var(--clr-red);
+    border-radius: 5px 5px 0 0;
+    word-break: break-word;
+}
+
+.minorError_container div:last-child {
+    color: var(--clr-red);
+    background-color: var(--clr-red);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    color: var(--clr-primary);
+    font-size: 25px;
+    font-weight: bolder;
+    border-radius: 0 0 5px 5px;
+    border: 2px solid var(--clr-red);
+    border-top: none;
+    max-width: 100%;
+
+}
+
+.minorError_container div:last-child:hover {
+    cursor: pointer;
+}
+
+.minorError_container p {
+    padding: 10px;
+    word-break: break-all;
+}
+
+@media (min-width: 560px) {
+
+    .minorError_container {
+        flex-direction: row;
+    }
+
+    .minorError_container div:first-child {
+        border-radius: 5px 0 0 5px;
+        width: 100%;
+    }
+
+    .minorError_container div:last-child {
+        border-radius: 0 5px 5px 0;
+        max-width: 100px;
+        width: 100%;
+        border-left: none;
+        margin: 0 0 0 auto;
+    }
+}

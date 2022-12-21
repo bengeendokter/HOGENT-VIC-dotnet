@@ -10,6 +10,7 @@ using static Shared.AuthUsers.AuthUserDto.Mutate;
 using Role = Auth0.ManagementApi.Models.Role;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using System.Linq.Dynamic.Core;
 
 namespace Server.Controllers
 {
@@ -44,18 +45,40 @@ namespace Server.Controllers
             var userRequest = new GetUsersRequest()
             {
                 Query = searchQueryString
-            };
+            };            
 
             var users = await _managementApiClient.Users.GetAllAsync(userRequest, new PaginationInfo(request.Page, request.PageSize));
-            return users.Select(x => new AuthUserDto.Index
+
+            if (!String.IsNullOrWhiteSpace(request.Role))
             {
-                Id = x.UserId,
-                Email = x.Email,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Blocked = x.Blocked ?? false,
+
+                var rUsers = await _managementApiClient.Roles.GetUsersAsync(request.Role);
+
+                // All userIds with given role
+                IEnumerable<string> idList = rUsers.Select(x => x.UserId);
+
+                return users
+                    .Where(x => idList.Contains(x.UserId))
+                    .Select(x => new AuthUserDto.Index
+                    {
+                        Id = x.UserId,
+                        Email = x.Email,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        Blocked = x.Blocked ?? false,
+
+                    });
+            }
+
+            return users.Select(x => new AuthUserDto.Index
+                {
+                    Id = x.UserId,
+                    Email = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Blocked = x.Blocked ?? false,
                 
-            });
+                });
         }
         [HttpGet("{userId}")]
         public async Task<AuthUserDto.Detail.General> GetUser(string userId)
@@ -210,6 +233,38 @@ namespace Server.Controllers
             {
                 rollen = rollen
             };
+        }
+
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await _managementApiClient.Users.GetAsync(userId);
+            if (user == null) return NotFound();
+
+            var roles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
+
+            var adminRole = roles.First(x => x.Name == "Administrator");
+
+            var allAdmins = _managementApiClient.Roles.GetUsersAsync(adminRole.Id);
+
+            if (allAdmins.Result.Count() >= 2)
+            {
+
+                await _managementApiClient.Users.DeleteAsync(userId);
+                return NoContent();
+
+            } else
+            {
+
+                if (allAdmins.Result.First().UserId == userId)
+                {
+                    throw new Exception("Cannot delete last admin in the system");
+                }
+
+                await _managementApiClient.Users.DeleteAsync(userId);
+                return NoContent();
+
+            }
         }
     }
 }

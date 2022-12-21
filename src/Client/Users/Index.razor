@@ -18,6 +18,14 @@
         <UserFilter Role="@Role" />
     </Actions>
     <Content>
+        @if(minorError){
+            <div class="minorError_container">
+                <div>@minorErrorMessage</div>
+                <div @onclick="@ResetMinorError">
+                    x
+                </div>
+            </div>
+        }
         <SearchAndCreate 
             SearchTerm="@Searchterm"
             CreateCallback="() => NavigationManager.NavigateTo(createUri)"
@@ -27,7 +35,7 @@
             Object="@(new Gebruiker())"
             Collection="@userObjects"
             EditCallbackWithString="@GoToEditUser"
-            DeleteCallback="@DeleteUserAsync"
+            DeleteCallbackWithString="@DeleteUserAsync"
             EnablePaging="true"
         />
     </Content>

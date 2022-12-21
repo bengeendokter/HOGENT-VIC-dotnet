@@ -1,6 +1,13 @@
+using Client.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using Shared.AuthUsers;
+using Shared.Error;
+using System;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Client.Users;
 
@@ -20,6 +27,7 @@ public partial class Index
     [Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public HttpClient Http { get; set; }
+    [Inject] public IJSRuntime JsRuntime { get; set; }
     [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
@@ -28,17 +36,45 @@ public partial class Index
     // Andere
     //private List<UserDto.Index>? users = new();
     private IEnumerable<AuthUserDto.Index>? users;
+    private IEnumerable<AuthUserDto.Detail.UserRole>? roles;
 
     public ICollection<Gebruiker> userObjects = new List<Gebruiker>();
     private readonly string createUri = "/gebruikers/aanmaken";
 
     private bool error = false;
     private string errorMessage = string.Empty;
+
+    private bool minorError = false;
+    private string minorErrorMessage = String.Empty;
+
+
     private bool loading = false;
 
     private const string endpoint = "AuthUser";
 
     // Methoden
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            loading = true;
+            roles = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/roles");
+            loading = false;
+        } catch (Exception ex)
+        {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
+
+
+    }
+
+    private string GetRoleIdByName(string name)
+    {
+        return roles?.First(x => x.Role == name).Id ?? "";
+    }
     protected override async Task OnParametersSetAsync()
     {
         AuthUserRequest.Index request = new()
@@ -60,20 +96,17 @@ public partial class Index
         {
             loading = true;
             error = false;
-            //var response = await UserService.GetIndexAsync(request);
-            var response = await Http.GetFromJsonAsync<List<AuthUserDto.Index>>($"{endpoint}/?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}");
+            var response = await Http.GetFromJsonAsync<List<AuthUserDto.Index>>($"{endpoint}/" +
+                $"?searchTerm={request.Searchterm}&" +
+                $"page={request.Page}&" +
+                $"pageSize={request.PageSize}&" +
+                $"role={request.Role}");
             users = response;
 
             users?.ToList().ForEach(c =>
             {
                 userObjects.Add(new Gebruiker
                 {
-                    /*Id = c.Id,
-                    Naam = c.Name,
-                    Voornaam = c.Surname,
-                    Role = GiveRoleAsString(c.Role),
-                    Is_Actief = c.IsActive ? "Ja" : "Neen",
-                    Email = c.Email,*/
                     Id = c.Id,
                     Voornaam = c.FirstName,
                     Achternaam = c.LastName,
@@ -98,20 +131,37 @@ public partial class Index
         NavigationManager.NavigateTo($"/gebruikers/wijzigen/{id}");
     }
 
-    private async Task DeleteUserAsync(int id)
+    private async Task DeleteUserAsync(string id)
     {
-        await UserService.DeleteAsync(id);
-        await RefreshUsersAsync(new());
+        try
+        {
+            error = false;
+            loading = true;
+            var response = await Http.DeleteAsync($"AuthUser/{id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                loading = false;
+                minorError = true;
+                string message = response.Content.ReadAsStringAsync().Result;
+                ResponseError error = JsonConvert.DeserializeObject<ResponseError>(message);
+                minorErrorMessage = error?.Message ?? "Er gebeurde een ongekende error.";
+
+            } else
+            {
+                loading = false;
+                await RefreshUsersAsync(new());
+            }
+        } catch (Exception ex)
+        {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 
-    private string GiveRoleAsString(ERole role)
+    private void ResetMinorError()
     {
-        return (role) switch
-        {
-            ERole.User => "user",
-            ERole.Moderator => "beheerder",
-            ERole.Admin => "admin",
-            _ => ""
-        };
+        minorError = false;
+        minorErrorMessage = String.Empty;
     }
 }

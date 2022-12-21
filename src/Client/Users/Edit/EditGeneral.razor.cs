@@ -27,6 +27,7 @@ public partial class EditGeneral
         {
 
             loading = true;
+            error = false;
             await base.OnParametersSetAsync();
             var response = await Http.GetFromJsonAsync<AuthUserDto.Detail.General>($"AuthUser/{Id}");
             _userGeneralInfo = response;
@@ -56,6 +57,7 @@ public partial class EditGeneral
         try
         {
             loading = true;
+            error = false;
 
             var request = new AuthUserRequest.General()
             {
