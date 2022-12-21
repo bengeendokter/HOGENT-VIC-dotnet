@@ -1,9 +1,7 @@
-using System.Reflection;
 using Domain.VirtualMachines;
 using Domain.Activities;
 using Persistence.Triggers;
 using Microsoft.EntityFrameworkCore;
-using Domain;
 using Domain.Users;
 
 namespace Persistence;
@@ -21,7 +19,6 @@ public class VicDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.EnableDetailedErrors();
         optionsBuilder.EnableSensitiveDataLogging();
-        optionsBuilder.UseInMemoryDatabase(databaseName: "VIC");
         optionsBuilder.UseTriggers(options =>
         {
             options.AddTrigger<EntityBeforeSaveTrigger>();
