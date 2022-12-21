@@ -31,15 +31,15 @@
                         <table>
                             <tr>
                                 <th>Emailadres</th>
-                                <td>@client.Email</td>
+                                <td data-testid="dtl-email">@client.Email</td>
                             </tr>
                             <tr>
                                 <th>GSM-nummer</th>
-                                <td>@client.PhoneNumber</td>
+                                <td data-testid="dtl-phone">@client.PhoneNumber</td>
                             </tr>
                             <tr>
                                 <th>Backup contactpersoon</th>
-                                <td>@client.BackupContact</td>
+                                 <td data-testid="dtl-backup">@client.BackupContact</td>
                             </tr>
                         </table>
                     </section>
@@ -50,11 +50,11 @@
                             <table>
                                 <tr>
                                     <th>Departement</th>
-                                    <td>@client.ClientOrganisation</td>
+                                    <td data-testid="dtl-org">@client.ClientOrganisation</td>
                                 </tr>
                                 <tr>
                                     <th>Opleiding</th>
-                                    <td>@client.Education</td>
+                                    <td data-testid="dtl-edu">@client.Education</td>
                                 </tr>
                             </table>
                         </section>
@@ -64,11 +64,11 @@
                             <table>
                                 <tr>
                                     <th>Naam externe</th>
-                                    <td>@client.ClientOrganisation</td>
+                                        <td data-testid="dtl-org">@client.ClientOrganisation</td>
                                 </tr>
                                 <tr>
                                     <th>Type</th>
-                                    <td>@client.ExternalType</td>
+                                    <td data-testid="dtl-type">@client.ExternalType</td>
                                 </tr>
                             </table>
                         </section>
@@ -79,11 +79,11 @@
                     <a href="klanten/wijzigen/@Id" class="btn-primary" >Wijzigen</a>
                     @if (!isRequestingDelete) 
                     {
-                        <button class="btn-delete" @onclick="ToggleDelete">Verwijderen</button>
+                        <button class="btn-delete" @onclick="ToggleDelete" data-testid="btn-delete">Verwijderen</button>
                     } else 
                     {
-                        <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
-                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen bevestigen</button>
+                        <button class="btn-secondary" @onclick="ToggleDelete" data-testid="btn-cancel" >Annuleren</button>
+                        <button class="btn-delete" @onclick="DeleteClientAsync" data-testid="btn-confirm-delete">Verwijderen bevestigen</button>
                     }
 
                 </div>

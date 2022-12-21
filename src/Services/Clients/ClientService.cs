@@ -117,6 +117,7 @@ public class ClientService : IClientService
             throw new EntityNotFoundException(nameof(Client), clientId);
 
         client.Name = model.Name!;
+        client.Surname = model.Surname!;
         client.PhoneNumber = model.PhoneNumber!;
         client.Email = model.Email!;
         client.BackupContact = model.BackupContact!;
