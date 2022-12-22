@@ -22,7 +22,7 @@ public class CreateRequestTest: PageTest
 
         await Page.Locator("data-test-id=btn-submit").ClickAsync();
 
-        await Page.Locator("data-test-id=msg-succes").IsVisibleAsync();
+        await Expect(Page.Locator("data-test-id=msg-succes")).ToBeVisibleAsync();
 
     }
 }

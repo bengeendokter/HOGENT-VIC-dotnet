@@ -11,11 +11,11 @@
 
 <GenericLayout Display=false Title="@vm.Name"> 
     <Actions>
-        <a class="link" href=@($"/vm/manage/{Id}") data-test-id="link-editvm">Bewerken</a>
+        <a class="link" href=@($"/vm/manage/{Id}") data-testid="link-editvm">Bewerken</a>
     </Actions>
     <Content>
         <section aria-labelledby="vm-title" class="details">
-            <div class="details_group" data-test-id="div-detailgroup">
+            <div class="details_group" data-testid="div-detailgroup">
                 <section class="details_item">
                     <h2>Algemeen</h2>
                     <table class="table">
@@ -33,7 +33,7 @@
                         </tr>
                         <tr>
                             <th>Einddatum gebruik</th>
-                            <td data-test-id="input-enddate">@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
+                            <td data-testid="enddate">@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         </tr>
                         <tr>
                             <th>FQDN</th>
@@ -146,13 +146,13 @@
         </section>
         @if (!isRequestingDelete)
         {
-                <button class="actionButton btn-delete" @onclick="SetDeleteTrue">Verwijderen</button>
+                <button class="actionButton btn-delete" @onclick="SetDeleteTrue" data-testid="btn-delete">Verwijderen</button>
         }
         else
         {
             <div class="actionButton">
                 <button class="btn-secondary" @onclick="SetDeleteFalse">Annuleren</button>
-                <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen</button>
+                <button class="btn-delete" @onclick="DeleteClientAsync" data-testid="btn-delete-confirmation">Verwijderen</button>
             </div>
         }
 

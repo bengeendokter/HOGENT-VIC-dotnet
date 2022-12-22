@@ -19,7 +19,7 @@ public class RequestListTest : PageTest
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm/request/list/");
 
         var amount = await Page.Locator("data-test-id=table-row").CountAsync();
-        amount.Equals(20);
+        Assert.That(amount, Is.EqualTo(20));
 
     }
 

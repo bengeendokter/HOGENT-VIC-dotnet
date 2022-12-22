@@ -2,15 +2,16 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-@if (client == null) 
-{
-    <Loading Title="Klant" />
-    return;
-}
 
 @if (error)
 {
     <Error Title="Klant" ErrorMessage="@errorMessage" />
+    return;
+}
+
+@if (client == null) 
+{
+    <Loading Title="Klant" />
     return;
 }
 
@@ -108,9 +109,17 @@
 
     private async Task GetClientAsync()
     {
-        var response = await ClientService.GetDetailAsync(Id);
-        if (response == null) return;
-        client = response;
+        try {
+            error = false;
+            var response = await ClientService.GetDetailAsync(Id);
+            client = response;
+        }
+        catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
+
     }
 
     private void ToggleDelete() 

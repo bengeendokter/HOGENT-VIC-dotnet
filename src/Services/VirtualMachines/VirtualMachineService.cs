@@ -156,7 +156,13 @@ public class VirtualMachineService : IVirtualMachineService
         );
         dbContext.VirtualMachines.Add(vm);
 
-        var activity = new Activity(EActivity.Added, vm.Name, /*vm.Client?.Name*/ client?.Name + " " + client?.Surname, vm.CPU, vm.RAM, vm.Storage);
+        var activity = new Activity(EActivity.Added, 
+            vm.Name,
+            vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}" : "Geen klant",
+            vm.CPU, 
+            vm.RAM,
+            vm.Storage
+        );
         dbContext.Activities.Add(activity);
 
         await dbContext.SaveChangesAsync();
@@ -175,7 +181,9 @@ public class VirtualMachineService : IVirtualMachineService
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
         }
 
-        var activity = new Activity(EActivity.Edited, vm.Name, vm.Client.Surname + vm.Client.Name, 
+        var activity = new Activity(EActivity.Edited, 
+            vm.Name, 
+            vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}": "Geen klant", 
             model.CPU - vm.CPU, 
             model.RAM - vm.RAM,
             model.Storage - vm.Storage
@@ -226,12 +234,16 @@ public class VirtualMachineService : IVirtualMachineService
         if (vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
 
-        Console.WriteLine("we are here");
         dbContext.VirtualMachines.Remove(vm);
 
-        var activity = new Activity(EActivity.Deleted, vm.Name, $"{vm.Client.Surname} {vm.Client.Name}", -vm.CPU, -vm.RAM, -vm.Storage);
+        var activity = new Activity(EActivity.Deleted, 
+            vm.Name,
+            vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}" : "Geen klant",
+            -vm.CPU,
+            -vm.RAM,
+            -vm.Storage
+        );
         dbContext.Activities.Add(activity);
-        Console.WriteLine("activity added");
 
         await dbContext.SaveChangesAsync();
     }

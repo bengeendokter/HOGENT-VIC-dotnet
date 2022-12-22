@@ -11,7 +11,7 @@
 
 @if (error)
 {
-    <Error Title="Virtuele Machiens" ErrorMessage="@errorMessage"/>
+    <Error Title="Virtuele Machines" ErrorMessage="@errorMessage"/>
     return;
 }
 
@@ -63,8 +63,8 @@
                 <tbody>
                     @foreach (var vm in list)
                     {
-                    <tr data-test-id="table-row">
-                            <td><a class="link" href=@($"/vm/{@vm.Id}") data-test-id="link-vm">@vm.Name</a></td>
+                    <tr data-testid="table-row">
+                        <td><a class="link" href=@($"/vm/{@vm.Id}") data-testid="vm-name">@vm.Name</a></td>
                         <td>@vm.Template</td>
                         <td data-test-id="txt-cpu">@vm.CPU vCPU</td>
                         <td>@vm.RAM GB</td>
