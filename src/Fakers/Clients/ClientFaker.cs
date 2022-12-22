@@ -21,8 +21,8 @@ public class ClientFaker : EntityFaker<Client>
                     f.Phone.PhoneNumber("+## ### ## ## ##"),          // BackupContact
                     f.Random.Enum<EClientType>(),   // ClientType
                     f.Company.CompanyName(),        // ClientOrganisation
-                    f.Random.CollectionItem<string>(new List<string>() { "Toegepaste Informatica", "Chemie", "Elektro-mechanica", "Biotechnologie" }),        // Education
-                    f.Random.CollectionItem<string>(new List<string>() { "Manager", "CEO", "Developer", "Researcher" }),        // ExternalType
+                    f.Random.CollectionItem(new List<string>() { "Toegepaste Informatica", "Chemie", "Elektro-mechanica", "Biotechnologie" }),        // Education
+                    f.Random.CollectionItem(new List<string>() { "Manager", "CEO", "Developer", "Researcher" }),        // ExternalType
                     f.Random.Bool()                 // IsActive
                 );
         }
