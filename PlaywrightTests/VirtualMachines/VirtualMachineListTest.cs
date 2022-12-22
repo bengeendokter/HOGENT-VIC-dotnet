@@ -10,7 +10,7 @@ namespace VIC.IntegrationTests.VirtualMachines;
 
 [Parallelizable(ParallelScope.Self)]
 
-public class VirtualMachineList : PageTest
+public class VirtualMachineListTest : PageTest
 {
 
     [Test]
@@ -32,4 +32,13 @@ public class VirtualMachineList : PageTest
     //    Assert.GreaterOrEqual(cpu, cpu2);
 
     //}
+
+    [Test]
+    public async Task Go_To_DetailPage()
+    {
+        await Page.GotoAsync($"{TestHelper.BaseUri}/vm/");
+        await Page.Locator("data-test-id=link-vm").First.ClickAsync();
+
+        await Page.Locator("data-test-id=div-detailgroup").IsVisibleAsync();
+    }
 }

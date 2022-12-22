@@ -64,7 +64,7 @@
                     @foreach (var vm in list)
                     {
                     <tr data-test-id="table-row">
-                    <td><a class="link" href=@($"/vm/{@vm.Id}")>@vm.Name</a></td>
+                            <td><a class="link" href=@($"/vm/{@vm.Id}") data-test-id="link-vm">@vm.Name</a></td>
                         <td>@vm.Template</td>
                         <td data-test-id="txt-cpu">@vm.CPU vCPU</td>
                         <td>@vm.RAM GB</td>

@@ -29,4 +29,19 @@ public class CreateVirtualMachineTest : PageTest
 
         await Page.Locator("data-test-id=btn-submit").ClickAsync();
     }
+
+    [Test]
+    public async Task Edit_VM()
+    {
+        await Page.GotoAsync($"{TestHelper.BaseUri}/vm/");
+        await Page.Locator("data-test-id=link-vm").First.ClickAsync();
+
+        await Page.Locator("data-test-id=link-editvm").ClickAsync();
+        await Page.FillAsync("data-test-id=input-enddate", "2024-02-02");
+        await Page.Locator("data-test-id=btn-submit").ClickAsync();
+
+        var date = await Page.Locator("data-test-id=input-enddate").AllInnerTextsAsync();
+        date.Equals("02-02-2024");
+
+    }
 }

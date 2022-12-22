@@ -125,12 +125,15 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<int> CreateAsync(VirtualMachineDto.Mutate model)
     {
-        if (await dbContext.VirtualMachines.AnyAsync(v => v.Name == model.Name))
-            throw new EntityAlreadyExistsException(
-                nameof(VirtualMachine),
-                nameof(VirtualMachine.Name),
-                model.Name
-            );
+        //if (await dbContext.VirtualMachines.AnyAsync(v => v.Name == model.Name))
+        //    throw new EntityAlreadyExistsException(
+        //        nameof(VirtualMachine),
+        //        nameof(VirtualMachine.Name),
+        //        model.Name
+        //    );
+        Client? client = null;
+        if (model.ClientId != null)
+            client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == model.ClientId);
 
         var vm = new VirtualMachine(
             model.Name!,
@@ -149,12 +152,11 @@ public class VirtualMachineService : IVirtualMachineService
             (Domain.VirtualMachines.EDay)model.Availability,
             model.IsHighlyAvailable,
             false,
-            null
-        //model.Client!,
+            client!
         );
         dbContext.VirtualMachines.Add(vm);
 
-        var activity = new Activity(EActivity.Added, vm.Name, /*vm.Client?.Name*/ "test", vm.CPU, vm.RAM, vm.Storage);
+        var activity = new Activity(EActivity.Added, vm.Name, /*vm.Client?.Name*/ client.Name + " " + client.Surname, vm.CPU, vm.RAM, vm.Storage);
         dbContext.Activities.Add(activity);
 
         await dbContext.SaveChangesAsync();

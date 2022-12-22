@@ -124,15 +124,15 @@
 
                         <div class="form-group">
                             <label>Klant</label>
-@*                            <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
-*@                            <InputSelect @bind-Value="_vm.ClientId" class="inputField">
-@*                                <option value="">Geen Klant</option>
+                              <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
+                              <InputSelect @bind-Value="_vm.ClientId" class="inputField">
+                                <option value="">Geen Klant</option>
                                 @if (_clients != null){
-                                    @foreach(var client in FilteredClients())
+                                    @foreach(var client in _clients)
                                     {
                                             <option value="@client.Id">@client.Surname @client.Name</option>
                                     }
-                                }*@
+                                }
                             </InputSelect>
                         </div>
 
@@ -228,7 +228,7 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private List<ClientDto.Index> _clients;
+    private List<ClientDto.Index>? _clients;
     private string? searchClientString { get; set; } = "";
 
     private bool _showRequest = true;
@@ -238,19 +238,30 @@
     [Parameter]
     public int? Id { get; set; }
 
-    private void OnSearchClientStringChanged(ChangeEventArgs args)
+    private async Task OnSearchClientStringChanged(ChangeEventArgs args)
     {
         searchClientString = args.Value?.ToString();
+        ClientRequest.Index request = new() { Searchterm=searchClientString, Page = 1, PageSize = 10 };
+        await RefreshClientsAsync(request);
     }
 
-    private IEnumerable<ClientDto.Index> FilteredClients()
+    private async Task RefreshClientsAsync(ClientRequest.Index request)
+    {
+        _clients.Clear();
+        _clients = await ClientService.GetIndexAsync(request);
+
+    }
+
+@*    private IEnumerable<ClientDto.Index> FilteredClients()
     {
         return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
-    }
+    }*@
 
     protected override async Task OnInitializedAsync()
     {
         _templates = TemplateService.GetAll();
+        ClientRequest.Index request = new() { Searchterm="J", Page=1, PageSize=25};
+        _clients = await ClientService.GetIndexAsync(request);
         if (!Id.HasValue)
         {
             _vm.StartDate = DateTime.Now;
@@ -264,8 +275,6 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
-    @*            if(_request.Client is not null)
-                _vm.ClientId = _request.Client.Id;*@
         }
         else
         {
@@ -351,7 +360,7 @@
             _request.Status = ERequestStatus.Handled;
             await VirtualMachineRequestService.EditAsync(_request.Id, _request);
             NavigationManager.NavigateTo($"/vm/{vmId}");
-
+            Console.WriteLine(_vm.ClientId);
         }
         //wijzigen VM
         else if (Id.HasValue)
