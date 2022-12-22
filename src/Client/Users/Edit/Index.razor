@@ -14,8 +14,18 @@
     <Content>
         <div>
             <h2>Wat wil u wijzigen?</h2>
-            <button @onclick="GoToEditGeneral">Algemene informatie</button>
-            <button @onclick="GoToEditRole">Rol</button>
+            <div class="options">
+                <div @onclick="GoToEditGeneral">
+                    <div class="options_inner">
+                        Algemene informatie
+                    </div>
+                </div>
+                <div @onclick="GoToEditRole">
+                    <div class="options_inner">
+                        Rol
+                    </div>
+                </div>
+            </div>
 
         </div>
     </Content>

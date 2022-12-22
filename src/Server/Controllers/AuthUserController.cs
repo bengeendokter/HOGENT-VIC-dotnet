@@ -11,22 +11,27 @@ using Role = Auth0.ManagementApi.Models.Role;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Linq.Dynamic.Core;
+using Services.Clients;
+using Shared.VirtualMachines;
 
 namespace Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize]
     public class AuthUserController : ControllerBase
     {
         private readonly IManagementApiClient _managementApiClient;
+        private readonly AuthUserService _authUserService;
 
-        public AuthUserController(IManagementApiClient managementApiClient)
+        public AuthUserController(IManagementApiClient managementApiClient, AuthUserService authUserService)
         {
             _managementApiClient = managementApiClient;
+            _authUserService = authUserService;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IEnumerable<AuthUserDto.Index>> GetUsers([FromQuery] AuthUserRequest.Index request)
         {
             string searchQueryString = "";
@@ -81,6 +86,7 @@ namespace Server.Controllers
                 });
         }
         [HttpGet("{userId}")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<AuthUserDto.Detail.General> GetUser(string userId)
         {
             var user = await _managementApiClient.Users.GetAsync(userId);
@@ -96,6 +102,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("{userId}")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<AuthUserDto.Detail.General> UpdateUser(string userId, [FromBody] AuthUserRequest.General request)
         {
             // get Client_id from appsettings.json
@@ -107,7 +114,7 @@ namespace Server.Controllers
             // Check if email is already used
             if (possibleUser.Any() && possibleUser.Where(x => x.UserId == userId).ToList().Count == 0)
             {
-                throw new Exception($"Account with email {request.Email} already exists.");
+                throw new Exception($"Account met email {request.Email} bestaat al.");
             }
 
 
@@ -135,6 +142,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("rol/{userId}")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IEnumerable<AuthUserDto.Detail.UserRole>> GetRolesFromUser(string userId)
         {
             var roles = await _managementApiClient.Users.GetRolesAsync(userId, new PaginationInfo());
@@ -146,6 +154,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("roles")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IEnumerable<AuthUserDto.Detail.UserRole>> GetAllRoles()
         {
             var roles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
@@ -269,13 +278,21 @@ namespace Server.Controllers
 
                 if (allAdmins.Result.First().UserId == userId)
                 {
-                    throw new Exception("Cannot delete last admin in the system");
+                    throw new Exception("Kan laatste admin niet uit het systeem verwijderen.");
                 }
 
                 await _managementApiClient.Users.DeleteAsync(userId);
                 return NoContent();
 
             }
+        }
+
+        [HttpGet("myvirtualmachines")]
+        [Authorize(Roles = "Customer")]
+
+        public async Task<List<VirtualMachineDto.Index>> GetStuff([FromQuery] VirtualMachineReq.Index request)
+        {
+            return await _authUserService.GetMyVirtualMachines(request);
         }
     }
 }

@@ -20,7 +20,7 @@
 
     .search-and-create button {
         text-decoration: none;
-        color: var(--clr-primary);
+        color: white;
         background: var(--clr-CTA);
         min-width: 12ch;
         display: inline-flex;

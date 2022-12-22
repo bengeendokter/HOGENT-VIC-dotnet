@@ -1,5 +1,7 @@
 ﻿@page "/gebruikers/wijzigen/{id}/rol"
+@using Newtonsoft.Json
 @using Shared.AuthUsers
+@using Shared.Error
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -23,43 +25,52 @@
             Show="@show"
             IsAdminSelected="@_userRole.IsAdministrator"
         />
+        <MinorError 
+            MinorErrorBool="@minorError"
+            MinorErrorMessage="@minorErrorMessage"
+            ResetMinorError="@ResetMinorError"/>
+
         <EditForm Model="@_userRole" OnValidSubmit="@OnSubmit">
             <FluentValidationValidator />
-            <div class="group">
-                <label>User</label>
+            <div class="explanation">
                 <div>
-                    <InputCheckbox @bind-Value="_userRole.IsUser" class="inputField checkbox" />
+                    <div class="isSelectedExpl"></div> = Geselecteerd
+                </div>
+                <div>
+                    <div class="isNotSelectedExpl"></div> = Niet geselecteerd
                 </div>
             </div>
-            <div class="group">
-                <label>Klant</label>
+            <div class="rolesCheckboxes">
                 <div>
-                    <InputCheckbox @bind-Value="_userRole.IsCustomer" class="inputField checkbox" />
+                    <label class="roleCheckboxContainer">
+                        <input type="checkbox" class="roleCheckbox" @bind="_userRole.IsUser"/>
+                        <span>User</span>
+                    </label>
                 </div>
-            </div>
-            <div class="group">
-                <label>Beheerder</label>
                 <div>
-                    <InputCheckbox @bind-Value="_userRole.IsModerator" class="inputField checkbox" />
+                    <label class="roleCheckboxContainer">
+                        <input type="checkbox" class="roleCheckbox" @bind="_userRole.IsCustomer" />
+                        <span>Klant</span>
+                    </label>
                 </div>
-            </div>
-            <div class="group">
-                <label>Admin</label>
                 <div>
-                    <InputCheckbox @onclick="@ToggleShowConfirm"  @bind-Value="_userRole.IsAdministrator" class="inputField checkbox" />
+                    <label class="roleCheckboxContainer">
+                        <input type="checkbox" class="roleCheckbox" @bind="_userRole.IsModerator" />
+                        <span>Beheerder</span>
+                    </label>
+                </div>
+                <div>
+                    <label class="roleCheckboxContainer">
+                        <input type="checkbox" class="roleCheckbox" @bind="_userRole.IsAdministrator" @onclick="@ToggleShowConfirm"/>
+                        <span>Administrator</span>
+                    </label>
                 </div>
             </div>
 
-            <div>
-                @if (rolInfo is not null)
-                {
-                    @foreach (var rol in rolInfo)
-                    {
-                            <p>@($"Id = {rol.Id} | Name Role = {rol.Role}")</p>
-                    }
-                }
+            <div class="buttonContainer">
+                <button type="submit" class="btn-primary">Wijzig rollen</button>
+                 <a href=@($"/gebruikers/wijzigen/{Id}") class="btn-secondary">Annuleren</a>
             </div>
-            <button type="submit">Submit the form brudda</button>
         </EditForm>
 
 
@@ -79,6 +90,9 @@
     private string errorMessage = string.Empty;
     private bool loading = false;
     private bool show = false;
+
+    private bool minorError = false;
+    private string minorErrorMessage = String.Empty;
 
     protected async override Task OnParametersSetAsync()
     {
@@ -113,7 +127,7 @@
         return roles.First(x => x.Role == name).Id;
     }
 
-    private async void OnSubmit()
+    private async Task OnSubmit()
     {
         try {
             loading = true;
@@ -126,14 +140,31 @@
                     IsUser = _userRole.IsUser
                 };
 
-            await Http.PostAsJsonAsync($"/AuthUser/wijzig/rollen/{Id}", request);
-            loading = false;
-            NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
+            var response = await Http.PostAsJsonAsync($"/AuthUser/wijzig/rollen/{Id}", request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                loading = false;
+                minorError = true;
+                var message = response.Content.ReadAsStringAsync().Result;
+
+                ResponseError responseError = JsonConvert.DeserializeObject<ResponseError>(message);
+                minorErrorMessage = responseError?.Message ?? "Er gebeurde een ongekende error.";
+            } else {
+                loading = false;
+                NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
+            }
         } catch (Exception ex){
             loading = false;
             error = true;
             errorMessage = ex.Message;
         }
+    }
+
+    private void ResetMinorError()
+    {
+        minorError = false;
+        minorErrorMessage = String.Empty;
     }
 
     private void ToggleShowConfirm(){

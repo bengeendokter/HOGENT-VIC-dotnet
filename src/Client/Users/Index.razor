@@ -1,6 +1,8 @@
 ﻿@page "/gebruikers"
 @attribute [Authorize(Roles = "Administrator, Moderator")]
 
+@using Client.Components;
+
 @if (loading)
 {
     <Loading Title="Gebruikers" />
@@ -18,14 +20,10 @@
         <UserFilter Role="@Role" />
     </Actions>
     <Content>
-        @if(minorError){
-            <div class="minorError_container">
-                <div>@minorErrorMessage</div>
-                <div @onclick="@ResetMinorError">
-                    x
-                </div>
-            </div>
-        }
+        <MinorError 
+            MinorErrorBool="@minorError"
+            MinorErrorMessage="@minorErrorMessage"
+            ResetMinorError="@ResetMinorError"/>
         <SearchAndCreate 
             SearchTerm="@Searchterm"
             CreateCallback="() => NavigationManager.NavigateTo(createUri)"

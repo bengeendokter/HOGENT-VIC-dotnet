@@ -11,7 +11,7 @@ public class ClientFaker : EntityFaker<Client>
         CustomInstantiator(f => new Client(
                 f.Person.LastName,              // Name
                 f.Person.FirstName,             // Surname
-                f.Internet.Email(),             // Email
+                f.Random.Bool()? f.Internet.Email() : "yigit@gmail.com",             // Email
                 f.Phone.PhoneNumber("+## ### ## ## ##"),          // PhoneNumber
                 f.Phone.PhoneNumber("+## ### ## ## ##"),          // BackupContact
                 f.Random.Enum<EClientType>(),   // ClientType

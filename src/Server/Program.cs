@@ -65,6 +65,11 @@ builder.Services.AddAuth0AuthenticationClient(config =>
 builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
 //
 
+// Add claimsPrinciple
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpContextAccessor>().HttpContext.User);
+
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

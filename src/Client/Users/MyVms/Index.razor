@@ -1,0 +1,90 @@
+﻿@page "/mijn_vms"
+@attribute [Authorize(Roles = "Customer")]
+
+<GenericLayout Display=false Title="Gebruiker aanmaken">
+    <Content>
+        <Table 
+            Object="@(new VM())"
+            Collection="@vmObjects"
+            InfoCallback="@GoToVMDetailPage"
+            />
+    </Content>
+</GenericLayout>
+
+@code {
+
+    public class VM
+    {
+        public int? Id;
+        public string? Naam;
+        public string? Actief;
+    };
+
+    private IEnumerable<VirtualMachineDto.Index>? _vms;
+    public ICollection<VM> vmObjects = new List<VM>();
+
+    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+
+    [Inject] public HttpClient Http { get; set; } = default!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
+    private bool minorError = false;
+    private string minorErrorMessage = String.Empty;
+
+
+    private bool loading = false;
+
+    private const string endpoint = "AuthUser";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        VirtualMachineReq.Index request = new()
+            {
+                Searchterm = Searchterm,
+                Page = Page ?? 1,
+                PageSize = PageSize ?? 25,
+            };
+
+        await RefreshVMs(request);
+    }
+
+    private async Task RefreshVMs(VirtualMachineReq.Index request)
+    {
+        vmObjects.Clear();
+
+        try {
+            error = false;
+            loading = true;
+            var response = await Http.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}/myvirtualmachines?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}");
+            _vms = response;
+
+            _vms?.ToList().ForEach(x =>
+            {
+                vmObjects.Add(new VM()
+                    {
+                        Id = x.Id,
+                        Naam = x.Name,
+                        Actief = x.IsActive? "Ja" : "Nee"
+                    });
+            });
+
+            loading = false;
+
+        } catch (Exception ex) {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
+    }
+
+    private void GoToVMDetailPage(int id){
+        NavigationManager.NavigateTo($"/vm/{id}");
+    }
+}

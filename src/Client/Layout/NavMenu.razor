@@ -30,6 +30,11 @@
             <NavLink href="/vm/request/list" class="nav_link" Match=NavLinkMatch.All>
                 <div>Aanvragen</div>
             </NavLink>
+            <AuthorizeView Roles="Customer">
+                <NavLink href="/mijn_vms" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Mijn VMs</div>
+                </NavLink>
+            </AuthorizeView>
             <NavLink href="/historiek" class="nav_link" Match=NavLinkMatch.All>
                 <div>Historiek</div>
             </NavLink>

@@ -3,6 +3,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Shared.Clients;
 using Shared.Users;
 using Microsoft.AspNetCore.Authorization;
+using Services.Clients;
 
 namespace Server.Controllers.Users;
 

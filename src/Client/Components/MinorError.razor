@@ -1,0 +1,18 @@
+﻿@if(MinorErrorBool){
+    <div class="minorError_container">
+        <div>@MinorErrorMessage</div>
+        <div @onclick="@ResetMinorErrorParent">
+            x
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool MinorErrorBool { get; set; }
+    [Parameter] public string MinorErrorMessage { get; set; }
+    [Parameter] public EventCallback ResetMinorError { get; set; }
+
+    private void ResetMinorErrorParent(){
+        ResetMinorError.InvokeAsync();
+    }
+}

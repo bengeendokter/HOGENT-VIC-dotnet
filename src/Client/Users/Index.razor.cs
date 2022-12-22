@@ -27,7 +27,6 @@ public partial class Index
     [Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public HttpClient Http { get; set; }
-    [Inject] public IJSRuntime JsRuntime { get; set; }
     [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
@@ -115,7 +114,6 @@ public partial class Index
                 });
             });
 
-            foreach(var user in users) { Console.WriteLine("Ids = ", user.Id); }
             loading = false;
         }
         catch (Exception ex)
@@ -138,6 +136,7 @@ public partial class Index
             error = false;
             loading = true;
             var response = await Http.DeleteAsync($"AuthUser/{id}");
+            loading = false;
             if (!response.IsSuccessStatusCode)
             {
                 loading = false;

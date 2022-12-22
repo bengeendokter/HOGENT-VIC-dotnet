@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using System.Globalization
+@using Shared.AuthUsers
+@inject HttpClient Http
 
 <GenericLayout Display=true Title="Dashboard" StatsTitle="@($"Gebruik op {(DateTime.Now).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}")">
     <Content>
@@ -9,6 +11,8 @@
                         {
                         <p>@claim.Type - @claim.Value</p>
                         }
+
+                        <button @onclick="@GetInfo">GetInfo</button>
             </Authorized>
             <NotAuthorized>
                 Please login to see all the claims, <a href="authentication/login">Log in</a>
@@ -20,3 +24,9 @@
         </AuthorizeView>
     </Content>
 </GenericLayout>
+
+@code {
+    private async Task GetInfo(){
+        await Http.GetFromJsonAsync<AuthUserDto.Detail.General>($"AuthUser/myvirtualmachines");
+    }
+}
