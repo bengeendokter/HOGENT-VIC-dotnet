@@ -7,6 +7,12 @@
 @inject ITemplateService TemplateService
 @inject IClientService ClientService
 
+@if (error)
+{
+    <Error Title="Maak Virtuele Machine" ErrorMessage="@errorMessage"/>
+    return;
+}
+
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
@@ -224,16 +230,22 @@
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequestDto.Detail? _request;
-    private TemplateDto.Detail? _customTemplate;
+
     private List<TemplateDto.Detail> _templates = new();
+    private TemplateDto.Detail? _customTemplate;
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
+
+
     private List<ClientDto.Index>? _clients = new();
     private string searchClientString { get; set; } = "";
 
     private bool _showRequest = true;
     private bool _showTemplates = true;
     private bool _showForm = true;
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     [Parameter]
     public int? Id { get; set; }
@@ -343,27 +355,37 @@
 
     private async Task HandleValidSubmit()
     {
-        //Aanmaken VM gevolg van aanvraag
-        if (_request != null)
+        try
         {
-            int vmId = await VirtualMachineService.CreateAsync(_vm);
-            _request.VirtualMachineId = vmId;
-            _request.Status = ERequestStatus.Handled;
-            await VirtualMachineRequestService.EditAsync(_request.Id, _request);
-            NavigationManager.NavigateTo($"/vm/{vmId}");
+            error = false;
+            //Aanmaken VM gevolg van aanvraag
+            if (_request != null)
+            {
+                int vmId = await VirtualMachineService.CreateAsync(_vm);
+                _request.VirtualMachineId = vmId;
+                _request.Status = ERequestStatus.Handled;
+                await VirtualMachineRequestService.EditAsync(_request.Id, _request);
+                NavigationManager.NavigateTo($"/vm/{vmId}");
+
+            }
+            //wijzigen VM
+            else if (Id.HasValue)
+            {
+                await VirtualMachineService.EditAsync(Id.Value, _vm);
+                NavigationManager.NavigateTo($"/vm/{Id.Value}");
+            }
+            //Aanmaken VM
+            else
+            {
+                int vmId = await VirtualMachineService.CreateAsync(_vm);
+                NavigationManager.NavigateTo($"/vm/{vmId}");
+            }
 
         }
-        //wijzigen VM
-        else if (Id.HasValue)
+        catch (Exception ex)
         {
-            await VirtualMachineService.EditAsync(Id.Value, _vm);
-            NavigationManager.NavigateTo($"/vm/{Id.Value}");
-        }
-        //Aanmaken VM
-        else
-        {
-            int vmId = await VirtualMachineService.CreateAsync(_vm);
-            NavigationManager.NavigateTo($"/vm/{vmId}");
+            error = true;
+            errorMessage = ex.Message;
         }
     }
 }
