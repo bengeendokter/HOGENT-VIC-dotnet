@@ -17,8 +17,9 @@
 
 <GenericLayout Display=false Title="Gebruiker aanmaken">
     <Actions>
-        <Client.Users.MyVms.Components.StatusFilter 
-        Status="@Status"/>
+        <Client.Users.MyVms.Components.StatusFilter Status="@Status"/>
+        <Client.Users.MyVms.Components.BeschikbaarFilter HoogB="@HoogBeschikbaar"/>
+        <Client.Users.MyVms.Components.SorteerFilter SortBy="@SortBy"/>
     </Actions>
     <Content>
         <SearchAndCreate 
@@ -62,6 +63,9 @@
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
     [Parameter, SupplyParameterFromQuery] public string? Status { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? HoogBeschikbaar { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; }
+
 
     [Inject] public HttpClient Http { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
@@ -86,7 +90,9 @@
                 Searchterm = Searchterm,
                 Page = Page ?? 1,
                 PageSize = PageSize ?? 25,
-                Status = Status
+                Status = Status,
+                HoogBeschikbaar = HoogBeschikbaar,
+                SortBy = SortBy
             };
 
         await RefreshVMs(request);
@@ -99,7 +105,7 @@
         try {
             error = false;
             loading = true;
-            var response = await Http.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}/myvirtualmachines?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}&status={request.Status}");
+            var response = await Http.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}/myvirtualmachines?{request.GetQueryString()}");
             _vms = response;
 
             _vms?.ToList().ForEach(x =>

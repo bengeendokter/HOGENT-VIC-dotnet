@@ -24,5 +24,9 @@
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Users\" />
+  </ItemGroup>
+
 
 </Project>

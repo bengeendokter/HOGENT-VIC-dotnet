@@ -1,4 +1,5 @@
 ﻿using Domain.VirtualMachines;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
@@ -9,7 +10,7 @@ internal class VirtualMachineConfiguration : EntityConfiguration<VirtualMachine>
     {
         base.Configure(builder);
         builder.HasOne(vm => vm.Client)
-            .WithMany(c => c.VirtualMachines);
+            .WithMany(c => c.VirtualMachines).OnDelete(DeleteBehavior.SetNull);
         builder.Navigation(vm => vm.Client).AutoInclude();
     }
 }

@@ -1,12 +1,35 @@
 ﻿using Ardalis.GuardClauses;
+using Domain.Common;
 using Domain.Users;
 using Domain.VirtualMachines;
 using System.Xml.Linq;
 
 namespace Domain.Users;
 
-public class Client : User
+public class Client : Entity
 {
+
+    private string name = default!;
+    public string Name
+    {
+        get => name;
+        set => name = Guard.Against.NullOrEmpty(value, nameof(Name));
+    }
+
+    private string surname = default!;
+    public string Surname
+    {
+        get => surname;
+        set => surname = Guard.Against.NullOrEmpty(value, nameof(surname));
+    }
+
+    private string email = default!;
+    public string Email
+    {
+        get => email;
+        set => email = Guard.Against.NullOrEmpty(value, nameof(Email));
+    }
+
     private string phoneNumber = default!;
     public string? PhoneNumber
     {
@@ -105,10 +128,12 @@ public class Client : User
         EClientType clientType,
         string clientOrganisation,
         string? education,
-        string? externalType,
-        bool isActive
-    ) : base(name, surname, email, ERole.User, isActive)
+        string? externalType
+    )
     {
+        Name = name;
+        Surname = surname;
+        Email = email;
         PhoneNumber = phoneNumber;
         BackupContact = backupContact;
         ClientType = clientType;

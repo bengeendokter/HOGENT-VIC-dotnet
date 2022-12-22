@@ -11,7 +11,6 @@ public class VicDbContext : DbContext
     public DbSet<VirtualMachine> VirtualMachines => Set<VirtualMachine>();
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<Activity> Activities => Set<Activity>();
-    public DbSet<User> Users => Set<User>();
     public DbSet<VirtualMachineRequest> VirtualMachineRequests => Set<VirtualMachineRequest>();
 
     public VicDbContext(DbContextOptions<VicDbContext> options) : base(options) { }

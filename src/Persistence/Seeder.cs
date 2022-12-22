@@ -20,7 +20,6 @@ public class Seeder
 
         SeedVirtualMachines();
         SeedClients();
-        SeedUsers();
         SeedActivities();
     }
 
@@ -40,13 +39,6 @@ public class Seeder
     {
         var clients = new ClientFaker().AsTransient().Generate(10);
         dbContext.Clients.AddRange(clients);
-        dbContext.SaveChanges();
-    }
-
-    private void SeedUsers()
-    {
-        var users = new UserFaker().AsTransient().Generate(10);
-        dbContext.Users.AddRange(users);
         dbContext.SaveChanges();
     }
 

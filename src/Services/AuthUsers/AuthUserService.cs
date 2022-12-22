@@ -28,7 +28,7 @@ public class AuthUserService
     {
         var email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
         //var id = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var query = dbContext.VirtualMachines.Include(x => x.Client).AsQueryable();
+        var query = dbContext.VirtualMachines.AsQueryable();
 
         query = query.Where(x => x.Client.Email == email);
 
@@ -45,8 +45,21 @@ public class AuthUserService
             query = query.Where(x => (x.IsActive ? "Aan" : "Uit") == status);
         }
 
+        if (!string.IsNullOrWhiteSpace(request.HoogBeschikbaar))
+        {
+            var hoogB = request.HoogBeschikbaar;
+            query = query.Where(x => (x.IsHighlyAvailable ? "Ja" : "Nee") == hoogB);
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.SortBy))
+        {
+            query = SortRequestQueryVM(request.SortBy, query);
+        } else
+        {
+            query = query.OrderByDescending(x => x.UpdatedAt);
+        }
+
         var items = await query
-           .OrderByDescending(x => x.CreatedAt)
            .Skip((request.Page - 1) * request.PageSize)
            .Take(request.PageSize)
             .Select(
@@ -96,7 +109,7 @@ public class AuthUserService
         }
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
-            query = SortRequestQuery(request.SortBy, query);
+            query = SortRequestQueryRequest(request.SortBy, query);
         }
 
         var items = await query
@@ -128,7 +141,29 @@ public class AuthUserService
         return items;
     }
 
-    private IQueryable<VirtualMachineRequest> SortRequestQuery(string? sortby, IQueryable<VirtualMachineRequest> query)
+    private IQueryable<VirtualMachine> SortRequestQueryVM(string? sortby, IQueryable<VirtualMachine> query)
+    {
+        return (sortby) switch
+        {
+            "name" => query.OrderBy(x => x.Name),
+            "nameDesc" => query.OrderByDescending(x => x.Name),
+            "template" => query.OrderBy(x => x.Template),
+            "templateDesc" => query.OrderByDescending(x => x.Template),
+            "cpu" => query.OrderBy(x => x.CPU),
+            "cpuDesc" => query.OrderByDescending(x => x.CPU),
+            "ram" => query.OrderBy(x => x.RAM),
+            "ramDesc" => query.OrderByDescending(x => x.RAM),
+            "storage" => query.OrderBy(x => x.Storage),
+            "storageDesc" => query.OrderByDescending(x => x.Storage),
+            "startdate" => query.OrderBy(x => x.StartDate),
+            "startdateDesc" => query.OrderByDescending(x => x.StartDate),
+            "enddate" => query.OrderBy(x => x.EndDate),
+            "enddateDesc" => query.OrderByDescending(x => x.EndDate),
+            _ => query
+        };
+    }
+
+    private IQueryable<VirtualMachineRequest> SortRequestQueryRequest(string? sortby, IQueryable<VirtualMachineRequest> query)
     {
         return (sortby) switch
         {

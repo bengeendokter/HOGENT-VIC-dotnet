@@ -1,0 +1,30 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="optionele-filters">
+    <select class="filter-role" value="@HoogB" @onchange="BeschikbaarChanged">
+         <option value="">Hoog beschikbaar</option>
+         <option value="Ja">Ja</option>
+         <option value="Nee">Nee</option>
+    </select>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string? HoogB { get; set; } = default!;
+    private string? hoogBeschikbaar;
+
+    private void BeschikbaarChanged(ChangeEventArgs args)
+    {
+        hoogBeschikbaar = args.Value?.ToString();
+        FilterRole();
+    }
+
+    private void FilterRole()
+    {
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add(nameof(hoogBeschikbaar), hoogBeschikbaar);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}

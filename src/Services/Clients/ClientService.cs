@@ -99,8 +99,7 @@ public class ClientService : IClientService
             (Domain.Users.EClientType) model.ClientType,
             model.ClientOrganisation!,
             model.Education,
-            model.ExternalType,
-            true
+            model.ExternalType
         );
 
         dbContext.Clients.Add(client);
