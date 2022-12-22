@@ -4,7 +4,7 @@
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
 
-@if (activities == null)
+@if (activities == null && !error)
 {
     <Loading Title="Historiek"/>
     return;
