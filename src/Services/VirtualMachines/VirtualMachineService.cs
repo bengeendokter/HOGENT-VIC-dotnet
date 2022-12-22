@@ -118,7 +118,8 @@ public class VirtualMachineService : IVirtualMachineService
             Template = (Shared.VirtualMachines.ETemplate)vm.Template,
             Poorten = vm.Poorten,
             Client = vmClient is not null ? client : null,
-            Host = vm.Host
+            Host = vm.Host,
+            CreatedAt = vm.CreatedAt
     };
 }
 
