@@ -51,7 +51,7 @@ builder.Services.AddDbContext<VicDbContext>(options =>
 
     options
         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-        .LogTo(Console.WriteLine, LogLevel.Information)
+        //.LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors();
 });

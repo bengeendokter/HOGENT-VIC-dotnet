@@ -18,7 +18,7 @@ public class RequestListTest : PageTest
     public async Task Test1_Show_Request_with_15_items()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm/request/list/");
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForSelectorAsync("table");
 
         var amount = await Page.GetByTestId("table-row").CountAsync();
         
@@ -31,7 +31,7 @@ public class RequestListTest : PageTest
     public async Task Test2_Show_Request_after_filter()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm/request/list/");
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForSelectorAsync("table");
 
         await Page.GetByTestId("filter-status").SelectOptionAsync(new[] { new SelectOptionValue() { Label = "Denied" } });
 

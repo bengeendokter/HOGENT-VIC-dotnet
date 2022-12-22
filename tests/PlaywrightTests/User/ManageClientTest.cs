@@ -61,6 +61,7 @@ public class ManageClientTest : PageTest
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten");
         await Page.GetByTestId("searchbar").FillAsync("Voornaam");
+        await Page.WaitForSelectorAsync("td");
 
         await Page.GetByTestId("btn-edit-callback").ClickAsync();
 
@@ -79,6 +80,7 @@ public class ManageClientTest : PageTest
         await Page.GetByTestId("btn-edit").ClickAsync();
 
         await Page.GetByTestId("searchbar").FillAsync("Surname");
+        await Page.WaitForSelectorAsync("td");
 
         await Expect(Page.GetByTestId("btn-info-callback")).ToBeVisibleAsync();
         await Page.GetByTestId("btn-info-callback").ClickAsync();

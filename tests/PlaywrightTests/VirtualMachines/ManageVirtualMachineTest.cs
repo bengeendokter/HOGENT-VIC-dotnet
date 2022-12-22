@@ -27,7 +27,7 @@ public class ManageVirtualMachineTest : PageTest
         await Page.GetByTestId("btn-submit").ClickAsync();
 
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm?searchTerm={vm}");
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForSelectorAsync("td");
 
         var rows = await Page.GetByTestId("table-row").CountAsync();
         Assert.That(rows, Is.EqualTo(1));
