@@ -7,6 +7,12 @@
 @inject ITemplateService TemplateService
 @inject IClientService ClientService
 
+@if (error)
+{
+    <Error Title="Maak Virtuele Machine" ErrorMessage="@errorMessage"/>
+    return;
+}
+
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
@@ -223,10 +229,13 @@
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequestDto.Detail? _request;
-    private TemplateDto.Detail? _customTemplate;
+
     private List<TemplateDto.Detail> _templates = new();
+    private TemplateDto.Detail? _customTemplate;
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
+
+
     private List<ClientDto.Index>? _clients = new();
     private string searchClientString { get; set; } = "";
 
@@ -234,24 +243,18 @@
     private bool _showTemplates = true;
     private bool _showForm = true;
 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
     [Parameter]
     public int? Id { get; set; }
 
-    private async Task OnSearchClientStringChanged(ChangeEventArgs args)
+    private void OnSearchClientStringChanged(ChangeEventArgs args)
     {
         searchClientString = args.Value?.ToString();
-        ClientRequest.Index request = new() { Searchterm=searchClientString, Page = 1, PageSize = 10 };
-        await RefreshClientsAsync(request);
     }
 
-    private async Task RefreshClientsAsync(ClientRequest.Index request)
-    {
-        _clients.Clear();
-        _clients = await ClientService.GetIndexAsync(request);
-
-    }
-
-@*    private IEnumerable<ClientDto.Index> FilteredClients()
+    private IEnumerable<ClientDto.Index> FilteredClients()
     {
          return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
     }
@@ -259,8 +262,6 @@
     protected override async Task OnInitializedAsync()
     {
         _templates = TemplateService.GetAll();
-        ClientRequest.Index request = new() { Searchterm="J", Page=1, PageSize=25};
-        _clients = await ClientService.GetIndexAsync(request);
         if (!Id.HasValue)
         {
             _vm.StartDate = DateTime.Now;
@@ -274,6 +275,8 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
+    @*            if(_request.Client is not null)
+                _vm.ClientId = _request.Client.Id;*@
         }
         else
         {
@@ -351,27 +354,37 @@
 
     private async Task HandleValidSubmit()
     {
-        //Aanmaken VM gevolg van aanvraag
-        if (_request != null)
+        try
         {
-            int vmId = await VirtualMachineService.CreateAsync(_vm);
-            _request.VirtualMachineId = vmId;
-            _request.Status = ERequestStatus.Handled;
-            await VirtualMachineRequestService.EditAsync(_request.Id, _request);
-            NavigationManager.NavigateTo($"/vm/{vmId}");
-            Console.WriteLine(_vm.ClientId);
+            error = false;
+            //Aanmaken VM gevolg van aanvraag
+            if (_request != null)
+            {
+                int vmId = await VirtualMachineService.CreateAsync(_vm);
+                _request.VirtualMachineId = vmId;
+                _request.Status = ERequestStatus.Handled;
+                await VirtualMachineRequestService.EditAsync(_request.Id, _request);
+                NavigationManager.NavigateTo($"/vm/{vmId}");
+
+            }
+            //wijzigen VM
+            else if (Id.HasValue)
+            {
+                await VirtualMachineService.EditAsync(Id.Value, _vm);
+                NavigationManager.NavigateTo($"/vm/{Id.Value}");
+            }
+            //Aanmaken VM
+            else
+            {
+                int vmId = await VirtualMachineService.CreateAsync(_vm);
+                NavigationManager.NavigateTo($"/vm/{vmId}");
+            }
+
         }
-        //wijzigen VM
-        else if (Id.HasValue)
+        catch (Exception ex)
         {
-            await VirtualMachineService.EditAsync(Id.Value, _vm);
-            NavigationManager.NavigateTo($"/vm/{Id.Value}");
-        }
-        //Aanmaken VM
-        else
-        {
-            int vmId = await VirtualMachineService.CreateAsync(_vm);
-            NavigationManager.NavigateTo($"/vm/{vmId}");
+            error = true;
+            errorMessage = ex.Message;
         }
     }
 }
