@@ -2,7 +2,7 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-@if (clients == null)
+@if (clients == null && !error)
 {
     <Loading Title="Klanten"/>
     return;

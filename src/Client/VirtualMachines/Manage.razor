@@ -228,8 +228,8 @@
     private List<TemplateDto.Detail> _templates = new();
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private List<ClientDto.Index> _clients;
-    private string? searchClientString { get; set; } = "";
+    private List<ClientDto.Index>? _clients = new();
+    private string searchClientString { get; set; } = "";
 
     private bool _showRequest = true;
     private bool _showTemplates = true;
@@ -245,7 +245,7 @@
 
     private IEnumerable<ClientDto.Index> FilteredClients()
     {
-        return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
+         return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
     }
 
     protected override async Task OnInitializedAsync()

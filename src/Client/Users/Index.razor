@@ -1,6 +1,6 @@
 ﻿@page "/gebruikers"
 
-@if (users == null)
+@if (users == null && !error)
 {
     <Loading Title="Gebruikers" />
     return;

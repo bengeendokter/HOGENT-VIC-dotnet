@@ -3,11 +3,16 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-@if (list == null)
+@if (list == null && !error)
 {
     <Loading Title="Aanvragen"/>
     return;
 } 
+@if (error)
+{
+    <Error Title="Aanvragen" ErrorMessage="@errorMessage" />
+    return;
+}
 
 <GenericLayout Display=false Title="Aanvragen">
     <Actions>
@@ -62,8 +67,11 @@
 
     // Andere
     public ICollection<Object> requestObjects = new List<Object>();
-    private List<VirtualMachineRequestDto.Index> list = new();
+    private List<VirtualMachineRequestDto.Index>? list;
     private int _showFilter = 0;
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     // Methoden
     protected override async Task OnParametersSetAsync() 
@@ -83,29 +91,37 @@
     private async Task RefreshRequestsAsync(VirtualMachineRequestReq.Index request){
         requestObjects.Clear();
 
-        list = await VMRequestService.GetAll(request);
-        //ClientRequest.Index r = new();
-        //ClientDto.Index client = (await ClientService.GetIndexAsync(r)).First();
-        //list = await VMRequestService.GetRequestsFromClient(client.Id);
-
-        list.ForEach(request =>
+        try
         {
-            Console.WriteLine(request.Client);
-            requestObjects.Add(
-                new Request()
-                    {
-                        Id = request.Id,
-                        Projectnaam = request.ProjectName,
-                        Klant = request.Client != null ? request.Client.Name + " " + request.Client.Surname : "Onbepaalde klant",
-                        Start_datum = request.StartDate,
-                        Datum_aanvraag = request.Date,
-                        Status = request.Status
-                    });
-        });
+            error = false;
+            list = await VMRequestService.GetAll(request);
+
+            list.ForEach(request =>
+            {
+                Console.WriteLine(request.Client);
+                requestObjects.Add(
+                    new Request()
+                        {
+                            Id = request.Id,
+                            Projectnaam = request.ProjectName,
+                            Klant = request.Client != null ? request.Client.Name + " " + request.Client.Surname : "Onbepaalde klant",
+                            Start_datum = request.StartDate,
+                            Datum_aanvraag = request.Date,
+                            Status = request.Status
+                        });
+            });
+        }
+        catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
+
+
     }
 
     private void RequestInfo(int id){
-        if(list.First(r => r.Id == id).Status == ERequestStatus.Handled){
+        if(list?.First(r => r.Id == id).Status == ERequestStatus.Handled){
             _showFilter = id;
         }
         else{
