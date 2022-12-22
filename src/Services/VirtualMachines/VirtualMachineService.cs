@@ -156,7 +156,7 @@ public class VirtualMachineService : IVirtualMachineService
         );
         dbContext.VirtualMachines.Add(vm);
 
-        var activity = new Activity(EActivity.Added, vm.Name, /*vm.Client?.Name*/ client.Name + " " + client.Surname, vm.CPU, vm.RAM, vm.Storage);
+        var activity = new Activity(EActivity.Added, vm.Name, /*vm.Client?.Name*/ client?.Name + " " + client?.Surname, vm.CPU, vm.RAM, vm.Storage);
         dbContext.Activities.Add(activity);
 
         await dbContext.SaveChangesAsync();
