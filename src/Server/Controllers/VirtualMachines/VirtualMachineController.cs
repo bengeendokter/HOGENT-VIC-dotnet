@@ -26,7 +26,7 @@ public class VirtualMachineController : ControllerBase
         return await virtualMachineService.GetIndexAsync(request);
     }
 
-    [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator, Customer")]
     [SwaggerOperation("Returns a specific virtual machine by id.")]
     [HttpGet("{virtualMachineId}")]
     public async Task<VirtualMachineDto.Detail> GetDetail(int virtualMachineId)

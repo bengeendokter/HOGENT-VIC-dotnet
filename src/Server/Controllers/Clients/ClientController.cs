@@ -28,7 +28,7 @@ public class ClientController : ControllerBase
         return await clientService.GetIndexAsync(request);
     }
 
-    [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator, Customer")]
     [SwaggerOperation("Returns a specific client by id.")]
     [HttpGet("{clientId}")]
     public async Task<ClientDto.Detail> GetDetail(int clientId)

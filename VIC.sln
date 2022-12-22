@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "src\Services\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fakers", "src\Fakers\Fakers.csproj", "{C9AB79BE-DE20-42FC-B4F1-DA928C705967}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "tests\Domain.Tests\Domain.Tests.csproj", "{9A1328D9-EF9D-4179-81A4-CE02FE68F04A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{C9AB79BE-DE20-42FC-B4F1-DA928C705967}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9AB79BE-DE20-42FC-B4F1-DA928C705967}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9AB79BE-DE20-42FC-B4F1-DA928C705967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A1328D9-EF9D-4179-81A4-CE02FE68F04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A1328D9-EF9D-4179-81A4-CE02FE68F04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A1328D9-EF9D-4179-81A4-CE02FE68F04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A1328D9-EF9D-4179-81A4-CE02FE68F04A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{52422D0C-63B7-4073-A9FE-26ADF725554C} = {FD21254F-3FF5-462C-881A-FB7C867F9487}
 		{3FCEFB7A-24E1-4129-8090-7EB86D5051CE} = {FD21254F-3FF5-462C-881A-FB7C867F9487}
 		{C9AB79BE-DE20-42FC-B4F1-DA928C705967} = {FD21254F-3FF5-462C-881A-FB7C867F9487}
+		{9A1328D9-EF9D-4179-81A4-CE02FE68F04A} = {10C41CF3-0B07-42A6-8F50-9807358B3D2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43035801-A661-49BF-9416-2FF09048C475}

@@ -9,6 +9,12 @@
     return;
 }
 
+@if (error)
+{
+    <Error Title="Klant" ErrorMessage="@errorMessage" />
+    return;
+}
+
 <GenericLayout Display=false Title=@($"Klant - {client.Name}")>
     <Actions>
         <a href="/klanten" class="btn-primary">
@@ -33,7 +39,7 @@
                                 <td>@client.PhoneNumber</td>
                             </tr>
                             <tr>
-                                <th>Backup contactpersoon</th>
+                                <th>Backup contact</th>
                                 <td>@client.BackupContact</td>
                             </tr>
                         </table>
@@ -44,7 +50,7 @@
                             <h2>Intern</h2>
                             <table>
                                 <tr>
-                                    <th>Departement</th>
+                                    <th>Klant organisatie</th>
                                     <td>@client.ClientOrganisation</td>
                                 </tr>
                                 <tr>
@@ -62,7 +68,7 @@
                                     <td>@client.ClientOrganisation</td>
                                 </tr>
                                 <tr>
-                                    <th>Type</th>
+                                    <th>Rol</th>
                                     <td>@client.ExternalType</td>
                                 </tr>
                             </table>
@@ -70,18 +76,19 @@
                     }
                 </div>
                 <!-- Knoppen -->
-                <div class="button-container">
-                    <a href="klanten/wijzigen/@Id" class="btn-primary" >Wijzigen</a>
-                    @if (!isRequestingDelete) 
-                    {
-                        <button class="btn-delete" @onclick="ToggleDelete">Verwijderen</button>
-                    } else 
-                    {
-                        <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
-                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen bevestigen</button>
-                    }
-
-                </div>
+                <AuthorizeView Roles="Moderator, Administrator">
+                    <div class="button-container">
+                        <a href="klanten/wijzigen/@Id" class="btn-primary" >Wijzigen</a>
+                        @if (!isRequestingDelete) 
+                        {
+                            <button class="btn-delete" @onclick="ToggleDelete">Verwijderen</button>
+                        } else 
+                        {
+                            <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
+                            <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen bevestigen</button>
+                        }
+                    </div>
+                </AuthorizeView>
             </section>
             </div>
         </div>
@@ -91,7 +98,10 @@
 @code {
     [Parameter] public int Id { get; set; }
     private ClientDto.Detail? client;
+
     private bool isRequestingDelete = false;
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {

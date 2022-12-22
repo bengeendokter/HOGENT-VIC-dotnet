@@ -23,7 +23,7 @@ public class VirtualMachineRequestFaker: EntityFaker<VirtualMachineRequest>
                    f.Date.Future(1, DateTime.Now.AddYears(1)),
                    f.Lorem.Paragraph(),
                    f.Lorem.Word(),
-                   new Client(f.Person.FirstName,f.Person.LastName,"test", f.Phone.PhoneNumber("+## ### ## ## ##") , "test",EClientType.Internal,"test","test", "test",true),
+                   new ClientFaker(locale).AsTransient(),
                    null,
                    ERequestStatus.Requested
                    )

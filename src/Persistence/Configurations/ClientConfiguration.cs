@@ -1,13 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain.Users;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Domain.Users;
 
 namespace Persistence.Configurations;
-public class ClientConfiguration : IEntityTypeConfiguration<Client>
+
+internal class ClientConfiguration : EntityConfiguration<Client>
 {
-    public void Configure(EntityTypeBuilder<Client> builder)
+    public override void Configure(EntityTypeBuilder<Client> builder)
     {
-        builder.HasIndex(x => x.Email).IsUnique();
+        base.Configure(builder);
+        builder.HasMany(c => c.VirtualMachines)
+            .WithOne(vm => vm.Client);
+        builder.HasMany(c => c.Requests)
+            .WithOne(vmr => vmr.Client);
     }
 }
 

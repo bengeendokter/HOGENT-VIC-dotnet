@@ -1,13 +1,40 @@
 ﻿@page "/mijn_vms"
 @attribute [Authorize(Roles = "Customer")]
 
+@using System.Globalization
+
+@if (loading)
+{
+        <Loading Title="Gebruikers" />
+    return;
+}
+
+@if (error)
+{
+        <Error Title="Gebruikers" ErrorMessage="@errorMessage" />
+    return;
+}
+
 <GenericLayout Display=false Title="Gebruiker aanmaken">
+    <Actions>
+        <Client.Users.MyVms.Components.StatusFilter 
+        Status="@Status"/>
+    </Actions>
     <Content>
+        <SearchAndCreate 
+            IsMyListScherm=@true
+            SearchTerm="@Searchterm"
+            />
+        @if (_vms is null || _vms.Count() == 0){
+            <h2>Geen virtuele machines / geen gevonden</h2>
+        } else {
         <Table 
             Object="@(new VM())"
             Collection="@vmObjects"
             InfoCallback="@GoToVMDetailPage"
             />
+        }
+
     </Content>
 </GenericLayout>
 
@@ -17,7 +44,15 @@
     {
         public int? Id;
         public string? Naam;
-        public string? Actief;
+        public string? Template;
+        public int? vCpu;
+        public string? Ram;
+        public string? Opslag;
+        public string? Startdatum;
+        public string? Einddatum;
+        public string? BackUp;
+        public string? Hoge_besch;
+        public string? Status;
     };
 
     private IEnumerable<VirtualMachineDto.Index>? _vms;
@@ -26,6 +61,7 @@
     [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? Status { get; set; }
 
     [Inject] public HttpClient Http { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
@@ -50,6 +86,7 @@
                 Searchterm = Searchterm,
                 Page = Page ?? 1,
                 PageSize = PageSize ?? 25,
+                Status = Status
             };
 
         await RefreshVMs(request);
@@ -62,16 +99,24 @@
         try {
             error = false;
             loading = true;
-            var response = await Http.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}/myvirtualmachines?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}");
+            var response = await Http.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}/myvirtualmachines?searchTerm={request.Searchterm}&page={request.Page}&pageSize={request.PageSize}&status={request.Status}");
             _vms = response;
 
             _vms?.ToList().ForEach(x =>
             {
                 vmObjects.Add(new VM()
-                    {
-                        Id = x.Id,
-                        Naam = x.Name,
-                        Actief = x.IsActive? "Ja" : "Nee"
+                {
+                    Id = x.Id,
+                    Naam = x.Name,
+                    Template = x.Template.ToString(),
+                    vCpu = x.CPU,
+                    Ram = $"{x.RAM} GB",
+                    Opslag = $"{x.Storage} GB",
+                    Startdatum = x.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo),
+                    Einddatum = x.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo),
+                    BackUp = x.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks",
+                    Hoge_besch = x.IsHighlyAvailable? "Ja" : "Nee",
+                    Status = x.IsActive? "Aan" : "Uit"
                     });
             });
 

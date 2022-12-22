@@ -4,15 +4,15 @@
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
-@if (list == null)
+@if (list == null && !error)
 {
-        <Loading Title="Virtuele machines"/>
+        <Loading Title="Virtuele Machines"/>
     return;
 } 
 
 @if (error)
 {
-            <Error Title="Virtuele machines" ErrorMessage="@errorMessage"/>
+        <Error Title="Virtuele Machines" ErrorMessage="@errorMessage"/>
     return;
 }
 
@@ -84,7 +84,7 @@
                                 )
                         </td>
                         <td>
-                                <span title=@(vm.IsHighlyAvailable ? "ja" : "neen") aria-label=@(vm.IsHighlyAvailable ? "ja" : "neen")>
+                                <span title=@(vm.IsHighlyAvailable ? "ja" : "neen") aria-label=@(vm.IsHighlyAvailable ? "ja" : "neen ")>
                                 @(vm.IsHighlyAvailable ? "✔️" : "❌")
                             </span>
                         </td>
@@ -109,7 +109,7 @@
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
 
     // Andere
-    private List<VirtualMachineDto.Index> list = new();
+    private List<VirtualMachineDto.Index>? list;
     private string createUri = "/vm/manage";
 
     private string? sortBy = string.Empty;

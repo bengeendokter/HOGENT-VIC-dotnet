@@ -1,0 +1,29 @@
+﻿.optionele-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 40px;
+    max-width: 1500px;
+    margin: 10px auto;
+}
+
+    .optionele-filters .filter {
+        height: 40px;
+        width: 100%;
+        flex: 1 1 80%;
+        padding-left: 10px;
+        padding-right: 10px;
+        height: 40px;
+        border: 2px solid var(--clr-background-title);
+        border-radius: 5px;
+    }
+
+@media (min-width: 560px) {
+    .optionele-filters {
+        flex-direction: row;
+    }
+
+        .optionele-filters .filter {
+            max-width: 250px;
+        }
+}

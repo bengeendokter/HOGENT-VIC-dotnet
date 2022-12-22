@@ -1,14 +1,10 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Common;
-using Domain.Users;
-using Domain.VirtualMachines;
 
 namespace Domain.Activities;
 
 public class Activity : Entity
 {
-    public VirtualMachine VirtualMachine { get; } = default!;
-
     private EActivity type = default!;
     public EActivity Type
     {
@@ -16,14 +12,53 @@ public class Activity : Entity
         set => type = Guard.Against.EnumOutOfRange(value, nameof(Type));
     }
 
+    private string vmName = default!;
+    public string VMName
+    {
+        get => vmName;
+        set => vmName = Guard.Against.NullOrEmpty(value, nameof(VMName));
+    }
+
+    private string clientName = default!;
+    public string ClientName
+    {
+        get => clientName;
+        set => clientName = Guard.Against.NullOrEmpty(value, nameof(ClientName));
+    }
+
+    private int cpu = default!;
+    public int CPU
+    {
+        get => cpu;
+        set => cpu = Guard.Against.Null(value, nameof(CPU));
+    }
+
+    private int ram = default!;
+    public int RAM
+    {
+        get => ram;
+        set => ram = Guard.Against.Null(value, nameof(RAM));
+    }
+
+    private int storage = default!;
+    public int Storage
+    {
+        get => storage;
+        set => storage = Guard.Against.Null(value, nameof(Storage));
+    }
+
     /// <summary>
     /// Database Constructor
     /// </summary>
     public Activity() { }
 
-    public Activity(VirtualMachine virtualMachine, EActivity type)
+    public Activity(EActivity type, string vmName, string clientName, int cpu, int ram, int storage)
     {
-        VirtualMachine = Guard.Against.Null(virtualMachine, nameof(VirtualMachine));
         Type = type;
+        VMName = vmName;
+        ClientName = clientName;
+        CPU = cpu;
+        RAM = ram;
+        Storage = storage;
     }
 }

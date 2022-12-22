@@ -19,7 +19,7 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(VirtualMachineReq.Index request)
     {
-        var query = dbContext.VirtualMachines.Include(x => x.Client).AsQueryable();
+        var query = dbContext.VirtualMachines.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
@@ -79,7 +79,7 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)
     {
-        var vm = await dbContext.VirtualMachines.Include(x => x.Client).FirstOrDefaultAsync(v => v.Id == virtualMachineId);
+        var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(v => v.Id == virtualMachineId);
 
         if (vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
@@ -150,11 +150,13 @@ public class VirtualMachineService : IVirtualMachineService
             model.IsHighlyAvailable,
             false,
             null
-            //model.Client!,
+        //model.Client!,
         );
-
         dbContext.VirtualMachines.Add(vm);
-        dbContext.Activities.Add(new Activity(vm, EActivity.Added));
+
+        var activity = new Activity(EActivity.Added, vm.Name, /*vm.Client?.Name*/ "test", vm.CPU, vm.RAM, vm.Storage);
+        dbContext.Activities.Add(activity);
+
         await dbContext.SaveChangesAsync();
 
         return vm.Id;
@@ -170,6 +172,12 @@ public class VirtualMachineService : IVirtualMachineService
         {
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
         }
+
+        var activity = new Activity(EActivity.Edited, vm.Name, vm.Client.Surname + vm.Client.Name, 
+            model.CPU - vm.CPU, 
+            model.RAM - vm.RAM,
+            model.Storage - vm.Storage
+        );
 
         vm.Name = model.Name!;
         vm.CPU = model.CPU;
@@ -204,6 +212,8 @@ public class VirtualMachineService : IVirtualMachineService
 
         }
 
+        dbContext.Activities.Add(activity);
+
         await dbContext.SaveChangesAsync();
     }
 
@@ -214,7 +224,12 @@ public class VirtualMachineService : IVirtualMachineService
         if (vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
 
+        Console.WriteLine("we are here");
         dbContext.VirtualMachines.Remove(vm);
+
+        var activity = new Activity(EActivity.Deleted, vm.Name, $"{vm.Client.Surname} {vm.Client.Name}", -vm.CPU, -vm.RAM, -vm.Storage);
+        dbContext.Activities.Add(activity);
+        Console.WriteLine("activity added");
 
         await dbContext.SaveChangesAsync();
     }

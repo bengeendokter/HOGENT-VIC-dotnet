@@ -7,6 +7,9 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using Server.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +38,24 @@ builder.Services
     .AddFluentValidationRulesToSwagger();
 
 // Database
-builder.Services.AddDbContext<VicDbContext>();
+builder.Services.AddDbContext<VicDbContext>(options =>
+{
+    var (sshClient, localPort) = SshUtil.ConnectSsh(builder.Configuration["MySql:Server"], builder.Configuration["MySql:SshUser"], sshKeyFile: builder.Configuration["MySql:SshKey"]);
+    var connectionString = new MySqlConnectionStringBuilder
+    {
+        Server = "127.0.0.1",
+        Port = localPort,
+        UserID = builder.Configuration["MySql:User"],
+        Password = builder.Configuration["MySql:Password"],
+        Database = builder.Configuration["MySql:Database"]
+    }.ConnectionString;
+
+    options
+        .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+        .LogTo(Console.WriteLine, LogLevel.Information)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors();
+});
 
 // (Fake) Authentication
 /*builder.Services

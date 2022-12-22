@@ -1,0 +1,23 @@
+﻿.optionele-filters {
+    min-height: 40px;
+    max-width: 1500px;
+    margin: 10px auto;
+    flex-wrap: wrap;
+}
+
+    .optionele-filters .filter-role {
+        height: 40px;
+        width: 100%;
+        flex: 1 1 80%;
+        padding-left: 10px;
+        padding-right: 10px;
+        height: 40px;
+        border: 2px solid var(--clr-background-title);
+        border-radius: 5px;
+    }
+
+@media (min-width: 560px) {
+    .optionele-filters .filter-role {
+        max-width: 250px;
+    }
+}

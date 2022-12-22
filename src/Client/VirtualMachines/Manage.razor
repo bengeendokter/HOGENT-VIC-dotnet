@@ -8,15 +8,25 @@
 @inject IClientService ClientService
 @attribute [Authorize]
 
+@if (error)
+{
+    <Error Title="Maak Virtuele Machine" ErrorMessage="@errorMessage"/>
+    return;
+}
+
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
         <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
             <FluentValidationValidator />
             <div class="grid">
+
+            @if (_request != null)
+            {
+                <h2>Informatie van de aanvrager <button class="showHideBtn" @onclick="(() => _showRequest = !_showRequest)">@(_showRequest ? "Verberg" : "Toon")</button></h2>
+                <div class="line" />
+                @if(_showRequest){
                 <div class="request">
-                    @if (_request != null)
-                    {
-                        <h2>Informatie van de aanvrager</h2>
+
                             <div class="input-group">
                                 <div class="form-group">
                                     <label>
@@ -62,11 +72,14 @@
                             Extra info over de aanvraag:<br />
                             <div class="reden">@_request.Reason</div>
                         </label>
-                    }
-                </div>
+                    </div>
+                }
+            }
 
+                <h2>Templates <button class="showHideBtn" @onclick="(() => _showTemplates = !_showTemplates)">@(_showTemplates ? "Verberg" : "Toon")</button></h2>
+                <div class="line" />
+                @if(_showTemplates){
                 <div class="templates">
-                    <h2>Templates</h2>
 
                     <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
                     <div class="wrap">
@@ -84,9 +97,13 @@
 
                     <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                 </div>
+                }
 
+                <h2>Informatie van de VM <button class="showHideBtn" @onclick="(() => _showForm = !_showForm)">@(_showForm ? "Verberg" : "Toon")</button></h2>
+                <div class="line" />
+                @if(_showForm){
                 <div class="form">
-                    <h2> Algemene informatie</h2>
+
                     <div class="input-group">
                         <div class="form-group">
                             <label>
@@ -201,6 +218,7 @@
                     </div>
                     <button class="btn-primary" type="submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
                 </div>
+                }
             </div>
         </EditForm>
         @if (_showCustomTemplate)
@@ -213,12 +231,22 @@
 @code {
     private VirtualMachineDto.Mutate _vm = new();
     private VirtualMachineRequestDto.Detail? _request;
-    private TemplateDto.Detail? _customTemplate;
+
     private List<TemplateDto.Detail> _templates = new();
+    private TemplateDto.Detail? _customTemplate;
     private bool _showCustomTemplate = false;
     private int? _activeTemplate;
-    private List<ClientDto.Index> _clients;
-    private string? searchClientString { get; set; } = "";
+
+
+    private List<ClientDto.Index>? _clients = new();
+    private string searchClientString { get; set; } = "";
+
+    private bool _showRequest = true;
+    private bool _showTemplates = true;
+    private bool _showForm = true;
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
 
     [Parameter]
     public int? Id { get; set; }
@@ -230,7 +258,7 @@
 
     private IEnumerable<ClientDto.Index> FilteredClients()
     {
-        return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
+         return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
     }
 
     protected override async Task OnInitializedAsync()
@@ -249,7 +277,7 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
-@*            if(_request.Client is not null)
+    @*            if(_request.Client is not null)
                 _vm.ClientId = _request.Client.Id;*@
         }
         else
@@ -328,27 +356,37 @@
 
     private async Task HandleValidSubmit()
     {
-        //Aanmaken VM gevolg van aanvraag
-        if (_request != null)
+        try
         {
-            int vmId = await VirtualMachineService.CreateAsync(_vm);
-            _request.VirtualMachineId = vmId;
-            _request.Status = ERequestStatus.Handled;
-            await VirtualMachineRequestService.EditAsync(_request.Id, _request);
-            NavigationManager.NavigateTo($"/vm/{vmId}");
+            error = false;
+            //Aanmaken VM gevolg van aanvraag
+            if (_request != null)
+            {
+                int vmId = await VirtualMachineService.CreateAsync(_vm);
+                _request.VirtualMachineId = vmId;
+                _request.Status = ERequestStatus.Handled;
+                await VirtualMachineRequestService.EditAsync(_request.Id, _request);
+                NavigationManager.NavigateTo($"/vm/{vmId}");
+
+            }
+            //wijzigen VM
+            else if (Id.HasValue)
+            {
+                await VirtualMachineService.EditAsync(Id.Value, _vm);
+                NavigationManager.NavigateTo($"/vm/{Id.Value}");
+            }
+            //Aanmaken VM
+            else
+            {
+                int vmId = await VirtualMachineService.CreateAsync(_vm);
+                NavigationManager.NavigateTo($"/vm/{vmId}");
+            }
 
         }
-        //wijzigen VM
-        else if (Id.HasValue)
+        catch (Exception ex)
         {
-            await VirtualMachineService.EditAsync(Id.Value, _vm);
-            NavigationManager.NavigateTo($"/vm/{Id.Value}");
-        }
-        //Aanmaken VM
-        else
-        {
-            int vmId = await VirtualMachineService.CreateAsync(_vm);
-            NavigationManager.NavigateTo($"/vm/{vmId}");
+            error = true;
+            errorMessage = ex.Message;
         }
     }
 }

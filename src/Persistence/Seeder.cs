@@ -1,8 +1,5 @@
-using Domain.Users;
-using Domain.VirtualMachines;
 using Fakers.Clients;
 using Fakers.VirtualMachines;
-using System.Runtime.CompilerServices;
 using Fakers.Activities;
 
 namespace Persistence;
@@ -18,6 +15,9 @@ public class Seeder
 
     public void Seed()
     {
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
+
         SeedVirtualMachines();
         SeedClients();
         SeedUsers();

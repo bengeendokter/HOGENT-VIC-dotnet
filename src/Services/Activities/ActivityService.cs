@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Domain.Activities;
 using Shared.Activities;
-using Shared.VirtualMachines;
 
 namespace Services.Activities;
 public class ActivityService : IActivityService
@@ -16,34 +16,15 @@ public class ActivityService : IActivityService
     public async Task<List<ActivityDto.Index>> GetIndexAsync(ActivityRequest.Index request)
     {
         var query = dbContext.Activities.AsQueryable();
-        var sortingList = new List<EActivity> { EActivity.Added, EActivity.Deleted };
 
-        if (!string.IsNullOrWhiteSpace(request.SortingParameter))
+
+        if (!string.IsNullOrEmpty(request.Status))
         {
-            switch(request.SortingParameter)
-            {
-                case "date":
-                    query = query.OrderBy(x => x.CreatedAt);
-                    break;
-                case "cpu":
-                    query = query
-                        .OrderBy(x => sortingList.IndexOf((EActivity)x.Type))
-                        .ThenByDescending(x => x.VirtualMachine!.CPU);
-                    break;
-                case "ram":
-                    query = query
-                        .OrderBy(x => sortingList.IndexOf((EActivity)x.Type))
-                        .ThenByDescending(x => x.VirtualMachine!.RAM);
-                    break;
-                case "storage":
-                    query = query
-                        .OrderBy(x => sortingList.IndexOf((EActivity) x.Type))
-                        .ThenByDescending(x => x.VirtualMachine!.Storage);
-                    break;
-                default:
-                    break;
-            }
+            var status = Enum.Parse<Domain.Activities.EActivity>(request.Status, true);
+            query = query.Where(x => x.Type.Equals(status));
         }
+
+        query = SortActivityQuery(request.SortBy, query);
 
         var items = await query
             .Skip((request.Page - 1) * request.PageSize)
@@ -52,24 +33,32 @@ public class ActivityService : IActivityService
             {
                 Id = a.Id,
                 CreatedAt = a.CreatedAt,
-                VirtualMachine = new VirtualMachineDto.Index
-                {
-                    Id = a.VirtualMachine.Id,
-                    Name = a.VirtualMachine.Name,
-                    CPU = a.VirtualMachine.CPU,
-                    RAM = a.VirtualMachine.RAM,
-                    Storage = a.VirtualMachine.Storage,
-                    StartDate = a.VirtualMachine.StartDate,
-                    EndDate = a.VirtualMachine.EndDate,
-                    IsActive = a.VirtualMachine.IsActive,
-                    Template = (ETemplate) a.VirtualMachine.Template,
-                    IsHighlyAvailable = a.VirtualMachine.IsHighlyAvailable,
-                    BackupFrequency = (EBackupFrequency) a.VirtualMachine.BackupFrequency
-                },
-                Type = (EActivity) a.Type
+                Type = (Shared.Activities.EActivity) a.Type,
+                VMName = a.VMName,
+                ClientName = a.ClientName,
+                CPU = a.CPU,
+                RAM = a.RAM,
+                Storage = a.Storage
             })
             .ToListAsync();
 
         return items;
+    }
+
+    private IQueryable<Activity> SortActivityQuery(string? sortby, IQueryable<Activity> query)
+    {
+        return (sortby) switch
+        {
+            "date" => query.OrderBy(x => x.CreatedAt),
+            "name" => query.OrderBy(x => x.VMName),
+            "nameDesc" => query.OrderByDescending(x => x.VMName),
+            "cpu" => query.OrderByDescending(x => x.CPU),
+            "cpuDesc" => query.OrderBy(x => x.CPU),
+            "ram" => query.OrderByDescending(x => x.RAM),
+            "ramDesc" => query.OrderBy(x => x.RAM),
+            "storage" => query.OrderByDescending(x => x.Storage),
+            "storageDesc" => query.OrderBy(x => x.Storage),
+            _ => query.OrderByDescending(x => x.CreatedAt)
+        };
     }
 }

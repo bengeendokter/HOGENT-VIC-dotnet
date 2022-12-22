@@ -289,10 +289,16 @@ namespace Server.Controllers
 
         [HttpGet("myvirtualmachines")]
         [Authorize(Roles = "Customer")]
-
-        public async Task<List<VirtualMachineDto.Index>> GetStuff([FromQuery] VirtualMachineReq.Index request)
+        public async Task<List<VirtualMachineDto.Index>> GetMyVMs([FromQuery] VirtualMachineReq.Index request)
         {
             return await _authUserService.GetMyVirtualMachines(request);
+        }
+
+        [HttpGet("myrequests")]
+        [Authorize(Roles = "Customer")]
+        public async Task<List<VirtualMachineRequestDto.Index>> GetMyRequests([FromQuery] VirtualMachineRequestReq.Index request)
+        {
+            return await _authUserService.GetMyRequests(request);
         }
     }
 }

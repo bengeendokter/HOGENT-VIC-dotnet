@@ -1,9 +1,7 @@
-using System.Reflection;
 using Domain.VirtualMachines;
 using Domain.Activities;
 using Persistence.Triggers;
 using Microsoft.EntityFrameworkCore;
-using Domain;
 using Domain.Users;
 
 namespace Persistence;
@@ -16,12 +14,13 @@ public class VicDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<VirtualMachineRequest> VirtualMachineRequests => Set<VirtualMachineRequest>();
 
+    public VicDbContext(DbContextOptions<VicDbContext> options) : base(options) { }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.EnableDetailedErrors();
         optionsBuilder.EnableSensitiveDataLogging();
-        optionsBuilder.UseInMemoryDatabase(databaseName: "VIC");
         optionsBuilder.UseTriggers(options =>
         {
             options.AddTrigger<EntityBeforeSaveTrigger>();
@@ -31,9 +30,6 @@ public class VicDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        modelBuilder.Entity<Activity>()
-            .HasOne(a => a.VirtualMachine);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(VicDbContext).Assembly);
     }
 }
