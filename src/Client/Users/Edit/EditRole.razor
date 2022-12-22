@@ -18,6 +18,11 @@
 
 <GenericLayout Display=false Title=@($"Gebruiker Wijzigen (Rol)")>
     <Content>
+        <Client.Users.Edit.Components.ConfirmRoleChange
+            SetAdminRole="@SetAdminRole"
+            Show="@show"
+            IsAdminSelected="@_userRole.IsAdministrator"
+        />
         <EditForm Model="@_userRole" OnValidSubmit="@OnSubmit">
             <FluentValidationValidator />
             <div class="group">
@@ -41,7 +46,7 @@
             <div class="group">
                 <label>Admin</label>
                 <div>
-                    <InputCheckbox @bind-Value="_userRole.IsAdministrator" class="inputField checkbox" />
+                    <InputCheckbox @onclick="@ToggleShowConfirm"  @bind-Value="_userRole.IsAdministrator" class="inputField checkbox" />
                 </div>
             </div>
 
@@ -68,9 +73,12 @@
     private IEnumerable<AuthUserDto.Detail.UserRole>? rolInfo;
     private IEnumerable<AuthUserDto.Detail.UserRole>? roles;
 
+
+
     private bool error = false;
     private string errorMessage = string.Empty;
     private bool loading = false;
+    private bool show = false;
 
     protected async override Task OnParametersSetAsync()
     {
@@ -126,5 +134,14 @@
             error = true;
             errorMessage = ex.Message;
         }
+    }
+
+    private void ToggleShowConfirm(){
+        show = true;
+    }
+
+    private void SetAdminRole(bool isSelected){
+        _userRole.IsAdministrator = isSelected;
+        show = false;
     }
 }

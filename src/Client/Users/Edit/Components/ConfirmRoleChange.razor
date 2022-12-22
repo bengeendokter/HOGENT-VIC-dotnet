@@ -1,0 +1,35 @@
+﻿@if (Show && !IsAdminSelected){
+    <div class="confirmBackground">
+        <div class="confirmContainer">
+                <span @onclick="SetAdminSelectedOriginal">x</span>
+            <div class="confirmText">
+                Bent u zeker om dit te doen?<br/>
+                Deze account zal niet meer toegang hebben tot deze pagina!
+            </div>
+            <div class="confirmButtons">
+                <button @onclick="SetAdminSelectedNew">Ja</button>
+                <button @onclick="SetAdminSelectedOriginal">Nee</button>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+@code {
+    [Parameter] public bool Show { get; set; } = false;
+    [Parameter] public bool IsAdminSelected { get; set; }
+    [Parameter] public EventCallback<bool> SetAdminRole { get; set; }
+
+    public void SetAdminSelectedNew()
+    {
+        SetAdminRole.InvokeAsync(IsAdminSelected);
+    }
+
+    public void SetAdminSelectedOriginal()
+    {
+        SetAdminRole.InvokeAsync(!IsAdminSelected);
+    }
+
+}

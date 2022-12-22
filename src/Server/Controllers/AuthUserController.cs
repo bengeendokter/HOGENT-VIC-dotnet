@@ -157,6 +157,7 @@ namespace Server.Controllers
         }
 
         [HttpPost("wijzig/rollen/{userId}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<AuthUserResponse.Create.Role> WijzigRoles(string userId, [FromBody] AuthUserRequest.Roles request)
         {
             var allRoles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
@@ -165,6 +166,16 @@ namespace Server.Controllers
             var modRole = allRoles.First(x => x.Name == "Moderator");
             var customerRole = allRoles.First(x => x.Name == "Customer");
             var userRole = allRoles.First(x => x.Name == "User");
+
+            if (!request.IsAdministrator)
+            {
+                var allAdmins = _managementApiClient.Roles.GetUsersAsync(adminRole.Id);
+
+                if (allAdmins.Result.Count() == 1 && allAdmins.Result.First().UserId == userId)
+                {
+                    throw new Exception("Kan admin rechten van laatste admin niet terugtrekken.");
+                }
+            }
 
             List<Role> ToBeAssignedRoles = new();
             List<Role> ToBeDeletedRoles = new();
