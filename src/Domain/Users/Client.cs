@@ -116,6 +116,7 @@ public class Client : User
         if (clientType == EClientType.Internal)
         {
             Education = education;
+            ClientOrganisation = "HOGENT";
         } 
         else if (clientType == EClientType.External)
         {

@@ -1,13 +1,13 @@
 ﻿using Domain.Activities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
+internal class ActivityConfiguration : EntityConfiguration<Activity>
 {
-    public void Configure(EntityTypeBuilder<Activity> builder)
+    public override void Configure(EntityTypeBuilder<Activity> builder)
     {
+        base.Configure(builder);
         //builder.HasOne(a => a.VirtualMachine);
         //builder.Navigation(a => a.VirtualMachine).AutoInclude();
     }

@@ -8,18 +8,24 @@ public class ClientFaker : EntityFaker<Client>
 {
     public ClientFaker(string locale = "nl") : base(locale)
     {
-        CustomInstantiator(f => new Client(
-                f.Person.LastName,              // Name
-                f.Person.FirstName,             // Surname
-                f.Internet.Email(),             // Email
-                f.Phone.PhoneNumber("+## ### ## ## ##"),          // PhoneNumber
-                f.Phone.PhoneNumber("+## ### ## ## ##"),          // BackupContact
-                f.Random.Enum<EClientType>(),   // ClientType
-                f.Company.CompanyName(),        // ClientOrganisation
-                f.Company.CompanyName(),        // Education
-                f.Company.CompanyName(),        // ExternalType
-                f.Random.Bool()                 // IsActive
-            )
+        CustomInstantiator(f =>
+        {
+            var lastName = f.Person.LastName;
+            var firstName = f.Person.FirstName;
+
+            return new Client(
+                    lastName,              // Name
+                    firstName,             // Surname
+                    f.Internet.Email(firstName, lastName),             // Email
+                    f.Phone.PhoneNumber("+## ### ## ## ##"),          // PhoneNumber
+                    f.Phone.PhoneNumber("+## ### ## ## ##"),          // BackupContact
+                    f.Random.Enum<EClientType>(),   // ClientType
+                    f.Company.CompanyName(),        // ClientOrganisation
+                    f.Random.CollectionItem(new List<string>() { "Toegepaste Informatica", "Chemie", "Elektro-mechanica", "Biotechnologie" }),        // Education
+                    f.Random.CollectionItem(new List<string>() { "Manager", "CEO", "Developer", "Researcher" }),        // ExternalType
+                    f.Random.Bool()                 // IsActive
+                );
+        }
         ); 
     }
 }
