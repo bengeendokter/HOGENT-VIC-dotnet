@@ -10,11 +10,11 @@ namespace VIC.IntegrationTests.User;
 public class ClientListTest : PageTest
 {
     [Test]
-    public async Task Show_25_Items_In_ClientTable()
+    public async Task Test1_Show_25_Items_In_ClientTable()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten/");
 
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForSelectorAsync("td");
 
         var rows = await Page.GetByTestId("table-row").CountAsync();
 
@@ -23,11 +23,11 @@ public class ClientListTest : PageTest
     }
 
     [Test]
-    public async Task Show_Only_Internal()
+    public async Task Test2_Show_Only_Internal()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten/");
 
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForSelectorAsync("td");
 
         await Page.GetByTestId("select-type").SelectOptionAsync(new[] { new SelectOptionValue() { Label = "Interne" } });
 

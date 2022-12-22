@@ -18,7 +18,7 @@ public class VirtualMachineListTest : PageTest
     public async Task Test1_Show_20_virtualmachines()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm/");
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForSelectorAsync("td");
 
         var amount = await Page.GetByTestId("table-row").CountAsync();
         Assert.That(amount, Is.EqualTo(20));
