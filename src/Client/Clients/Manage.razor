@@ -78,7 +78,7 @@
                             }
                             @if (_client.ClientType == EClientType.External) {
                                 <div class="group">
-                                    <label>Extern type</label>
+                                    <label>Rol</label>
                                     <div>
                                         <InputText @bind-Value="_client.ExternalType" class="inputField" />
                                         <ValidationMessage For="() => _client.ExternalType" />
