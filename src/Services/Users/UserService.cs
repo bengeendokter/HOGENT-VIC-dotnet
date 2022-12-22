@@ -1,9 +1,7 @@
-using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Shared.Clients;
 using Domain.Users;
-using EClientType = Domain.Users.EClientType;
 using Shared.Users;
 
 namespace Services.Clients;
@@ -34,8 +32,11 @@ public class UserService : IUserService
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
-            query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase)
-            || x.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) || x.Email.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(x => 
+                x.Name.Contains(request.Searchterm) || 
+                x.Surname.Contains(request.Searchterm) || 
+                x.Email.Contains(request.Searchterm)
+            );
         }
 
         if (request.Role is not null)
