@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Activities;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -7,7 +6,7 @@ namespace Server.Controllers.Activities;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Moderator, Administrator")]
+// [Authorize(Roles = "Moderator, Administrator")]
 public class ActivityController : ControllerBase
 {
     private readonly IActivityService activityService;
@@ -17,7 +16,7 @@ public class ActivityController : ControllerBase
         this.activityService = activityService;
     }
 
-    [Authorize(Roles = "Administrator, Moderator")]
+    // [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Returns a list of activities.")]
     [HttpGet]
     public async Task<List<ActivityDto.Index>> GetIndex([FromQuery] ActivityRequest.Index request)
