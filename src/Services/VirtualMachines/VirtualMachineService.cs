@@ -24,10 +24,9 @@ public class VirtualMachineService : IVirtualMachineService
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
             query = query.Where(x => 
-                x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) || 
-                x.Client.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-                x.Client.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-                x.Template.ToString().Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase)
+                x.Name.Contains(request.Searchterm) || 
+                x.Client.Surname.Contains(request.Searchterm) ||
+                x.Client.Name.Contains(request.Searchterm)
             );
         }
 
@@ -119,7 +118,8 @@ public class VirtualMachineService : IVirtualMachineService
             Template = (Shared.VirtualMachines.ETemplate)vm.Template,
             Poorten = vm.Poorten,
             Client = vmClient is not null ? client : null,
-            Host = vm.Host
+            Host = vm.Host,
+            CreatedAt = vm.CreatedAt
     };
 }
 
