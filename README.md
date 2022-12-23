@@ -27,6 +27,6 @@ Paswoord:	sterkModeratorPaswoord123a-
 
 ## Administrator
 ```
-Email: 	  admin_account@gmail.com
+Email:		admin_account@gmail.com
 Paswoord:	sterkAdministratorPaswoord123a-
 ```
