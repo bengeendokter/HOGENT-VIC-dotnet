@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
+using Shared.Error;
+using System.Net.Http.Json;
 
 namespace Client.Clients;
 
@@ -27,7 +29,17 @@ public class ClientService : IClientService
     public async Task<int> CreateAsync(ClientDto.Mutate model)
     {
         var response = await client.PostAsJsonAsync(endpoint, model);
-        return await response.Content.ReadFromJsonAsync<int>();
+        if (!response.IsSuccessStatusCode)
+        {
+            string message = response.Content.ReadAsStringAsync().Result;
+            ResponseError error = JsonConvert.DeserializeObject<ResponseError>(message);
+            string errorMessage = error?.Message ?? "Er gebeurde een ongekende error.";
+            throw new ApplicationException(errorMessage);
+        } else
+        {
+            return await response.Content.ReadFromJsonAsync<int>();
+        }
+
     }
 
     public async Task EditAsync(int clientId, ClientDto.Mutate model)

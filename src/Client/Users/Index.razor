@@ -24,10 +24,10 @@
             MinorErrorBool="@minorError"
             MinorErrorMessage="@minorErrorMessage"
             ResetMinorError="@ResetMinorError"/>
-        <SearchAndCreate 
+        <SearchAndCreate
             SearchTerm="@Searchterm"
-            CreateCallback="() => NavigationManager.NavigateTo(createUri)"
             IsAuthUserScherm=true
+            IsMyListScherm=true
         />
         <Table
             Object="@(new Gebruiker())"

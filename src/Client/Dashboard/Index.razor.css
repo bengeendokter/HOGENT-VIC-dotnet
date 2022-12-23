@@ -1,1 +1,7 @@
-﻿
+﻿h2 {
+    text-align: center;
+    margin-top: 75px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: bold;
+    font-size: 40px;
+}

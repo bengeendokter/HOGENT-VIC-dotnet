@@ -1,12 +1,12 @@
 ﻿<PageTitle>@Title</PageTitle>
 
 <div class="title-container">
-    <h1>@Title</h1>
-    <AuthorizeView Roles="Moderator, Administrator">
-        <div class="actions">
-            @Actions
-        </div>
-    </AuthorizeView>
+        <h1>@Title</h1>
+        <AuthorizeView Roles="Moderator, Administrator">
+            <div class="actions">
+                @Actions
+            </div>
+        </AuthorizeView>
 </div>
 <div class="content">
     <UsageStats Display="@Display" Title="@StatsTitle" Usages="@Usages" />

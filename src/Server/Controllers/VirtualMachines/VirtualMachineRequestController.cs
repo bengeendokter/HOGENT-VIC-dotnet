@@ -33,6 +33,7 @@ public class VirtualMachineRequestController : ControllerBase
         return await virtualMachineRequestService.Get(id);
     }
 
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Returns requests from a client.")]
     [HttpGet("client/{id}")]
     public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int id)
@@ -40,6 +41,7 @@ public class VirtualMachineRequestController : ControllerBase
         return await virtualMachineRequestService.GetRequestsFromClient(id);
     }
 
+    [Authorize(Roles = "Customer, Administrator, Moderator")]
     [SwaggerOperation("Creates a new request.")]
     [HttpPost]
     public async Task<IActionResult> Create(VirtualMachineRequestDto.Create model)
@@ -48,6 +50,7 @@ public class VirtualMachineRequestController : ControllerBase
         return CreatedAtAction(nameof(Create), id);
     }
 
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Edites an existing request.")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Edit(int id, VirtualMachineRequestDto.Detail model)

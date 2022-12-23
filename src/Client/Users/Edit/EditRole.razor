@@ -4,6 +4,7 @@
 @using Shared.Error
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Administrator")]
 
 
 @if (loading)

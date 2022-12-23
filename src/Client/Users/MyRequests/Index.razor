@@ -1,0 +1,133 @@
+﻿@page "/mijn_aanvragen"
+@attribute [Authorize(Roles = "Customer")]
+
+@using System.Globalization
+
+@if (loading)
+{
+        <Loading Title="Mijn aanvragen" />
+    return;
+}
+
+@if (error)
+{
+            <Error Title="Mijn aanvragen" ErrorMessage="@errorMessage" />
+    return;
+}
+
+<GenericLayout Display=false Title="Mijn aanvragen">
+    <Actions>
+        <Client.Users.MyRequests.Components.StatusFilter Status="@Status"/>
+        <Client.Users.MyRequests.Components.SorteerFilter SortBy="@SortBy"/>
+    </Actions>
+    <Content>
+        <SearchAndCreate 
+            IsMyListScherm=@true
+            SearchTerm="@Searchterm"
+            />
+        @if (_requests is null || _requests.Count() == 0){
+            <h2>Geen aanvragen / geen gevonden</h2>
+        } else {
+        <Table 
+            Object="@(new Request())"
+            Collection="@requestsObjects"
+            />
+        }
+
+    </Content>
+</GenericLayout>
+
+@code {
+
+    public class Request
+    {
+        public int Id = 0;
+        public string? Projectnaam;
+        public DateTime? Start_datum;
+        public string? Status;
+        public DateTime? Datum_aanvraag;
+    };
+
+    private IEnumerable<VirtualMachineRequestDto.Index>? _requests;
+    public ICollection<Request> requestsObjects = new List<Request>();
+
+    [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? Status { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? SortBy { get; set; }
+
+
+    [Inject] public HttpClient Http { get; set; } = default!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
+    private bool minorError = false;
+    private string minorErrorMessage = String.Empty;
+
+
+    private bool loading = false;
+
+    private const string endpoint = "AuthUser";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        VirtualMachineReq.Index request = new()
+            {
+                Searchterm = Searchterm,
+                Page = Page ?? 1,
+                PageSize = PageSize ?? 25,
+                Status = Status,
+                SortBy = SortBy
+            };
+
+        await RefreshVMs(request);
+    }
+
+    private async Task RefreshVMs(VirtualMachineReq.Index request)
+    {
+        requestsObjects.Clear();
+
+        try {
+            error = false;
+            loading = true;
+            var response = await Http.GetFromJsonAsync<List<VirtualMachineRequestDto.Index>>($"{endpoint}/myrequests?{request.GetQueryString()}");
+            _requests = response;
+
+            _requests?.ToList().ForEach(x =>
+            {
+                requestsObjects.Add(
+                    new Request()
+                        {
+                            Id = x.Id,
+                            Projectnaam = x.ProjectName,
+                            Start_datum = x.StartDate,
+                            Datum_aanvraag = x.Date,
+                            Status = GiveRequestStatusAsString(x.Status)
+                        });
+            });
+
+            loading = false;
+
+        } catch (Exception ex) {
+            loading = false;
+            error = true;
+            errorMessage = ex.Message;
+        }
+    }
+
+    private string GiveRequestStatusAsString(ERequestStatus status){
+        return (status) switch
+        {
+            ERequestStatus.Accepted => "Aanvaard",
+            ERequestStatus.Requested => "Aangevraagd",
+            ERequestStatus.Handled => "Behandeld",
+            ERequestStatus.Denied => "Geweigerd",
+            _ => "Onbekend"
+        };
+    }
+}

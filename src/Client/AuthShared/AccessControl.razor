@@ -5,11 +5,15 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <a href="#" @onclick="BeginSignOut">Log out</a>
+        <NavLink href="#" class="nav_link" Match=NavLinkMatch.All @onclick="BeginSignOut">
+            <div>Log uit</div>
+        </NavLink>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/login">Log in</a>
+        <NavLink href="authentication/login" class="nav_link" Match=NavLinkMatch.All>
+            <div>Log in</div>
+        </NavLink>
+        <a href=""></a>
     </NotAuthorized>
 </AuthorizeView>
 

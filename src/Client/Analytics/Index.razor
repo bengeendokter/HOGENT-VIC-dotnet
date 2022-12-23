@@ -4,6 +4,8 @@
 @inject IVirtualMachineRequestService VirtualMachineRequestService
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Moderator, Administrator")]
+
 @if (activities == null && !error)
 {
         <Loading Title="Historiek"/>

@@ -1,12 +1,19 @@
-﻿using Shared.Users;
+﻿using Client.Components;
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
+using Shared.AuthUsers;
+using Shared.Error;
+using Shared.Users;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
+using static System.Net.WebRequestMethods;
 
 namespace Client.Users;
 
 public class UserService : IUserService
 {
     private readonly HttpClient client;
-    private const string endpoint = "api/user";
+    private const string endpoint = "AuthUser";
 
     public UserService(HttpClient client)
     {
@@ -31,9 +38,21 @@ public class UserService : IUserService
         return await response.Content.ReadFromJsonAsync<int>();
     }
 
-    public async Task EditAsync(int userId, UserDto.Mutate model)
+    public async Task<AuthUserDto.Detail.General> EditGeneralAsync(string userId, AuthUserRequest.General request)
     {
-        await client.PutAsJsonAsync($"{endpoint}/{userId}", model);
+        var response = await client.PutAsJsonAsync($"/AuthUser/{userId}", request);
+        if (!response.IsSuccessStatusCode)
+        {
+            string message = response.Content.ReadAsStringAsync().Result;
+            ResponseError error = JsonConvert.DeserializeObject<ResponseError>(message);
+            string errorMessage = error?.Message ?? "Er gebeurde een ongekende error.";
+            throw new ApplicationException(errorMessage);
+        } else
+        {
+            return await response.Content.ReadFromJsonAsync<AuthUserDto.Detail.General>();
+        }
+
+        
     }
 
     public async Task DeleteAsync(int userId)

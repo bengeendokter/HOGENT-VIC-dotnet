@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 using Shared.AuthUsers;
+using Shared.Error;
 using System.Net;
 using System.Net.Http.Json;
 using static Shared.AuthUsers.AuthUserDto.Detail;
@@ -12,6 +14,7 @@ public partial class EditGeneral
     [Parameter] public string? Id { get; set; }
     //[Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] IUserService UserService { get; set; } = default!;
     [Inject] public HttpClient Http { get; set; } = default!;
 
     private AuthUserDto.Mutate.General? _userGeneralInfoMutate = new();
@@ -20,6 +23,9 @@ public partial class EditGeneral
     private bool error = false;
     private string errorMessage = string.Empty;
     private bool loading = false;
+
+    private bool minorError = false;
+    private string minorErrorMessage = String.Empty;
 
     protected async override Task OnParametersSetAsync()
     { 
@@ -68,20 +74,25 @@ public partial class EditGeneral
                 ScreenName = _userGeneralInfoMutate.ScreenName
             };
 
-            var response = await Http.PutAsJsonAsync($"/AuthUser/{Id}", request);
-
+            var response = await UserService.EditGeneralAsync(Id, request);
             loading = false;
-            if (response.IsSuccessStatusCode)
-            {
-                NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
-            }
-
-
-        } catch (WebException ex)
+            NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
+        } catch(ApplicationException ex)
+        {
+            loading = false;
+            minorError = true;
+            minorErrorMessage = ex.Message;
+        } catch (Exception ex)
         {
             loading = false;
             error = true;
             errorMessage = ex.Message;
         } 
+    }
+
+    private void ResetMinorError()
+    {
+        minorError = false;
+        minorErrorMessage = String.Empty;
     }
 }

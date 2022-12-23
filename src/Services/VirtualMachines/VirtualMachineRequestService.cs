@@ -175,8 +175,8 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     {
         return (sortby) switch
         {
-            "date" => query.OrderBy(x => x.CreatedAt),
-            "dateDesc" => query.OrderByDescending(x => x.CreatedAt),
+            "date" => query.OrderBy(x => x.UpdatedAt),
+            "dateDesc" => query.OrderByDescending(x => x.UpdatedAt),
             "project" => query.OrderBy(x => x.ProjectName),
             "projectDesc" => query.OrderByDescending(x => x.ProjectName),
             _ => query

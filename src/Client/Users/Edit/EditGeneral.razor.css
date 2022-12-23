@@ -1,22 +1,38 @@
-﻿.center-container {
+﻿.container {
+    max-width: 1500px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.container {
-    display: inline-block;
-    margin: 2em 0em;
+    flex-direction: column;
+    margin: 25px auto;
     
 }
 
 .input-container {
-    display: flex;
+    max-width: 500px;
+    width: 90%;
+    align-items: center;
     flex-direction: row;
-    margin: 0em 3em;
-    gap: 2em;
-    
+    padding: 10px;
+    margin: auto;
+    gap: 5px;
+}
+
+.input-container section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-container section:last-child {
+    margin-top: 5px;
+}
+
+.group {
+    display: flex;
+    flex-wrap :wrap;
+    width: 100%;
+    gap: 10px;
+    justify-content: space-between;
+
 }
 
 .button-container {
@@ -27,27 +43,6 @@
     margin: 1em 0em;
     gap: 1em;
 }
-
-section {
-    min-width: 256px;
-}
-
-.group {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    align-items: center;
-    margin: 1em;
-}
-
-    .group > label {
-        grid-column: 1 / 2;
-        font-weight: 600;
-    }
-
-    .group > div {
-        grid-column: 3 / 6;
-        margin: 5px 0px;
-    }
 
 ::deep select.inputField {
     background: white;
@@ -67,6 +62,7 @@ section {
     border-radius: 0;
     border: none;
     border-radius: 2px;
+    height: 25px;
 }
 
 ::deep input[type=checkbox]{
@@ -81,13 +77,13 @@ section {
 
     .input-container {
         flex-direction: column;
-        gap: 0em;
+        align-items: center;
     }
 
     .group {
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        justify-content: center;
         align-items: start;
     }
 }

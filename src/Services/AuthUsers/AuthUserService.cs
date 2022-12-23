@@ -10,6 +10,7 @@ using Shared.Activities;
 using Shared.AuthUsers;
 using Shared.VirtualMachines;
 using Domain.VirtualMachines;
+using ERequestStatus = Domain.VirtualMachines.ERequestStatus;
 
 namespace Services.Clients;
 
@@ -102,14 +103,28 @@ public class AuthUserService
 
         query = query.Where(x => x.Client.Email == email);
 
+        if (!string.IsNullOrWhiteSpace(request.Searchterm))
+        {
+            query = query.Where(x =>
+            x.ProjectName.Contains(request.Searchterm)
+            );
+        }
+
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
-            var status = Enum.Parse<Domain.VirtualMachines.ERequestStatus>(request.Status, true);
-            query = query.Where(x => x.Status.Equals(status));
+            var status = request.Status;
+            query = query.Where(x => 
+                ((x.Status == ERequestStatus.Denied) ? "Geweigerd" : 
+                ((x.Status == ERequestStatus.Requested) ? "Aangevraagd" : 
+                ((x.Status == ERequestStatus.Handled) ? "Behandeld" : "Aanvaard"))) == status
+                );
         }
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
             query = SortRequestQueryRequest(request.SortBy, query);
+        } else
+        {
+            query = query.OrderByDescending(x => x.UpdatedAt);
         }
 
         var items = await query
@@ -139,6 +154,19 @@ public class AuthUserService
         .ToListAsync();
 
         return items;
+    }
+
+
+    private string GiveStatusAsString(ERequestStatus status)
+    {
+        return (status) switch
+        {
+            ERequestStatus.Accepted => "Aanvaard",
+            ERequestStatus.Requested => "Aangevraagd",
+            ERequestStatus.Handled => "Behandeld",
+            ERequestStatus.Denied => "Geweigerd",
+            _ => "Onbekend"
+        };
     }
 
     private IQueryable<VirtualMachine> SortRequestQueryVM(string? sortby, IQueryable<VirtualMachine> query)

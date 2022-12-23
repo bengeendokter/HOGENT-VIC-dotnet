@@ -20,11 +20,13 @@
                         Algemene informatie
                     </div>
                 </div>
-                <div @onclick="GoToEditRole">
-                    <div class="options_inner">
-                        Rol
+                <AuthorizeView Roles="Administrator">
+                    <div @onclick="GoToEditRole">
+                        <div class="options_inner">
+                            Rol
+                        </div>
                     </div>
-                </div>
+                </AuthorizeView>
             </div>
 
         </div>

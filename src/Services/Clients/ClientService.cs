@@ -87,8 +87,8 @@ public class ClientService : IClientService
 
     public async Task<int> CreateAsync(ClientDto.Mutate model)
     {
-        if (await dbContext.Clients.AnyAsync(x => x.Name == model.Name))
-            throw new EntityAlreadyExistsException(nameof(Client), nameof(Client.Name), model.Name);
+        if (await dbContext.Clients.AnyAsync(x => x.Email == model.Email))
+            throw new ApplicationException("Er is een fout opgetreden. Probeer opnieuw met een ander email.");
 
         Client client = new Client(
             model.Name!,

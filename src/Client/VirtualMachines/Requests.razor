@@ -3,6 +3,8 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Moderator, Administrator")]
+
 @if (list == null && !error)
 {
         <Loading Title="Aanvragen"/>

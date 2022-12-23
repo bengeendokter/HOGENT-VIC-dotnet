@@ -1,0 +1,32 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="optionele-filters">
+    <select class="filter-role" value="@Status" @onchange="StatusChanged">
+         <option value="">Status</option>
+         <option value="Aanvaard">Aanvaard</option>
+         <option value="Aangevraagd">Aangevraagd</option>
+         <option value="Behandeld">Behandeld</option>
+         <option value="Geweigerd">Geweigerd</option>
+    </select>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string? Status { get; set; } = default!;
+    private string? status;
+
+    private void StatusChanged(ChangeEventArgs args)
+    {
+        status = args.Value?.ToString();
+        FilterRole();
+    }
+
+    private void FilterRole()
+    {
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add(nameof(status), status);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}

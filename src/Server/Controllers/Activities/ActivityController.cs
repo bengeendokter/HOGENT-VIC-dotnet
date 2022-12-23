@@ -7,7 +7,7 @@ namespace Server.Controllers.Activities;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "Moderator, Administrator")]
 public class ActivityController : ControllerBase
 {
     private readonly IActivityService activityService;

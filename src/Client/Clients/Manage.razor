@@ -2,11 +2,26 @@
 @page "/klanten/wijzigen/{id:int}"
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Moderator, Administrator")]
 
+@if (loading)
+{
+    <Loading Title="Klanten wijzigen/toevoegen" />
+    return;
+}
+
+@if (error)
+{
+    <Error Title="Klanten wijzigen/toevoegen" ErrorMessage="@errorMessage" />
+    return;
+}
 
 <GenericLayout Display=false Title=@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")>
     <Content>
+         <MinorError 
+            MinorErrorBool="@minorError"
+            MinorErrorMessage="@minorErrorMessage"
+            ResetMinorError="@ResetMinorError"/>
         <EditForm Model="@_client" OnValidSubmit="OnSubmit" >
             <FluentValidationValidator />
             <div class="center-container">
@@ -111,7 +126,16 @@
     private ClientDto.Mutate _client = new();
     private string _clientName = "";
 
-    protected override async Task OnInitializedAsync() 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
+    public bool minorError { get; set; } = false;
+    public string minorErrorMessage { get; set; } = String.Empty;
+
+
+    private bool loading = false;
+
+    protected override async Task OnParametersSetAsync() 
     {
         if (Id.HasValue && NavigationManager.Uri.Contains("wijzigen"))
         {
@@ -142,18 +166,35 @@
         {
             CreateClientAsync();
         }
-
     }
 
     private async void CreateClientAsync() 
     {
-        var response = await ClientService.CreateAsync(_client);
-        NavigationManager.NavigateTo($"/klanten/{response}");
+        try {
+            error = false;
+
+            var response = await ClientService.CreateAsync(_client);
+            loading = false;
+            NavigationManager.NavigateTo($"/klanten/{response}");
+        } catch (ApplicationException ex) {
+            loading = false;
+            minorError = true;
+            minorErrorMessage = ex.Message;
+        } catch (Exception ex) {
+            loading = false;
+            errorMessage = ex.Message;
+            error = true;
+        }
     }
 
     private async void EditClientAsync() 
     {
         await ClientService.EditAsync(Id.Value, _client);
         NavigationManager.NavigateTo("/klanten");
+    }
+
+    private void ResetMinorError(){
+        minorError = false;
+        minorErrorMessage = string.Empty;
     }
 }

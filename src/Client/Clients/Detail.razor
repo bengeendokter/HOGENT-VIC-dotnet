@@ -1,7 +1,7 @@
 ﻿@page "/klanten/{id:int}"
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Customer, Moderator, Administrator")]
 
 @if (client == null) 
 {

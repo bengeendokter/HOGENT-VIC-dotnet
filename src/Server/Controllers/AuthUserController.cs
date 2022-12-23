@@ -114,7 +114,7 @@ namespace Server.Controllers
             // Check if email is already used
             if (possibleUser.Any() && possibleUser.Where(x => x.UserId == userId).ToList().Count == 0)
             {
-                throw new Exception($"Account met email {request.Email} bestaat al.");
+                throw new Exception($"Probeer een ander email / bestaat reeds");
             }
 
 
@@ -256,6 +256,7 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{userId}")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
             var user = await _managementApiClient.Users.GetAsync(userId);

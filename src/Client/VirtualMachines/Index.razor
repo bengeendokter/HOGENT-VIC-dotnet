@@ -2,7 +2,7 @@
 @using System.Globalization
 @inject IVirtualMachineService VMService
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Moderator, Administrator")]
 
 @if (list == null && !error)
 {

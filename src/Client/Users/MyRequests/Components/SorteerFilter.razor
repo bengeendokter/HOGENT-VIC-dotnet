@@ -1,0 +1,35 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="optionele-filters">
+    <select class="filter-role" value="@SortBy" @onchange="BeschikbaarChanged">
+         <option value="">Sorteer op</option>
+
+         <option value="project">Projectnaam</option>
+         <option value="projectDesc">Projectnaam (Aflopend)</option>
+
+         <option value="date">Nieuwste -> Laatste</option>
+         <option value="dateDesc">Laatste -> Nieuwste</option>
+
+    </select>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string? SortBy { get; set; } = default!;
+    private string? sortBy;
+
+    private void BeschikbaarChanged(ChangeEventArgs args)
+    {
+        sortBy = args.Value?.ToString();
+        FilterRole();
+    }
+
+    private void FilterRole()
+    {
+        Dictionary<string, object?> parameters = new();
+
+        parameters.Add(nameof(sortBy), sortBy);
+
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+}

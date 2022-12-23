@@ -43,6 +43,7 @@ public class ClientController : ControllerBase
     {
         var clientId = await clientService.CreateAsync(model);
         return CreatedAtAction(nameof(Create), clientId);
+
     }
 
     [Authorize(Roles = "Administrator, Moderator")]

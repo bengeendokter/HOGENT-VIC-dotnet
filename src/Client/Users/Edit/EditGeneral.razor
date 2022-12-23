@@ -16,44 +16,58 @@
 
 <GenericLayout Display=false Title=@($"Gebruiker Wijzigen - {_userGeneralInfo.FirstName} {_userGeneralInfo.LastName}")>
     <Content>
-        <p>*Indien formulier niet ingediend kan worden, probeer een ander email / controleer je connectie</p>
+        <MinorError 
+            MinorErrorBool=@minorError
+            MinorErrorMessage="@minorErrorMessage"
+            ResetMinorError="@ResetMinorError"/>
         <EditForm Model="@_userGeneralInfoMutate" OnValidSubmit="@OnSubmit" >
             <FluentValidationValidator />
-            <div>
-                <label>Voornaam</label>
-                <div>
-                    <InputText @bind-Value="_userGeneralInfoMutate.FirstName"/>
-                    <ValidationMessage For="() => _userGeneralInfoMutate.FirstName"/>
+                <div class="container">
+                    <div class="input-container">
+                        <section>
+                            <div class="group">
+                                <label>Voornaam</label>
+                                <div>
+                                    <InputText @bind-Value="_userGeneralInfoMutate.FirstName" class="inputField"/>
+                                    <ValidationMessage For="() => _userGeneralInfoMutate.FirstName"/>
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Achternaam</label>
+                                <div>
+                                    <InputText @bind-Value="_userGeneralInfoMutate.LastName" class="inputField"/>
+                                    <ValidationMessage For="() => _userGeneralInfoMutate.LastName"/>
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Email</label>
+                                <div>
+                                    <InputText @bind-Value="_userGeneralInfoMutate.Email" class="inputField"/>
+                                    <ValidationMessage For="() => _userGeneralInfoMutate.Email"/>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="group">
+                                <label>Actief</label>
+                                <div>
+                                    <InputCheckbox @bind-Value="_userGeneralInfoMutate.Blocked" class="inputField"/>
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label>Schermnaam</label>
+                                <div>
+                                    <InputText @bind-Value="_userGeneralInfoMutate.ScreenName" class="inputField"/>
+                                    <ValidationMessage For="() => _userGeneralInfoMutate.ScreenName"/>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="btn-primary">Toevoegen</button>
+                        <a href=@($"/gebruikers/wijzigen/{Id}") class="btn-secondary">Annuleren</a>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label>Achternaam</label>
-                <div>
-                    <InputText @bind-Value="_userGeneralInfoMutate.LastName"/>
-                    <ValidationMessage For="() => _userGeneralInfoMutate.LastName"/>
-                </div>
-            </div>
-            <div>
-                <label>Email</label>
-                <div>
-                    <InputText @bind-Value="_userGeneralInfoMutate.Email"/>
-                    <ValidationMessage For="() => _userGeneralInfoMutate.Email"/>
-                </div>
-            </div>
-            <div>
-                <label>Actief</label>
-                <div>
-                    <InputCheckbox @bind-Value="_userGeneralInfoMutate.Blocked"/>
-                </div>
-            </div>
-            <div>
-                <label>Schermnaam (Hoe wilt u dat we u noemen wanneer ingelogd)</label>
-                <div>
-                    <InputText @bind-Value="_userGeneralInfoMutate.ScreenName"/>
-                    <ValidationMessage For="() => _userGeneralInfoMutate.ScreenName"/>
-                </div>
-            </div>
-            <button type="submit">Submit form</button>
         </EditForm>
     </Content>
 </GenericLayout>

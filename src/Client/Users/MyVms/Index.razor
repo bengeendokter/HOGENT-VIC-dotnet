@@ -49,8 +49,8 @@
         public int? vCpu;
         public string? Ram;
         public string? Opslag;
-        public string? Startdatum;
-        public string? Einddatum;
+        public DateTime? Startdatum;
+        public DateTime? Einddatum;
         public string? BackUp;
         public string? Hoge_besch;
         public string? Status;
@@ -118,8 +118,8 @@
                     vCpu = x.CPU,
                     Ram = $"{x.RAM} GB",
                     Opslag = $"{x.Storage} GB",
-                    Startdatum = x.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo),
-                    Einddatum = x.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo),
+                    Startdatum = x.StartDate,
+                    Einddatum = x.EndDate,
                     BackUp = x.BackupFrequency == EBackupFrequency.Daily ? "Dagelijks" : "Wekelijks",
                     Hoge_besch = x.IsHighlyAvailable? "Ja" : "Nee",
                     Status = x.IsActive? "Aan" : "Uit"

@@ -21,29 +21,36 @@
                     <div>Gebruikers</div>
                 </NavLink>
             </AuthorizeView>
-            <NavLink href="/klanten" class="nav_link" Match=NavLinkMatch.All>
-                <div>Klanten</div>
-            </NavLink>
-            <NavLink href="/vm" class="nav_link" Match=NavLinkMatch.All>
-                <div>Virtuele Machines</div>
-            </NavLink>
-            <NavLink href="/vm/request/list" class="nav_link" Match=NavLinkMatch.All>
-                <div>Aanvragen</div>
-            </NavLink>
+            <AuthorizeView Roles="Moderator, Administrator">
+                <NavLink href="/klanten" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Klanten</div>
+                </NavLink>
+            </AuthorizeView>
+            <AuthorizeView Roles="Moderator, Administrator">
+                <NavLink href="/vm" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Virtuele Machines</div>
+                </NavLink>
+            </AuthorizeView>
             <AuthorizeView Roles="Customer">
                 <NavLink href="/mijn_vms" class="nav_link" Match=NavLinkMatch.All>
                     <div>Mijn VMs</div>
                 </NavLink>
             </AuthorizeView>
-            <NavLink href="/historiek" class="nav_link" Match=NavLinkMatch.All>
-                <div>Historiek</div>
-            </NavLink>
-            <NavLink href="/account" class="nav_link icon_link" Match=NavLinkMatch.All>
-                <div><UserIcon></UserIcon> <span class="goneIfScreenBig">Account</span></div>
-            </NavLink>
-            <NavLink href="/logoutbuttonlink" class="nav_link icon_link" Match=NavLinkMatch.All>
-                <div><LogOutIcon></LogOutIcon> <span class="goneIfScreenBig">Log uit</span></div>
-            </NavLink>
+            <AuthorizeView Roles="Moderator, Administrator">
+                <NavLink href="/vm/request/list" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Aanvragen</div>
+                </NavLink>
+            </AuthorizeView>
+            <AuthorizeView Roles="Customer">
+                <NavLink href="/mijn_aanvragen" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Mijn Aanvragen</div>
+                </NavLink>
+            </AuthorizeView>
+            <AuthorizeView Roles="Moderator, Administrator">
+                <NavLink href="/historiek" class="nav_link" Match=NavLinkMatch.All>
+                    <div>Historiek</div>
+                </NavLink>
+            </AuthorizeView>
             <Client.AuthShared.AccessControl />
     </div>
 </div>

@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject ITemplateService TemplateService
 @inject IClientService ClientService
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Moderator, Administrator")]
 
 @if (error)
 {

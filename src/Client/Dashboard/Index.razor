@@ -3,30 +3,15 @@
 @using Shared.AuthUsers
 @inject HttpClient Http
 
-<GenericLayout Display=true Title="Dashboard" StatsTitle="@($"Gebruik op {(DateTime.Now).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}")">
+<GenericLayout Display=false Title="Dashboard" StatsTitle="@($"Gebruik op {(DateTime.Now).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}")">
     <Content>
         <AuthorizeView>
             <Authorized>
-                        @foreach (var claim in context.User.Claims)
-                        {
-                        <p>@claim.Type - @claim.Value</p>
-                        }
-
-                        <button @onclick="@GetInfo">GetInfo</button>
+                <h2>Hallo, @context.User.Identity.Name!</h2>
             </Authorized>
             <NotAuthorized>
-                Please login to see all the claims, <a href="authentication/login">Log in</a>
+                <h2>U heeft geen toegang tot deze pagina. Log in voor toegang.</h2>
             </NotAuthorized>
-        </AuthorizeView>
-
-        <AuthorizeView Roles="Administrator">
-            Only Administrators can see this.
         </AuthorizeView>
     </Content>
 </GenericLayout>
-
-@code {
-    private async Task GetInfo(){
-        await Http.GetFromJsonAsync<AuthUserDto.Detail.General>($"AuthUser/myvirtualmachines"); 
-    }
-}
