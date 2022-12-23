@@ -6,13 +6,14 @@ namespace VIC.IntegrationTests.VirtualMachines;
 [TestFixture]
 public class ManageVirtualMachineTest : PageTest
 {
-    private string vm = "vm1";
+    private string vm = "testvm";
 
     [Test]
     public async Task Test1_Create_VM()
     {
 
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm/manage/");
+        await Page.WaitForTimeoutAsync(500);
 
         await Page.GetByTestId("input-name").FillAsync(vm);
         await Page.GetByTestId("input-hostname").FillAsync("hostname");
@@ -25,9 +26,11 @@ public class ManageVirtualMachineTest : PageTest
         await Page.GetByTestId("btn-template").First.ClickAsync();
 
         await Page.GetByTestId("btn-submit").ClickAsync();
+        await Page.WaitForTimeoutAsync(5000);
 
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm?searchTerm={vm}");
-        await Page.WaitForSelectorAsync("td");
+        await Page.WaitForTimeoutAsync(2000);
+
 
         var rows = await Page.GetByTestId("table-row").CountAsync();
         Assert.That(rows, Is.EqualTo(1));
@@ -41,16 +44,19 @@ public class ManageVirtualMachineTest : PageTest
     {
 
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm?searchTerm={vm}");
+        await Page.WaitForTimeoutAsync(2000);
+
         await Page.GetByTestId("vm-name").First.ClickAsync();
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForTimeoutAsync(500);
 
         await Page.GetByTestId("link-editvm").ClickAsync();
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForTimeoutAsync(2000);
+
 
         await Page.GetByTestId("input-enddate").FillAsync("2024-02-02");
 
         await Page.GetByTestId("btn-submit").ClickAsync();
-        await Page.WaitForSelectorAsync("h1");
+        await Page.WaitForTimeoutAsync(5000);
 
         var date = await Page.GetByTestId("enddate").InnerTextAsync();
         Assert.That(date, Is.EqualTo("02-02-2024"));
@@ -61,6 +67,7 @@ public class ManageVirtualMachineTest : PageTest
     public async Task Test3_DeleteVM()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm?searchTerm={vm}");
+        await Page.WaitForTimeoutAsync(500);
         await Page.GetByTestId("vm-name").First.ClickAsync();
         await Page.WaitForSelectorAsync("h1");
 
@@ -68,6 +75,7 @@ public class ManageVirtualMachineTest : PageTest
         await Page.GetByTestId("btn-delete-confirmation").ClickAsync();
 
         await Page.GotoAsync($"{TestHelper.BaseUri}/vm?searchTerm={vm}");
+        await Page.WaitForTimeoutAsync(500);
         await Page.WaitForSelectorAsync("h1");
 
         var rows = await Page.GetByTestId("table-row").CountAsync();

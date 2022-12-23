@@ -34,9 +34,9 @@ public class ClientService : IClientService
         }
 
         var items = await query
+           .OrderBy(x => x.Id)
            .Skip((request.Page - 1) * request.PageSize)
            .Take(request.PageSize)
-           .OrderBy(x => x.Id)
            .Select(x => new ClientDto.Index
            {
                Id = x.Id,

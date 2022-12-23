@@ -39,6 +39,7 @@ public class ManageClientTest : PageTest
         await Page.GetByTestId("in-etype").FillAsync("EType");
 
         await Page.GetByTestId("btn-add").ClickAsync();
+        await Page.WaitForTimeoutAsync(500);
 
         var email = await Page.GetByTestId("dtl-email").TextContentAsync();
         Assert.That(email, Is.EqualTo("test@test.be"));
@@ -61,9 +62,12 @@ public class ManageClientTest : PageTest
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten");
         await Page.GetByTestId("searchbar").FillAsync("Voornaam");
+        await Page.GetByTestId("btn-search").ClickAsync();
+        
         await Page.WaitForSelectorAsync("td");
 
         await Page.GetByTestId("btn-edit-callback").ClickAsync();
+        await Page.WaitForTimeoutAsync(1000);
 
         await Page.GetByTestId("in-surname").FillAsync("Surname");
         await Page.GetByTestId("in-name").FillAsync("Lastname");
@@ -71,15 +75,12 @@ public class ManageClientTest : PageTest
         await Page.GetByTestId("in-email").FillAsync("aangepast@test.be");
         await Page.GetByTestId("in-backup").FillAsync("0321 54 76 98");
         await Page.GetByTestId("in-org").FillAsync("Nieuwe organisatie");
-        await Page.GetByTestId("in-type").SelectOptionAsync(new[] { "Internal" });
-
-        await Expect(Page.GetByTestId("in-edu")).ToBeVisibleAsync();
-        await Page.GetByTestId("in-edu").FillAsync("DIT");
 
         await Expect(Page.GetByTestId("btn-edit")).ToBeVisibleAsync();
         await Page.GetByTestId("btn-edit").ClickAsync();
 
         await Page.GetByTestId("searchbar").FillAsync("Surname");
+        await Page.GetByTestId("btn-search").ClickAsync();
         await Page.WaitForSelectorAsync("td");
 
         await Expect(Page.GetByTestId("btn-info-callback")).ToBeVisibleAsync();
@@ -97,8 +98,6 @@ public class ManageClientTest : PageTest
         var organisation = await Page.GetByTestId("dtl-org").TextContentAsync();
         Assert.That(organisation, Is.EqualTo("Nieuwe organisatie"));
 
-        var type = await Page.GetByTestId("dtl-edu").TextContentAsync();
-        Assert.That(type, Is.EqualTo("DIT"));
     }
 
     [Test]
@@ -106,12 +105,14 @@ public class ManageClientTest : PageTest
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten");
         await Page.GetByTestId("searchbar").FillAsync("Surname");
+        await Page.GetByTestId("btn-search").ClickAsync();
 
         await Page.GetByTestId("btn-delete-callback").ClickAsync();
         await Page.GetByTestId("btn-delete-confirmation").ClickAsync();
 
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten");
         await Page.GetByTestId("searchbar").FillAsync("Surname");
+        await Page.GetByTestId("btn-search").ClickAsync();
 
         var rows = await Page.Locator("tr").CountAsync();
 

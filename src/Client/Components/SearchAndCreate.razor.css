@@ -11,14 +11,27 @@
 }
 
     .search-and-create input {
-        flex: 1 1 80%;
+        flex: 1 1 70%;
         padding-left: 10px;
         height: 40px;
         border: 2px solid var(--clr-background-title);
         border-radius: 5px;
     }
 
-    .search-and-create button {
+    .search-and-create .search-button {
+        flex: 1 1 5%;
+        height: 38px;
+        text-decoration: none;
+        color: var(--clr-primary);
+        background: var(--clr-CTA);
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .search-and-create .add-button {
         text-decoration: none;
         color: var(--clr-primary);
         background: var(--clr-CTA);
@@ -42,7 +55,12 @@
             border-radius: 5px 0 0 5px;
         }
 
-        .search-and-create button {
+        .search-and-create .add-button {
+            border-radius: 5px;
+        }
+
+        .search-and-create .search-button {
             border-radius: 0 5px 5px 0;
+            margin-right: 5px;
         }
 }
