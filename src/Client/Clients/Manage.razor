@@ -3,6 +3,11 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
+@if (error)
+{
+    <Error Title="@(IsEdit ? $"Klant wijzigen" : "Klant toevoegen")" ErrorMessage="@errorMessage" />
+    return;
+}
 
 <GenericLayout Display=false Title=@(IsEdit ? $"Klant wijzigen - {_clientName}" : "Klant toevoegen")>
     <Content>
@@ -10,42 +15,41 @@
             <FluentValidationValidator />
             <div class="center-container">
                 <div class="container">
-
                     <div class="input-container">
                         <section>
                             <div class="group">
                                 <label>Voornaam</label>
                                 <div>
-                                    <InputText @bind-Value="_client.Surname" class="inputField" />
-                                    <ValidationMessage For="() => _client.Surname" />
+                                    <InputText @bind-Value="_client.Surname" class="inputField" data-testid="in-surname" />
+                                    <ValidationMessage For="() => _client.Surname" data-testid="err-surname" />
                                 </div>
                             </div>
                             <div class="group">
                                 <label>Naam</label>
                                 <div>
-                                    <InputText @bind-Value="_client.Name" class="inputField" />
-                                    <ValidationMessage For="() => _client.Name" />
+                                    <InputText @bind-Value="_client.Name" class="inputField" data-testid="in-name" />
+                                    <ValidationMessage For="() => _client.Name" data-testid="err-name" />
                                 </div>
                             </div>
                             <div class="group">
                                 <label>Telefoon nr.</label>
                                 <div>
-                                    <InputText @bind-Value="_client.PhoneNumber" class="inputField" />
-                                    <ValidationMessage For="() => _client.PhoneNumber" />
+                                    <InputText @bind-Value="_client.PhoneNumber" class="inputField" data-testid="in-phone" />
+                                    <ValidationMessage For="() => _client.PhoneNumber" data-testid="err-phone" />
                                 </div>
                             </div>
                             <div class="group">
                                 <label>Email</label>
                                 <div>
-                                    <InputText @bind-Value="_client.Email" class="inputField" />
-                                    <ValidationMessage For="() => _client.Email" />
+                                    <InputText @bind-Value="_client.Email" class="inputField" data-testid="in-email" />
+                                    <ValidationMessage For="() => _client.Email" data-testid="err-email" />
                                 </div>
                             </div>
                             <div class="group">
                                 <label>Backup contact</label>
                                 <div>
-                                    <InputText @bind-Value="_client.BackupContact" class="inputField" />
-                                    <ValidationMessage For="() => _client.BackupContact" />
+                                    <InputText @bind-Value="_client.BackupContact" class="inputField" data-testid="in-backup" />
+                                    <ValidationMessage For="() => _client.BackupContact" data-testid="err-backup" />
                                 </div>
                             </div>
                         </section>
@@ -53,26 +57,26 @@
                             <div class="group">
                                 <label>Klant organisatie</label>
                                 <div>
-                                    <InputText @bind-Value="_client.ClientOrganisation" class="inputField" />
-                                    <ValidationMessage For="() => _client.ClientOrganisation" />
+                                    <InputText @bind-Value="_client.ClientOrganisation" class="inputField" data-testid="in-org" />
+                                    <ValidationMessage For="() => _client.ClientOrganisation" data-testid="err-org" />
                                 </div>
                             </div>
                             <div class="group">
                                 <label>Type Organisatie</label>
                                 <div>
-                                    <InputSelect @bind-Value="_client.ClientType" class="inputField">
+                                    <InputSelect @bind-Value="_client.ClientType" class="inputField" data-testid="in-type" >
                                         <option value="@EClientType.Internal">Intern</option>
                                         <option value="@EClientType.External">Extern</option>
                                     </InputSelect>
-                                    <ValidationMessage For="() => _client.ClientType" />
+                                    <ValidationMessage For="() => _client.ClientType" data-testid="err-type" />
                                 </div>
                             </div>
                             @if (_client.ClientType == EClientType.Internal) {
                                 <div class="group">
                                     <label>Opleiding</label>
                                     <div>
-                                        <InputText @bind-Value="_client.Education" class="inputField" />
-                                        <ValidationMessage For="() => _client.Education" />
+                                        <InputText @bind-Value="_client.Education" class="inputField" data-testid="in-edu" />
+                                        <ValidationMessage For="() => _client.Education" data-testid="err-edu" />
                                     </div>
                                 </div>
                             }
@@ -80,8 +84,8 @@
                                 <div class="group">
                                     <label>Rol</label>
                                     <div>
-                                        <InputText @bind-Value="_client.ExternalType" class="inputField" />
-                                        <ValidationMessage For="() => _client.ExternalType" />
+                                        <InputText @bind-Value="_client.ExternalType" class="inputField" data-testid="in-etype" />
+                                        <ValidationMessage For="() => _client.ExternalType" data-testid="err-etype" />
                                     </div>
                                 </div>
                             }
@@ -90,12 +94,12 @@
                     <div class="button-container">
                         @if (IsEdit) 
                         {
-                            <button type="submit" class="btn-primary">Wijzigen</button>
+                            <button type="submit" class="btn-primary" data-testid="btn-edit" >Wijzigen</button>
                         } else 
                         {
-                            <button type="submit" class="btn-primary">Toevoegen</button>
+                            <button type="submit" class="btn-primary" data-testid="btn-add" >Toevoegen</button>
                         }
-                        <a href="/klanten" class="btn-secondary">Annuleren</a>
+                        <a href="/klanten" class="btn-secondary" data-testid="btn-cancel" >Annuleren</a>
                     </div>
                 </div>
             </div>
@@ -110,49 +114,72 @@
     private ClientDto.Mutate _client = new();
     private string _clientName = "";
 
+    private bool error = false;
+    private string errorMessage = string.Empty;
+
     protected override async Task OnInitializedAsync() 
     {
         if (Id.HasValue && NavigationManager.Uri.Contains("wijzigen"))
         {
             IsEdit = true;
-            var response = await ClientService.GetDetailAsync(Id.Value);
-            _clientName = response?.Name;
-            _client = new ClientDto.Mutate
+            try 
             {
-                Surname = response.Surname,
-                Name = response.Name,
-                PhoneNumber = response.PhoneNumber,
-                ClientType = response.ClientType,
-                ClientOrganisation = response.ClientOrganisation,
-                Email = response.Email,
-                BackupContact = response.BackupContact,
-                Education = response.Education,
-                ExternalType = response.ExternalType,
-            };
+                var response = await ClientService.GetDetailAsync(Id.Value);
+                _clientName = $"{response?.Surname} {response?.Name}";
+                _client = new ClientDto.Mutate
+                    {
+                        Surname = response.Surname,
+                        Name = response.Name,
+                        PhoneNumber = response.PhoneNumber,
+                        ClientType = response.ClientType,
+                        ClientOrganisation = response.ClientOrganisation,
+                        Email = response.Email,
+                        BackupContact = response.BackupContact,
+                        Education = response.Education,
+                        ExternalType = response.ExternalType,
+                    };
+            } 
+            catch (Exception ex)
+            {
+                error = true;
+                errorMessage = ex.Message;
+            }
         }
     }
 
     private void OnSubmit()
     {
-        if (IsEdit) 
-        {
-            EditClientAsync();
-        } else 
-        {
-            CreateClientAsync();
-        }
-
+        if (IsEdit) { EditClientAsync(); }
+        else { CreateClientAsync(); }
     }
 
     private async void CreateClientAsync() 
     {
-        var response = await ClientService.CreateAsync(_client);
-        NavigationManager.NavigateTo($"/klanten/{response}");
+        try 
+        {
+            error = false;
+            var response = await ClientService.CreateAsync(_client);
+            NavigationManager.NavigateTo($"/klanten/{response}");
+        } 
+        catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 
     private async void EditClientAsync() 
     {
-        await ClientService.EditAsync(Id.Value, _client);
-        NavigationManager.NavigateTo("/klanten");
+        try
+        {
+            error = false;
+            await ClientService.EditAsync(Id.Value, _client);
+            NavigationManager.NavigateTo("/klanten");
+        }
+        catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
     }
 }

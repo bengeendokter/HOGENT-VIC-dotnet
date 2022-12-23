@@ -2,15 +2,16 @@
 @inject IClientService ClientService
 @inject NavigationManager NavigationManager
 
-@if (client == null) 
-{
-    <Loading Title="Klant" />
-    return;
-}
 
 @if (error)
 {
     <Error Title="Klant" ErrorMessage="@errorMessage" />
+    return;
+}
+
+@if (client == null) 
+{
+    <Loading Title="Klant" />
     return;
 }
 
@@ -31,15 +32,17 @@
                         <table>
                             <tr>
                                 <th>Emailadres</th>
-                                <td>@client.Email</td>
+                                <td data-testid="dtl-email">@client.Email</td>
                             </tr>
                             <tr>
                                 <th>GSM-nummer</th>
-                                <td>@client.PhoneNumber</td>
+                                <td data-testid="dtl-phone">@client.PhoneNumber</td>
                             </tr>
                             <tr>
-                                <th>Backup contact</th>
-                                <td>@client.BackupContact</td>
+
+                                <th>Backup contactpersoon</th>
+                                 <td data-testid="dtl-backup">@client.BackupContact</td>
+
                             </tr>
                         </table>
                     </section>
@@ -49,12 +52,14 @@
                             <h2>Intern</h2>
                             <table>
                                 <tr>
-                                    <th>Klant organisatie</th>
-                                    <td>@client.ClientOrganisation</td>
+
+                                    <th>Departement</th>
+                                    <td data-testid="dtl-org">@client.ClientOrganisation</td>
+
                                 </tr>
                                 <tr>
                                     <th>Opleiding</th>
-                                    <td>@client.Education</td>
+                                    <td data-testid="dtl-edu">@client.Education</td>
                                 </tr>
                             </table>
                         </section>
@@ -64,11 +69,13 @@
                             <table>
                                 <tr>
                                     <th>Naam externe</th>
-                                    <td>@client.ClientOrganisation</td>
+                                        <td data-testid="dtl-org">@client.ClientOrganisation</td>
                                 </tr>
                                 <tr>
-                                    <th>Rol</th>
-                                    <td>@client.ExternalType</td>
+
+                                    <th>Type</th>
+                                    <td data-testid="dtl-type">@client.ExternalType</td>
+
                                 </tr>
                             </table>
                         </section>
@@ -79,11 +86,11 @@
                     <a href="klanten/wijzigen/@Id" class="btn-primary" >Wijzigen</a>
                     @if (!isRequestingDelete) 
                     {
-                        <button class="btn-delete" @onclick="ToggleDelete">Verwijderen</button>
+                        <button class="btn-delete" @onclick="ToggleDelete" data-testid="btn-delete">Verwijderen</button>
                     } else 
                     {
-                        <button class="btn-secondary" @onclick="ToggleDelete">Annuleren</button>
-                        <button class="btn-delete" @onclick="DeleteClientAsync">Verwijderen bevestigen</button>
+                        <button class="btn-secondary" @onclick="ToggleDelete" data-testid="btn-cancel" >Annuleren</button>
+                        <button class="btn-delete" @onclick="DeleteClientAsync" data-testid="btn-confirm-delete">Verwijderen bevestigen</button>
                     }
 
                 </div>
@@ -108,9 +115,17 @@
 
     private async Task GetClientAsync()
     {
-        var response = await ClientService.GetDetailAsync(Id);
-        if (response == null) return;
-        client = response;
+        try {
+            error = false;
+            var response = await ClientService.GetDetailAsync(Id);
+            client = response;
+        }
+        catch (Exception ex)
+        {
+            error = true;
+            errorMessage = ex.Message;
+        }
+
     }
 
     private void ToggleDelete() 
