@@ -11,5 +11,7 @@ internal class VirtualMachineConfiguration : EntityConfiguration<VirtualMachine>
         builder.HasOne(vm => vm.Client)
             .WithMany(c => c.VirtualMachines);
         builder.Navigation(vm => vm.Client).AutoInclude();
+        builder.Property(x => x.StartDate).HasConversion<long>();
+        builder.Property(x => x.EndDate).HasConversion<long>();
     }
 }
