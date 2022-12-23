@@ -12,11 +12,11 @@
 
 <GenericLayout Display=false Title="@vm.Name"> 
     <Actions>
-        <a class="link" href=@($"/vm/manage/{Id}")>Bewerken</a>
+        <a class="link" href=@($"/vm/manage/{Id}") data-testid="link-editvm">Bewerken</a>
     </Actions>
     <Content>
         <section aria-labelledby="vm-title" class="details">
-            <div class="details_group">
+            <div class="details_group" data-testid="div-detailgroup">
                 <section class="details_item">
                     <h2>Algemeen</h2>
                     <table class="table">
@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <th>Einddatum gebruik</th>
-                            <td>@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
+                            <td data-testid="enddate">@vm.EndDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>
                         </tr>
                         <tr>
                             <th>FQDN</th>

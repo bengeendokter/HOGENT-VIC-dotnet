@@ -20,18 +20,18 @@
                     <div class="input-group">
                         <label>
                             Geef een naam aan het project waarvoor de VM wordt gebruikt <br />
-                            <InputText @bind-Value="vmRequest.ProjectName" class="inputField"></InputText>
+                            <InputText @bind-Value="vmRequest.ProjectName" class="inputField" data-testid="input-projectname"></InputText>
                             <ValidationMessage For="@(()=> vmRequest.ProjectName)"></ValidationMessage>
                         </label>
 
                         <label>
                             Start datum<br />
-                            <InputDate @bind-Value="vmRequest.StartDate" class="inputField"></InputDate>
+                            <InputDate @bind-Value="vmRequest.StartDate" class="inputField" data-testid="input-startdate"></InputDate>
                             <ValidationMessage For="@(()=> vmRequest.StartDate)"></ValidationMessage>
                         </label>
                         <label>
                             Eind datum<br />
-                            <InputDate @bind-Value="vmRequest.EndDate" class="inputField"></InputDate>
+                            <InputDate @bind-Value="vmRequest.EndDate" class="inputField" data-testid="input-enddate"></InputDate>
                             <ValidationMessage For="@(()=> vmRequest.EndDate)"></ValidationMessage>
                         </label>
 
@@ -39,7 +39,7 @@
                         <label class="reden">
                             Geef een omschrijving voor de aanvraag van de VM en andere informatie die belangrijk is voor
                             de aanvraag.<br />
-                            <InputTextArea @bind-Value="vmRequest.Reason" class="inputField"></InputTextArea>
+                            <InputTextArea @bind-Value="vmRequest.Reason" class="inputField" data-testid="input-reason"></InputTextArea>
                             <ValidationMessage For="@(()=> vmRequest.Reason)"></ValidationMessage>
                         </label>
 
@@ -48,7 +48,7 @@
 
                         }
                     </div>
-                    <button type="submit" class="btn-primary">Submit</button>
+                    <button type="submit" class="btn-primary" data-testid="btn-submit">Submit</button>
                 </div>
             </EditForm>
         </div>
@@ -59,7 +59,7 @@
 {
     <div class="background">
         <div class="window">
-            <h2>Aanvraag werd succesvol aangemaakt</h2>
+            <h2 data-testid="msg-succes">Aanvraag werd succesvol aangemaakt</h2>
             <p>@($"Aanvraag voor {vmRequest.ProjectName} succesvol aangemaakt.")</p>
             <div class="window-buttons">
                 <button class="btn-primary"

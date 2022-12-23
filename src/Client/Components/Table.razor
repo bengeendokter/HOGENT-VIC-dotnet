@@ -57,7 +57,7 @@
 
             @foreach (var item in Collection)
             {
-                <tr>
+                <tr data-testid="table-row">
                     @foreach (var fieldInfo in item.GetType().GetFields())
                     {
                         var key = fieldInfo.Name;
@@ -83,7 +83,7 @@
                             <div>
                                 @if (EditCallback.HasDelegate)
                                 {
-                                    <button style="border: none; background: none;">
+                                    <button style="border: none; background: none;" data-testid="btn-edit-callback">
                                         <span class="material-icons" style="color: slategray"
                                             @onclick="() => OnEdit(item.GetType().GetFields()[0].GetValue(item))">
                                             edit
@@ -102,7 +102,8 @@
                                 @if (DeleteCallback.HasDelegate)
                                 {
                                     <button style="border: none; background: none;"
-                                            @onclick="() => SetDeleteTrue(item.GetType().GetFields()[0].GetValue(item))">
+                                            @onclick="() => SetDeleteTrue(item.GetType().GetFields()[0].GetValue(item))"
+                                            data-testid="btn-delete-callback">
                                         <span class="material-icons" style="color: red">
                                             delete
                                         </span>
@@ -120,7 +121,8 @@
                                 @if (InfoCallback.HasDelegate)
                                 {
                                     <button style="border: none; background: none;"
-                                        @onclick="() => OnInfo(item.GetType().GetFields()[0].GetValue(item))">
+                                        @onclick="() => OnInfo(item.GetType().GetFields()[0].GetValue(item))"
+                                        data-testid="btn-info-callback">
                                         <span class="material-icons" style="color: blue; background-color: white; border-radius: 50%;">
                                             info
                                         </span>

@@ -1,7 +1,11 @@
 ﻿@inject NavigationManager NavigationManager
 
 <div class="search-and-create">
-    <input type="search" class=@($"{((IsMyListScherm && !CreateCallback.HasDelegate)? "onlySearch" : "")}") placeholder=@($"Zoeken... {(IsAuthUserScherm? "(Minimum 3 karakters)": "")} ") value="@searchTerm" @onchange="SearchTermChanged" />
+     <input type="search" placeholder="Zoeken..." 
+        value="@searchTerm" @oninput="SearchTermChanged" 
+        data-testid="searchbar"
+    />
+    <button class="search-button" @onclick="Filter" data-testid="btn-search">Zoek</button>
     @if (!IsMyListScherm && CreateCallback.HasDelegate){
         <button @onclick="GoToCreate">Toevoegen</button>
     }
@@ -23,7 +27,6 @@
     private void SearchTermChanged(ChangeEventArgs args)
     {
         searchTerm = args.Value?.ToString();
-        Filter();
     }
 
     private void Filter() {

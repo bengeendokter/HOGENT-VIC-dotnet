@@ -1,7 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 
 <div class="optionele-filters">
-    <select class="filter" value="@clientType" @onchange="TypeChanged">
+    <select class="filter" value="@clientType" @onchange="TypeChanged" data-testid="select-type">
         <option value="" selected>Alle</option>
         <option value="internal">Interne</option>
         <option value="external">Externe</option>

@@ -11,5 +11,7 @@ internal class VirtualMachineRequestConfiguration : EntityConfiguration<VirtualM
         builder.HasOne(vmr => vmr.Client)
             .WithMany(c => c.Requests);
         builder.Navigation(vmr => vmr.Client).AutoInclude();
+        builder.Property(x => x.StartDate).HasConversion<long>();
+        builder.Property(x => x.EndDate).HasConversion<long>();
     }
 }

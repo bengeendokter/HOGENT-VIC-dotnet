@@ -13,7 +13,7 @@ internal class EntityConfiguration<T> : IEntityTypeConfiguration<T> where T : En
         // All entities can be soft deleted but are not by default
         builder.Property(x => x.IsEnabled).IsRequired().HasDefaultValue(true).ValueGeneratedNever();
         // Default MySQL constraint for CreatedAt and UpdatedAt
-        builder.Property(x => x.CreatedAt).HasDefaultValueSql("NOW()");
-        builder.Property(x => x.UpdatedAt).HasDefaultValueSql("NOW()").IsConcurrencyToken();
+        builder.Property(x => x.CreatedAt).HasDefaultValueSql("UTC_TIMESTAMP()").HasConversion<long>();
+        builder.Property(x => x.UpdatedAt).HasDefaultValueSql("UTC_TIMESTAMP()").HasConversion<long>().IsConcurrencyToken();
     }
 }

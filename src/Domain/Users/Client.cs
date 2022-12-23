@@ -69,14 +69,16 @@ public class Client : Entity
     public string? ExternalType
     {
         get => externalType;
-        set => externalType = Guard.Against.NullOrWhiteSpace(value, nameof(externalType));
+        //set => externalType = Guard.Against.NullOrWhiteSpace(value, nameof(externalType));
+        set => externalType = value;
     }
 
     private string education = default!;
     public string? Education
     {
         get => education;
-        set => education = Guard.Against.NullOrWhiteSpace(value, nameof(education));
+        //set => education = Guard.Against.NullOrWhiteSpace(value, nameof(education));
+        set => education = value;
     }
 
     private readonly List<VirtualMachine> virtualMachines = new();

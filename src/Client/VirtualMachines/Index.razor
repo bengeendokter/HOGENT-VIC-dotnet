@@ -33,7 +33,7 @@
                             <button class="sort_button" @onclick="SortByTemplate">Template</button>
                         </th>
                         <th>
-                            <button class="sort_button" @onclick="SortByCPU">CPU</button>
+                            <button class="sort_button" @onclick="SortByCPU" data-test-id="btn-cpu">CPU</button>
                         </th>
                         <th>
                             <button class="sort_button" @onclick="SortByRam">Ram</button>
@@ -64,10 +64,10 @@
                 <tbody>
                     @foreach (var vm in list)
                     {
-                    <tr>
-                    <td><a class="link" href=@($"/vm/{@vm.Id}")>@vm.Name</a></td>
+                    <tr data-testid="table-row">
+                        <td><a class="link" href=@($"/vm/{@vm.Id}") data-testid="vm-name">@vm.Name</a></td>
                         <td>@vm.Template</td>
-                        <td>@vm.CPU vCPU</td>
+                        <td data-test-id="txt-cpu">@vm.CPU vCPU</td>
                         <td>@vm.RAM GB</td>
                         <td>@vm.Storage GB</td>
                         <td>@vm.StartDate.ToString("dd-MM-yyyy", DateTimeFormatInfo.InvariantInfo)</td>

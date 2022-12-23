@@ -20,13 +20,13 @@
             <FluentValidationValidator />
             <div class="grid">
 
-            @if (_request != null)
-            {
-                <h2>Informatie van de aanvrager <button class="showHideBtn" @onclick="(() => _showRequest = !_showRequest)">@(_showRequest ? "Verberg" : "Toon")</button></h2>
-                <div class="line" />
-                @if(_showRequest){
-                <div class="request">
-
+                @if (_request != null)
+                {
+                    <h2>Informatie van de aanvrager <button class="showHideBtn" @onclick="(() => _showRequest = !_showRequest)">@(_showRequest ? "Verberg" : "Toon")</button></h2>
+                    <div class="line" />
+                    @if (_showRequest)
+                    {
+                        <div class="request">
                             <div class="input-group">
                                 <div class="form-group">
                                     <label>
@@ -46,178 +46,182 @@
                                     </label>
                                     <div class="field">@_request.EndDate.ToString("dd/MM/yyyy")</div>
                                 </div>
-                                @if(_request.Client is not null){
-                                <div class="form-group">
-                                    <label>
-                                        Klant
-                                    </label>
-                                    <div class="field">@_request.Client.Name @_request.Client.Surname</div>
-                                </div>
-                                <div class="form-group">
-                                    <label>
-                                        Contactnummer van de klant
-                                    </label>
-                                    <div class="field">@_request.Client.PhoneNumber</div>
-                                </div>
+                                @if (_request.Client is not null)
+                                {
+                                    <div class="form-group">
+                                        <label>
+                                            Klant
+                                        </label>
+                                        <div class="field">@_request.Client.Name @_request.Client.Surname</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Contactnummer van de klant
+                                        </label>
+                                        <div class="field">@_request.Client.PhoneNumber</div>
+                                    </div>
                                 }
 
-@*                            <div class="form-group">
-                                <label>
-                                    Contactnummer van de klant
-                                </label>
-                                <div class="field">@_request.Client.PhoneNumber</div>
-                            </div>*@
-                        </div>
+                                @*                            <div class="form-group">
                         <label>
-                            Extra info over de aanvraag:<br />
-                            <div class="reden">@_request.Reason</div>
+                        Contactnummer van de klant
                         </label>
-                    </div>
+                        <div class="field">@_request.Client.PhoneNumber</div>
+                        </div>*@
+                            </div>
+                            <label>
+                                Extra info over de aanvraag:<br />
+                                <div class="reden">@_request.Reason</div>
+                            </label>
+                        </div>
+                    }
                 }
-            }
 
                 <h2>Templates <button class="showHideBtn" @onclick="(() => _showTemplates = !_showTemplates)">@(_showTemplates ? "Verberg" : "Toon")</button></h2>
                 <div class="line" />
-                @if(_showTemplates){
-                <div class="templates">
+                @if (_showTemplates)
+                {
+                    <div class="templates">
 
-                    <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
-                    <div class="wrap">
-                        @foreach (TemplateDto.Detail t in _templates)
-                        {
-                            <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate"
-                            TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
-                        }
-                        @if (_customTemplate != null)
-                        {
-                            <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate"
-                            TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
-                        }
+                        <ValidationMessage For="@(()=> _vm.Template)"></ValidationMessage>
+                        <div class="wrap">
+                            @foreach (TemplateDto.Detail t in _templates)
+                            {
+                                <TemplateCard Template="@t" ActiveTemplate="@_activeTemplate"
+                                      TemplateClicked="() => HandleTemplate(t)"></TemplateCard>
+                            }
+                            @if (_customTemplate != null)
+                            {
+                                <TemplateCard Template="@_customTemplate" ActiveTemplate="@_activeTemplate"
+                                      TemplateClicked="() => HandleTemplate(_customTemplate)"></TemplateCard>
+                            }
+                        </div>
+
+                        <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
                     </div>
-
-                    <button class="btn-secondary" @onclick="CustomTemplate">Aangepaste template</button>
-                </div>
                 }
 
                 <h2>Informatie van de VM <button class="showHideBtn" @onclick="(() => _showForm = !_showForm)">@(_showForm ? "Verberg" : "Toon")</button></h2>
                 <div class="line" />
-                @if(_showForm){
-                <div class="form">
+                @if (_showForm)
+                {
+                    <div class="form">
 
-                    <div class="input-group">
-                        <div class="form-group">
-                            <label>
-                                Naam
-                            </label>
-                            <InputText @bind-Value="_vm.Name" class="inputField"></InputText>
-                            <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Hostname
-                            </label>
-                            <InputText @bind-Value="_vm.HostName" class="inputField"></InputText>
-                            <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                FQDN
-                            </label>
-                            <InputText @bind-Value="_vm.FQDN" class="inputField"></InputText>
-                            <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Klant</label>
-@*                            <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged"/>
-*@                            <InputSelect @bind-Value="_vm.ClientId" class="inputField">
-@*                                <option value="">Geen Klant</option>
-                                @if (_clients != null){
-                                    @foreach(var client in FilteredClients())
-                                    {
-                                            <option value="@client.Id">@client.Surname @client.Name</option>
-                                    }
-                                }*@
-                            </InputSelect>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Start datum
-                            </label>
-                            <InputDate @bind-Value="_vm.StartDate" class="inputField"></InputDate>
-                            <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Eind datum
-                            </label>
-                            <InputDate @bind-Value="_vm.EndDate" class="inputField"></InputDate>
-                            <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Moet de VM altijd besckikbaar zijn?
-                            </label>
-                            <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
-                                <option value=true> Ja</option>
-                                <option value=false> Nee</option>
-                            </InputSelect>
-                            <ValidationMessage For="@(()=> _vm.IsHighlyAvailable)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Hoeveelheid backups
-                            </label>
-                            <InputSelect @bind-Value="_vm.BackupFrequency" class="inputField">
-                                <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
-                                <option value="@EBackupFrequency.Daily"> Dagelijks</option>
-                            </InputSelect>
-                            <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Host</label>
-                            <InputText @bind-Value="_vm.Host" class="inputField" placeholder="Zoals aaaa-111.hogent.be..."></InputText>
-                            <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Poorten
-                            </label>
-                            <InputText @bind-Value="_vm.Poorten" class="inputField"></InputText>
-                            <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Wanneer moet de VM online staan?
-                            </label>
-                            <div class="availability">
-                                @foreach (EDay day in EDay.GetValues(typeof(EDay)))
-                                {
-                                    {
-                                        <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
-                                            <button type="button" class="daybtn" @onclick="(()=> AddDay(day))">
-                                                <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
-                                                <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet")}beschikbaar")</span>
-                                            </button>
-                                        </div>
-                                    }
-                                }
-                                <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                        <div class="input-group">
+                            <div class="form-group">
+                                <label>
+                                    Naam
+                                </label>
+                                <InputText @bind-Value="_vm.Name" class="inputField" data-testid="input-name"></InputText>
+                                <ValidationMessage For="@(()=> _vm.Name)"></ValidationMessage>
                             </div>
-                        </div>
 
+                            <div class="form-group">
+                                <label>
+                                    Hostname
+                                </label>
+                                <InputText @bind-Value="_vm.HostName" class="inputField" data-testid="input-hostname"></InputText>
+                                <ValidationMessage For="@(()=> _vm.HostName)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    FQDN
+                                </label>
+                                <InputText @bind-Value="_vm.FQDN" class="inputField" data-testid="input-fqdn"></InputText>
+                                <ValidationMessage For="@(()=> _vm.FQDN)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Klant</label>
+                                <input type="search" class="inputField" placeholder="Zoek een klant..." @oninput="OnSearchClientStringChanged" />
+                                <InputSelect @bind-Value="_vm.ClientId" class="inputField">
+                                    <option value="">Geen Klant</option>
+                                    @if (_clients != null)
+                                    {
+                                        @foreach (var client in _clients)
+                                        {
+                                            <option value="@client.Id">@client.Surname @client.Name</option>
+                                        }
+                                    }
+                                </InputSelect>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Start datum
+                                </label>
+                                <InputDate @bind-Value="_vm.StartDate" class="inputField" data-testid="input-startdate"></InputDate>
+                                <ValidationMessage For="@(()=> _vm.StartDate)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Eind datum
+                                </label>
+                                <InputDate @bind-Value="_vm.EndDate" class="inputField" data-testid="input-enddate"></InputDate>
+                                <ValidationMessage For="@(()=> _vm.EndDate)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Moet de VM altijd besckikbaar zijn?
+                                </label>
+                                <InputSelect @bind-Value="_vm.IsHighlyAvailable" class="inputField">
+                                    <option value=true> Ja</option>
+                                    <option value=false> Nee</option>
+                                </InputSelect>
+                                <ValidationMessage For="@(()=> _vm.IsHighlyAvailable)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Hoeveelheid backups
+                                </label>
+                                <InputSelect @bind-Value="_vm.BackupFrequency" class="inputField">
+                                    <option value="@EBackupFrequency.Weekly"> Weekelijks</option>
+                                    <option value="@EBackupFrequency.Daily"> Dagelijks</option>
+                                </InputSelect>
+                                <ValidationMessage For="@(()=> _vm.BackupFrequency)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Host</label>
+                                <InputText @bind-Value="_vm.Host" class="inputField" placeholder="Zoals aaaa-111.hogent.be..." data-testid="input-host"></InputText>
+                                <ValidationMessage For="@(()=> _vm.Host)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Poorten
+                                </label>
+                                <InputText @bind-Value="_vm.Poorten" class="inputField" data-testid="input-ports"></InputText>
+                                <ValidationMessage For="@(()=> _vm.Poorten)"></ValidationMessage>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Wanneer moet de VM online staan?
+                                </label>
+                                <div class="availability">
+                                    @foreach (EDay day in EDay.GetValues(typeof(EDay)))
+                                    {
+                                        {
+                                            <div class=@("day " + (_vm.Availability.HasFlag(day) ? "available" : ""))>
+                                                <button type="button" class="daybtn" @onclick="(()=> AddDay(day))" data-testid="btn-day">
+                                                    <span title=@day aria-hidden="true">@day.ToString().Substring(0,2)</span>
+                                                    <span class="sr_only">@($"{day} {(_vm.Availability.HasFlag(day) ? "" : "niet")}beschikbaar")</span>
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                    <ValidationMessage For="@(()=> _vm.Availability)"></ValidationMessage>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button class="btn-primary" type="submit" data-testid="btn-submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
                     </div>
-                    <button class="btn-primary" type="submit">@(Id is null ? "Maak VM aan" : (NavigationManager.Uri.Contains("request") ? "Maak VM aan" : "Wijzig VM"))</button>
-                </div>
                 }
             </div>
         </EditForm>
@@ -251,19 +255,30 @@
     [Parameter]
     public int? Id { get; set; }
 
-    private void OnSearchClientStringChanged(ChangeEventArgs args)
+    private async Task OnSearchClientStringChanged(ChangeEventArgs args)
     {
         searchClientString = args.Value?.ToString();
+        ClientRequest.Index request = new() { Searchterm = searchClientString, Page = 1, PageSize = 10 };
+        await RefreshClientsAsync(request);
     }
 
-    private IEnumerable<ClientDto.Index> FilteredClients()
+    private async Task RefreshClientsAsync(ClientRequest.Index request)
     {
-         return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
+        _clients.Clear();
+        _clients = await ClientService.GetIndexAsync(request);
+
     }
+
+    @*    private IEnumerable<ClientDto.Index> FilteredClients()
+    {
+        return _clients?.Where(c => c.Surname.Contains(searchClientString, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(searchClientString, StringComparison.OrdinalIgnoreCase)) ?? new List<ClientDto.Index>();
+    }*@
 
     protected override async Task OnInitializedAsync()
     {
         _templates = TemplateService.GetAll();
+        ClientRequest.Index request = new() { Page = 1, PageSize = 25 };
+        _clients = await ClientService.GetIndexAsync(request);
         if (!Id.HasValue)
         {
             _vm.StartDate = DateTime.Now;
@@ -277,8 +292,6 @@
 
             _vm.StartDate = _request.StartDate;
             _vm.EndDate = _request.EndDate;
-    @*            if(_request.Client is not null)
-                _vm.ClientId = _request.Client.Id;*@
         }
         else
         {
@@ -298,7 +311,7 @@
             _vm.Availability = vm.Availability;
             _vm.Software = vm.Software;
             _vm.Host = vm.Host;
-            _vm.ClientId = vm.Client is not null? vm.Client.Id : 0;
+            _vm.ClientId = vm.Client is not null ? vm.Client.Id : 0;
             _vm.Poorten = vm.Poorten;
             HandleTemplate(_templates.Where(t => t.Type == vm.Template).First());
         }
@@ -327,14 +340,14 @@
     private void ConfirmCustomTemp(TemplateDto.Create template)
     {
         TemplateDto.Detail customTemp = new()
-        {
-            Id = -1,
-            Software = template.Software,
-            Type = template.Type,
-            RAM = template.RAM,
-            CPU = template.CPU,
-            Storage = template.Storage
-        };
+            {
+                Id = -1,
+                Software = template.Software,
+                Type = template.Type,
+                RAM = template.RAM,
+                CPU = template.CPU,
+                Storage = template.Storage
+            };
 
         _showCustomTemplate = false;
         _customTemplate = customTemp;
@@ -358,6 +371,7 @@
     {
         try
         {
+
             error = false;
             //Aanmaken VM gevolg van aanvraag
             if (_request != null)

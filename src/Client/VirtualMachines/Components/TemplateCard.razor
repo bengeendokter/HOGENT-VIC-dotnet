@@ -19,10 +19,10 @@
         </table>
         @if (ActiveTemplate.Equals(Template?.Id))
         {
-        <button @onclick="handleClick" class="active">Selecteer template</button>
+        <button @onclick="handleClick" class="active" data-testid="btn-template">Selecteer template</button>
         }
         else{
-        <button @onclick="handleClick" class="inactive">Selecteer template</button>
+        <button @onclick="handleClick" class="inactive" data-testid="btn-template">Selecteer template</button>
         }
 
 </div>

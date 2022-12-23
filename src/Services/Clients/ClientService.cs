@@ -1,4 +1,3 @@
-using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Shared.Clients;
@@ -21,10 +20,12 @@ public class ClientService : IClientService
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
-            query = query.Where(x => x.Name.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-            x.Surname.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-            x.ClientOrganisation.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase) ||
-            x.PhoneNumber.Contains(request.Searchterm, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(x => 
+                x.Name.Contains(request.Searchterm) ||
+                x.Surname.Contains(request.Searchterm) ||
+                x.ClientOrganisation.Contains(request.Searchterm) ||
+                x.PhoneNumber.Contains(request.Searchterm)
+            );
         }
         if (!string.IsNullOrWhiteSpace(request.ClientType))
         {
@@ -33,9 +34,9 @@ public class ClientService : IClientService
         }
 
         var items = await query
+           .OrderBy(x => x.Id)
            .Skip((request.Page - 1) * request.PageSize)
            .Take(request.PageSize)
-           .OrderBy(x => x.Id)
            .Select(x => new ClientDto.Index
            {
                Id = x.Id,
@@ -116,6 +117,7 @@ public class ClientService : IClientService
             throw new EntityNotFoundException(nameof(Client), clientId);
 
         client.Name = model.Name!;
+        client.Surname = model.Surname!;
         client.PhoneNumber = model.PhoneNumber!;
         client.Email = model.Email!;
         client.BackupContact = model.BackupContact!;
