@@ -2,11 +2,9 @@
 
 <div class="title-container">
         <h1>@Title</h1>
-        <AuthorizeView Roles="Moderator, Administrator">
-            <div class="actions">
-                @Actions
-            </div>
-        </AuthorizeView>
+        <div class="actions">
+            @Actions
+        </div>
 </div>
 <div class="content">
     <UsageStats Display="@Display" Title="@StatsTitle" Usages="@Usages" />

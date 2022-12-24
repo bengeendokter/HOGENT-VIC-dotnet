@@ -12,7 +12,9 @@
 
 <GenericLayout Display=false Title="@vm.Name"> 
     <Actions>
+        <AuthorizeView Roles="Moderator, Administrator">
         <a class="link" href=@($"/vm/manage/{Id}") data-testid="link-editvm">Bewerken</a>
+        </AuthorizeView>
     </Actions>
     <Content>
         <section aria-labelledby="vm-title" class="details">
