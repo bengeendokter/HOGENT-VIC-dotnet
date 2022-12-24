@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Shared.VirtualMachines;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers.VirtualMachines;
 
@@ -17,6 +18,7 @@ public class VirtualMachineRequestController : ControllerBase
     }
 
     // [Authorize(Roles = "Administrator, Moderator")]
+    [AllowAnonymous]
     [SwaggerOperation("Returns a list of requests.")]
     [HttpGet]
     public async Task<List<VirtualMachineRequestDto.Index>> GetAll([FromQuery] VirtualMachineRequestReq.Index request)
@@ -25,6 +27,7 @@ public class VirtualMachineRequestController : ControllerBase
     }
 
     // [Authorize(Roles = "Administrator, Moderator")]
+    [AllowAnonymous]
     [SwaggerOperation("Returns a specific request by id.")]
     [HttpGet("{id}")]
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
@@ -32,7 +35,7 @@ public class VirtualMachineRequestController : ControllerBase
         return await virtualMachineRequestService.Get(id);
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Returns requests from a client.")]
     [HttpGet("client/{id}")]
     public async Task<List<VirtualMachineRequestDto.Index>> GetRequestsFromClient(int id)
@@ -40,7 +43,7 @@ public class VirtualMachineRequestController : ControllerBase
         return await virtualMachineRequestService.GetRequestsFromClient(id);
     }
 
-    // [Authorize(Roles = "Customer, Administrator, Moderator")]
+    [Authorize(Roles = "Customer, Administrator, Moderator")]
     [SwaggerOperation("Creates a new request.")]
     [HttpPost]
     public async Task<IActionResult> Create(VirtualMachineRequestDto.Create model)
@@ -49,7 +52,7 @@ public class VirtualMachineRequestController : ControllerBase
         return CreatedAtAction(nameof(Create), id);
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Edites an existing request.")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Edit(int id, VirtualMachineRequestDto.Detail model)

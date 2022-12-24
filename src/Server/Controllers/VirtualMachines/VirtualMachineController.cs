@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Shared.VirtualMachines;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers.VirtualMachines;
 
@@ -17,6 +18,7 @@ public class VirtualMachineController : ControllerBase
     }
 
     // [Authorize(Roles = "Administrator, Moderator")]
+    [AllowAnonymous]
     [SwaggerOperation("Returns a list of virtual machines.")]
     [HttpGet]
     public async Task<List<VirtualMachineDto.Index>> GetIndex([FromQuery] VirtualMachineReq.Index request)
@@ -25,6 +27,7 @@ public class VirtualMachineController : ControllerBase
     }
 
     // [Authorize(Roles = "Administrator, Moderator, Customer")]
+    [AllowAnonymous]
     [SwaggerOperation("Returns a specific virtual machine by id.")]
     [HttpGet("{virtualMachineId}")]
     public async Task<VirtualMachineDto.Detail> GetDetail(int virtualMachineId)
@@ -32,7 +35,7 @@ public class VirtualMachineController : ControllerBase
         return await virtualMachineService.GetDetailAsync(virtualMachineId);
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Creates a new virtual machine.")]
     [HttpPost]
     public async Task<IActionResult> Create(VirtualMachineDto.Mutate model)
@@ -41,7 +44,7 @@ public class VirtualMachineController : ControllerBase
         return CreatedAtAction(nameof(Create), virtualMachineId);
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Edites an existing virtual machine.")]
     [HttpPut("{virtualMachineId}")]
     public async Task<IActionResult> Edit(int virtualMachineId, VirtualMachineDto.Mutate model)
@@ -50,7 +53,7 @@ public class VirtualMachineController : ControllerBase
         return NoContent();
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Deletes an existing virtual machine.")]
     [HttpDelete("{virtualMachineId}")]
     public async Task<IActionResult> Delete(int virtualMachineId)

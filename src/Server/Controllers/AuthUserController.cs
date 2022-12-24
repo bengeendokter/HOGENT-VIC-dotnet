@@ -7,12 +7,13 @@ using Role = Auth0.ManagementApi.Models.Role;
 using System.Linq.Dynamic.Core;
 using Services.Clients;
 using Shared.VirtualMachines;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers
 {
   [ApiController]
     [Route("[controller]")]
-    // [Authorize]
+    [Authorize]
     public class AuthUserController : ControllerBase
     {
         private readonly IManagementApiClient _managementApiClient;
@@ -25,7 +26,7 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        // [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IEnumerable<AuthUserDto.Index>> GetUsers([FromQuery] AuthUserRequest.Index request)
         {
             string searchQueryString = "";
@@ -80,7 +81,7 @@ namespace Server.Controllers
                 });
         }
         [HttpGet("{userId}")]
-        // [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<AuthUserDto.Detail.General> GetUser(string userId)
         {
             var user = await _managementApiClient.Users.GetAsync(userId);
@@ -96,7 +97,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("{userId}")]
-        // [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<AuthUserDto.Detail.General> UpdateUser(string userId, [FromBody] AuthUserRequest.General request)
         {
             // get Client_id from appsettings.json
@@ -136,7 +137,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("rol/{userId}")]
-        // [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IEnumerable<AuthUserDto.Detail.UserRole>> GetRolesFromUser(string userId)
         {
             var roles = await _managementApiClient.Users.GetRolesAsync(userId, new PaginationInfo());
@@ -148,7 +149,7 @@ namespace Server.Controllers
         }
 
         [HttpGet("roles")]
-        // [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IEnumerable<AuthUserDto.Detail.UserRole>> GetAllRoles()
         {
             var roles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
@@ -160,7 +161,7 @@ namespace Server.Controllers
         }
 
         [HttpPost("wijzig/rollen/{userId}")]
-        // [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<AuthUserResponse.Create.Role> WijzigRoles(string userId, [FromBody] AuthUserRequest.Roles request)
         {
             var allRoles = await _managementApiClient.Roles.GetAllAsync(new GetRolesRequest());
@@ -250,7 +251,7 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{userId}")]
-        // [Authorize(Roles = "Administrator, Moderator")]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
             var user = await _managementApiClient.Users.GetAsync(userId);
@@ -283,14 +284,14 @@ namespace Server.Controllers
         }
 
         [HttpGet("myvirtualmachines")]
-        // [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<List<VirtualMachineDto.Index>> GetMyVMs([FromQuery] VirtualMachineReq.Index request)
         {
             return await _authUserService.GetMyVirtualMachines(request);
         }
 
         [HttpGet("myrequests")]
-        // [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<List<VirtualMachineRequestDto.Index>> GetMyRequests([FromQuery] VirtualMachineRequestReq.Index request)
         {
             return await _authUserService.GetMyRequests(request);

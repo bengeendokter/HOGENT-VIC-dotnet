@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Clients;
 using Shared.VirtualMachines;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,6 +21,7 @@ public class ClientController : ControllerBase
     }
 
     // [Authorize(Roles = "Administrator, Moderator")]
+    [AllowAnonymous]
     [SwaggerOperation("Returns a list of clients.")]
     [HttpGet]
     public async Task<List<ClientDto.Index>> GetIndex([FromQuery] ClientRequest.Index request)
@@ -28,6 +30,7 @@ public class ClientController : ControllerBase
     }
 
     // [Authorize(Roles = "Administrator, Moderator, Customer")]
+    [AllowAnonymous]
     [SwaggerOperation("Returns a specific client by id.")]
     [HttpGet("{clientId}")]
     public async Task<ClientDto.Detail> GetDetail(int clientId)
@@ -35,7 +38,7 @@ public class ClientController : ControllerBase
         return await clientService.GetDetailAsync(clientId);
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Creates a new client.")]
     [HttpPost]
     public async Task<IActionResult> Create(ClientDto.Mutate model)
@@ -45,7 +48,7 @@ public class ClientController : ControllerBase
 
     }
 
-    // [Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Edites an existing client.")]
     [HttpPut("{clientId}")]
     public async Task<IActionResult> Edit(int clientId, ClientDto.Mutate model)
@@ -54,7 +57,7 @@ public class ClientController : ControllerBase
         return NoContent();
     }
 
-    // s[Authorize(Roles = "Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     [SwaggerOperation("Deletes an existing client.")]
     [HttpDelete("{clientId}")]
     public async Task<IActionResult> Delete(int clientId)
