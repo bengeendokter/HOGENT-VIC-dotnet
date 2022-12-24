@@ -13,6 +13,11 @@
     <Error Title="Maak Virtuele Machine" ErrorMessage="@errorMessage"/>
     return;
 }
+@if (loading)
+{
+    <Loading Title="VM aanmaken/wijzigen" />
+    return;
+}
 
 <GenericLayout Display=false Title="VM - Beheren">
     <Content>
@@ -251,6 +256,7 @@
 
     private bool error = false;
     private string errorMessage = string.Empty;
+    private bool loading = false;
 
     [Parameter]
     public int? Id { get; set; }
@@ -371,7 +377,7 @@
     {
         try
         {
-
+            loading = true;
             error = false;
             //Aanmaken VM gevolg van aanvraag
             if (_request != null)
@@ -380,6 +386,7 @@
                 _request.VirtualMachineId = vmId;
                 _request.Status = ERequestStatus.Handled;
                 await VirtualMachineRequestService.EditAsync(_request.Id, _request);
+                loading = false;
                 NavigationManager.NavigateTo($"/vm/{vmId}");
 
             }
@@ -387,18 +394,21 @@
             else if (Id.HasValue)
             {
                 await VirtualMachineService.EditAsync(Id.Value, _vm);
+                loading = false;
                 NavigationManager.NavigateTo($"/vm/{Id.Value}");
             }
             //Aanmaken VM
             else
             {
                 int vmId = await VirtualMachineService.CreateAsync(_vm);
+                loading = false;
                 NavigationManager.NavigateTo($"/vm/{vmId}");
             }
 
         }
         catch (Exception ex)
         {
+            loading = false;
             error = true;
             errorMessage = ex.Message;
         }

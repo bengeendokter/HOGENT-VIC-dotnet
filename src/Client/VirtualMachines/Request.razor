@@ -10,6 +10,11 @@
     <Error Title="VM Aanvragen" ErrorMessage="@errorMessage"/>
     return;
 }
+@if (loading)
+{
+    <Loading Title="Aanvraag aanmaken" />
+    return;
+}
 
 <GenericLayout Display=false Title="VM Aanvragen">
     <Content>
@@ -79,6 +84,7 @@
 
     private bool error = false;
     private string errorMessage = string.Empty;
+    private bool loading = false;
 
     protected override void OnInitialized()
     {
@@ -90,13 +96,15 @@
     {
         //TODO client moet de ingelogde client zijn
         try{
+            loading = true;
             ClientRequest.Index r = new();
             vmRequest.Client = (await ClientService.GetIndexAsync(r)).First();
-            Console.WriteLine(vmRequest.Client.Id);
             int id = await VirtualMachineRequestService.CreateAsync(vmRequest);
+            loading = false;
             _confirmMsg = true;
         } catch (Exception ex)
         {
+            loading = false;
             error = true;
             errorMessage = ex.Message;
         }

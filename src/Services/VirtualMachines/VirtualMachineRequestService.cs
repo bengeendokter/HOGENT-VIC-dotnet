@@ -7,18 +7,19 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Domain.Users;
 using Shared.Clients;
 using System.Globalization;
+using System.Security.Claims;
 
 namespace Services.VirtualMachines;
 
 public class VirtualMachineRequestService : IVirtualMachineRequestService
 {
     private readonly VicDbContext dbContext;
-    // private readonly ClaimsPrincipal claimsPrincipal;
+    private readonly ClaimsPrincipal claimsPrincipal = default!;
 
-    public VirtualMachineRequestService(VicDbContext dbContext /*, ClaimsPrincipal claimsPrincipal*/)
+    public VirtualMachineRequestService(VicDbContext dbContext, ClaimsPrincipal claimsPrincipal)
     {
         this.dbContext = dbContext;
-        // this.claimsPrincipal = claimsPrincipal
+        this.claimsPrincipal = claimsPrincipal;
     }
     public async Task<VirtualMachineRequestDto.Detail> Get(int id)
     {
@@ -128,15 +129,27 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         else return new List<VirtualMachineRequestDto.Index>();
     }
 
-
+            
     public async Task<int> CreateAsync(VirtualMachineRequestDto.Create model)
     {
+
+        var email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
+        //var id = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //var query = dbContext.VirtualMachines.AsQueryable();
+
         Client? client = null;
-        if(model.Client!=null)
-            client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == model.Client.Id);
+        if (email != null)
+        {
+            //client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == model.Client.Id);
+            client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Email == email);
+
+            //var query = dbContext.VirtualMachines.AsQueryable();
+            //query = query.Where(x => x.Client.Email == email);
+            Console.WriteLine(client);
+        }
         var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(x => x.Id == model.VirtualMachineId);
 
-        var request = new Domain.VirtualMachines.VirtualMachineRequest(
+        var request = new VirtualMachineRequest(
             model.StartDate!,
             model.EndDate!,
             model.Reason!,
