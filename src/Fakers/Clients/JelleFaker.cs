@@ -1,12 +1,17 @@
-using Domain.Users;
-using Domain.VirtualMachines;
+﻿using Domain.Users;
 using Fakers.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Fakers.Clients;
 
-public class ClientFaker : EntityFaker<Client>
+
+public class JelleFaker : EntityFaker<Client>
 {
-    public ClientFaker(string locale = "nl") : base(locale)
+    public JelleFaker(string locale = "nl") : base(locale)
     {
         CustomInstantiator(f =>
         {
@@ -14,9 +19,9 @@ public class ClientFaker : EntityFaker<Client>
             var firstName = f.Person.FirstName;
 
             return new Client(
-                    lastName,              // Name
-                    firstName,             // Surname
-                    f.Internet.Email(firstName, lastName),             // Email
+                    "jelle",              // Name
+                    "delporte",             // Surname
+                    "jelledelporte0@gmail.com",           // Email
                     f.Phone.PhoneNumber("+## ### ## ## ##"),          // PhoneNumber
                     f.Phone.PhoneNumber("+## ### ## ## ##"),          // BackupContact
                     f.Random.Enum<EClientType>(),   // ClientType
@@ -25,7 +30,8 @@ public class ClientFaker : EntityFaker<Client>
                     f.Random.CollectionItem(new List<string>() { "Manager", "CEO", "Developer", "Researcher" })        // ExternalType
                 );
         }
-        ); 
+        );
     }
 
 }
+

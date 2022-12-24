@@ -134,18 +134,12 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     {
 
         var email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
-        //var id = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //var query = dbContext.VirtualMachines.AsQueryable();
+
 
         Client? client = null;
         if (email != null)
         {
-            //client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Id == model.Client.Id);
             client = await dbContext.Clients.FirstOrDefaultAsync(x => x.Email == email);
-
-            //var query = dbContext.VirtualMachines.AsQueryable();
-            //query = query.Where(x => x.Client.Email == email);
-            Console.WriteLine(client);
         }
         var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(x => x.Id == model.VirtualMachineId);
 
