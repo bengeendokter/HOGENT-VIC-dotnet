@@ -40,10 +40,10 @@ public class Seeder
     private void SeedClients()
     {
         var clients = new ClientFaker().AsTransient().Generate(10);
-        var jelle = new JelleFaker().AsTransient().Generate(1);
+        //var jelle = new JelleFaker().AsTransient().Generate(1);
 
         dbContext.Clients.AddRange(clients);
-        dbContext.Clients.AddRange(jelle);
+        //dbContext.Clients.AddRange(jelle);
         dbContext.SaveChanges();
     }
 
