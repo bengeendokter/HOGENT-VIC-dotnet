@@ -1,5 +1,6 @@
 ﻿@page "/mijn_aanvragen"
 @attribute [Authorize(Roles = "Customer")]
+@inject NavigationManager navigationManager
 
 @using System.Globalization
 
@@ -21,9 +22,9 @@
         <Client.Users.MyRequests.Components.SorteerFilter SortBy="@SortBy"/>
     </Actions>
     <Content>
-        <SearchAndCreate 
-            IsMyListScherm=@true
+        <Client.Users.MyRequests.Components.SearchAndCreateRequest 
             SearchTerm="@Searchterm"
+            CreateCallback="@GoToRequestPage"
             />
         @if (_requests is null || _requests.Count() == 0){
             <h2>Geen aanvragen / geen gevonden</h2>
@@ -129,5 +130,9 @@
             ERequestStatus.Denied => "Geweigerd",
             _ => "Onbekend"
         };
+    }
+
+    private void GoToRequestPage(){
+        navigationManager.NavigateTo("/vm/request");
     }
 }

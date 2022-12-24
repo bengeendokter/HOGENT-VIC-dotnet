@@ -1,0 +1,43 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="search-and-create">
+     <input type="search" placeholder="Zoeken..." 
+        value="@searchTerm" @oninput="SearchTermChanged" 
+        data-testid="searchbar"
+    />
+    <button class="search-button" @onclick="Filter" data-testid="btn-search" >Zoek</button>
+    @if (!IsMyListScherm && CreateCallback.HasDelegate){
+        <button class="search-button" @onclick="GoToCreate">Nieuwe aanvraag</button>
+    }
+</div>
+
+@code {
+    [Parameter] public EventCallback CreateCallback { get; set; }
+    [Parameter, EditorRequired] public string? SearchTerm { get; set; } = default!;
+    [Parameter] public bool IsAuthUserScherm { get; set; } = false;
+    [Parameter] public bool IsMyListScherm { get; set; } = false;
+
+    private string searchTerm = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        searchTerm = SearchTerm;
+    }
+
+    private void SearchTermChanged(ChangeEventArgs args)
+    {
+        searchTerm = args.Value?.ToString();
+    }
+
+    private void Filter() {
+        Dictionary<string, object?> parameters = new();
+        parameters.Add(nameof(searchTerm), searchTerm);
+        var uri = NavigationManager.GetUriWithQueryParameters(parameters);
+        NavigationManager.NavigateTo(uri);
+    }
+
+    private void GoToCreate() 
+    {
+        CreateCallback.InvokeAsync();
+    }
+}
