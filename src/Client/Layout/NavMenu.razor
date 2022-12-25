@@ -16,7 +16,7 @@
         @*
         ########## Om link te maken met andere pagina vervang "/" met "/*pagina_naam*" ##########
         *@
-            <AuthorizeView Roles="Administrator">
+            <AuthorizeView Roles="Administrator, Moderator">
                 <NavLink href="/gebruikers" class="nav_link" Match=NavLinkMatch.All>
                     <div>Gebruikers</div>
                 </NavLink>
