@@ -138,8 +138,8 @@ public class VirtualMachineService : IVirtualMachineService
         var vm = new VirtualMachine(
             model.Name!,
             model.HostName!,
-            model.StartDate,
-            model.EndDate,
+            model.StartDate.ToUniversalTime(),
+            model.EndDate.ToUniversalTime(),
             model.FQDN!,
             model.Poorten!,
             (Domain.VirtualMachines.ETemplate)model.Template,
@@ -193,8 +193,8 @@ public class VirtualMachineService : IVirtualMachineService
         vm.CPU = model.CPU;
         vm.RAM = model.RAM;
         vm.Storage = model.Storage;
-        vm.StartDate = model.StartDate;
-        vm.EndDate = model.EndDate;
+        vm.StartDate = model.StartDate.ToUniversalTime();
+        vm.EndDate = model.EndDate.ToUniversalTime();
         vm.IsActive = model.IsActive;
         vm.HostName = model.HostName!;
         vm.FQDN = model.FQDN!;

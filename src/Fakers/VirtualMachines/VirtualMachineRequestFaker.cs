@@ -19,8 +19,8 @@ public class VirtualMachineRequestFaker: EntityFaker<VirtualMachineRequest>
         CustomInstantiator(
             f =>
                new VirtualMachineRequest(
-                   f.Date.Future(1, DateTime.Now.AddDays(1)),
-                   f.Date.Future(1, DateTime.Now.AddYears(1)),
+                   f.Date.Future(1, DateTime.Now.AddDays(1)).ToUniversalTime(),
+                   f.Date.Future(1, DateTime.Now.AddYears(1)).ToUniversalTime(),
                    f.Lorem.Paragraph(),
                    f.Lorem.Word(),
                    new ClientFaker(locale).AsTransient(),

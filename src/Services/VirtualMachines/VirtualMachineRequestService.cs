@@ -144,8 +144,8 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(x => x.Id == model.VirtualMachineId);
 
         var request = new VirtualMachineRequest(
-            model.StartDate!,
-            model.EndDate!,
+            model.StartDate.ToUniversalTime()!,
+            model.EndDate.ToUniversalTime()!,
             model.Reason!,
             model.ProjectName!,
             client!,
