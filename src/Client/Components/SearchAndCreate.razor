@@ -7,7 +7,7 @@
     />
     <button class="search-button" @onclick="Filter" data-testid="btn-search">Zoek</button>
     @if (!IsMyListScherm && CreateCallback.HasDelegate){
-        <button class="search-button" @onclick="GoToCreate">Toevoegen</button>
+        <button class="search-button" @onclick="GoToCreate" data-testid="btn-add">Toevoegen</button>
     }
 </div>
 
