@@ -1,6 +1,5 @@
 ﻿using Domain.Activities;
 using Fakers.Common;
-using System;
 
 namespace Fakers.Activities;
 

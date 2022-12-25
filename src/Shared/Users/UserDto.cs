@@ -7,7 +7,7 @@ public static class UserDto
     public class Index
     {
         public int Id { get; set; }
-        public string? Name { get; set; }   
+        public string? Name { get; set; }
         public string? Surname { get; set; }
         public ERole Role { get; set; }
         public bool IsActive { get; set; }
@@ -16,7 +16,7 @@ public static class UserDto
 
     public class Detail : Index { }
 
-    public class Mutate 
+    public class Mutate
     {
         public string? Name { get; set; }
         public string? Surname { get; set; }

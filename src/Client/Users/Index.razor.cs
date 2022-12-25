@@ -1,13 +1,8 @@
-using Client.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using Shared.AuthUsers;
 using Shared.Error;
-using System;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Client.Users;
 
@@ -30,7 +25,7 @@ public partial class Index
     [Parameter, SupplyParameterFromQuery] public string? Searchterm { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? Page { get; set; }
     [Parameter, SupplyParameterFromQuery] public int? PageSize { get; set; }
-    [Parameter, SupplyParameterFromQuery] public string? Role{ get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? Role { get; set; }
 
     // Andere
     //private List<UserDto.Index>? users = new();
@@ -60,7 +55,8 @@ public partial class Index
             loading = true;
             roles = await Http.GetFromJsonAsync<AuthUserDto.Detail.UserRole[]>($"AuthUser/roles");
             loading = false;
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             loading = false;
             error = true;
@@ -79,7 +75,7 @@ public partial class Index
         AuthUserRequest.Index request = new()
         {
             Searchterm = Searchterm,
-            Page = Page ?? 0,  
+            Page = Page ?? 0,
             PageSize = PageSize ?? 25,
             Role = Role,
         };
@@ -110,7 +106,7 @@ public partial class Index
                     Voornaam = c.FirstName,
                     Achternaam = c.LastName,
                     Email = c.Email,
-                    Actief = c.Blocked? "Neen" : "Ja"
+                    Actief = c.Blocked ? "Neen" : "Ja"
                 });
             });
 
@@ -121,7 +117,7 @@ public partial class Index
             loading = false;
             error = true;
             errorMessage = ex.Message;
-        } 
+        }
     }
 
     private void GoToEditUser(string id)
@@ -145,12 +141,14 @@ public partial class Index
                 ResponseError error = JsonConvert.DeserializeObject<ResponseError>(message);
                 minorErrorMessage = error?.Message ?? "Er gebeurde een ongekende error.";
 
-            } else
+            }
+            else
             {
                 loading = false;
                 await RefreshUsersAsync(new());
             }
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             loading = false;
             error = true;

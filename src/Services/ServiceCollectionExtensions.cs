@@ -1,11 +1,10 @@
-using Shared.VirtualMachines;
-using Services.VirtualMachines;
-using Shared.Clients;
-using Services.Clients;
-using Shared.Activities;
-using Services.Activities;
-
 using Microsoft.Extensions.DependencyInjection;
+using Services.Activities;
+using Services.Clients;
+using Services.VirtualMachines;
+using Shared.Activities;
+using Shared.Clients;
+using Shared.VirtualMachines;
 
 namespace Services;
 

@@ -1,11 +1,11 @@
-﻿ using FluentValidation;
+﻿using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace Shared.Clients;
 
 public static class ClientDto
 {
-    public class Index 
+    public class Index
     {
         public int Id { get; set; }
         public string? Name { get; set; }

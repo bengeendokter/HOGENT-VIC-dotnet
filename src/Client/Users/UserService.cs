@@ -1,12 +1,8 @@
-﻿using Client.Components;
-using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Shared.AuthUsers;
 using Shared.Error;
 using Shared.Users;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
-using static System.Net.WebRequestMethods;
 
 namespace Client.Users;
 
@@ -47,12 +43,13 @@ public class UserService : IUserService
             ResponseError error = JsonConvert.DeserializeObject<ResponseError>(message);
             string errorMessage = error?.Message ?? "Er gebeurde een ongekende error.";
             throw new ApplicationException(errorMessage);
-        } else
+        }
+        else
         {
             return await response.Content.ReadFromJsonAsync<AuthUserDto.Detail.General>();
         }
 
-        
+
     }
 
     public async Task DeleteAsync(int userId)

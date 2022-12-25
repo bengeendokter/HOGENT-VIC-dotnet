@@ -14,8 +14,8 @@ public class VirtualMachineService : IVirtualMachineService
 
     public async Task<List<VirtualMachineDto.Index>> GetIndexAsync(VirtualMachineReq.Index request)
     {
-       var response = await client.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}?{request.GetQueryString()}");
-       return response;
+        var response = await client.GetFromJsonAsync<List<VirtualMachineDto.Index>>($"{endpoint}?{request.GetQueryString()}");
+        return response;
     }
 
     public async Task<VirtualMachineDto.Detail> GetDetailAsync(int virtualMachineId)

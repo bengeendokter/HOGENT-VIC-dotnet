@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Shared;
+﻿namespace Shared;
 
 public enum ERole
 {

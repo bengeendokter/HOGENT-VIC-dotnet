@@ -1,8 +1,8 @@
-using Domain.VirtualMachines;
 using Domain.Activities;
-using Persistence.Triggers;
-using Microsoft.EntityFrameworkCore;
 using Domain.Users;
+using Domain.VirtualMachines;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Triggers;
 
 namespace Persistence;
 

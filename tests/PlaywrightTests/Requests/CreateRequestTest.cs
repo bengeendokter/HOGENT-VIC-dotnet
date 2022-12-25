@@ -1,15 +1,10 @@
 ﻿using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VIC.IntegrationTests.Requests;
 
 [TestFixture]
-public class CreateRequestTest: PageTest
+public class CreateRequestTest : PageTest
 {
     [Test]
     public async Task Test1_Create_VMRequest()

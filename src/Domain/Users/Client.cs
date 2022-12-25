@@ -1,8 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Common;
-using Domain.Users;
 using Domain.VirtualMachines;
-using System.Xml.Linq;
 
 namespace Domain.Users;
 
@@ -33,7 +31,7 @@ public class Client : Entity
     private string phoneNumber = default!;
     public string? PhoneNumber
     {
-        get => phoneNumber; 
+        get => phoneNumber;
         set => phoneNumber = Guard.Against.NullOrEmpty(value, nameof(PhoneNumber));
     }
 
@@ -88,7 +86,7 @@ public class Client : Entity
         if (!IsEnabled)
             throw new ApplicationException($"{nameof(Client)} is not active, could not add virtual machine.");
 
-        virtualMachines.Add(vm); 
+        virtualMachines.Add(vm);
     }
 
     public void RemoveVM(VirtualMachine vm)
@@ -144,7 +142,7 @@ public class Client : Entity
         {
             Education = education;
             ClientOrganisation = "HOGENT";
-        } 
+        }
         else if (clientType == EClientType.External)
         {
             ExternalType = externalType;

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-using Shared.VirtualMachines;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.VirtualMachines;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Server.Controllers.VirtualMachines;
 

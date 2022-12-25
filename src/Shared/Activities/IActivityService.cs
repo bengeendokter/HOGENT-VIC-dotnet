@@ -1,6 +1,4 @@
-﻿using Shared.VirtualMachines;
-
-namespace Shared.Activities;
+﻿namespace Shared.Activities;
 
 public interface IActivityService
 {

@@ -1,15 +1,15 @@
-using Persistence;
-using Server.Middleware;
-using Services;
-using Shared.VirtualMachines;
-using Shared.Clients;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
+using Persistence;
+using Server.Middleware;
 using Server.Utils;
+using Services;
+using Shared.Clients;
+using Shared.VirtualMachines;
 
 var builder = WebApplication.CreateBuilder(args);
 

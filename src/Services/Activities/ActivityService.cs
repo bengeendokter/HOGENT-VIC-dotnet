@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Activities;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Domain.Activities;
 using Shared.Activities;
 
 namespace Services.Activities;
@@ -33,7 +33,7 @@ public class ActivityService : IActivityService
             {
                 Id = a.Id,
                 CreatedAt = a.CreatedAt,
-                Type = (Shared.Activities.EActivity) a.Type,
+                Type = (Shared.Activities.EActivity)a.Type,
                 VMName = a.VMName,
                 ClientName = a.ClientName,
                 CPU = a.CPU,

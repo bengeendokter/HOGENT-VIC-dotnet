@@ -1,17 +1,17 @@
 ﻿using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
-using Microsoft.AspNetCore.Mvc;
-using Shared.AuthUsers;
-using Role = Auth0.ManagementApi.Models.Role;
-using System.Linq.Dynamic.Core;
-using Services.Clients;
-using Shared.VirtualMachines;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Services.Clients;
+using Shared.AuthUsers;
+using Shared.VirtualMachines;
+using System.Linq.Dynamic.Core;
+using Role = Auth0.ManagementApi.Models.Role;
 
 namespace Server.Controllers
 {
-  [ApiController]
+    [ApiController]
     [Route("[controller]")]
     [Authorize]
     public class AuthUserController : ControllerBase
@@ -45,7 +45,7 @@ namespace Server.Controllers
             var userRequest = new GetUsersRequest()
             {
                 Query = searchQueryString
-            };            
+            };
 
             var users = await _managementApiClient.Users.GetAllAsync(userRequest, new PaginationInfo(request.Page, request.PageSize));
 
@@ -71,14 +71,14 @@ namespace Server.Controllers
             }
 
             return users.Select(x => new AuthUserDto.Index
-                {
-                    Id = x.UserId,
-                    Email = x.Email,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Blocked = x.Blocked ?? false,
-                
-                });
+            {
+                Id = x.UserId,
+                Email = x.Email,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Blocked = x.Blocked ?? false,
+
+            });
         }
         [HttpGet("{userId}")]
         [Authorize(Roles = "Administrator, Moderator")]
@@ -187,7 +187,8 @@ namespace Server.Controllers
             if (request.IsAdministrator)
             {
                 ToBeAssignedRoles.Add(adminRole);
-            } else
+            }
+            else
             {
                 ToBeDeletedRoles.Add(adminRole);
             }
@@ -237,7 +238,7 @@ namespace Server.Controllers
                 await _managementApiClient.Users.RemoveRolesAsync(userId, assignRoleRequest);
             }
 
-            var response =  await _managementApiClient.Users.GetRolesAsync(userId);
+            var response = await _managementApiClient.Users.GetRolesAsync(userId);
             var rollen = response.Select(x => new AuthUserDto.Detail.UserRole()
             {
                 Id = x.Id,
@@ -269,7 +270,8 @@ namespace Server.Controllers
                 await _managementApiClient.Users.DeleteAsync(userId);
                 return NoContent();
 
-            } else
+            }
+            else
             {
 
                 if (allAdmins.Result.First().UserId == userId)

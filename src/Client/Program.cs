@@ -1,17 +1,17 @@
-global using Shared;
-global using Shared.VirtualMachines;
-global using Shared.Clients; 
-global using Shared.Activities;
 global using Client.Extensions;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;  
+global using Shared;
+global using Shared.Activities;
+global using Shared.Clients;
+global using Shared.VirtualMachines;
 using Client;
-using Client.VirtualMachines;
-using Client.Clients;
 using Client.Analytics;
-using Client.Users;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Client.AuthShared;
+using Client.Clients;
+using Client.Users;
+using Client.VirtualMachines;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

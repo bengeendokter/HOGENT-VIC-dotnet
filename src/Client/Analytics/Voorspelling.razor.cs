@@ -6,7 +6,7 @@ namespace Client.Analytics
     public partial class Voorspelling
     {
         [Inject] public IVirtualMachineService VirtualMachineService { get; set; } = default!;
-        
+
         public List<UsageDto.Index> Usages
         {
             get => new()
@@ -45,7 +45,7 @@ namespace Client.Analytics
         //vrij capaciteit vm
         private int[] VrijVMS(DateTime datum)
         {
-            int[] lijst = new int[]{0, 0, 0};
+            int[] lijst = new int[] { 0, 0, 0 };
             _vms.Where(v => (v.StartDate <= datum && v.EndDate <= datum)).ToList().ForEach(v =>
             {
                 int tempCPU = lijst[0];
@@ -152,7 +152,7 @@ namespace Client.Analytics
             DataItem[] data = new DataItem[datums.Count()];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = new DataItem{Date = datums[i], CPU = (double)DefinitiefgebruikCPUfunc(datums[i]), RAM = (double)DefinitiefgebruikRAMfunc(datums[i]), Storage = (double)DefinitiefgebruikStoragefunc(datums[i])};
+                data[i] = new DataItem { Date = datums[i], CPU = (double)DefinitiefgebruikCPUfunc(datums[i]), RAM = (double)DefinitiefgebruikRAMfunc(datums[i]), Storage = (double)DefinitiefgebruikStoragefunc(datums[i]) };
             }
 
             return data;
@@ -161,8 +161,8 @@ namespace Client.Analytics
         protected override async Task OnInitializedAsync()
         {
 
-            VirtualMachineReq.Index request = new() 
-            { 
+            VirtualMachineReq.Index request = new()
+            {
                 PageSize = 1000,
             };
 
@@ -171,7 +171,8 @@ namespace Client.Analytics
                 loading = true;
                 _vms = await VirtualMachineService.GetIndexAsync(request);
                 loading = false;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 loading = false;
                 error = true;

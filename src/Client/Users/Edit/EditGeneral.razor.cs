@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using Shared.AuthUsers;
-using Shared.Error;
-using System.Net;
 using System.Net.Http.Json;
-using static Shared.AuthUsers.AuthUserDto.Detail;
-using static Shared.AuthUsers.AuthUserRequest;
 
 namespace Client.Users.Edit;
 
@@ -28,7 +23,7 @@ public partial class EditGeneral
     private string minorErrorMessage = String.Empty;
 
     protected async override Task OnParametersSetAsync()
-    { 
+    {
         try
         {
 
@@ -77,17 +72,19 @@ public partial class EditGeneral
             var response = await UserService.EditGeneralAsync(Id, request);
             loading = false;
             NavigationManager.NavigateTo($"/gebruikers/wijzigen/{Id}");
-        } catch(ApplicationException ex)
+        }
+        catch (ApplicationException ex)
         {
             loading = false;
             minorError = true;
             minorErrorMessage = ex.Message;
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             loading = false;
             error = true;
             errorMessage = ex.Message;
-        } 
+        }
     }
 
     private void ResetMinorError()

@@ -1,8 +1,6 @@
+using Fakers.Activities;
 using Fakers.Clients;
 using Fakers.VirtualMachines;
-using Fakers.Activities;
-using Domain.Users;
-using Fakers.Common;
 
 namespace Persistence;
 

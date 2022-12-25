@@ -106,7 +106,7 @@ public class VirtualMachine : Entity
     public ESoftware Software
     {
         get => software;
-        set => software = (ESoftware) Guard.Against.OutOfRange((int)value, nameof(ESoftware), 1, 32);
+        set => software = (ESoftware)Guard.Against.OutOfRange((int)value, nameof(ESoftware), 1, 32);
     }
 
     private EBackupFrequency backupFrequency = default!;

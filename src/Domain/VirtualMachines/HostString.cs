@@ -1,5 +1,4 @@
 ﻿using Domain.Common;
-using System.Net.Mail;
 using System.Text.RegularExpressions;
 
 namespace Domain.VirtualMachines;

@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using static Client.VirtualMachines.Requests;
 
 namespace Client.VirtualMachines;
 

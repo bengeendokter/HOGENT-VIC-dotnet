@@ -1,7 +1,7 @@
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Shared.Clients;
-using Domain.Users;
 using EClientType = Domain.Users.EClientType;
 
 namespace Services.Clients;
@@ -20,7 +20,7 @@ public class ClientService : IClientService
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
-            query = query.Where(x => 
+            query = query.Where(x =>
                 x.Name.Contains(request.Searchterm) ||
                 x.Surname.Contains(request.Searchterm) ||
                 x.ClientOrganisation.Contains(request.Searchterm) ||
@@ -43,7 +43,7 @@ public class ClientService : IClientService
                Name = x.Name,
                Surname = x.Surname,
                PhoneNumber = x.PhoneNumber,
-               ClientType = (Shared.Clients.EClientType) x.ClientType,
+               ClientType = (Shared.Clients.EClientType)x.ClientType,
                ClientOrganisation = x.ClientOrganisation,
            })
            .ToListAsync();
@@ -97,7 +97,7 @@ public class ClientService : IClientService
             model.Email!,
             model.PhoneNumber!,
             model.BackupContact!,
-            (Domain.Users.EClientType) model.ClientType,
+            (Domain.Users.EClientType)model.ClientType,
             model.ClientOrganisation!,
             model.Education,
             model.ExternalType
@@ -105,7 +105,7 @@ public class ClientService : IClientService
 
         dbContext.Clients.Add(client);
         await dbContext.SaveChangesAsync();
-        
+
         return client.Id;
     }
 
@@ -122,7 +122,7 @@ public class ClientService : IClientService
         client.Email = model.Email!;
         client.BackupContact = model.BackupContact!;
         client.ClientOrganisation = model.ClientOrganisation!;
-        client.ClientType = (Domain.Users.EClientType) model.ClientType;
+        client.ClientType = (Domain.Users.EClientType)model.ClientType;
         client.Education = model.Education;
         client.ExternalType = model.ExternalType;
 

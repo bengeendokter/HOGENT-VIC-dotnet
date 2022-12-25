@@ -55,7 +55,8 @@ public class VirtualMachine_Should
     [MemberData(nameof(TestStringData))]
     public void Not_exist_when_invalid_string_parameters(string name, string hostName, string fqdn, string ports, string host)
     {
-        Should.Throw<ArgumentException>(() => {
+        Should.Throw<ArgumentException>(() =>
+        {
             new VirtualMachine(name, hostName, DateTime.Now, DateTime.Now.AddDays(1), fqdn, ports, template, host, 1, 1, 1, software, backupFrequency, day, false, false, null);
         });
     }
@@ -64,7 +65,8 @@ public class VirtualMachine_Should
     [MemberData(nameof(TestDateData))]
     public void Not_exist_when_invalid_date_parameters(DateTime startDate, DateTime endDate)
     {
-        Should.Throw<ArgumentException>(() => {
+        Should.Throw<ArgumentException>(() =>
+        {
             new VirtualMachine("name", "hostName", startDate, endDate, "fqdn", "ports", template, "host", 1, 1, 1, software, backupFrequency, day, false, false, null);
         });
     }
@@ -73,7 +75,8 @@ public class VirtualMachine_Should
     [MemberData(nameof(TestResourceData))]
     public void Not_exist_when_invalid_resource_parameters(int cpu, int ram, int storage)
     {
-        Should.Throw<ArgumentException>(() => {
+        Should.Throw<ArgumentException>(() =>
+        {
             new VirtualMachine("name", "hostName", DateTime.Now, DateTime.Now.AddDays(1), "fqdn", "ports", template, "host", cpu, ram, storage, software, backupFrequency, day, false, false, null);
         });
     }

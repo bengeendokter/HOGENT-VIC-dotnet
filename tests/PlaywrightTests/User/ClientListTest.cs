@@ -2,7 +2,6 @@
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using VIC.IntegrationTests;
 
 namespace VIC.IntegrationTests.User;
 
@@ -31,7 +30,7 @@ public class ClientListTest : PageTest
 
         await Page.GetByTestId("select-type").SelectOptionAsync(new[] { new SelectOptionValue() { Label = "Interne" } });
 
-        var rows =  await Page.GetByTestId("table-row").AllInnerTextsAsync();
+        var rows = await Page.GetByTestId("table-row").AllInnerTextsAsync();
 
         Assert.That(rows.All(row => row.Contains("Intern")), Is.EqualTo(true));
     }

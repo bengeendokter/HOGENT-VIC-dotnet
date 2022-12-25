@@ -1,15 +1,9 @@
-using Domain;
+using Domain.VirtualMachines;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Shared.Clients;
-using Domain.Users;
-using EClientType = Domain.Users.EClientType;
-using Shared.Users;
-using System.Security.Claims;
-using Shared.Activities;
-using Shared.AuthUsers;
 using Shared.VirtualMachines;
-using Domain.VirtualMachines;
+using System.Security.Claims;
 using ERequestStatus = Domain.VirtualMachines.ERequestStatus;
 
 namespace Services.Clients;
@@ -55,7 +49,8 @@ public class AuthUserService
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
             query = SortRequestQueryVM(request.SortBy, query);
-        } else
+        }
+        else
         {
             query = query.OrderByDescending(x => x.UpdatedAt);
         }
@@ -113,16 +108,17 @@ public class AuthUserService
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
             var status = request.Status;
-            query = query.Where(x => 
-                ((x.Status == ERequestStatus.Denied) ? "Geweigerd" : 
-                ((x.Status == ERequestStatus.Requested) ? "Aangevraagd" : 
+            query = query.Where(x =>
+                ((x.Status == ERequestStatus.Denied) ? "Geweigerd" :
+                ((x.Status == ERequestStatus.Requested) ? "Aangevraagd" :
                 ((x.Status == ERequestStatus.Handled) ? "Behandeld" : "Aanvaard"))) == status
                 );
         }
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
             query = SortRequestQueryRequest(request.SortBy, query);
-        } else
+        }
+        else
         {
             query = query.OrderByDescending(x => x.UpdatedAt);
         }

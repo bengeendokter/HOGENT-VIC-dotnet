@@ -1,10 +1,10 @@
-using Domain.VirtualMachines;
 using Domain.Activities;
-using Shared.VirtualMachines;
-using Persistence;
-using Microsoft.EntityFrameworkCore;
 using Domain.Users;
+using Domain.VirtualMachines;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Shared.Clients;
+using Shared.VirtualMachines;
 
 namespace Services.VirtualMachines;
 
@@ -12,7 +12,7 @@ public class VirtualMachineService : IVirtualMachineService
 {
     private readonly VicDbContext dbContext;
 
-    public VirtualMachineService(VicDbContext dbContext)    
+    public VirtualMachineService(VicDbContext dbContext)
     {
         this.dbContext = dbContext;
     }
@@ -23,8 +23,8 @@ public class VirtualMachineService : IVirtualMachineService
 
         if (!string.IsNullOrWhiteSpace(request.Searchterm))
         {
-            query = query.Where(x => 
-                x.Name.Contains(request.Searchterm) || 
+            query = query.Where(x =>
+                x.Name.Contains(request.Searchterm) ||
                 x.Client.Surname.Contains(request.Searchterm) ||
                 x.Client.Name.Contains(request.Searchterm)
             );
@@ -120,8 +120,8 @@ public class VirtualMachineService : IVirtualMachineService
             Client = vmClient is not null ? client : null,
             Host = vm.Host,
             CreatedAt = vm.CreatedAt
-    };
-}
+        };
+    }
 
     public async Task<int> CreateAsync(VirtualMachineDto.Mutate model)
     {
@@ -156,10 +156,10 @@ public class VirtualMachineService : IVirtualMachineService
         );
         dbContext.VirtualMachines.Add(vm);
 
-        var activity = new Activity(EActivity.Added, 
+        var activity = new Activity(EActivity.Added,
             vm.Name,
             vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}" : "Geen klant",
-            vm.CPU, 
+            vm.CPU,
             vm.RAM,
             vm.Storage
         );
@@ -181,10 +181,10 @@ public class VirtualMachineService : IVirtualMachineService
             throw new EntityNotFoundException(nameof(VirtualMachine), virtualMachineId);
         }
 
-        var activity = new Activity(EActivity.Edited, 
-            vm.Name, 
-            vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}": "Geen klant", 
-            model.CPU - vm.CPU, 
+        var activity = new Activity(EActivity.Edited,
+            vm.Name,
+            vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}" : "Geen klant",
+            model.CPU - vm.CPU,
             model.RAM - vm.RAM,
             model.Storage - vm.Storage
         );
@@ -236,7 +236,7 @@ public class VirtualMachineService : IVirtualMachineService
 
         dbContext.VirtualMachines.Remove(vm);
 
-        var activity = new Activity(EActivity.Deleted, 
+        var activity = new Activity(EActivity.Deleted,
             vm.Name,
             vm.Client is not null ? $"{vm.Client.Surname} {vm.Client.Name}" : "Geen klant",
             -vm.CPU,
@@ -254,7 +254,7 @@ public class VirtualMachineService : IVirtualMachineService
         {
             "name" => query.OrderBy(x => x.Name),
             "nameDesc" => query.OrderByDescending(x => x.Name),
-            "template" => query.OrderBy(x => x.Template), 
+            "template" => query.OrderBy(x => x.Template),
             "templateDesc" => query.OrderByDescending(x => x.Template),
             "cpu" => query.OrderBy(x => x.CPU),
             "cpuDesc" => query.OrderByDescending(x => x.CPU),

@@ -1,5 +1,5 @@
-﻿using Shared.VirtualMachines;
-using Shared.Activities;
+﻿using Shared.Activities;
+using Shared.VirtualMachines;
 
 namespace Shared;
 

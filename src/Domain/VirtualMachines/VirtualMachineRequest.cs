@@ -62,7 +62,7 @@ public class VirtualMachineRequest : Entity
     private VirtualMachineRequest() { }
 
     public VirtualMachineRequest(
-        DateTime startDate, 
+        DateTime startDate,
         DateTime endDate,
         string reason,
         string projectName,

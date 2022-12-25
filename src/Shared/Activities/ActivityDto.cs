@@ -1,5 +1,4 @@
-﻿using Shared.VirtualMachines;
-namespace Shared.Activities;
+﻿namespace Shared.Activities;
 
 public static class ActivityDto
 {
@@ -9,7 +8,7 @@ public static class ActivityDto
         public DateTime CreatedAt { get; set; }
         public EActivity Type { get; set; }
         public string? VMName { get; set; }
-        public string? ClientName { get; set;  }
+        public string? ClientName { get; set; }
         public int CPU { get; set; }
         public int RAM { get; set; }
         public int Storage { get; set; }

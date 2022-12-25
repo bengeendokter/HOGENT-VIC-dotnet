@@ -1,6 +1,6 @@
-using System.Net;
 using Domain.Exceptions;
 using Shared.Infrastructure;
+using System.Net;
 
 namespace Server.Middleware;
 

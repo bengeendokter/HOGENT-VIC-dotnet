@@ -35,7 +35,8 @@ public class ClientService : IClientService
             ResponseError error = JsonConvert.DeserializeObject<ResponseError>(message);
             string errorMessage = error?.Message ?? "Er gebeurde een ongekende error.";
             throw new ApplicationException(errorMessage);
-        } else
+        }
+        else
         {
             return await response.Content.ReadFromJsonAsync<int>();
         }

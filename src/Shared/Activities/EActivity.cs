@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Shared.Activities;
+﻿namespace Shared.Activities;
 
 public enum EActivity
 {

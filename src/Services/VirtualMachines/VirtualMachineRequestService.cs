@@ -1,12 +1,9 @@
-﻿using Domain.VirtualMachines;
-using Shared.VirtualMachines;
-using Persistence;
+﻿using Domain.Users;
+using Domain.VirtualMachines;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Domain.Users;
+using Persistence;
 using Shared.Clients;
-using System.Globalization;
+using Shared.VirtualMachines;
 using System.Security.Claims;
 
 namespace Services.VirtualMachines;
@@ -53,17 +50,17 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
     public async Task<List<VirtualMachineRequestDto.Index>> GetAll(VirtualMachineRequestReq.Index request)
     {
         var query = dbContext.VirtualMachineRequests.AsQueryable();
-        
+
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
             var status = Enum.Parse<Domain.VirtualMachines.ERequestStatus>(request.Status, true);
             query = query.Where(x => x.Status.Equals(status));
-        } 
+        }
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
             query = SortRequestQuery(request.SortBy, query);
         }
-        
+
         var items = await query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
@@ -129,7 +126,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         else return new List<VirtualMachineRequestDto.Index>();
     }
 
-            
+
     public async Task<int> CreateAsync(VirtualMachineRequestDto.Create model)
     {
 
@@ -153,7 +150,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
             Domain.VirtualMachines.ERequestStatus.Requested!
         );
 
-        if(client is not null)
+        if (client is not null)
             client.AddRequest(request);
 
         dbContext.VirtualMachineRequests.Add(request);
@@ -167,7 +164,7 @@ public class VirtualMachineRequestService : IVirtualMachineRequestService
         var r = await dbContext.VirtualMachineRequests.SingleOrDefaultAsync(v => v.Id == id);
         var vm = await dbContext.VirtualMachines.FirstOrDefaultAsync(v => v.Id == id);
 
-        if(vm is null)
+        if (vm is null)
             throw new EntityNotFoundException(nameof(VirtualMachine), id);
         if (r is null)
             throw new EntityNotFoundException(nameof(Domain.VirtualMachines.VirtualMachineRequest), id);

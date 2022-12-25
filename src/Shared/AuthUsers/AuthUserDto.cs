@@ -1,10 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shared.AuthUsers;
 
@@ -48,7 +42,7 @@ public class AuthUserDto
             public string ScreenName { get; set; }
 
             public class Secret
-            { 
+            {
                 public string Password { get; set; }
             }
 

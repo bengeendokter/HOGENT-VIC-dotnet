@@ -1,17 +1,10 @@
-﻿using Bogus;
-using Domain.VirtualMachines;
-using Fakers.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.VirtualMachines;
 using Fakers.Clients;
-using Domain.Users;
+using Fakers.Common;
 
 namespace Fakers.VirtualMachines;
 
-public class VirtualMachineRequestFaker: EntityFaker<VirtualMachineRequest>
+public class VirtualMachineRequestFaker : EntityFaker<VirtualMachineRequest>
 {
 
     public VirtualMachineRequestFaker(string locale = "nl") : base(locale)

@@ -6,7 +6,7 @@ namespace VIC.IntegrationTests.User;
 [TestFixture]
 public class ManageClientTest : PageTest
 {
-    [Test] 
+    [Test]
     public async Task Test1_Create_Client_With_Empty_Fields_Gives_Validation_Errors()
     {
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten/aanmaken");
@@ -63,7 +63,7 @@ public class ManageClientTest : PageTest
         await Page.GotoAsync($"{TestHelper.BaseUri}/klanten");
         await Page.GetByTestId("searchbar").FillAsync("Voornaam");
         await Page.GetByTestId("btn-search").ClickAsync();
-        
+
         await Page.WaitForSelectorAsync("td");
 
         await Page.GetByTestId("btn-edit-callback").ClickAsync();

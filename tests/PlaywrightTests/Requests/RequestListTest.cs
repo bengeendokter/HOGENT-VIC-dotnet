@@ -1,11 +1,6 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VIC.IntegrationTests.Requests;
 
@@ -21,7 +16,7 @@ public class RequestListTest : PageTest
         await Page.WaitForSelectorAsync("table");
 
         var amount = await Page.GetByTestId("table-row").CountAsync();
-        
+
         // 15 items
         Assert.That(amount, Is.EqualTo(15));
 

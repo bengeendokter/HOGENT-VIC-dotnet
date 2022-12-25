@@ -1,5 +1,4 @@
 using Domain.Users;
-using Domain.VirtualMachines;
 using Fakers.Common;
 
 namespace Fakers.Clients;
@@ -25,7 +24,7 @@ public class ClientFaker : EntityFaker<Client>
                     f.Random.CollectionItem(new List<string>() { "Manager", "CEO", "Developer", "Researcher" })        // ExternalType
                 );
         }
-        ); 
+        );
     }
 
 }
